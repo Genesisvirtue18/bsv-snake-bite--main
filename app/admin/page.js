@@ -365,15 +365,25 @@ export default function AdminPage() {
     <div className="min-h-screen bg-slate-50">
       <header className="bg-bsv-blue text-white sticky top-0 z-40">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
             <img
               src="/images/bsv-logo.png"
               alt="BSV Mankind"
-              className="h-16 sm:h-20 w-auto bg-white rounded-lg px-3 py-2"
+              className="h-12 sm:h-20 w-auto bg-white rounded-lg px-3 py-2"
             />
             <div>
-              <div className="font-display font-extrabold">BSV Admin CMS</div>
-              <div className="text-xs text-white/70">{user.name} • {user.role.replace('_', ' ')}</div>
+              <div className="font-display font-extrabold text-sm sm:text-base">
+                BSV Admin CMS
+              </div>
+              <div className="text-xs text-white/70">
+                <span className="hidden sm:inline">
+                  {user.name} • {user.role.replace('_', ' ')}
+                </span>
+
+                <span className="sm:hidden">
+                  {user.role.replace('_', ' ')}
+                </span>
+              </div>
             </div>
           </div>
           <div className="flex items-center gap-2">
