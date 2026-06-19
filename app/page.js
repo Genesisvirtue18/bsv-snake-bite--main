@@ -288,10 +288,11 @@ function Header({ lang, setLang, t }) {
               </div>
 
               <div
-                className="text-[7px] sm:text-[11px] font-medium leading-none mt-0.5 truncate"
+                className="text-[7px] sm:text-[11px] font-medium leading-tight mt-0.5"
                 style={{ color: BRAND.blue }}
               >
-                Saap Ka Vaar, Aspataal Mein Hi Upchaar
+                <span className="block sm:inline">Saap Ka Vaar,</span>
+                <span className="block sm:inline"> Aspataal Mein Hi Upchaar</span>
               </div>
             </div>
           </button>
