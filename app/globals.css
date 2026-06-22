@@ -97,3 +97,12 @@
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
 .section-pad { @apply py-16 md:py-24; }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

@@ -327,6 +327,46 @@ export default function AdminPage() {
     if (r.ok) toast.success('Content saved!'); else toast.error('Save failed')
   }
 
+  const getHeroSlides = () =>
+    Array.isArray(content?.heroSlides)
+      ? [...content.heroSlides].sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0))
+      : []
+
+  const updateHeroSlides = (slides) => {
+    setContent({ ...content, heroSlides: slides })
+  }
+
+  const addHeroSlide = () => {
+    const slides = getHeroSlides()
+    const nextOrder = slides.length
+      ? Math.max(...slides.map(s => Number(s.order) || 0)) + 1
+      : 1
+
+    updateHeroSlides([
+      ...slides,
+      {
+        id: `hero-${Date.now()}`,
+        desktopImage: '',
+        mobileImage: '',
+        order: nextOrder,
+        active: true,
+      },
+    ])
+  }
+
+  const updateHeroSlide = (id, patch) => {
+    updateHeroSlides(
+      getHeroSlides().map(slide =>
+        slide.id === id ? { ...slide, ...patch } : slide
+      )
+    )
+  }
+
+  const deleteHeroSlide = (id) => {
+    if (!confirm('Delete this hero slide?')) return
+    updateHeroSlides(getHeroSlides().filter(slide => slide.id !== id))
+  }
+
   const resetContent = async () => {
     if (!confirm('Reset all content to defaults?')) return
     const r = await api('/api/content/reset', 'POST')
@@ -478,67 +518,86 @@ export default function AdminPage() {
                   </div>
                 </CardContent></Card>
 
-                {/* HERO */}
-                <Card><CardContent className="p-5 space-y-3">
-                  <h3 className="font-display font-bold text-lg text-bsv-blue">Hero Section</h3>
-                  <MediaPicker label="Hero Background Image" value={content.hero.image} onChange={v => setContent({ ...content, hero: { ...content.hero, image: v } })} />
-                  <div className="grid md:grid-cols-2 gap-3">
-                    <div>
-                      <Label>Left Top Text</Label>
-                      <Input
-                        value={content.hero.leftTop || ''}
-                        onChange={e => setContent({ ...content, hero: { ...content.hero, leftTop: e.target.value } })}
-                        placeholder="INDIA LOSES"
-                      />
+                {/* HERO SLIDES */}
+                <Card>
+                  <CardContent className="p-5 space-y-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <h3 className="font-display font-bold text-lg text-bsv-blue">Hero Slides</h3>
+                      </div>
+
+                      <Button type="button" onClick={addHeroSlide} className="bg-bsv-red">
+                        <Plus className="w-4 h-4 mr-1" />
+                        Add Slide
+                      </Button>
                     </div>
 
-                    <div>
-                      <Label>Big Number</Label>
-                      <Input
-                        value={content.hero.bigNumber || ''}
-                        onChange={e => setContent({ ...content, hero: { ...content.hero, bigNumber: e.target.value } })}
-                        placeholder="50,000"
-                      />
+                    <div className="space-y-4">
+                      {getHeroSlides().map((slide, index) => (
+                        <div key={slide.id} className="border rounded-xl p-4 bg-white space-y-3">
+                          <div className="flex items-center justify-between gap-3">
+                            <div className="font-semibold text-bsv-blue">
+                              Slide {index + 1}
+                            </div>
+
+                            <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-2 text-sm">
+                                <span>Active</span>
+                                <Switch
+                                  checked={slide.active !== false}
+                                  onCheckedChange={c => updateHeroSlide(slide.id, { active: c })}
+                                />
+                              </div>
+
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="destructive"
+                                onClick={() => deleteHeroSlide(slide.id)}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </div>
+
+                          <div className="grid md:grid-cols-2 gap-3">
+                            <MediaPicker
+                              label="Desktop Image (1920 × 1080)"
+                              value={slide.desktopImage || ''}
+                              onChange={v => updateHeroSlide(slide.id, { desktopImage: v })}
+                            />
+
+                            <MediaPicker
+                              label="Mobile Image (1200 × 1500)"
+                              value={slide.mobileImage || ''}
+                              onChange={v => updateHeroSlide(slide.id, { mobileImage: v })}
+                            />
+                          </div>
+
+                          <div className="max-w-xs">
+                            <Label>Sort Order</Label>
+                            <Input
+                              type="number"
+                              value={slide.order ?? index + 1}
+                              onChange={e =>
+                                updateHeroSlide(slide.id, {
+                                  order: Number(e.target.value) || 0,
+                                })
+                              }
+                            />
+                          </div>
+                        </div>
+                      ))}
+
+                      {!getHeroSlides().length && (
+                        <div className="border border-dashed rounded-xl p-8 text-center text-muted-foreground">
+                          Add Slides.
+                        </div>
+                      )}
                     </div>
-                  </div>
+                  </CardContent>
+                </Card>
 
-                  <div>
-                    <Label>Left Bottom Text</Label>
-                    <Textarea
-                      value={content.hero.leftBottom || ''}
-                      onChange={e => setContent({ ...content, hero: { ...content.hero, leftBottom: e.target.value } })}
-                      placeholder="LIVES TO SNAKE&#10;BITES EVERY YEAR"
-                    />
-                  </div>
-
-                  <div>
-                    <Label>Right Main Text</Label>
-                    <Input
-                      value={content.hero.rightMain || ''}
-                      onChange={e => setContent({ ...content, hero: { ...content.hero, rightMain: e.target.value } })}
-                      placeholder="SAANP KA VAAR,"
-                    />
-                  </div>
-
-                  <div>
-                    <Label>Right Sub Text</Label>
-                    <Input
-                      value={content.hero.rightSub || ''}
-                      onChange={e => setContent({ ...content, hero: { ...content.hero, rightSub: e.target.value } })}
-                      placeholder="ASPATAAL MEIN HI UPCHAAR!"
-                    />
-                  </div>
-
-                  <div>
-                    <Label>Tagline</Label>
-                    <Input
-                      value={content.hero.tagline || ''}
-                      onChange={e => setContent({ ...content, hero: { ...content.hero, tagline: e.target.value } })}
-                      placeholder="Snake bite? Only hospital can treat it right."
-                    />
-                  </div>
-                  <div className="grid grid-cols-2 gap-3"><div><Label>Primary CTA</Label><Input value={content.hero.cta1} onChange={e => setContent({ ...content, hero: { ...content.hero, cta1: e.target.value } })} /></div><div><Label>Secondary CTA</Label><Input value={content.hero.cta2} onChange={e => setContent({ ...content, hero: { ...content.hero, cta2: e.target.value } })} /></div></div>
-                </CardContent></Card>
 
                 {/* IMPACT STATS */}
                 <Card><CardContent className="p-5">
@@ -1510,6 +1569,8 @@ function SettingsView({ api }) {
                 <div className="md:col-span-2"><Label>Tagline</Label><Input value={s.branding.tagline} onChange={e => updateBranding('tagline', e.target.value)} /></div>
               </div>
               <MediaPicker label="Header Logo (light backgrounds)" value={s.branding.headerLogo} onChange={v => updateBranding('headerLogo', v)} />
+              <MediaPicker label="BSV Logo" value={s.branding.bsvLogo || ''} onChange={v => updateBranding('bsvLogo', v)} />
+              <MediaPicker label="Mankind Logo" value={s.branding.mankindLogo || ''} onChange={v => updateBranding('mankindLogo', v)} />
               <MediaPicker label="Footer Logo" value={s.branding.footerLogo} onChange={v => updateBranding('footerLogo', v)} />
               <MediaPicker label="Favicon (32x32 ICO/PNG)" value={s.branding.favicon} onChange={v => updateBranding('favicon', v)} />
               <MediaPicker label="Apple Touch Icon (180x180)" value={s.branding.appleTouchIcon} onChange={v => updateBranding('appleTouchIcon', v)} />
