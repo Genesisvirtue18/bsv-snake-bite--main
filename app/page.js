@@ -570,7 +570,7 @@ function Hero({ content, t }) {
                 <div
                   key={slide.id || i}
                   data-hero-card
-                  className="relative w-[82vw] sm:w-[46vw] lg:w-[47vw] h-[260px] sm:h-[320px] lg:h-[360px] overflow-hidden rounded-[1.5rem] shadow-xl bg-white flex-shrink-0"
+                  className="relative w-[82vw] sm:w-[46vw] lg:w-[47vw] h-[260px] sm:h-[320px] lg:h-[360px] overflow-hidden rounded-[1.5rem] shadow-none bg-white flex-shrink-0"
                 >
                   <picture>
                     <source
