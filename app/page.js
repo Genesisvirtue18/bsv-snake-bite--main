@@ -282,7 +282,7 @@ function Header({ lang, setLang, t, settings }) {
             />
             <div className="max-w-[72px] sm:max-w-[100px]">
               <div className="text-[9px] sm:text-[11px] font-semibold leading-snug text-left" style={{ color: BRAND.blue }}>
-                Saap Ka Vaar,<br />Aspataal Mein<br />Hi Upchaar
+                Saap Ka Vaar,<br />Aspataal Mein Hi Upchaar
               </div>
             </div>
           </button>
