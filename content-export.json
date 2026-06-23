@@ -1,6 +1,2920 @@
 {
   "hero": {
-    "title": "TEST_PERSIST_CHECK",
-    "subtitle": "test"
+    "image": "/api/media/d00808ea-71b3-4b46-805e-4a6f92ff60c0",
+    "title": "Saving Lives From Snakebite Across India",
+    "subtitle": "Every minute matters. Through awareness, access, and communication, BSV is helping communities act fast and save lives.",
+    "cta1": "",
+    "cta2": "",
+    "leftTop": "INDIA LOSES",
+    "bigNumber": "50,000",
+    "leftBottom": "LIVES TO SNAKE\nBITES EVERY YEAR",
+    "rightMain": "SAANP KA VAAR,",
+    "rightSub": "ASPATAAL MEIN HI UPCHAAR!",
+    "tagline": "Snake bite? Only hospital can treat it right."
+  },
+  "heroStats": [
+    {
+      "id": "lives",
+      "label": "Lives Impacted",
+      "value": 250000,
+      "suffix": "+",
+      "icon": "Heart"
+    },
+    {
+      "id": "workers",
+      "label": "Workers Trained",
+      "value": 12500,
+      "suffix": "+",
+      "icon": "GraduationCap"
+    },
+    {
+      "id": "villages",
+      "label": "Villages Reached",
+      "value": 3800,
+      "suffix": "+",
+      "icon": "MapPin"
+    },
+    {
+      "id": "volunteers",
+      "label": "Active Volunteers",
+      "value": 4200,
+      "suffix": "+",
+      "icon": "Users"
+    }
+  ],
+  "logos": {
+    "partners": "https://customer-assets.emergentagent.com/job_15106444-6c2b-464f-9e93-4c1b70dc4182/artifacts/ou3picpg_image.png"
+  },
+  "impactStats": [
+    {
+      "id": "lives",
+      "label": "Lives Impacted",
+      "value": 250000,
+      "suffix": "+",
+      "icon": "Heart"
+    },
+    {
+      "id": "workers",
+      "label": "Healthcare Workers Trained",
+      "value": 12500,
+      "suffix": "+",
+      "icon": "Stethoscope"
+    },
+    {
+      "id": "villages",
+      "label": "Villages Reached",
+      "value": 3800,
+      "suffix": "+",
+      "icon": "MapPin"
+    },
+    {
+      "id": "sessions",
+      "label": "Awareness Sessions",
+      "value": 4200,
+      "suffix": "+",
+      "icon": "Megaphone"
+    },
+    {
+      "id": "cities",
+      "label": "Cities Covered",
+      "value": 180,
+      "suffix": "+",
+      "icon": "Building2"
+    },
+    {
+      "id": "ngos",
+      "label": "Partner NGOs",
+      "value": 45,
+      "suffix": "+",
+      "icon": "Handshake"
+    },
+    {
+      "id": "units",
+      "label": "Manufacturing Units",
+      "value": 6,
+      "suffix": "",
+      "icon": "Factory"
+    },
+    {
+      "id": "field",
+      "label": "Strong Field Force",
+      "value": 2200,
+      "suffix": "+",
+      "icon": "Users"
+    }
+  ],
+  "states": [
+    {
+      "code": "MH",
+      "name": "Maharashtra",
+      "lives": 58000,
+      "villages": 720,
+      "sessions": 880,
+      "color": "#de2527"
+    },
+    {
+      "code": "KA",
+      "name": "Karnataka",
+      "lives": 42000,
+      "villages": 540,
+      "sessions": 620,
+      "color": "#151f6d"
+    },
+    {
+      "code": "TN",
+      "name": "Tamil Nadu",
+      "lives": 38000,
+      "villages": 480,
+      "sessions": 580,
+      "color": "#de2527"
+    },
+    {
+      "code": "AP",
+      "name": "Andhra Pradesh",
+      "lives": 32000,
+      "villages": 410,
+      "sessions": 490,
+      "color": "#151f6d"
+    },
+    {
+      "code": "TG",
+      "name": "Telangana",
+      "lives": 28000,
+      "villages": 360,
+      "sessions": 420,
+      "color": "#de2527"
+    },
+    {
+      "code": "MP",
+      "name": "Madhya Pradesh",
+      "lives": 30000,
+      "villages": 520,
+      "sessions": 540,
+      "color": "#151f6d"
+    },
+    {
+      "code": "OD",
+      "name": "Odisha",
+      "lives": 22000,
+      "villages": 380,
+      "sessions": 360,
+      "color": "#de2527"
+    }
+  ],
+  "about": {
+    "story": "Snakebite is a silent emergency in India. Every year, an estimated 58,000 lives are lost to snakebite — most of them preventable with timely hospital treatment. The campaign “Saap Ka Vaar, Aspataal Mein Hi Upchaar” was born to change the narrative: from herbs to hospitals, from fear to facts, from delay to decisive action.",
+    "mission": "To eliminate preventable snakebite deaths in India by 2030 through awareness, education, and ensuring access to quality anti-snake venom (ASV) at every primary health center.",
+    "vision": "A nation where no life is lost to snakebite — where every village knows the signs, every clinician is trained, and every hospital is ready.",
+    "objectives": [
+      "Drive behavior change toward immediate hospitalization",
+      "Train healthcare professionals at all levels",
+      "Educate rural communities through grassroots activations",
+      "Partner with NGOs, governments, and CSR organizations",
+      "Make ASV accessible and affordable across India"
+    ],
+    "burden": "58,000 estimated deaths annually | 1.2 million bites every year | 70% deaths preventable with timely ASV"
+  },
+  "myths": [
+    {
+      "id": 1,
+      "myth": "Venom can be sucked out of the wound",
+      "fact": "Sucking venom is dangerous and ineffective. It can introduce bacteria into the wound and harm the rescuer. Only ASV (Anti-Snake Venom) administered in a hospital can neutralize venom."
+    },
+    {
+      "id": 2,
+      "myth": "Herbal remedies and traditional medicines can cure snakebite",
+      "fact": "No herb has been scientifically proven to neutralize snake venom. Delay in hospital treatment by visiting traditional healers is a leading cause of death."
+    },
+    {
+      "id": 3,
+      "myth": "Faith healers can save a snakebite victim",
+      "fact": "Faith healing wastes precious time. Venom acts fast — every minute lost reduces survival chances. Always rush the victim to the nearest hospital."
+    },
+    {
+      "id": 4,
+      "myth": "Cutting the wound and bleeding it out removes venom",
+      "fact": "Cutting the wound causes more harm, increases bleeding, infection risk, and does NOT remove venom. Immobilize the limb instead."
+    },
+    {
+      "id": 5,
+      "myth": "Tying a tight tourniquet stops venom spread",
+      "fact": "Tight tourniquets cut blood flow, cause tissue death, and may lead to amputation. Use a loose pressure bandage if instructed and rush to hospital."
+    },
+    {
+      "id": 6,
+      "myth": "All snakes are venomous",
+      "fact": "Only about 60 of India’s 300+ snake species are venomous. India’s “Big Four” — Russell’s Viper, Saw-scaled Viper, Common Krait, Spectacled Cobra — cause most fatalities."
+    }
+  ],
+  "emergencyDos": [
+    {
+      "title": "Stay Calm",
+      "desc": "Panic increases heart rate and spreads venom faster. Keep the victim still and reassured."
+    },
+    {
+      "title": "Immobilize the Limb",
+      "desc": "Use a splint or sling. Keep the bitten limb below heart level."
+    },
+    {
+      "title": "Remove Tight Items",
+      "desc": "Take off rings, watches, anklets, and tight clothing near the bite — swelling will follow."
+    },
+    {
+      "title": "Reach Nearest Hospital",
+      "desc": "Transport immediately in a vehicle. Time = life. Do not wait, do not delay."
+    },
+    {
+      "title": "Note the Snake",
+      "desc": "Remember color, size, pattern (do NOT try to catch it). A photo from a safe distance helps."
+    },
+    {
+      "title": "Seek ASV Treatment",
+      "desc": "Anti-Snake Venom (ASV) is the only proven treatment. It is available at most hospitals."
+    }
+  ],
+  "emergencyDonts": [
+    {
+      "title": "Do NOT Cut the Wound",
+      "desc": "Cutting causes infection and does not remove venom."
+    },
+    {
+      "title": "Do NOT Suck the Venom",
+      "desc": "It is ineffective and dangerous for the rescuer."
+    },
+    {
+      "title": "Do NOT Apply Herbs or Pastes",
+      "desc": "No traditional remedy neutralizes venom. They delay real treatment."
+    },
+    {
+      "title": "Do NOT Use Tight Tourniquets",
+      "desc": "They cause tissue death and amputation risk."
+    },
+    {
+      "title": "Do NOT Delay Treatment",
+      "desc": "Every minute counts. Rush to hospital immediately."
+    },
+    {
+      "title": "Do NOT Visit Faith Healers",
+      "desc": "Faith healers cannot treat venom. Only hospitals with ASV can."
+    }
+  ],
+  "resources": [
+    {
+      "id": "r1",
+      "title": "Snakebite Emergency Poster",
+      "category": "Posters",
+      "desc": "Wall-mountable A2 emergency response poster for clinics and villages",
+      "preview": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600",
+      "file": "/api/media/89042f5c-5f58-4751-ad56-03fd4c9a8646"
+    },
+    {
+      "id": "r2",
+      "title": "First-Aid Brochure (Multilingual)",
+      "category": "Brochures",
+      "desc": "8-page guide in 9 Indian languages",
+      "preview": "https://images.unsplash.com/photo-1532153975070-2e9ab71f1b14?w=600",
+      "file": "#"
+    },
+    {
+      "id": "r3",
+      "title": "Snakebite Awareness Comic",
+      "category": "Comics",
+      "desc": "Engaging comic strip for schools and rural communities",
+      "preview": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600",
+      "file": "#"
+    },
+    {
+      "id": "r4",
+      "title": "Clinician Training Manual",
+      "category": "Training",
+      "desc": "Comprehensive ASV administration protocol",
+      "preview": "https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=600",
+      "file": "#"
+    },
+    {
+      "id": "r5",
+      "title": "ASVS Reconstitution Video",
+      "category": "Videos",
+      "desc": "Step-by-step video guide for healthcare professionals",
+      "preview": "https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=600",
+      "file": "#"
+    },
+    {
+      "id": "r6",
+      "title": "Emergency Response Checklist",
+      "category": "Guides",
+      "desc": "Quick reference card for ASHA workers",
+      "preview": "https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=600",
+      "file": "#"
+    }
+  ],
+  "quiz": [
+    {
+      "q": "What is the FIRST thing you should do after a snakebite?",
+      "options": [
+        "Suck the venom out",
+        "Apply herbs",
+        "Stay calm and rush to hospital",
+        "Cut the wound"
+      ],
+      "correct": 2
+    },
+    {
+      "q": "Which of these is the only proven treatment for venomous snakebite?",
+      "options": [
+        "Herbal medicine",
+        "Anti-Snake Venom (ASV)",
+        "Prayer",
+        "Cold water"
+      ],
+      "correct": 1
+    },
+    {
+      "q": "Should you apply a tight tourniquet?",
+      "options": [
+        "Yes, always",
+        "No, never",
+        "Only on legs",
+        "Only for 5 mins"
+      ],
+      "correct": 1
+    },
+    {
+      "q": "How many people die from snakebite in India every year approximately?",
+      "options": [
+        "5,000",
+        "20,000",
+        "58,000",
+        "100,000"
+      ],
+      "correct": 2
+    },
+    {
+      "q": "Which is NOT one of India’s “Big Four” venomous snakes?",
+      "options": [
+        "Russell’s Viper",
+        "Common Krait",
+        "King Cobra",
+        "Saw-scaled Viper"
+      ],
+      "correct": 2
+    },
+    {
+      "q": "Where should a snakebite victim be treated?",
+      "options": [
+        "Faith healer",
+        "Home with herbs",
+        "Hospital immediately",
+        "Local pharmacy"
+      ],
+      "correct": 2
+    }
+  ],
+  "ngos": [
+    {
+      "name": "SHE Foundation",
+      "desc": "Community health and awareness across rural Maharashtra"
+    },
+    {
+      "name": "Sarpa Sathi",
+      "desc": "Snake rescue and rural education in Karnataka & Tamil Nadu"
+    },
+    {
+      "name": "Nisarg Foundation",
+      "desc": "Wildlife conservation and snakebite awareness drives"
+    }
+  ],
+  "contact": {
+    "email": "campaign@bsvindia.com",
+    "phone": "+91 22 6664 8000",
+    "address": "BSV Bharat Serums & Vaccines Ltd., Plot No. 16, Veera Industrial Estate, Andheri (W), Mumbai 400053, India"
+  },
+  "footer": {
+    "tagline": "Saap Ka Vaar, Aspataal Mein Hi Upchaar",
+    "description": "India’s National Snakebite Awareness Initiative — saving lives through awareness, access, and timely hospital treatment.",
+    "columns": [
+      {
+        "title": "Campaign",
+        "links": [
+          {
+            "label": "About",
+            "url": "#about"
+          },
+          {
+            "label": "Emergency Guide",
+            "url": "#emergency"
+          },
+          {
+            "label": "Myths vs Facts",
+            "url": "#myths"
+          },
+          {
+            "label": "Resources",
+            "url": "#resources"
+          }
+        ]
+      },
+      {
+        "title": "Engage",
+        "links": [
+          {
+            "label": "Take Quiz",
+            "url": "#quiz"
+          },
+          {
+            "label": "Partner With Us",
+            "url": "#partner"
+          },
+          {
+            "label": "NGO Network",
+            "url": "/ngo-network"
+          },
+          {
+            "label": "Volunteer",
+            "url": "/volunteer"
+          },
+          {
+            "label": "Impact Stories",
+            "url": "/impact-stories"
+          },
+          {
+            "label": "Reports",
+            "url": "/reports"
+          }
+        ]
+      },
+      {
+        "title": "Legal",
+        "links": [
+          {
+            "label": "Privacy Policy",
+            "url": "/privacy"
+          },
+          {
+            "label": "Terms of Service",
+            "url": "/terms"
+          },
+          {
+            "label": "Cookie Policy",
+            "url": "/cookies"
+          }
+        ]
+      }
+    ],
+    "social": {
+      "youtube": "https://youtube.com",
+      "facebook": "https://facebook.com",
+      "instagram": "https://instagram.com",
+      "linkedin": "https://linkedin.com",
+      "twitter": "https://twitter.com"
+    },
+    "copyright": "© 2025 Bharat Serums and Vaccines Ltd. All rights reserved."
+  },
+  "sections": {
+    "hero": {
+      "enabled": true,
+      "order": 1
+    },
+    "impact": {
+      "enabled": true,
+      "order": 2
+    },
+    "about": {
+      "enabled": true,
+      "order": 3
+    },
+    "emergency": {
+      "enabled": true,
+      "order": 4
+    },
+    "myths": {
+      "enabled": true,
+      "order": 5
+    },
+    "resources": {
+      "enabled": true,
+      "order": 6
+    },
+    "quiz": {
+      "enabled": true,
+      "order": 7
+    },
+    "partner": {
+      "enabled": true,
+      "order": 8
+    },
+    "contact": {
+      "enabled": true,
+      "order": 9
+    }
+  },
+  "translations": {
+    "hi": {
+      "hero": {
+        "title": "भारत में सांप के काटने से जीवन बचाना",
+        "subtitle": "हर मिनट महत्वपूर्ण है। जागरूकता, पहुँच और संचार के माध्यम से, BSV समुदायों को तेज़ी से कार्रवाई करने और जीवन बचाने में मदद कर रहा है।",
+        "leftTop": "भारत को हुआ नुकसान",
+        "bigNumber": "50,000",
+        "leftBottom": "हर साल सांप के काटने से जीवन",
+        "rightMain": "साँप का वार,",
+        "rightSub": "अस्पताल में ही उपचार!",
+        "tagline": "सांप काटा? केवल अस्पताल ही इसे सही तरीके से उपचार कर सकता है।"
+      },
+      "about": {
+        "story": "भारत में सांप काटना एक मौन आपात स्थिति है। हर साल, अनुमानित 58,000 जिंदगियाँ सांप के काटने से जाती हैं - जिनमें से अधिकांश समय पर अस्पताल के उपचार से रोके जा सकते हैं। \"साँप का वार, अस्पताल में ही उपचार\" अभियान का जन्म इस कहानी को बदलने के लिए हुआ: जड़ी-बूटियों से अस्पतालों तक, डर से तथ्य तक, देरी से निर्णायक कार्रवाई तक।",
+        "mission": "2030 तक भारत में रोकथाम योग्य सांप के काटने से होने वाली मौतों को जागरूकता, शिक्षा और हर प्राथमिक स्वास्थ्य केंद्र पर गुणवत्ता वाले एंटी-स्नेक वेनम (ASV) तक पहुँच सुनिश्चित करके समाप्त करना।",
+        "vision": "एक राष्ट्र जहाँ सांप के काटने से कोई जीवन नहीं खोता - जहाँ हर गाँव संकेत जानता है, हर चिकित्सक प्रशिक्षित है, और हर अस्पताल तैयार है।",
+        "objectives": [
+          "तत्काल अस्पताल में भर्ती होने की दिशा में व्यवहार परिवर्तन को प्रेरित करें",
+          "सभी स्तरों पर स्वास्थ्य देखभाल पेशेवरों को प्रशिक्षित करें",
+          "ग्रामीण समुदायों को आधार स्तर पर सक्रियता के माध्यम से शिक्षित करें",
+          "NGO, सरकारों और CSR संगठनों के साथ साझेदारी करें",
+          "भारत भर में ASV को सुलभ और सामर्थ्ययुक्त बनाएं"
+        ],
+        "burden": "58,000 अनुमानित मौतें प्रति वर्ष | हर साल 1.2 मिलियन काटने | 70% मौतें समय पर ASV के साथ रोकने योग्य"
+      },
+      "emergencyDos": [
+        {
+          "title": "शांत रहें",
+          "desc": "घबराहट हृदय की धड़कन बढ़ाती है और विष को तेजी से फैलाती है। पीड़ित को स्थिर और आश्वस्त रखें।"
+        },
+        {
+          "title": "अंग को स्थायी करें",
+          "desc": "एक स्प्लिंट या स्लिंग का उपयोग करें। काटे गए अंग को हृदय स्तर से नीचे रखें।"
+        },
+        {
+          "title": "टाइट वस्त्र हटा दें",
+          "desc": "गहनों, घड़ियों, पायल और काटने के नज़दीक टाइट कपड़े हटा दें - सूजन उसके बाद होगी।"
+        },
+        {
+          "title": "निकटतम अस्पताल पहुँचें",
+          "desc": "तुरंत एक वाहन में ले जाएँ। समय = जीवन। प्रतीक्षा न करें, देरी न करें।"
+        },
+        {
+          "title": "साँप को नोट करें",
+          "desc": "रंग, आकार, पैटर्न याद रखें (इसे पकड़ने की कोशिश न करें)। सुरक्षित दूरी से एक फोटो मदद करता है।"
+        },
+        {
+          "title": "ASV उपचार की तलाश करें",
+          "desc": "एंटी-स्नेक वेनम (ASV) एकमात्र सिद्ध उपचार है। यह अधिकांश अस्पतालों में उपलब्ध है।"
+        }
+      ],
+      "emergencyDonts": [
+        {
+          "title": "घाव को काटें नहीं",
+          "desc": "कटने से संक्रमण होता है और विष को नहीं हटाता।"
+        },
+        {
+          "title": "विष नहीं चूसें",
+          "desc": "यह बचाने वाले के लिए अप्रभावी और खतरनाक है।"
+        },
+        {
+          "title": "जड़ी-बूटियाँ या पेस्ट न लगाएं",
+          "desc": "कोई पारंपरिक उपचार विष को निष्क्रिय नहीं करता। वे वास्तविक उपचार में देरी करते हैं।"
+        },
+        {
+          "title": "कसी हुई टूरनीकेट का उपयोग न करें",
+          "desc": "वे ऊतक की मौत और अम्पुटेशन का जोखिम पैदा करते हैं।"
+        },
+        {
+          "title": "उपचार में देरी न करें",
+          "desc": "हर मिनट महत्वपूर्ण है। तुरंत अस्पताल जाएं।"
+        },
+        {
+          "title": "विश्वास के हीलर्स से न मिलें",
+          "desc": "विश्वास के हीलर्स विष का इलाज नहीं कर सकते। केवल ASV (एंटी-स्नेक विष) के साथ अस्पताल कर सकते हैं।"
+        }
+      ],
+      "myths": [
+        {
+          "myth": "विष को घाव से चूसा जा सकता है",
+          "fact": "विष चूसना खतरनाक और अप्रभावी है। यह घाव में बैक्टीरिया डाल सकता है और बचाने वाले को हानि पहुँचा सकता है। केवल अस्पताल में दिया गया ASV विष को निष्क्रिय कर सकता है।"
+        },
+        {
+          "myth": "जड़ी-बूटियों के उपचार और पारंपरिक दवाएं साँप के काटने का इलाज कर सकती हैं",
+          "fact": "कोई भी जड़ी-बूटी वैज्ञानिक रूप से साँप के विष को निष्क्रिय करने के लिए साबित नहीं हुई है। पारंपरिक हीलर्स से मिलने से अस्पताल के उपचार में देरी होना मृत्यु के प्रमुख कारणों में से एक है।"
+        },
+        {
+          "myth": "विश्वास के हीलर्स एक साँप के काटने के पीड़ित को बचा सकते हैं",
+          "fact": "विश्वास का उपचार कीमती समय बर्बाद करता है। विष तेज़ी से कार्य करता है — हर खोया मिनट जीवित रहने के अवसर को कम करता है। हमेशा पीड़ित को निकटतम अस्पताल ले जाएं।"
+        },
+        {
+          "myth": "घाव को काटने और रक्तस्राव करने से विष हटता है",
+          "fact": "घाव को काटने से अधिक नुकसान होता है, रक्तस्राव बढ़ता है, संक्रमण का खतरा बढ़ता है, और विष नहीं हटता। इसके बजाय अंग को स्थिर करें।"
+        },
+        {
+          "myth": "कसी हुई टूरनीकेट विष के फैलाव को रोकती है",
+          "fact": "कसी हुई टूरनीकेट रक्त प्रवाह को काटती है, ऊतक की मौत का कारण बनती है, और अम्पुटेशन का कारण बन सकती है। अगर निर्देशित किया जाए तो ढीला दबाव बंधन का उपयोग करें और अस्पताल जल्दी जाएं।"
+        },
+        {
+          "myth": "सभी साँप विषैला होते हैं",
+          "fact": "भारत की 300 से अधिक साँप की प्रजातियों में से केवल लगभग 60 विषैले हैं। भारत के \"बिग फोर\" - रसेल की वाइपर, स्व-स्केल्ड वाइपर, कॉमन क्रेट, स्पेक्टाकल्ड कोबरा - अधिकांश मौतों का कारण बनते हैं।"
+        }
+      ],
+      "resources": [
+        {
+          "title": "साँप के काटने की आपातकालीन पोस्टर",
+          "category": "पोस्टर",
+          "desc": "क्लीनिक और गांवों के लिए दीवार पर लगाने योग्य A2 आपातकालीन प्रतिक्रिया पोस्टर"
+        },
+        {
+          "title": "प्राथमिक चिकित्सा ब्रोशर (बहुभाषी)",
+          "category": "ब्रोशर",
+          "desc": "9 भारतीय भाषाओं में 8-पृष्ठ का मार्गदर्शिका"
+        },
+        {
+          "title": "साँप के काटने के प्रति जागरूकता कॉमिक",
+          "category": "कॉमिक्स",
+          "desc": "स्कूलों और ग्रामीण समुदायों के लिए आकर्षक कॉमिक स्ट्रिप"
+        },
+        {
+          "title": "चिकित्सक प्रशिक्षण मैनुअल",
+          "category": "प्रशिक्षण",
+          "desc": "व्यापक ASV प्रशासन प्रोटोकॉल"
+        },
+        {
+          "title": "ASVS पुनर्संरचना वीडियो",
+          "category": "वीडियो",
+          "desc": "स्वास्थ्य पेशेवरों के लिए कदम-दर-कदम वीडियो गाइड"
+        },
+        {
+          "title": "आपातकालीन प्रतिक्रिया चेकलिस्ट",
+          "category": "गाइड",
+          "desc": "ASHA कार्यकर्ताओं के लिए त्वरित संदर्भ कार्ड"
+        }
+      ],
+      "impactStats": [
+        {
+          "label": "जीवन प्रभावित हुए",
+          "suffix": "+"
+        },
+        {
+          "label": "स्वास्थ्य कार्यकर्ता प्रशिक्षित",
+          "suffix": "+"
+        },
+        {
+          "label": "पहुंचे हुए गाँव",
+          "suffix": "+"
+        },
+        {
+          "label": "जागरूकता सत्र",
+          "suffix": "+"
+        },
+        {
+          "label": "कवर किए गए शहर",
+          "suffix": "+"
+        },
+        {
+          "label": "साझेदार एनजीOs",
+          "suffix": "+"
+        },
+        {
+          "label": "निर्माण इकाइयां"
+        },
+        {
+          "label": "मजबूत क्षेत्र बल",
+          "suffix": "+"
+        }
+      ],
+      "heroStats": [
+        {
+          "label": "जीवन प्रभावित हुए",
+          "suffix": "+"
+        },
+        {
+          "label": "कार्यकर्ता प्रशिक्षित",
+          "suffix": "+"
+        },
+        {
+          "label": "पहुंचे गांव",
+          "suffix": "+"
+        },
+        {
+          "label": "सक्रिय स्वयंसेवक",
+          "suffix": "+"
+        }
+      ],
+      "states": [
+        {
+          "code": "MH",
+          "name": "महाराष्ट्र"
+        },
+        {
+          "code": "KA",
+          "name": "कर्नाटक"
+        },
+        {
+          "code": "TN",
+          "name": "तमिलनाडु"
+        },
+        {
+          "code": "AP",
+          "name": "आंध्र प्रदेश"
+        },
+        {
+          "code": "TG",
+          "name": "तेलंगाना"
+        },
+        {
+          "code": "MP",
+          "name": "मध्य प्रदेश"
+        },
+        {
+          "code": "OD",
+          "name": "ओडिशा"
+        }
+      ],
+      "footer": {
+        "tagline": "साँप का वार, अस्पताल में ही उपचार",
+        "description": "भारत की राष्ट्रीय साँप काटने की जागरूकता पहल - जागरूकता, पहुँच, और समय पर अस्पताल के उपचार के माध्यम से जीवन बचाना।",
+        "columns": [
+          {
+            "title": "अभियान",
+            "links": [
+              {
+                "label": "के बारे में"
+              },
+              {
+                "label": "आपातकालीन गाइड"
+              },
+              {
+                "label": "अफवाहें बनाम तथ्य"
+              },
+              {
+                "label": "संसाधन"
+              }
+            ]
+          },
+          {
+            "title": "लगाएं",
+            "links": [
+              {
+                "label": "क्विज़ लें"
+              },
+              {
+                "label": "हमसे साझेदारी करें"
+              },
+              {
+                "label": "एनजीओ नेटवर्क"
+              },
+              {
+                "label": "स्वयंसेवक"
+              },
+              {
+                "label": "प्रभाव कहानियाँ"
+              },
+              {
+                "label": "रिपोर्ट"
+              }
+            ]
+          },
+          {
+            "title": "कानूनी",
+            "links": [
+              {
+                "label": "गोपनीयता नीति"
+              },
+              {
+                "label": "सेवा की शर्तें"
+              },
+              {
+                "label": "कुकी नीति"
+              }
+            ]
+          }
+        ],
+        "copyright": "© 2025 भारत सीरम्स और वैक्सीन्स लिमिटेड। सर्वाधिकार सुरक्षित।"
+      },
+      "ngos": [
+        {
+          "name": "शे फ़ाउंडेशन",
+          "desc": "ग्रामीण महाराष्ट्र में सामुदायिक स्वास्थ्य और जागरूकता"
+        },
+        {
+          "name": "सर्प साथी",
+          "desc": "कर्नाटका और तमिल नाडु में सांप बचाव और ग्रामीण शिक्षा"
+        },
+        {
+          "name": "निसर्ग फ़ाउंडेशन",
+          "desc": "जंगली जीव संरक्षण और सांप के काटने की जागरूकता अभियानों"
+        }
+      ]
+    },
+    "mr": {
+      "hero": {
+        "title": "भारतभर सापाच्या चाव्यांपासून जीवन वाचवणे",
+        "subtitle": "प्रत्येक मिनिट महत्त्वाचा आहे. जागरूकता, प्रवेश आणि संवादाद्वारे, BSV समुदायांना जलद कार्य करण्यास आणि जीवन वाचवण्यात मदत करत आहे.",
+        "leftTop": "भारत हरवतो",
+        "bigNumber": "50,000",
+        "leftBottom": "साल्या साप चावल्यामुळे प्रत्येक वर्षी जीवन",
+        "rightMain": "साप का वार,",
+        "rightSub": "अस्पताल में ही उपचार!",
+        "tagline": "साप चावा? फक्त अस्पतालच त्याचं योग्य उपचार करू शकतो."
+      },
+      "about": {
+        "story": "साप चावा ही भारतात एक मौन आपत्कालीन परिस्थिती आहे. प्रत्येक वर्षी, अंदाजे 58,000 जीव साप चाव्यामुळे गमावले जातात - त्यापैकी बहुतेक वेळेवर अस्पताल उपचारामुळे टाळता येतात. 'साप का वार, अस्पताल में ही उपचार' हा प्रचार म्हणजे हर्ब्सपासून अस्पतालापर्यंत, भीतीतून तथ्याकडे, विलंबातून ठराविक क्रियाकडे जाणारा कथा बदलण्याचा प्रयत्न.",
+        "mission": "2030 पर्यंत भारतात टाळता येणारे सापाच्या चाव्यांमुळे होणारे मृत्यू संपवण्यासाठी जागरूकता, शिक्षण आणि प्रत्येक प्राथमिक आरोग्य केंद्रावर गुणवत्ता असलेले अँटी-सेन वॅनोम (ASV) उपलब्ध करणे.",
+        "vision": "एक राष्ट्र जिथे सापाच्या चाव्यांमुळे कोणतंही जीवन गमवले जात नाही - जिथे प्रत्येक गावाला लक्षणे माहिती असतात, प्रत्येक डॉक्टर प्रशिक्षित असतो, आणि प्रत्येक अस्पताल तयार असतो.",
+        "objectives": [
+          "तत्काळ अस्पातलात जाण्याची वागणूक पहंचा",
+          "सर्व पातळ्यांवर आरोग्य सेवा व्यावसायिकांना प्रशिक्षण द्या",
+          "ग्रामीण समुदायांना गटात्मक क्रियाकलापांद्वारे शिक्षित करा",
+          "NGO, सरकार आणि CSR संस्थांसोबत भागीदारी करा",
+          "भारतभर ASV उपलब्ध आणि स्वस्त करा"
+        ],
+        "burden": "58,000 अंदाजे मृत्यू प्रतिवर्ष | 1.2 मिलियन चावले जातात प्रत्येक वर्षी | 70% मृत्यू वेळेवर ASV ने टाळता येतात"
+      },
+      "emergencyDos": [
+        {
+          "title": "शांत रहा",
+          "desc": "आत्महत्येने हृदयाची गती वाढते आणि वेर जाणे जलद पसरते. पीडिताला स्थिर ठेवा आणि आश्वस्त करा."
+        },
+        {
+          "title": "प्रवाही अंग खुपवणे",
+          "desc": "स्प्लिंट किंवा स्लींगचा वापर करा. चावलेले अंग हृदयाच्या स्तराखाली ठेवा."
+        },
+        {
+          "title": "आडकडलेल्या वस्त्र काढा",
+          "desc": "चुना, घड्याळे, कर्णफूल व चव रोखणारे वस्त्र काढा - सूज येईल."
+        },
+        {
+          "title": "सर्वात जवळच्या अस्पतालात पोहोचा",
+          "desc": "तत्काळ वाहनात हलवा. वेळ = जीवन. थांबा नका, विलंब नका."
+        },
+        {
+          "title": "सापाची नोंद नांदरा",
+          "desc": "रंग, आकार, नमुना लक्षात ठेवा (त्याला धरून पाहण्याचा प्रयत्न करू नका). सुरक्षित अंतरातून फोटो घ्या."
+        },
+        {
+          "title": "ASV उपचार घ्या",
+          "desc": "अँटी-सेन वॅनोम (ASV) हा एकटा सिद्ध उपचार आहे. हे बहुतेक अस्पतालांमध्ये उपलब्ध आहे."
+        }
+      ],
+      "emergencyDonts": [
+        {
+          "title": "जखम कापू नका",
+          "desc": "कापणे संक्रमण निर्माण करते आणि विष काढत नाही."
+        },
+        {
+          "title": "विष चोखू नका",
+          "desc": "हे उद्धारकर्त्यासाठी कार्यरत आणि धोकादायक आहे."
+        },
+        {
+          "title": "जडीबुटी किंवा पेस्ट लावू नका",
+          "desc": "कुठलीही पारंपरिक औषध विष तटस्थ करत नाही. हे खरे उपचार उशीर करतात."
+        },
+        {
+          "title": "कडक टुर्निकेट वापरू नका",
+          "desc": "हे ऊताच्या मृत्यू आणि अंगकाठीकरणाचा धोका निर्माण करतात."
+        },
+        {
+          "title": "उपचारास उशीर करू नका",
+          "desc": "प्रत्येक मिनिट महत्त्वाचा आहे. तात्काळ रुग्णालयात धाव द्या."
+        },
+        {
+          "title": "श्रद्धा उपचारकांना भेट देऊ नका",
+          "desc": "श्रद्धा उपचारक विषाचे उपचार करू शकत नाहीत. फक्त ASV असलेल्या रुग्णालयांमध्ये हे शक्य आहे."
+        }
+      ],
+      "myths": [
+        {
+          "myth": "विष जखमेद्वारे चोखला जाऊ शकतो",
+          "fact": "विष चोखणे धोकादायक आणि निष्क्रिय आहे. हे जखमेतील बॅक्टेरियाला ओढून आणू शकते आणि उद्धारकर्त्याला हानी पोहचवू शकते. फक्त रुग्णालयात ASV (अँटी-सनक विष) दिल्यास विष तटस्थ करू शकते."
+        },
+        {
+          "myth": "जडीबुटींचे उपचार आणि पारंपरिक औषध चिपळ्या चावण्यावर उपचार करू शकतात",
+          "fact": "कुठल्याही जडीबुटीने वैज्ञानिकदृष्ट्या सांप विष तटस्थ करणे सिद्ध झालेले नाही. पारंपरिक वैद्यांमध्ये भेट देऊन रुग्णालयातील उपचारात उशीर होणे मृत्यूचा एक प्रमुख कारण आहे."
+        },
+        {
+          "myth": "श्रद्धा उपचारक चिपळ्या चावलेल्या व्यक्तीला वाचवू शकतात",
+          "fact": "श्रद्धा उपचार महत्त्वाचा वेळ वाया घालवतो. विष जलद कार्य करते - हरवलेला प्रत्येक मिनिट अस्तित्वाच्या संधी कमी करतो. सदैव पीडिताला जवळच्या रुग्णालयात धाव द्या."
+        },
+        {
+          "myth": "जखम कापून आणि रक्त बाहेर वाहून विष काढते",
+          "fact": "जखम कापणे अधिक हानी करते, रक्तस्त्राव वाढवतो, संक्रमणाचा धोका वाढवतो आणि विष काढत नाही. त्याऐवजी अंगाला स्थिर ठेवा."
+        },
+        {
+          "myth": "कडक टुर्निकेट विष पसरवणे थांबवतो",
+          "fact": "कडक टुर्निकेट रक्तप्रवाह बंद करतात, ऊताच्या मृत्यूला कारणीभूत होतात आणि अंगकाठीकरण होऊ शकते. निर्देशित केल्यास सुस्त दाब बँडेज वापरा आणि रुग्णालयात धाव द्या."
+        },
+        {
+          "myth": "सर्व साप विषारी आहेत",
+          "fact": "भारतातील 300+ सापांच्या प्रजातींपैकी फक्त सुमारे 60 विषारी आहेत. भारतातील \"बिग फोर\" - रसेलच्या वायपर, सॉ-स्केल्ड वायपर, कॉमन क्राईट, स्पेक्टाकल कोबरा - हे मृत्यूचे प्रमाण वाढवतात."
+        }
+      ],
+      "resources": [
+        {
+          "title": "सांप चावला जाण्याची आणीबाणी पोस्टर",
+          "category": "पोस्टर",
+          "desc": "क्लिनिक्स आणि गावांसाठी भिंतीवर लावता येणारे A2 आणीबाणी प्रतिसाद पोस्टर"
+        },
+        {
+          "title": "प्रथमोपचार ब्रॉशर (बहुभाषिक)",
+          "category": "ब्रॉशर्स",
+          "desc": "9 भारतीय भाषांमध्ये 8-पानांचा मार्गदर्शक"
+        },
+        {
+          "title": "सांप चावण्याची जागरूकता कॉमिक",
+          "category": "कॉमिक्स",
+          "desc": "शाळा आणि ग्रामीण समुदायांसाठी आकर्षक कॉमिक स्ट्रिप"
+        },
+        {
+          "title": "वैद्यकीय प्रशिक्षकांचे प्रशिक्षण मार्गदर्शक",
+          "category": "प्रशिक्षण",
+          "desc": "व्यापक ASV प्रशासकीय प्रोटोकॉल"
+        },
+        {
+          "title": "ASVS पुन्हा तयार करण्याचा व्हिडिओ",
+          "category": "व्हिडिओ",
+          "desc": "आरोग्यसेवा व्यावसायिकांसाठी चरण-दर-चरण व्हिडिओ मार्गदर्शक"
+        },
+        {
+          "title": "आपत्कालीन प्रतिसाद अनुवर्ती यादी",
+          "category": "मार्गदर्शक",
+          "desc": "आशा कामकऱ्यांसाठी जलद संदर्भ कार्ड"
+        }
+      ],
+      "impactStats": [
+        {
+          "label": "जीवनांवर परिणाम",
+          "suffix": "+"
+        },
+        {
+          "label": "आरोग्यसेवा कामगारांचे प्रशिक्षण",
+          "suffix": "+"
+        },
+        {
+          "label": "पोषक गावे",
+          "suffix": "+"
+        },
+        {
+          "label": "जागरूकता सत्रे",
+          "suffix": "+"
+        },
+        {
+          "label": "आCovered झालेल्या शहरां",
+          "suffix": "+"
+        },
+        {
+          "label": "भागीदार स्वयंसेवी संस्था",
+          "suffix": "+"
+        },
+        {
+          "label": "उत्पादन युनिट्स"
+        },
+        {
+          "label": "शक्तिशाली क्षेत्र बल",
+          "suffix": "+"
+        }
+      ],
+      "heroStats": [
+        {
+          "label": "जीवनांवर परिणाम",
+          "suffix": "+"
+        },
+        {
+          "label": "कामगारांचे प्रशिक्षण",
+          "suffix": "+"
+        },
+        {
+          "label": "गावे पोहचले",
+          "suffix": "+"
+        },
+        {
+          "label": "सक्रिय स्वयंसेवक",
+          "suffix": "+"
+        }
+      ],
+      "states": [
+        {
+          "code": "एमएच",
+          "name": "महाराष्ट्र"
+        },
+        {
+          "code": "KA",
+          "name": "कर्नाटका"
+        },
+        {
+          "code": "TN",
+          "name": "तमिळनाडू"
+        },
+        {
+          "code": "AP",
+          "name": "आंध्र प्रदेश"
+        },
+        {
+          "code": "TG",
+          "name": "तेलंगणा"
+        },
+        {
+          "code": "MP",
+          "name": "मध्य प्रदेश"
+        },
+        {
+          "code": "OD",
+          "name": "ओडिशा"
+        }
+      ],
+      "footer": {
+        "tagline": "सापाचा वार, आपल्या उपचारासाठी रुग्णालयातच",
+        "description": "भारतातील राष्ट्रीय सापबंगळ जागरूकता उपक्रम - जागरूकता, प्रवेश आणि वेळेवर रुग्णालयातील उपचारांच्या माध्यमातून जीव वाचवणे.",
+        "columns": [
+          {
+            "title": "मोहीम",
+            "links": [
+              {
+                "label": "विषयी"
+              },
+              {
+                "label": "आपत्कालीन मार्गदर्शक"
+              },
+              {
+                "label": "कल्पनाएं आणि तथ्य"
+              },
+              {
+                "label": "साधनं"
+              }
+            ]
+          },
+          {
+            "title": "संपर्क साधा",
+            "links": [
+              {
+                "label": "क्विझ घ्या"
+              },
+              {
+                "label": "आमच्यासोबत भागीदारी करा"
+              },
+              {
+                "label": "एनजीओ नेटवर्क"
+              },
+              {
+                "label": "स्वयंसेवक"
+              },
+              {
+                "label": "परिणाम कथा"
+              },
+              {
+                "label": "अहवाल"
+              }
+            ]
+          },
+          {
+            "title": "कायदेशीर",
+            "links": [
+              {
+                "label": "गोपनीयता धोरण"
+              },
+              {
+                "label": "सेवा अट"
+              },
+              {
+                "label": "कुकी धोरण"
+              }
+            ]
+          }
+        ],
+        "copyright": "© 2025 भारत सीरम्स आणि लशी लिमिटेड. सर्व हक्क राखून ठेवले."
+      },
+      "ngos": [
+        {
+          "name": "शे फाउंडेशन",
+          "desc": "ग्रामीण महाराष्ट्रातील सामुदायिक आरोग्य आणि जागरूकता"
+        },
+        {
+          "name": "सर्प साथी",
+          "desc": "कर्नाटका आणि तमिळनाडूमध्ये सापांचा बचाव आणि ग्रामीण शिक्षण"
+        },
+        {
+          "name": "निसर्ग फाउंडेशन",
+          "desc": "वन्यजीव संरक्षण आणि सापाच्या चावा जागरूकता मोहिमा"
+        }
+      ]
+    },
+    "kn": {
+      "hero": {
+        "title": "ಭಾರತಾದ್ಯಂತ ಹಾವು ಕಚ್ಚುವ ಮೂಲಕ ಜೀವನಗಳನ್ನು ಉಳಿಸುವುದು",
+        "subtitle": "ಪ್ರತಿಯೊಬ್ಬ ನಿಮಿಷವೇ ಮುಖ್ಯವಾಗಿದೆ. ಹೊಂದಾಣಿಕೆ, ಪ್ರವೇಶ ಮತ್ತು ಸಂವಹನದ ಮೂಲಕ, ಬಿಎಸ್‌ವಿ ಸಮುದಾಯಗಳನ್ನು ತ್ವರಿತವಾಗಿ ಕ್ರಿಯೆಪಡಿಸಲು ಮತ್ತು ಜೀವನಗಳನ್ನು ಉಳಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತಿದೆ.",
+        "leftTop": "ಭಾರತವು ಕಳೆದುಕೊಂಡಿದೆ",
+        "bigNumber": "50,000",
+        "leftBottom": "ಪ್ರತಿಯೇಕಾರ ಹಾವು ಕಚ್ಚುವ ಮೂಲಕ ಜೀವನಗಳು",
+        "rightMain": "ಹಾವು ಕಚ್ಚುವ ಹಾನಿ,",
+        "rightSub": "ಆಸಕ್ತಾಲಯದಲ್ಲಿ ಮಾತ್ರ ಚಿಕಿತ್ಸೆ!",
+        "tagline": "ಹಾವು ಕಚ್ಚಿದಾಗ? ಮಾತ್ರ ಆಸ್ಪತ್ರೆ ಸೂಕ್ತವಾಗಿ ಚಿಕಿತ್ಸೆ ನೀಡಬಹುದು."
+      },
+      "about": {
+        "story": "ಭಾರತದಲ್ಲಿ ಹಾವು ಕಚ್ಚುವುದು ಮೌನ ತುರ್ತು ಉಲ್ಬಣವಾಗಿದೆ. ಪ್ರತಿ ವರ್ಷ, আনুমಾನಿಕವಾಗಿ 58,000 ಜೀವಗಳು ಹಾವು ಕಚ್ಚುವ ಮೂಲಕ ಕಳೆದುಕೊಳ್ಳುತ್ತವೆ -ಅದರಲ್ಲಿನ ಬಹಳಷ್ಟು ಮುಂಚಿತ ಆಸ್ಪತ್ರೆ ಚಿಕಿತ್ಸೆ ಮೂಲಕ ತಡೆಯಬಹುದು. 'ಹಾವು ಕಚ್ಚುವ ವಿಷಯ, ಆಸ್ಪತ್ರೆಯಲ್ಲಿ ಮಾತ್ರ ಚಿಕಿತ್ಸೆ' ಎಂಬ ಪ್ರಚಾರವು ಕಥನವನ್ನು ಬದಲಾಯಿಸಲು ಹುಟ್ಟಿತು: ಕೊಳು ಗಿಡಗಳಿಂದ ಆಸ್ಪತ್ರೆಗಳವರೆಗೆ, ಭಯದಿಂದ ವಾಸ್ತವಗಳಿಗೆ, ವಿಳಂಬದಿಂದ ನಿರ್ಧಾರಾತ್ಮಕ ಕ್ರಿಯೆಗೆ.",
+        "mission": "2030ಕ್ಕೆ ಭಾರತದಲ್ಲಿ ತಡೆಯಬಹುದಾದ ಹಾವು ಕಚ್ಚುವ ಮೃತ್ಯುಗಳನ್ನು ಹಿಡಿದು ಹಾಕಲು ಅರಿವು, ಶಿಕ್ಷಣ ಮತ್ತು ಗುಣಮಟ್ಟದ ಆಂಟಿ-ಸ್ನೇಕ್ ವೆನಮ್ (ಎಎಸ್‌ವಿ) ಅನ್ನು ಪ್ರತಿಯೊಂದು ಪ್ರಾಥಮಿಕ ಆರೋಗ್ಯ ಕೇಂದ್ರದಲ್ಲಿ ಖಾತರಿಪಡಿಸುವ ಮೂಲಕ.",
+        "vision": "ಹಾವು ಕಚ್ಚುವ ಮೂಲಕ ಯಾವ ಜೀವವೂ ಕಳೆದುಕೊಳ್ಳದ ರಾಷ್ಟ್ರ - ಪ್ರತಿ ಗ್ರಾಮವು ಸೂಚನೆಗಳನ್ನು ತಿಳಿದಿದೆ, ಪ್ರತಿ ವೈದ್ಯಕೀಯ ಸಿಬ್ಬಂದಿಯನ್ನು ತರಬೇತಿಸಲಾಗಿದೆ ಮತ್ತು ಪ್ರತಿ ಆಸ್ಪತ್ರೆ ಸಿದ್ಧವಾಗಿದೆ.",
+        "objectives": [
+          "ತಕ್ಷಣ ಆಸ್ಪತ್ರೆ ಸೇರುವುದನ್ನು ಬದಲಾಯಿಸುತ್ತಿರುವುದು",
+          "ಎಲ್ಲಾ ಹಂತಗಳಲ್ಲಿ ಆರೋಗ್ಯ ವೃತ್ತಿಪರರನ್ನು ತರಬೇತಿಸುವುದು",
+          "ಮೂಲತಳ ಕ್ರಿಯೆಗಳ ಮೂಲಕ ಗ್ರಾಮೀಣ ಸಮುದಾಯಗಳನ್ನು ಶಿಕ್ಷಣ ನೀಡುವುದು",
+          "ಎನ್‌ಜಿಓ, ಸರ್ಕಾರಗಳು ಮತ್ತು ಸಿಎಸ್‌ಆರ್ ಸಂಸ್ಥೆಗಳೊಂದಿಗೆ ಪಾಲುದಾರಿಕೆ",
+          "ಭಾರತಾದ್ಯಂತ ಎಎಸ್‌ಬಿ ಪ್ರಾಪ್ತಿ ಮತ್ತು ಹಣಕಾಸು ಸಾಮರ್ಥ್ಯವನ್ನು ಖಚಿತಪಡಿಸುವುದು"
+        ],
+        "burden": "ವಾರ್ಷಿಕವಾಗಿ 58,000 ಅಂದಾಜು ಸಾವುಗಳು | ಪ್ರತಿ ವರ್ಷ 1.2 ಮಿಲಿಯನ್ ಕಚ್ಚುಗಳು | ಸಮಯಕ್ಕೆ ತಕ್ಕಂತೆ 70% ಸಾವುಗಳು ತಡೆಗಟ್ಟಬಹುದಾಗಿದೆ"
+      },
+      "emergencyDos": [
+        {
+          "title": "ಶ.antಿವಿರಿ",
+          "desc": "ಭಯವು ಹೃದಯದ ಗತಿಯನ್ನ ಹೆಚ್ಚಿಸುತ್ತದೆ ಮತ್ತು ವೆನಮ್ ಅನ್ನು ಬೇಗ ವೇಗವಾಗಿ ಹರಡಿಸುತ್ತದೆ. ಬಾಧಿತನನ್ನು ಸ್ಥಿರಗೊಳಿಸಿ ಮತ್ತು ನಿಖರಗೊಳಿಸಿ."
+        },
+        {
+          "title": "ಅಂಗವನ್ನು ಸ್ಥಿರಗೊಳಿಸಿ",
+          "desc": "ಬಾಹು ಅಥವಾ ಸ್ಲಿಂಗ್ ಅನ್ನು ಬಳಸಿರಿ. ಕಚ್ಚಿದ ಅಂಗವನ್ನು ಹೃದಯದ ಮಟ್ಟಕ್ಕಿಂತ ಕೆಳಗೆ ಇರಿಸಲು."
+        },
+        {
+          "title": "ಕಟಿಗುಂಡಿಗಳನ್ನು ಅಳಿಸಿ",
+          "desc": "ಕಚ್ಚುವ ಭಾಗದ ಹತ್ತಿರ ಉಂಗುರಗಳು, ಗಂಟಲು, ಕಟ್ಟಿ ಮತ್ತು ಅತ್ಯಂತ ದಟ್ಟವಾದ ಉಡುಪುಗಳನ್ನು ತೆಗೆದು ಹಾಕಿ - ತೂಕವು ಮುಂದುವರಿಯುತ್ತದೆ."
+        },
+        {
+          "title": "ನಿಕಟದ ಆಸ್ಪತ್ರೆಗೆ ತಲುಪಿರಿ",
+          "desc": "ತಕ್ಷಣ ವಾಹನದಲ್ಲಿ ಸಾಗಿಸಲು. ಸಮಯ = ಜೀವನ. ಕಾಯಂಬರ್, ವಿಳಂಬ ಮಾಡಬೇಡಿ."
+        },
+        {
+          "title": "ಹಾವು ಅನ್ನು ಗಮನಿಸಿ",
+          "desc": "ಬಣ್ಣ, ಗಾತ್ರ, ಮಾದರಿಯನ್ನು ನೆನೆಸು (ಅನ್ನು ಹಿಡಿಯಲು ಪ್ರಯತ್ನಿಸಲ್ಪಡಬೇಡಿ). ಸುರಕ್ಷಿತ ಅಂತರದಿಂದ ಒಂದು ಫೋಟೋ ಸಹಾಯವಾಗುತ್ತದೆ."
+        },
+        {
+          "title": "ಎಎಸ್‌ವಿ ಚಿಕಿತ್ಸೆಯನ್ನು ಹುಡುಕಿ",
+          "desc": "ಆಂಟಿ-ಸ್ನೇಕ್ ವೆನಮ್ (ಎಎಸ್‌ವಿ) ಒಬ್ಬೇ ಖಾತರಿಯುತ ಚಿಕಿತ್ಸೆ. ಇದು ಹೆಚ್ಚು ಮಾಹಿತಿಯ ಆಸ್ಪತ್ರೆಗಳಲ್ಲಿ ಲಭ್ಯವಾಗಿದೆ."
+        }
+      ],
+      "emergencyDonts": [
+        {
+          "title": " ಗಾಯವನ್ನು ಕತ್ತರಿಸಬೇಡಿ",
+          "desc": "ಕತ್ತರಿಸುವುದು ಸೀಳಲು ಬೇಡ ಮತ್ತು ಛಿದ್ರದಿಂದ ವಿಷವನ್ನು ತೆಗೆದು ಹಾಕದೆ."
+        },
+        {
+          "title": "ವಿಷವನ್ನು ಹಚ್ಚಬೇಡ",
+          "desc": "ಇದು ಉಲ್ಲೇಖಕ್ಕೆ ಪರಿಣಾಮಕಾರಿಯಾಗದ ಮತ್ತು ಅಪಾಯಕಾರಿ."
+        },
+        {
+          "title": "ಹಿಂಗ್ ಅಥವಾ ಪೇಸ್ಟ್ ಹಚ್ಚಬೇಡ",
+          "desc": "ಯಾವುದೇ ಪಾರಂಪರಿಕ ಚಿಕಿತ್ಸೆ ವಿಷವನ್ನು ಸಮತೋಲನಗೊಳಿಸುವುದಿಲ್ಲ. ಇದು ಸತ್ಯವಾದ ಚಿಕಿತ್ಸೆ ಅನ್ನು ತಡಗೊಳಿಸುತ್ತದೆ."
+        },
+        {
+          "title": "ತೀವ್ರ ಟೂರ್ನಿಕ್ಸ್ ಬಳಸಬೇಡ",
+          "desc": "ಇವು ಅಂಗ ನಾಶ ಮತ್ತು ಕೈಗೆ ಹೋಗುವ ಅಪಾಯವನ್ನು ಉಂಟುಮಾಡುತ್ತವೆ."
+        },
+        {
+          "title": "ಚಿಕಿತ್ಸೆಯನ್ನು ತಡಗೊಳಿಸಬೇಡ",
+          "desc": "ಪ್ರತಿ ನಿಮಿಷವೂ ಒಳ್ಳೆಯದು. ತಕ್ಷಣವೇ ಆಸ್ಪತ್ರೆಗೆ ಓಡು."
+        },
+        {
+          "title": "ನಂಬಿಕೆ ಅಭಿಮಾನ್ ಹಲೀಕರರನ್ನು ಭೇಟಿ ಮಾಡಬೇಡ",
+          "desc": "ನಂಬಿಕೆ ಅಭಿಮಾನ್ ಹಲೀಕರರು ವಿಷವನ್ನು ಚಿಕಿತ್ಸಿಸುವ ಸಾಧ್ಯತೆ ಇಲ್ಲ. ಅಸ್ಪಟಿಯಲ್ಲಿ ಮಾತ್ರ ASV ಇದ್ದರೆ ಅದು ಮಾಡಬಲ್ಲದು."
+        }
+      ],
+      "myths": [
+        {
+          "myth": "ಬಗಿಜಾರ್ಞಾನದಿಂದ ಪೀಡಿತ ಪ್ರದೇಶದಿಂದ ವಿಷವನ್ನು ಹಚ್ಚಬಹುದು",
+          "fact": "ಕುಕರ್‌ನಿಂದ ಹುಟ್ಟುಕಡೆಯಿಸುವುದು ಅಪಾಯಕಾರಿ ಮತ್ತು ಪರಿಣಾಮಕಾರಿಯಲ್ಲ. ಇದು ಗಾಯಕ್ಕೆ ಬ್ಯಾಕ್ಟೀರಿಯಾವನ್ನು ಪರಿಚಯಿಸುತ್ತವೆ ಮತ್ತು rescuerಗೆ ಹಾನಿಯನ್ನು ಉಂಟುಮಾಡಬಹುದು. ಅಸ್ಪಟಿಯಲ್ಲಿ ನೀಡಲಾದ ASV (ಎಂಟಿ-ಹಾವು ವಿಷ) ಮಾತ್ರ ವಿಷವನ್ನು ಬಲಪಡಿಸುತ್ತವೆ."
+        },
+        {
+          "myth": "ಹಾವು ಕಚ್ಚಿದಾಗ ಹೂವುಗಳು ಮತ್ತು ಪಾರಂಪರಿಕ ಔಷಧಿಗಳು ಚಿಕಿತ್ಸೆ ನೀಡಬಹುದು",
+          "fact": "ಯಾವುದೇ ಹುಳವು ವಿಜ್ಞಾನವಾಗಿ ಹಾವು ವಿಷವನ್ನು ಸಮತೋಲನಗೊಳಿಸಲು ಆರೋಗ್ಯಕರವಾಗಿದೆ ಎಂದು ಸಾಬೀತುಪಡಿಸಲಾಗಿಲ್ಲ. ಪಾರಂಪರಿಕ ವೀರರ ಭೇಟಿಯ ಮೂಲಕ ಆಸ್ಪತ್ರೆಯ ಚಿಕಿತ್ಸೆಗೆ ತಡವು ಸಾವಿನ ಪ್ರಮುಖ ಕಾರಣಗಳಲ್ಲಿ ಒಂದಾಗುತ್ತದೆ."
+        },
+        {
+          "myth": "ನಂಬಿಕೆ ಅಭಿಮಾನ್ ಹಲೀಕರು ಹಾವು ಕಚ್ಚಿದ ಬಲಾತ್ಕಾರಿ ಮಾರ್ಗವನ್ನು ಉಳಿಸಬಹುದು",
+          "fact": "ನಂಬಿಕೆ ಚಿಕಿತ್ಸೆ ಅಮೂಲ್ಯವಾದ ಸಮಯವನ್ನು ವ್ಯರ್ಥಗೊಳಿಸುತ್ತದೆ. ವಿಷ ಉತ್ತಮವಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತದೆ - ಪ್ರತಿ ಹಿಡಿದುಕೊಳ್ಳುವ ನಿಮಿಷ ದಾನಿಸುವ ಸಂದರ್ಭಗಳನ್ನು ಕಡಿಮೆ ಮಾಡುತ್ತದೆ. ಸಂಕಟವನ್ನು ಹೀಗೆಯೇ ಆಸ್ಪತ್ರೆಗೆ ಶೀಘ್ರವಾಗಿ ಕಳುಹಿಸಿ."
+        },
+        {
+          "myth": "ಗಾಯವನ್ನು ಕತ್ತರಿಸುವುದು ಮತ್ತು ಅದನ್ನು ಹರಿಯುವುದು ವಿಷವನ್ನು ತೆಗೆದುಹಾಕುತ್ತದೆ",
+          "fact": "ಗಾಯವನ್ನು ಕತ್ತರಿಸುವುದು ಹೆಚ್ಚು ಹಾನಿ ಉಂಟುಮಾಡುತ್ತದೆ, ರಕ್ತಹಾನಿಯನ್ನು ಹೆಚ್ಚಿಸುತ್ತದೆ, ಸೋಂಕಿನ ಅಪಾಯವನ್ನು ಹೆಚ್ಚಿಸುತ್ತದೆ, ಮತ್ತು ವಿಷವನ್ನು ತೆಗೆದುಹಾಕುವುದಿಲ್ಲ. ಬದಿಯನು ಸ್ಥಿರವಾಗಿಡಿ."
+        },
+        {
+          "myth": "ತೀವ್ರ ಟೂರ್ನಿಕ್ಸ್ ಹಾವು ವಿಷ ಹರಿಯುವುದಿಲ್ಲ",
+          "fact": "ತೀವ್ರ ಟೂರ್ನಿಕ್ಸ್ ರಕ್ತದ ಹರಿವನ್ನು ಕಡಿಮೆ ಮಾಡುತ್ತದೆ, ಶ್ರೇಣಿಯಿಂದ ಪ್ರಸಿದ್ಧವಾಗುವ ಅಪಾಯವನ್ನು ಉಂಟುಮಾಡುತ್ತದೆ. ಸೂಚನೆಯ ಪ್ರಕಾರ ಶ್ರೇಣಿಯ ಕ್ಲಿಪ್ ಅನ್ನು ಬಳಸಿರಿ ಮತ್ತು ಆಸ್ಪತ್ರೆಗೆ ಶೀಘ್ರವಾಗಿ ಓಡು."
+        },
+        {
+          "myth": "ಎಲ್ಲಾ ಹಾವುಗಳು ವಿಷಕಾರಿ",
+          "fact": "ಭಾರತದ 300 ಕ್ಕು ಹೆಚ್ಚು ಹಾವು ಪಾಲುಗಳಲ್ಲಿ ಸುಮಾರು 60 ಮಾತ್ರ ವಿಷಕಾರಿ. ಭಾರತದ \"ಬೃಹತ್ ನಾಲ್ಕು\" - ರಸ್ಸೆಲ್‍ನ ವೈಪರ್, ಬಿಡುಗಡೆಗೊಳಿಸಲಾದ ವೈಪರ್, ಕ್ರೀಟ್, ದೃಷ್ಟಿಯ ಕೋಬ್ರಾ - ಬಹಳಷ್ಟು ಪ್ರಾಣಹಾನಿ ಉಂಟುಮಾಡುತ್ತವೆ."
+        }
+      ],
+      "resources": [
+        {
+          "title": "ಹಾವು ಕಚ್ಚಿದ ತುರ್ತು ಪೋಟರ್",
+          "category": "ಪೋಸ್ಟರ್‌ಗಳು",
+          "desc": " ಕ್ಲಿನಿಕ್‌ಗಳು ಮತ್ತು ಗ್ರಾಮಗಳಿಗಾಗಿ ಗೋಡೆಗೆ ಹಚ್ಚಬಹುದಾದ A2 ತುರ್ತು ಪ್ರತ್ಯುತ್ತರ ಪೋಟರ್"
+        },
+        {
+          "title": "ಪ್ರಥಮ-ಔಷಧಾ ಬ್ರೋಚರ್ಸ್ (ಬಹುಭಾಷಿಕ)",
+          "category": "ಬ್ರೋಚರ್‌ಗಳು",
+          "desc": "9 ಭಾರತೀಯ ಭಾಷೆಗಳಲ್ಲಿ 8-ಪುಟದ ಮಾರ್ಗದರ್ಶಿ"
+        },
+        {
+          "title": "ಹಾವು ಕಚ್ಚಿದ ಅರಿವು ಕಾಮಿಕ್",
+          "category": "ಕಾಮಿಕ್‌ಗಳು",
+          "desc": "ಶಾಲೆಗಳು ಮತ್ತು ಗ್ರಾಮೀಣ ಸಮುದಾಯಗಳಿಗಾಗಿ ವಿವರಗೊಳಿಸಿದ ಕಾಮಿಕ್‌"
+        },
+        {
+          "title": "ಚಿಕಿತ್ಸಕ ತರಬೇತಿ ಕೈಪಿಡಿ",
+          "category": "ತರಬೇತಿ",
+          "desc": "ಕಾಂಪ್ರೀಹೆನ್ಸಿವ್ ASV ನಿರ್ವಹಣಾ ಪ್ರೋಟೋಕಾಲ್"
+        },
+        {
+          "title": "ASVS ಪುನರುತ್ಪತ್ತಿ ವೀಡಿಯೋ",
+          "category": "ವೀಡಿಯೋಗಳು",
+          "desc": "ಆರೋಗ್ಯ ವೃತ್ತಿಪರರುಗಾಗಿ ಹಂತದಿಂದ ಹಂತಕ್ಕೆ ವೀಡಿಯೋ ಮಾರ್ಗದರ್ಶಿ"
+        },
+        {
+          "title": "ಅವಶ್ಯಕತೆ ಪ್ರತಿಕ್ರಿಯಾ ಪರಿಶಿಪ್ಪು",
+          "category": "ಮಾರ್ಗದರ್ಶಿಗಳು",
+          "desc": "ಆಶಾ ಕಾರ್ಯಕರ್ತರಿಗಾಗಿ ತೀವ್ರ ಉಲ್ಲೇಖ ಕಾರ್ಡ್"
+        }
+      ],
+      "impactStats": [
+        {
+          "label": "ಜೀವನಗಳ ಮೇಲೆ ಪರಿಣಾಮ ಬೀಟ್ಟವು",
+          "suffix": "+"
+        },
+        {
+          "label": "ಆರೋಗ್ಯ ಕಾರ್ಯಕರ್ತರಿಗೆ ತರಬೇತಿ ನೀಡಲಾಗಿದೆ",
+          "suffix": "+"
+        },
+        {
+          "label": "ಗಾ೦ಗಳು ತಲುಪಿದವು",
+          "suffix": "+"
+        },
+        {
+          "label": "ಮಾದರಿ ಅಧಿವೇಶನಗಳು",
+          "suffix": "+"
+        },
+        {
+          "label": "ನಗರಗಳು আচ্ছাদিত",
+          "suffix": "+"
+        },
+        {
+          "label": "ಭಾಗಿಯಾಗಿ ಉದ್ಯಮಗಳು",
+          "suffix": "+"
+        },
+        {
+          "label": "ಉತ್ಪಾದಕ ಘಟಕಗಳು"
+        },
+        {
+          "label": "ಶಕ್ತಿ ಶ್ರೇಣೀಬದ್ಧ ಪ್ರೇರಣಾ ಬಲ",
+          "suffix": "+"
+        }
+      ],
+      "heroStats": [
+        {
+          "label": "ಜೀವನಗಳ ಮೇಲೆ ಪರಿಣಾಮ ಬೀಟ್ಟವು",
+          "suffix": "+"
+        },
+        {
+          "label": "ಕೆಲಸದವರಿಗೆ ತರಬೇತಿ ನೀಡಲಾಗಿದೆ",
+          "suffix": "+"
+        },
+        {
+          "label": "ಗ್ರಾಮಗಳಿಗೆ ತಲುಪಿದ",
+          "suffix": "+"
+        },
+        {
+          "label": "ಸಕ್ರಿಯ ಸ್ವಯಂ ಸೇವಕರು",
+          "suffix": "+"
+        }
+      ],
+      "states": [
+        {
+          "code": "ಎಮ್‌ಎಚ್",
+          "name": "ಮಹಾರಾಷ್ಟ್ರ"
+        },
+        {
+          "code": "ಕೆಎ",
+          "name": "ಕರ್ನಾಟಕ"
+        },
+        {
+          "code": "ಟಿಎನ್",
+          "name": "ತಮಿಳು ನಾಡು"
+        },
+        {
+          "code": "ಎಪಿ",
+          "name": "ಆಂಧ್ರ ಪ್ರದೇಶ"
+        },
+        {
+          "code": "ಟಿಜಿ",
+          "name": "ತೇಳಂಗಾಣ"
+        },
+        {
+          "code": "ಎಮ್‌ಪಿ",
+          "name": "ಮಧ್ಯ ಪ್ರದೇಶ"
+        },
+        {
+          "code": "ಒಡಿ",
+          "name": "ಓಡಿಶಾ"
+        }
+      ],
+      "footer": {
+        "tagline": "ಹಣ್ಣು ಕಾವು, ಆಸ್ಪತ್ರೆಗೆ ಮಾತ್ರ ಚಿಕಿತ್ಸೆ",
+        "description": "ಭಾರತದ ರಾಷ್ಟ್ರೀಯ ಹಾವು ಕಚ್ಚುವ ಜಾಗೃತಿ ಉದ್ದಿಮೆ — ಜಾಗೃತಿ, ಪ್ರವೇಶ ಮತ್ತು ಸಮಯಕ್ಕೆ ಪಾತ್ರೆಯನ್ನು ಚಿಕಿತ್ಸೆಯ ಮೂಲಕ ಜೀವಗಳನ್ನು ಉಳಿಸುತ್ತಿದೆ.",
+        "columns": [
+          {
+            "title": "ಆದ್ರು",
+            "links": [
+              {
+                "label": "ಬಗ್ಗೆ"
+              },
+              {
+                "label": "ತುರ್ತು ಮಾರ್ಗದರ್ಶಿ"
+              },
+              {
+                "label": "ಮಿಥ್ಸ್ ವಿರುದ್ಧ ಫ್ಯಾಕ್ಟ್‌ಗಳು"
+              },
+              {
+                "label": "ಸಾಧನಗಳು"
+              }
+            ]
+          },
+          {
+            "title": "ಪ್ರವೇಶಿಸು",
+            "links": [
+              {
+                "label": "ಕ್ವಿಜ್ ತೆಗೆದುಕೋ"
+              },
+              {
+                "label": "ನಮ್ಮೊಂದಿಗೆ ಪಾಲುದಾರರಾಗಿರಿ"
+              },
+              {
+                "label": "ಎನ್ಜಿಓ ನೆಟ್‌ವರ್ಕ್"
+              },
+              {
+                "label": "ಸ್ವಯಂ ಸೇವಕ"
+              },
+              {
+                "label": "ಪದಕಿ ಕಥೆಗಳು"
+              },
+              {
+                "label": "ವರದಿ"
+              }
+            ]
+          },
+          {
+            "title": "ಕಾನೂನಿನ",
+            "links": [
+              {
+                "label": "ಗೋಪ್ಯತಾ ನೀತಿ"
+              },
+              {
+                "label": "ಸೇವಾ ಶರತ್ತಗಳು"
+              },
+              {
+                "label": "ಕೂಕಿ ನೀತಿ"
+              }
+            ]
+          }
+        ],
+        "copyright": "© 2025 ಭಾರತ ಸೀರೆಮ್ ಮತ್ತು ಲಸಿಕೆಗಳ ಲಿಮಿಟೆಡ್. ಎಲ್ಲಾ ಹಕ್ಕುಗಳು ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ."
+      },
+      "ngos": [
+        {
+          "name": "ಎಸ್‌ಎಚ್‌ಇ ಫೌಂಡೇಶನ್",
+          "desc": "ಗ್ರಾಮೀಣ ಮಹಾರಾಷ್ಟ್ರದಲ್ಲಿ ಸಮುದಾಯ ಆರೋಗ್ಯ ಮತ್ತು ಅರಿವು"
+        },
+        {
+          "name": "ಸರ್ಪ ಸಾಥಿ",
+          "desc": "ಕರ್ನಾಟಕ ಮತ್ತು ತಮಿಳುನಾಡಿನಲ್ಲಿ ಹಾವಿನಿಂದ ರಕ್ಷಣೆ ಮತ್ತು ಗ್ರಾಮೀಣ ಶಿಕ್ಷಣ"
+        },
+        {
+          "name": "ನಿಸರ್ಗ ಫೌಂಡೇಶನ್",
+          "desc": "ಜಂಗಲ್ ಸಂರಕ್ಷಣಾ ಮತ್ತು ಹಾವು ದಾಳಿಯ ಅರಿವು ಕಾರ್ಯಕ್ರಮಗಳು"
+        }
+      ]
+    },
+    "ta": {
+      "hero": {
+        "title": "இந்தியாவில் மயில்களைப் பாதுகாக்கவும்",
+        "subtitle": "ஒவ்வொரு நிமிடமும் முக்கியம். விழிப்புணர்வு, அணுகல் மற்றும் தகவல்தொடர்பு மூலம், BSV சமூகங்கள் விரைவாக செயல்படுத்த உதவி செய்கிறது மற்றும் உயிர்களை காப்பாற்றுகிறது.",
+        "leftTop": "இந்தியா இழக்கிறது",
+        "bigNumber": "50,000",
+        "leftBottom": "மயில் கடிக்கையில் உயிர்கள் வருடத்துக்கு",
+        "rightMain": "மயிலின் தாக்கம்,",
+        "rightSub": "ஆஸ்பத்திரியில் மட்டுமே சிகிச்சை!",
+        "tagline": "மயில் கடிப்பு? சரியான சிகிச்சை கிடைக்க கூடியது மட்டும் ஆஸ்பத்திரி."
+      },
+      "about": {
+        "story": "மயில் கடிப்பு இந்தியாவில் ஒரு அமைதியான அவசர நிலை. ஒவ்வொரு ஆண்டும், 58,000 க்கும் அதிகமான உயிர்கள் மயில் கடிப்பில் இழக்கின்றன — அவற்றில் பெரும்பாலானவை நேரத்திற்கு உரித்தான மருத்துவ சிகிச்சையால் தடுப்பதற்கேற்ப இயலுமொன்று. 'மயில் தாக்கம், ஆஸ்பத்திரியில் மட்டுமே சிகிச்சை' என்ற பேரணி கதை மாற்ற உருவானது: மூலிகைகளில் இருந்து ஆஸ்பத்திரிகளுக்கு, அச்சத்தில் இருந்து உண்மைகளுக்கும், தாமதத்தில் இருந்து தீர்மான செயலுக்கு.",
+        "mission": "2023 ஆம் வரைக்கும் இந்தியாவில் தடுப்பதற்கான மயிலின் அடிக்குமுறைகளை அகற்ற வேண்டும் என்ற நோக்குடன் விழிப்புணர்வு, கல்வி மற்றும் தரமான ஆண்மயில்த் தீவணு (ASV) க்கு அணுகல் உறுதி செய்யப்படுவதை.",
+        "vision": "ஒரு நாடு அங்கு எந்த உயிரும் மயில் கடிப்பில் இழக்கப்படாது - ஒவ்வொரு கிராமமும் அறிகுறிகளைப் புரிந்துகொள்ள வேண்டும், ஒவ்வொரு மருத்துவப் பணியாளர் பயிற்சி பெற்றிருக்க வேண்டும், மற்றும் ஒவ்வொரு ஆஸ்பத்திரியும் தயார் இருக்க வேண்டும்.",
+        "objectives": [
+          "உடனடி மருத்துவமனையில் சேர்வதற்கான பழக்கம் மாற்றுங்கள்",
+          "அனைத்து மட்டங்களிலும் மருத்துவ தொழில்நுட்பர்களுக்கு பயிற்சி அளிக்கவும்",
+          "நிலவியல் சமூகங்களை அடிப்படை செயல்திறன்களில் கற்றுக்கொடுங்கள்",
+          "NGO, அரசுகள் மற்றும் CSR நிறுவனங்களுடன் ஒத்துழைக்கவும்",
+          "ASV இந்தியா முழுவதும் அணுகக்கூடிய மற்றும் மலிவானவை ஆகட்டுமே"
+        ],
+        "burden": "58,000 உயிரிழப்புகள் வருடத்திற்கு கணிக்கப்படுகின்றன | 1.2 மில்லியன் கடிக்கைகள் ஒவ்வொரு ஆண்டும் | 70% உயிரிழப்புகள் நேரத்தில் ASV மூலம் தடுப்பதற்கேற்ப"
+      },
+      "emergencyDos": [
+        {
+          "title": "சூயிருங்கள்",
+          "desc": "அவசரத்தன்மை இதயதுடிப்பை அதிகரிக்கிறது மற்றும் விஷத்தை விரைவில் பரப்புகிறது. பாதிக்கப்பட்டவரை நிலையாகவும் உறுதிப்படுத்தவும்."
+        },
+        {
+          "title": "உடலை நகர்த்தாதிருங்கள்",
+          "desc": "ஒரு ஸ்ப்ளின்ட் அல்லது ஸ்லிங் பயன்படுத்தவும். கடிக்கப்பட்ட உடல்பாகத்தை இதய மட்டத்திற்கு கீழே வைத்திருக்கவும்."
+        },
+        {
+          "title": "கட்டுப்பட்ட உருப்படிகளை அகற்றவும்",
+          "desc": "கட்டுப் பயணங்கள், கிடாய்கள், க glyphiconம் மற்றும் கடிக்கையை அருகிலுள்ள அடிக்குடிக்கைகள், அடிக்கேற்ப வீங்குதல் ஏற்படும்."
+        },
+        {
+          "title": "அடுத்த ஆஸ்பத்திரிக்கு செல்லவும்",
+          "desc": "ஒரு வாகனத்தில் உடனடியாக சொல்வதற்கு. நேரம் = உயிர். காத்திருக்காதீர்கள், தாமதிக்காதீர்கள்."
+        },
+        {
+          "title": "மயிலை கவனிக்கவும்",
+          "desc": "நிறம், அளவு, உருவம் ஆகியவற்றı நினைவில் வைக்கவும் (அதை பிடிக்க முயலாதீர்கள்). பாதுகாப்பான தொலைவில் இருந்து புகைப்படம் உதவுகிறது."
+        },
+        {
+          "title": "ASV சிகிச்சை தேடுங்கள்",
+          "desc": "அண்மயில்த் தீவணு (ASV) மட்டுமே நிரூபிக்கப்பட்ட சிகிச்சை. இது பல ஆஸ்பத்திரிகளில் கிடைக்கிறது."
+        }
+      ],
+      "emergencyDonts": [
+        {
+          "title": "காயத்தை வெட்டி விடாதீர்கள்",
+          "desc": "தொருத்துவது தொற்றுக்களை ஏற்படுத்துகிறது மற்றும் விசையை அகற்ற மாட்டாது."
+        },
+        {
+          "title": "விசையை திரும்பச் செய்யாதீர்கள்",
+          "desc": "இது உயிர்களைப் பலவீனமாக்குகிறது மற்றும் மீட்பாளர் காயத்திற்கான ஆபத்து உள்ளது."
+        },
+        {
+          "title": "முன்னேற்றங்களை அல்லது பிஸ்துகளை பயன்படுத்தாதீர்கள்",
+          "desc": "எந்த பாரம்பரிய மருத்துமுறைவும் விசையை மிதமாவது இல்லை. அவை உண்மையான சிகிச்சையை முக்கடியாக்குகின்றன."
+        },
+        {
+          "title": "உடைகளை இறுக்கமாக கட்டாதீர்கள்",
+          "desc": "இதனால் மொட்டுகள் மரணம் அடைந்து, அற்கொடுச்சங்கு ஏற்படும் ஆபத்து உள்ளது."
+        },
+        {
+          "title": "சிகிச்சையை தாமதிக்காதீர்கள்",
+          "desc": "ஒவ்வொரு நொடியும் முக்கியம். உடனே மருத்துவமனைக்கு செல்க."
+        },
+        {
+          "title": "பாசங்களைச் சந்திக்காதீர்கள்",
+          "desc": "பாசங்கள் விசையை வைத்துக்கொள்ள முடியாது. ASV உடன் மருத்துவமனைகள் மட்டுமே இதனை செய்கின்றன."
+        }
+      ],
+      "myths": [
+        {
+          "myth": "விசை காயத்திலிருந்து உறவைக்காக பத்தப்படும்.",
+          "fact": "விசையை பத்துவது ஆபத்தானது மற்றும் செயல்படுவதில்லை. இது காயத்திற்குள் பாக்டீரியைகளை அறிமுகமாக்கலாம் மற்றும் மீட்பாளரை தீங்கு விளைவிக்கலாம். மருத்துவமனையில் வழங்கப்பட்ட ASV (எதிர்மறை நாகத்தின் விசை) மட்டுமே விசையை மிதமாவது செய்யலாம்."
+        },
+        {
+          "myth": "முன்னேற்றங்கள் மற்றும் பாரம்பரிய மருத்துவம் நாகக்காயங்களை குணப்படுத்தலாம்.",
+          "fact": "எந்த பஞ்சு நாகத்தின் விசையை மிதமாதீர்கள் என்பதற்கு அறிவியல் உறுதிப்படுத்தப்படவில்லை. பாரம்பரிய மருத்துவர்களை சந்திக்கும் போது மருத்துவமனையில் சிகிச்சையை தாமதம் செய்யவும் மரணத்திற்கு ஒரு முன்னணி காரணமாக உள்ளது."
+        },
+        {
+          "myth": "பாசர்கள் நாகக்காயப்பட்ட விகிதத்தை காப்பாற்றலாம்.",
+          "fact": "பாச மருத்துவம் ஒளிசாலை நேரத்தை வீணாக செய்கிறது. விசை வேகமாக செயல்படுகிறது — ஒவ்வொரு நொடியும் இழப்பில் உயிர் வாழும் வாய்ப்புகளை குறைக்கும். எப்போதும் பாதித்தவரை அருகிலுள்ள மருத்துவமனியில் உடனே அழுத்துங்கள்."
+        },
+        {
+          "myth": "காயத்தைத் தொருத்தி, கசிந்தால் விசையைப் போகச் செய்வது.",
+          "fact": "காயம் தொற்றுவதால் மேலும் தீங்கு ஏற்படுத்துகிறது, கசிவை அதிகரிக்கிறது, தொற்றுக்களை ஏற்படுத்துவதற்கான ஆபத்து உள்ளது மற்றும் விசையை அகற்ற மாட்டாது. பதவியில் பாதையை வடிவமைக்கவும்."
+        },
+        {
+          "myth": "இறுக்கமாக கட்டுதல் விசை பரவலை நிறுத்துகிறது.",
+          "fact": "இறுக்கமான உடைகள் இரத்தப் போக்கை நிறுத்தும், மொட்டுகளை மரணம் அடைப்பு மற்றும் அற்கொடுச்சங்குக்கு வழிவகுக்கலாம். காம்போட்டியைக் கட்டும் வரை பட்டைகளை உபயோகிக்கவும், மீண்டும் மருத்துவமனைக்கு செல்லவும்."
+        },
+        {
+          "myth": "எல்லா நாகங்களும் விசைக்குள் புதைந்து இருக்கின்றன.",
+          "fact": "இந்தியாவில் உள்ள 300+ நாக உயிரினங்களில் சுமார் 60 மட்டுமே விசைக்குள் இருக்கின்றன. இந்தியாவின் \"பெரிய நான்கு\" — ரஸ்ஸெல்’ஸ் விபர், சா-பெறும் விபர், ஆனால் கிரேட், பார்வை கோபிரா — மிகுந்த மரணங்களைக் காரணமாக்கின்றன."
+        }
+      ],
+      "resources": [
+        {
+          "title": "நாகக்காயை எமர்ஜென்சியில் விளம்பரம்",
+          "category": "விளம்பரங்கள்",
+          "desc": "பராமரிப்பு மற்றும் கிராமங்களுக்கு A2 எமர்ஜென்சி பதிப்பு"
+        },
+        {
+          "title": "முதல் உதவிகள் புத்தகம் (பல மொழிகள்)",
+          "category": "புத்தகங்கள்",
+          "desc": "9 இந்திய மொழிகளில் 8 பக்கம் வழிகாட்டி"
+        },
+        {
+          "title": "நாகக்காயம் விழிப்புணர்வு கலாசாரம்",
+          "category": "காமிக்ஸ்",
+          "desc": "பள்ளிகள் மற்றும் கிராமப்புற சமூகங்களுக்கான ஈர்க்கும் காமிக் ஸ்டிரிப்"
+        },
+        {
+          "title": "மருத்துவர் பயிற்சிக்கேற்பியல்",
+          "category": "பயிற்சி",
+          "desc": "முழுமையான ASV நிர்வாக முறைமை"
+        },
+        {
+          "title": "ASVS மறுசேர்க்கை காணொளி",
+          "category": "காணொளிகள்",
+          "desc": "சுகாதாரத் தொழிலாளர்களுக்கான படி அடிப்படையிலான காணொளி வழிகாட்டி"
+        },
+        {
+          "title": "அவர Emergency Response Checklist",
+          "category": "வழிகாட்டிகள்",
+          "desc": "ASHA தொழிலாளர்களுக்கான விரைவு குறிப்புக் காட்"
+        }
+      ],
+      "impactStats": [
+        {
+          "label": "தொல்பேட்டிகள் பாதிக்கப்பட்ட",
+          "suffix": "+"
+        },
+        {
+          "label": "சுகாதாரத் தொழிலாளர்கள் பயிற்சி பெற்றனர்",
+          "suffix": "+"
+        },
+        {
+          "label": "அனைத்து கிராமங்கள் அடைந்தன",
+          "suffix": "+"
+        },
+        {
+          "label": " விழிப்புணர்வு அமர்வுகள்",
+          "suffix": "+"
+        },
+        {
+          "label": "மாநில நகரங்கள் மூடப்பட்டன",
+          "suffix": "+"
+        },
+        {
+          "label": "இணைந்த நிதியோகத்துவங்கள்",
+          "suffix": "+"
+        },
+        {
+          "label": "தயாரிப்பு அலகுகள்"
+        },
+        {
+          "label": "வலிமையான இடப் பிரிவு",
+          "suffix": "+"
+        }
+      ],
+      "heroStats": [
+        {
+          "label": "தொல்பேட்டிகள் பாதிக்கப்பட்ட",
+          "suffix": "+"
+        },
+        {
+          "label": "தொழிலாளர்கள் பயிற்சி பெற்றனர்",
+          "suffix": "+"
+        },
+        {
+          "label": "ஊர்களுக்கு சென்றது",
+          "suffix": "+"
+        },
+        {
+          "label": "செயல்பாட்டில் உள்ள நன்கொடைதாரர்கள்",
+          "suffix": "+"
+        }
+      ],
+      "states": [
+        {
+          "code": "எம்.எச்",
+          "name": "மகாராஷ்டிரா"
+        },
+        {
+          "code": "கே.எ்.ஏ",
+          "name": "கர்நாடகம்"
+        },
+        {
+          "code": "டி.என்",
+          "name": "தமிழ்நாடு"
+        },
+        {
+          "code": "ஏ.பி",
+          "name": "ஆந்திரப் பிரதேசம்"
+        },
+        {
+          "code": "டி.ஜி",
+          "name": "தெலங்கணா"
+        },
+        {
+          "code": "எம்.பி",
+          "name": "மத்திய பிரதேசம்"
+        },
+        {
+          "code": "ஓ.டி",
+          "name": "ஒடியசா"
+        }
+      ],
+      "footer": {
+        "tagline": "சாப்சுகா வார்க், மருத்துவமனையில் தான் மருத்துவம்",
+        "description": "இந்தியாவின் தேசிய பாம்பு குத்தல் விழிப்புணர்வு முயற்சி — விழிப்புணர்வின் மூலமாக, அணுகல், மற்றும் நேரத்திற்கேற்ப மருத்துவமனை சிகிச்சை மூலம் உயிர்களை காப்பாற்றுகிறது.",
+        "columns": [
+          {
+            "title": " புரட்சி",
+            "links": [
+              {
+                "label": "பற்றி"
+              },
+              {
+                "label": "அவசர வழிகாட்டி"
+              },
+              {
+                "label": "மூடுநம்பிக்கைகள் vs உண்மைகள்"
+              },
+              {
+                "label": "வளங்கள்"
+              }
+            ]
+          },
+          {
+            "title": "ஒருங்கிணைக்கவும்",
+            "links": [
+              {
+                "label": "க்விஸ் எடுங்கள்"
+              },
+              {
+                "label": "எங்களுடன் భాగத்தேடு"
+              },
+              {
+                "label": "எங்கள் இன்றியமையா அமைப்புகள்"
+              },
+              {
+                "label": "வாலண்டியர்"
+              },
+              {
+                "label": "இழைபார்ப்பு கதை"
+              },
+              {
+                "label": "அறிக்கைகள்"
+              }
+            ]
+          },
+          {
+            "title": "சட்டப்படி",
+            "links": [
+              {
+                "label": "தகவல் குற்றச்செயல் கொள்கை"
+              },
+              {
+                "label": "சேவையின் நிபந்தனைகள்"
+              },
+              {
+                "label": "குக்கி கொள்கை"
+              }
+            ]
+          }
+        ],
+        "copyright": "© 2025 Bharat Serums and Vaccines Ltd. அனைத்து உரிமைகளும் பாதுகாக்கப்படுகின்றன."
+      },
+      "ngos": [
+        {
+          "name": "எஸ்.எச்.இ அடிப்படையிடம்",
+          "desc": "கிராமிய மகாராஷ்ட்ராவில் சமுதாய ஆரோக்கியம் மற்றும் விழிப்புணர்வு"
+        },
+        {
+          "name": "சர்ப்ப சதி",
+          "desc": "கர்நாடகா மற்றும் தமிழ்நாட்டில் நாகங்களை மீட்பு மற்றும் கிராமிய கல்வி"
+        },
+        {
+          "name": "நிசர்க் அடிப்படையிடம்",
+          "desc": "விலங்குகளின் பாதுகாப்பு மற்றும் நாகக்கொலை விழிப்புணர்வு இயக்கங்கள்"
+        }
+      ]
+    },
+    "te": {
+      "hero": {
+        "title": "భారతదేశంలో పాము కాట్ల నుండి ప్రాణాలు కాపాడడం",
+        "subtitle": "ప్రతి నిమిషం ప్రాముఖ్యం ఉంది. అవగాహన, ప్రవేశం మరియు కమ్యూనికేషన్ ద్వారా, బీఎస్వీ సముదాయాలను వేగంగా చర్య తీసుకోవడంలో మరియు ప్రాణాలను కాపాడడంలో సహాయపడుతోంది.",
+        "leftTop": "భారతదేశం కోల్పోతుంది",
+        "bigNumber": "50,000",
+        "leftBottom": "ప్రాణాలు ప్రతి సంవత్సరం పాము కాట్లతో",
+        "rightMain": "పాము కాట్లు,",
+        "rightSub": "అస్పత్రిలోనే చికిత్స!",
+        "tagline": "పాము కాటు? కచ్చితంగా ఆసుపత్రే సరైన వైద్యం అందిస్తుంది."
+      },
+      "about": {
+        "story": "భారతదేశంలో పాము కాటు ఒక మిమ్మల్ని నిశ్శబ్దంగా తాకే అత్యవసర పరిస్థితి. ప్రతి సంవత్సరం సుమారుగా 58,000 ప్రాణాలు పాము కాట్లతో కోల్పోతున్నాయి — వీరిలో ఎక్కువ మంది సమయానికి ఆసుపత్రి చికిత్సతో నివారించవచ్చు. \"సాపకార్త, ఆస్పత్తాలుమేన్ హి ఉపచార\" అనే ప్రచారాన్ని ప్రారంభించడం జరిగింది: ఔషధాల నుండి ఆస్పత్రుల వరకు, భయంకరమైన విషయాల నుండి వాస్తవాలకు, ఆలస్యం నుండి కొలువుదారితనమైన చర్యకు మార్చడానికి.",
+        "mission": "అవగాహన, విద్య మరియు ప్రతి ప్రాథమిక ఆరోగ్య కేంద్రంలో నాణ్యమైన ప్రతిష్ఠా వ్యాధి పాముహాళ్ళను అందించడం ద్వారా 2030 నాటికి భారతదేశంలో నివారించగల పాము కాటు మరణాలను తొలగించడానికి.",
+        "vision": "ఎక్కడ ప్లాంట్ కాట్లలో ప్రాణాలు కోల్పోకుండా ఉండేది — ప్రతి గ్రామం లక్షణాలను తెలుసుకునే చోట, ప్రతి వైద్యుడు శిక్షణ పొందిన స్థలంలో, మరియు ప్రతి ఆసుపత్రి సిద్ధంగా ఉంటుంది.",
+        "objectives": [
+          "తక్షణ ఆస్పత్రి చేరికను ప్రోత్సహించు",
+          "అన్ని స్థాయిలో ఆరోగ్య సంరక్షణ నిపుణుల శిక్షణ",
+          "మూలస్థాయిలో సముదాయాలను విద్యావంతంగా స్వయంగా చైతన్యం చేయండి",
+          "ఎన్‌జీఓలతో, ప్రభుత్వాలు మరియు సీఆర్సీ సంస్ధలతో భాగస్వామ్యం చేయండి",
+          "ASVని భారతదేశం మొత్తంలో అందుబాటులో మరియు చౌకగా చేయండి"
+        ],
+        "burden": "每年估计死亡58000 | 每年120万咬伤 | 70%的死亡可以通过及时的ASV来预防"
+      },
+      "emergencyDos": [
+        {
+          "title": "శాంతంగా ఉండండి",
+          "desc": "ఉత్కంఠ హృదయాలను వేగంగా తీసుకొచ్చి విషాన్ని వేగంగా వ్యాపించటానికి కారణం అవుతుంది. బాధితుని ఇంకా ఉంచండి మరియు నమ్మించండి."
+        },
+        {
+          "title": "అంగాన్ని స్థిరంగా ఉంచండి",
+          "desc": "స్ప్లింట్ లేదా స్లింగ్ ఉపయోగించండి. కాట్ల చేసిన అంగం హృదయ స్థాయికి కింద ఉంచండి."
+        },
+        {
+          "title": "కఠినమైన వస్తువులను తొలగించండి",
+          "desc": "కాటు ప్రాంతంలోని వంగులు, గడియారాలు, మణికట్టు మరియు భద్దల టెంకులు తొలగించండి — ఉబ్బరం తరువాత వస్తుంది."
+        },
+        {
+          "title": "ఎక్కువగా ఆసుపత్రికి చేరుకోండి",
+          "desc": "కారు ద్వారా వెంటనే రవాణా చేయండి. సమయం = ప్రాణం. వేచి ఉండకండి, ఆలస్యం చేయకండి."
+        },
+        {
+          "title": "పాము గుర్తుంచుకోండి",
+          "desc": "రంగు, పరిమాణం, నమూనాను గుర్తుంచుకోండి (పాము పట్టేందుకు ప్రయత్నించకండి). ఒక సురక్షిత దూరం నుండి ఫోటో తీసుకోవడం సహాయపడుతుంది."
+        },
+        {
+          "title": "ASV చికిత్స కోరండి",
+          "desc": "ప్రతిష్ఠా వ్యాధి పాముహాళ్ళు (ASV) తేలికపాటి చికిత్స అందుబాటులో ఉన్నది. ఇది ఎక్కువ ఆసుపత్రిలో అందుబాటులో ఉంది."
+        }
+      ],
+      "emergencyDonts": [
+        {
+          "title": "గాయాన్ని కత్తిరించకండి",
+          "desc": "కత్తెర వాడడం సంక్రమణకు కారణమవుతుంది మరియు విషాన్ని తీసివేయదు."
+        },
+        {
+          "title": "విషాన్ని చంపకండి",
+          "desc": "ఇది సహాయకుడికి నిరుపయోగమూ, ప్రమాదకరమూ."
+        },
+        {
+          "title": "చెట్లు లేదా మెత్తని పదార్థాలు అప్లయ్ చేయకండి",
+          "desc": "ఏ традиционный उपायము విషాన్ని నష్టపరచదు. అవి నిజమైన చికిత్సను ఆలస్యం చేస్తాయి."
+        },
+        {
+          "title": "తట్టికించిన కట్టులు ఉపయోగించకండి",
+          "desc": "ఇవి కండరాల మరణం మరియు కట్ అవుతుందనే ప్రమాదాన్ని కలిగిస్తాయి."
+        },
+        {
+          "title": "చికిత్సను ఆలస్యం చేయకండి",
+          "desc": "ప్రతి నిమిషం ముఖ్యం. వెంటనే ఆసుపత్రికి చేరుకోండి."
+        },
+        {
+          "title": "విశ్వాస వైద్యులను సందర్శించకండి",
+          "desc": "విశ్వాస వైద్యులు విషాన్ని చికిత్స చేయలేదు. కేవలం ASV (విషరంజక వ్యాధి వ్యతిరేకం) ఉన్న ఆసుపత్రులు మాత్రమే చేస్తాయి."
+        }
+      ],
+      "myths": [
+        {
+          "myth": "విషాన్ని గాయానికి సొక్రుగా తీసుకోవచ్చు",
+          "fact": "విషాన్ని సొక్రడం ప్రమాదకరమే కాదు, నిరర్థకమూ. ఇది గాయానికి బ్యాక్టీరియాను చేర్చవచ్చు మరియు సహాయకుడిని నష్టపరచవచ్చు. కేవలం ఆసుపత్రిలో సమర్పించిన ASV (విషాన్న వ్యతిరేకం) మాత్రమే విషాన్ని నష్టపరచగలదు."
+        },
+        {
+          "myth": "చెట్ల చికిత్స మరియు సాంప్రదాయ ఔషధాలు సర్పదంతికీ చికిత్స చేయగలవు",
+          "fact": "ఏ చెట్టు కూడా సైన్స్ ద్వారా సాంప్రదాయ విషాన్ని నష్టపరచటానికి నిరూపించబడలేదు. సాంప్రదాయ వైద్యులను సందర్శించడం ద్వారా ఆసుపత్రిలో చికిత్స ఆలస్యం చేయడం మరణానికి ప్రధాన కారణం."
+        },
+        {
+          "myth": "విశ్వాస వైద్యులు సర్పదంతి బండరాయిని కాపాడవచ్చు",
+          "fact": "విశ్వాస వైపు సమయం వ్యర్థం అవుతుంది. విషం త్వరగా పనిచేస్తుంది - ప్రతి నిమిషం కోల్పోతుంది బతుకుతన అవకాశాలను తగ్గిస్తుంది. ఎల్లవేళలా బాధితుని సమీప ఆసుపత్రికి తీసుకురాదు."
+        },
+        {
+          "myth": "గాయం కత్తెర కొట్టడం మరియు రక్తాన్ని తీసివేయడం విషాన్ని తొలగిస్తుంది",
+          "fact": "గాయాన్ని కత్తెర కొట్టడం ఎక్కువ నష్టం కలిగిస్తుంది, రక్తం కారడాన్ని పెంచుతుంది, సంక్రమణ ప్రమాదాన్ని పెంచుతుంది, మరియు విషాన్ని తీసివేరు. కునుక వేసి ఉండాలి."
+        },
+        {
+          "myth": "తట్టికించిన కట్టులు విషాన్ని వ్యాప్తి చేయడం ఆపుతాయి",
+          "fact": "తట్టికించిన కట్టులు రక్త ప్రవహానికి ఆటంకం కలిగించడం, కండరాల మరణానికి మరియు కట్ అవుతాను రిస్క్ కలిగిస్తాయి. సూచించినట్లుగా ఒక మెత్తటి పాదింతను వాడండి మరియు ఆసుపత్రికి జరగండి."
+        },
+        {
+          "myth": "అన్నీ శక్తివంతమైన విషాలు",
+          "fact": "భారతదేశంలోని 300+ సర్పాలల్లో సుమారు 60 మాత్రమే విషాలుగా మారుతాయి. భారత్ యొక్క 'బిగ్ ఫోర్' - రస్సెల్ వైనియర్, సా-స్కేల్ వైనియర్, కామన్ క్రైట్, స్పెక్స్ట్రిక్ల్డ్ COBRA - ప్రతికూలతలో ఎక్కువగా కారణమవుతాయి."
+        }
+      ],
+      "resources": [
+        {
+          "title": "సర్పదంతి అత్యవసర పోస్టరు",
+          "category": "పోస్టర్లు",
+          "desc": "చికిత్సల మరియు గ్రామాలకు పైకి ఏర్పాటు చేయగల A2 అత్యవసర ప్రతిస్పందన పోస్టరు"
+        },
+        {
+          "title": "మొదటి సహాయం బ్రోచర్ (బహుభాషా)",
+          "category": "బ్రోచర్లు",
+          "desc": "9 భారతీయ భాషలలో 8 పేజీల మార్గదర్శకం"
+        },
+        {
+          "title": "సర్పదంతి అవగాహన ఇటుక",
+          "category": "కామిక్స్",
+          "desc": "పాఠశాలలు మరియు గ్రామీణ సముదాయాల కోసం ఆకర్షణీయమైన కామిక్ స్ట్రిప్"
+        },
+        {
+          "title": "చికిత్సకులు శిక్షణ మాన్యువల్",
+          "category": "శిక్షణ",
+          "desc": "సంపూర్ణ ASV నిర్వహణ ప్రోటోకాల్"
+        },
+        {
+          "title": "ASVS పునరుత్పత్తి వీడియో",
+          "category": "వీడీయోస్",
+          "desc": "ఆరోగ్య సేవల నిపుణుల కోసం అడుగుజాడగా వీడియో గైడ్"
+        },
+        {
+          "title": "అవసరంలో స్పందన చెక్‌లిస్ట్",
+          "category": "గైడ్స్",
+          "desc": "ASHA పనిముట్లు కోసం త్వరిత సూచన కార్డు"
+        }
+      ],
+      "impactStats": [
+        {
+          "label": "ప్రభావిత జీవనలు",
+          "suffix": "+"
+        },
+        {
+          "label": "శిక్షణ పొందిన ఆరోగ్య కార్యకర్తలు",
+          "suffix": "+"
+        },
+        {
+          "label": "ఆశ్రయించిన గ్రామాలు",
+          "suffix": "+"
+        },
+        {
+          "label": "అవగాహన సెషన్లు",
+          "suffix": "+"
+        },
+        {
+          "label": "క్రాంతికారుల నగరాలు",
+          "suffix": "+"
+        },
+        {
+          "label": "భాగస్వామ్య NGOలు",
+          "suffix": "+"
+        },
+        {
+          "label": "ఆవిష్కరణ యూనిట్లు"
+        },
+        {
+          "label": "గల బలమైన ప్రస్తుత సేన",
+          "suffix": "+"
+        }
+      ],
+      "heroStats": [
+        {
+          "label": "ప్రభావిత జీవనలు",
+          "suffix": "+"
+        },
+        {
+          "label": "శిక్షణ పొందిన కార్మికులు",
+          "suffix": "+"
+        },
+        {
+          "label": "పల్లెలు చేరుకున్నాయి",
+          "suffix": "+"
+        },
+        {
+          "label": "సక్రియ స్వచ్చంద కార్యకర్తలు",
+          "suffix": "+"
+        }
+      ],
+      "states": [
+        {
+          "code": "ఎంహెచ్",
+          "name": "మహారాష్ట్ర"
+        },
+        {
+          "code": "కేఎ",
+          "name": "కర్ణాటక"
+        },
+        {
+          "code": "టిఎన్",
+          "name": "తమిళనాడు"
+        },
+        {
+          "code": "ఏపీ",
+          "name": "ఆంధ్రప్రదేశ్"
+        },
+        {
+          "code": "టీజీ",
+          "name": "తెలంగాణ"
+        },
+        {
+          "code": "ఎంవీపీ",
+          "name": "మధ్యప్రదేశ్"
+        },
+        {
+          "code": "ఓడీ",
+          "name": "ఓడిశా"
+        }
+      ],
+      "footer": {
+        "tagline": "సాప్కా వార్, ఆస్పత్రిలోనే చికిత్స",
+        "description": "భారతదేశం యొక్క జాతీయ పామ్కాటుకున్నది అవగాహన కార్యక్రమం — అవగాహన, ప్రాప్తి, మరియు సమయానికి ఆస్పత్రి చికిత్స ద్వారా ప్రాణాలు కాపాడడం.",
+        "columns": [
+          {
+            "title": "ప్రచారం",
+            "links": [
+              {
+                "label": "గురించి"
+              },
+              {
+                "label": "అందర్లకు మార్గదర్శకం"
+              },
+              {
+                "label": "మీంచనాలంటే సత్యాలు"
+              },
+              {
+                "label": "సాధనాలు"
+              }
+            ]
+          },
+          {
+            "title": "సంప్రదించండి",
+            "links": [
+              {
+                "label": "క్విజ్ తీసుకోండి"
+              },
+              {
+                "label": "మనతో భాగస్వామ్యము"
+              },
+              {
+                "label": "ఎన్జీఓ నెట్‌వర్క్"
+              },
+              {
+                "label": "స్వచ్చంద కార్యకర్త"
+              },
+              {
+                "label": "ప్రభావ కథలు"
+              },
+              {
+                "label": "రిపోర్టులు"
+              }
+            ]
+          },
+          {
+            "title": "చట్టపరమైన",
+            "links": [
+              {
+                "label": "ప్రైవసీ విధానం"
+              },
+              {
+                "label": "సేవా షరతులు"
+              },
+              {
+                "label": "కుకీ విధానం"
+              }
+            ]
+          }
+        ],
+        "copyright": "© 2025 భారత సిరమ్‌లు మరియు వ్యాక్సీన్స్ లిమిటెడ్. అన్ని హక్కులు రక్షితమయినవి."
+      },
+      "ngos": [
+        {
+          "name": "శ్రీ ఫౌండేషన్",
+          "desc": "గ్రామీణ మహారాష్ట్రలో కమ్యూనిటీ ఆరోగ్య మరియు అవగాహన"
+        },
+        {
+          "name": "సర్ప సహ చో",
+          "desc": "కర్నాటక మరియు తమిళనాడు లో పాములకు రక్షణ మరియు గ్రామీణ విద్య"
+        },
+        {
+          "name": "నిసర్గ ఫౌండేషన్",
+          "desc": "వన్యప్రాణుల సంరక్షణ మరియు పాముల కాటునకు అవగాహన డ్రైవ్స్"
+        }
+      ]
+    },
+    "or": {
+      "hero": {
+        "title": "ଭାରତର ସାପ ଛାଡି ଜୀବନ ବଂଚାଇବା",
+        "subtitle": "ପ୍ରତି ମିନିଟ ମହତ୍ତ୍ୱ ରଖେ। ସଚେତନତା, ପ୍ରବେଶ, ଏବଂ ସଂଘାଟର ମାଧ୍ୟମରେ, BSV ସମୁଦାୟକୁ ଦ୍ରୁତ କାର୍ଯ୍ୟ କରିବା ଓ ଜୀବନ ବଂଚାଇବାରେ ସାହାଯ୍ୟ କରୁଛି।",
+        "leftTop": "ଭାରତରେ",
+        "bigNumber": "50,000",
+        "leftBottom": "ଜୀବନ ସାପ ଛାଡି ପ୍ରତି ବର୍ଷ ହରାଇଯାଉଛି",
+        "rightMain": "ସାପର ଖୁନ୍ସ",
+        "rightSub": "ଆସ୍ପତାଲରେ ଉପଚାର!",
+        "tagline": "ସାପ ଛାଡି? ସହି ତରିକାରେ ଉପଚାର କରିବା ପାଇଁ କେବଳ ଆସ୍ପତାଲଇ ବ୍ୟବହାର କରନ୍ତୁ।"
+      },
+      "about": {
+        "story": "ଭାରତରେ ସାପ ଛାଡି ଏକ ନିଶ୍କ୍ରିୟ ଆପଦ। ପ୍ରତି ବର୍ଷ, ସାପ ଛାଡି ପାଇଁ 58,000 ଜୀବନ ହରାଇଯାଉଛି — ପ୍ରାୟ ସମସ୍ତେ ସମୟରେ ଆସ୍ପତାଲର ଉପଚାର ଦ୍ୱାରା ରୋକାଯାଇପାରେ। \"ସାପର ଖୁନ୍ସ, ଆସ୍ପତାଲରେ ଉପଚାର\" ଶୀର୍ଷକରେ ଏହି ଅଭିଯାନ ସଂକେତକୁ ପରିବର୍ତ୍ତନ କରିବା ପାଇଁ ଜନ୍ମ ନେଇଛି: ଗୁଡ଼କୁଟାରେ ଆସ୍ପତାଲ, ଭୟରୁ ତଥ୍ୟ, ବିଳମ୍ବରୁ ବିଧାନ ଗ୍ରହଣ କରା।",
+        "mission": "2030ର ମଧ୍ୟରେ ଭାରତରେ ନିୟମିତ ସାପ ଛାଡି ମୃତ୍ୟୁ ଦୂର କରିବା ପାଇଁ ସଚେତନତା, ଶିକ୍ଷା, ଏବଂ ପ୍ରତିଟି ପ୍ରାଥମିକ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରରେ ଗୁଣବତ୍ତା ସହିତ ବା Anti-Snake Venom (ASV) ପ୍ରବେଶ ସୁନିଶ୍ଚିତ କରିବା।",
+        "vision": "ଏକ ଦେଶ ଯେଉଁଠାରେ ସାପ ଛାଡି କେହି ଜୀବନ ହରାଇ ନାହିଁ — ଯେଉଁଠାରେ ପ୍ରତି ଗ୍ରାମ ସଂକେତଗୁଡ଼ିକୁ ଜାଣିଛି, ପ୍ରତି ଚିକିତ୍ସକ ପ୍ରଶିକ୍ଷିତ, ଏବଂ ପ୍ରତି ଆସ୍ପତାଲ ପ୍ରସ୍ତୁତ।",
+        "objectives": [
+          "ତୁରନ୍ତ ଆସ୍ପତାଲ ପାଇଁ ଚାଳନା ବଦଳାଇବା",
+          "ସମସ୍ତ ମାପରେ ସ୍ୱାସ୍ଥ୍ୟ କର୍ମଚାରୀଙ୍କୁ ପ୍ରଶିକ୍ଷଣ କରନ୍ତୁ",
+          "ଗ୍ରାମୀଣ ସମୁଦାୟକୁ ମୌଳିକ ସକ୍ରିୟତା ତକେ ଶିକ୍ଷା ଦିଅନ୍ତୁ",
+          "NGO, ସରକାର, ଏବଂ CSR ସଂଗଠନ ସହିତ ମିଳିବା",
+          "ଭାରତରେ ASV ପ୍ରବେଶୀୟ ଓ ସାହଜ୍ୟ କରନ୍ତୁ"
+        ],
+        "burden": "58,000 ଅନୁମାନିତ ମୃତ୍ୟୁ ପ୍ରତି ବର୍ଷ | ପ୍ରତିବର୍ଷ 1.2 ମିଲିୟନ୍ ବିତରଣ | 70% ମୃତ୍ୟୁ ସମୟରେ ASV ସହିତ ରୋକାଯାଇପାରେ"
+      },
+      "emergencyDos": [
+        {
+          "title": "ଶାନ୍ତ ରୁହନ୍ତୁ",
+          "desc": "ଉତ୍ସୁକ୍ତା ହୃଦୟ ପ୍ରବାହକୁ ବଢାଏ ଓ ବେନମ୍ ଶୀଘ୍ର ଫ୍ରି ହେଉଛି। ପୀଡିତକୁ ସ୍ଥିର ଓ ନିଶ୍ଚିତ କରନ୍ତୁ।"
+        },
+        {
+          "title": "ଉପାଂତୁ କରନ୍ତୁ",
+          "desc": "ଏକ ସ୍ପ୍ଲିଣ୍ଟ ବା ଶ୍ରେଷ୍ଠ ବ୍ୟବହାର କରନ୍ତୁ। କାଟିଥିବା ଉପାଂତୁକୁ ହୃଦୟ ତଳେ ରଖନ୍ତୁ।"
+        },
+        {
+          "title": "କଢ଼ିବା ଜିନିଷଗୁଡିକୁ ହଟାନ୍ତୁ",
+          "desc": "ବାଇଟକୁ ଚାର୍ପ ଜିନିଷ, ଘଟି, ଆଙ୍କଲେଟ୍, ଓ ସଙ୍କଡା ଶ୍ରେଷ୍ଠ ପୋଷାକକୁ କାଢନ୍ତୁ — ସୂଜି ଘଟିବ।"
+        },
+        {
+          "title": "ସନ୍ନିହିତ ଆସ୍ପତାଲକୁ ପହଁଚନ୍ତୁ",
+          "desc": "କାର୍ଯ୍ୟକୁ ତୁରନ୍ତ ନେବେ। ସମୟ = ଜୀବନ। ଅପେକ୍ଷା କରନ୍ତୁ ନାହିଁ, ବିଳମ୍ବ କରନ୍ତୁ ନାହିଁ।"
+        },
+        {
+          "title": "ସାପକୁ ଲକ୍ଷ କରନ୍ତୁ",
+          "desc": "ରଙ୍ଗ, ଆକାର, ପ୍ରକାର (ସେଥିରେ ଧରିବାର ସାଧ୍ୟ କରନ୍ତୁ ନାହିଁ) ଯାଦ୍ରକରନ୍ତୁ। ସୁରକ୍ଷିତ ଦୂରତାରୁ ଏକ ଫଟୋ ସାହାୟକ।"
+        },
+        {
+          "title": "ASV ଉପଚାର ଚାହିଁ",
+          "desc": "Anti-Snake Venom (ASV) କେବଳ ପ୍ରମାଣିତ ଚିକିତ୍ସା। ଏହା ସବୁ ଆସ୍ପତାଲରେ ଉପଲବ୍ଧ।"
+        }
+      ],
+      "emergencyDonts": [
+        {
+          "title": "ବଣ୍ଡ ଓଡ଼ାନ୍ତୁ ନାହିଁ",
+          "desc": "କଟିବା ଇନଫେକସନ୍ ହେବାକୁ ବ୍ରିମଣ୍ଡ ଏବଂ ବେନମ୍ ହଟାଇବାକୁ ନୁହେଁ।"
+        },
+        {
+          "title": "ବେନମ୍ କୁ ଚୋଷଣ କରନ୍ତୁ ନାହିଁ",
+          "desc": "ଏହା ସହାୟକଙ୍କ ପାଇଁ ଅକାର୍ୟକର ଏବଂ କଳପନୀୟ।"
+        },
+        {
+          "title": "ଜାଡି କିମ୍ବା ପେଷ୍ଟ୍ ପ୍ରୟୋଗ କରନ୍ତୁ ନାହିଁ",
+          "desc": "କୌଣସି ପାରମ୍ପରିକ ଚିକିତ୍ସା ବେନମ୍ କୁ ସର୍ବାଧିକ କ୍ଷୟ କରେନି। ସେମାନେ ସତ୍ୟ ଚିକିତ୍ସାରେ ବିଳମ୍ବ କରନ୍ତି।"
+        },
+        {
+          "title": "ଟାଇଟ୍ ଟର୍ନିକେଟ୍ ବ୍ୟବହାର କରନ୍ତୁ ନାହିଁ",
+          "desc": "ସେଗୁଡିକ ଜନ୍ତୁ ମୃତ୍ୟୁ ଏବଂ ଅଂଗ କାଟିଁ ଜୋଖିମ କରନ୍ତି।"
+        },
+        {
+          "title": "ଚିକିତ୍ସା ବିଳମ୍ବ କରନ୍ତୁ ନାହିଁ",
+          "desc": "ପ୍ରତି ମିନିଟ୍ ବହୁତ ଗୁରୁତ୍ୱପୂର୍ଣ୍ଣ। ତୁରନ୍ତ ହସ୍ପିଟାଲକୁ ଯାଆନ୍ତୁ।"
+        },
+        {
+          "title": "ଧର୍ମଙ୍କୁ ଦରଶନ କରନ୍ତୁ ନାହିଁ",
+          "desc": "ଧର୍ମଚିକିତ୍ସକ ବେନମ୍କୁ ଚିକିତ୍ସା କରିପାରିବେ ନାହିଁ। କେବଳ ASV ସହିତ ହସ୍ପିଟାଲ୍ କରିପାରିବ।"
+        }
+      ],
+      "myths": [
+        {
+          "myth": "ବେନମ୍ ଘାଉରୁ ଚୋଷଣ କରାଯାଇପାରେ",
+          "fact": "ବେନମ୍ ଚୋଷଣ କରା ର ସିଂକିର୍ଣ୍ଣ ଏବଂ ଅକାର୍ୟକର। ଏହା ଘାଉରେ ବ୍ୟାକ୍ଟେରିଆ ପ୍ରବେଶ କରାଏ ଏବଂ ସହାୟକଙ୍କୁ କ୍ଷତି କରିପାରେ। କେବଳ ହସ୍ପିଟାଲରେ ଦିଆଯାଇଥିବା ASV (ଆଣ୍ଟି-ସ୍ନେକ୍ ବେନମ୍) ବେନମ୍ କୁ ସ୍ଥିର କରିପାରିବ।"
+        },
+        {
+          "myth": "ଜାଡୀ ଚିକିତ୍ସା ବିଷାକ୍ତ ବିଷ ମୁକାବିଲା କରିପାରେ",
+          "fact": "ପାରମ୍ପରିକ ବେନମ୍ ମୁକାବିଲା କରିବାକୁ କୌଣସି ଜାଡୀ ପ୍ରମାଣିତ ହୋଇନୀ। ପାରମ୍ପରିକ ଚିକିତ୍ସକଙ୍କୁ ବେଟ୍ରୀକ୍ କରି ହସ୍ପିଟାଲ୍ ମଧ୍ୟରେ ବିଳମ୍ବ ମୃତ୍ୟୁ ହେବାର ପ୍ରମୁଖ କାରଣ।"
+        },
+        {
+          "myth": "ଧର୍ମଚିକିତ୍ସକ ଏକ ସ୍ନେକ୍ ବିଷ ଶିକାରୀଙ୍କୁ ପ୍ରଣାୟଣ କରିପାରନ୍ତି",
+          "fact": "ଧର୍ମଚିକିତ୍ସା ମୂଲ୍ୟବାନ ସମୟ ନଷ୍ଟ କରେ। ବେନମ୍ ତୁରନ୍ତ କାମ କରେ — ପ୍ରତି ମିନିଟ୍ ହରାଇବା ଜୀବନ ବଞ୍ଚାଇବା ସମ୍ଭାବନା କମେ। ସର୍ବଦା ଶିକାରୀଙ୍କୁ ନିକଟସ୍ଥ ହସ୍ପିଟାଲକୁ ତୁରନ୍ତ ଚାଳନ୍ତୁ।"
+        },
+        {
+          "myth": "ଘାଉକୁ କଟିବା ଏବଂ ରକ୍ତାପେକ୍ଷା କରିବାବେଳେ ବେନମ୍ କାମ କରେ",
+          "fact": "ଘାଉକୁ କଟିବା ଅଧିକ କ୍ଷତି କରେ, ରକ୍ତହାରି ବଢେ, ଇନଫେକସନ୍ ଝୁକିମ ହୁଏ, ଏବଂ ବେନମ୍ କୁ ହଟାଇବାକୁ ବୃତ୍ତଧାର ହହେ। ବାହୁକୁ ଅସ୍ଥିର କରନ୍ତୁ।"
+        },
+        {
+          "myth": "ଟାଇଟ୍ ଟର୍ନିକେଟ୍ ବେନମ୍ ସ୍ପ୍ରେଡ୍ ବନ୍ଦ କରେ",
+          "fact": "ଟାଇଟ୍ ଟର୍ନିକେଟ୍ ରକ୍ତ ଧାରଣ କରିବାକୁ କଟିଦିଏ, ଜନ୍ତୁ ମୃତ୍ୟୁ କରେ, ଏବଂ ଅମ୍ପୁଟେସନରେ ଏହାକୁ ପହଁଚାଇପାରେ। ନିର୍ଦ୍ଦେଶ ମାନେ ବ୍ୟବହାର କରନ୍ତୁ ଓ ହସ୍ପିଟାଲକୁ ତୁରନ୍ତ ଚାଳନ୍ତୁ।"
+        },
+        {
+          "myth": "ସମସ୍ତ ସ୍ନେକ୍ ବେନମ୍ ହୁଅନ୍ତି",
+          "fact": "ଭାରତର 300+ ସ୍ନେକ୍ ପ୍ରଜାତିରେ ପ୍ରାୟ 60ଟି ବେନମ୍ ହୁଅନ୍ତି। ଭାରତର \"ବିଗ୍ ଫୋର\" — ରାସେଲ୍ସ୍ ଭାଇପର୍, ସବ୍ଣ କେଲେଭା ଭାଇପର୍, କମନ୍ କ୍ରାଇଟ୍, ସ୍ପେକଟେକଲ୍ କୋବ୍ରା — ଅଧିକାଂଶ ବ୍ୟାପ୍ ହେବାର କାରଣ।"
+        }
+      ],
+      "resources": [
+        {
+          "title": "ସ୍ନେକ୍ ବିଷ ଆକସ୍ମିକ କାର୍ଯ୍ୟ ପୋଷ୍ଟର",
+          "category": "ପୋଷ୍ଟର୍",
+          "desc": "ଆସି2 ଆକସ୍ମିକ ପ୍ରତିକ୍ରିୟା ପୋଷ୍ଟର୍ କ୍ଲିନିକ୍ ଓ ଗ୍ରାମ କାଷ୍ଟ ବିଚାର"
+        },
+        {
+          "title": "ପ୍ରଥମ ଚିକିତ୍ସା ବ୍ରୋଚର୍ (ବହୁବାର୍ତ୍ତା)",
+          "category": "ବ୍ରୋଚର୍",
+          "desc": "9 ଭାରତୀୟ ଭାଷାରେ 8-ପୃଷ୍ଠା ଗାଇଡ୍"
+        },
+        {
+          "title": "ସ୍ନେକ୍ ବିଷ ଜାଗରୁକତା କମିକ୍",
+          "category": "କମିକ୍ସ",
+          "desc": "School ଓ ଗ୍ରାମୀଣ ସମୁଦାୟ ପାଇଁ ଆକର୍ଷକ କମିକ୍ ଷ୍ଟ୍ରିପ୍"
+        },
+        {
+          "title": "ଡକ୍ତରୀ ଶିକ୍ଷା ମାନୁଆଲ୍",
+          "category": "ଶିକ୍ଷା",
+          "desc": "ସମ୍ପୁର୍ଣ୍ଣ ASV ପ୍ରବନ୍ଧନ ପ୍ରୋଟୋକଲ୍"
+        },
+        {
+          "title": "ASVS ପୁଣର୍ବିନ୍ୟାସ ଭିଡିଓ",
+          "category": "ଭିଡିଓ",
+          "desc": "ସ୍ଥାନ ପ ଥରେ ସ୍ତ୍ରେପ୍-ବାଇ-ସ୍ତ୍ରେପ୍ ଭିଡିଓ ମାର୍ଗଦର୍ଶକ"
+        },
+        {
+          "title": "ଆପତ୍କାଳୀନ ପ୍ରତିକ୍ରିୟା ଚେକ୍‌ଲିଷ୍ଟ",
+          "category": "ଗାଇଡ",
+          "desc": "ASHA କର୍ମଚାରୀଙ୍କ ପାଇଁ ତ୍ୱରିତ ଉଲ୍ଲେଖ କାର୍ଡ"
+        }
+      ],
+      "impactStats": [
+        {
+          "label": "ପ୍ରଭାବିତ ଜୀବନ",
+          "suffix": "+"
+        },
+        {
+          "label": "ସେବାକାରୀଙ୍କୁ ଶିକ୍ଷା ଦିଆଯାଇଥିବା",
+          "suffix": "+"
+        },
+        {
+          "label": "ପହଁଚିଥିବା ଗାଁଗୁଡିକ",
+          "suffix": "+"
+        },
+        {
+          "label": "ଜାଗୃକତା ସେସନ",
+          "suffix": "+"
+        },
+        {
+          "label": "କ୍ଷେତ୍ରରେ ବିଶାଳ ପ୍ରଭାବ",
+          "suffix": "+"
+        },
+        {
+          "label": "ପ୍ରଭାବିତ ଜୀବନ",
+          "suffix": "+"
+        },
+        {
+          "label": "ଶିକ୍ଷା ପ୍ରାପ୍ତ କର୍ମଚାରୀ"
+        },
+        {
+          "label": "+"
+        }
+      ],
+      "heroStats": [
+        null,
+        null,
+        {
+          "label": "ଗ୍ରାମ ପହଁଚିଛି",
+          "suffix": "+"
+        },
+        {
+          "label": "ସକ୍ରିୟ ସ୍ୱେଚ୍ଛା ସେବକ",
+          "suffix": "+"
+        }
+      ],
+      "states": [
+        {
+          "code": "ମହ",
+          "name": "ମହାରାଷ୍ଟ୍ର"
+        },
+        {
+          "code": "କେ",
+          "name": "କର୍ଣ୍ଟକ"
+        },
+        {
+          "code": "ଟିଏନ",
+          "name": "ତମିଳନାଡୁ"
+        },
+        {
+          "code": "ଏପି",
+          "name": "ଆନ୍ଧ୍ର ଭୌରା"
+        },
+        {
+          "code": "ଟିଜି",
+          "name": "ତେଲଙ୍ଗାନା"
+        },
+        {
+          "code": "ମପ",
+          "name": "ମଧ୍ୟ ପଦେଶ"
+        },
+        {
+          "code": "ଓଡି",
+          "name": "ଓଡିଶା"
+        }
+      ],
+      "footer": {
+        "tagline": "ସାପ କା ଭାର, ଅସ୍ପତାଲ ମେଁ ହି ଉପଚାର",
+        "description": "ଭାରତ ଗୋଟିଏ ଜାତୀୟ ସାପ ଦାନ୍ତ ଜାଗୃକତା ପ୍ରୟୋଜନା - ଜାଣିବା, ପହଁଚ ସହିତ, ଓ ସମୟୋଚିତ ହସ୍ପିଟାଲ ଚିକିତ୍ସା ମାଧ୍ୟମରେ ପ୍ରাণବଡିରୁ ସୁରକ୍ଷା。",
+        "columns": [
+          {
+            "title": "ଆନ୍ଦୋଳନ",
+            "links": [
+              {
+                "label": "ସମ୍ବନ୍ଧରେ"
+              },
+              {
+                "label": "ଆପାତকালୀନ ଗାଇଡ୍"
+              },
+              {
+                "label": "ମିଥ୍ୟା vs ତଥ୍ୟ"
+              },
+              {
+                "label": "ସାଧନା"
+              }
+            ]
+          },
+          {
+            "title": "ସଂଲଗ୍ନ ହେବେ",
+            "links": [
+              {
+                "label": "କୁଇଜ୍ ନିଅ"
+              },
+              {
+                "label": "ଆମସହ ବାନ୍ଧବୀରେ ହେବେ"
+              },
+              {
+                "label": "ଏନ୍ଜିଓ ନେଟୱର୍କ"
+              },
+              {
+                "label": "ସ୍ୱେଚ୍ଛା ସେବକ"
+              },
+              {
+                "label": "ପ୍ରଭାବ କାହାଣୀ"
+              },
+              {
+                "label": "ରିପୋର୍ଟ"
+              }
+            ]
+          },
+          {
+            "title": "ଅଇନ",
+            "links": [
+              {
+                "label": "ଗୋପନୀୟତା ନୀତି"
+              },
+              {
+                "label": "ସେବାର ଶରତ"
+              },
+              {
+                "label": "କୁକି ନୀତି"
+              }
+            ]
+          }
+        ],
+        "copyright": "© 2025 ଭାରତ ସିରମ୍ସ ଓ ଭେକ୍ସିନ୍ସ ଲିମିଟେଡ୍। ସମସ୍ତ ଅଧିକାର ସଂରକ୍ଷିତ।"
+      },
+      "ngos": [
+        {
+          "name": "ଶ୍ରୀ ପେଇଁ ନିଯୁକ୍ତ",
+          "desc": "ଗ୍ରାମ୍ୟ ମହାରାଷ୍ଟ୍ରରେ ସମୁଦାୟ ସ୍ବାସ୍ଥ୍ୟ ଏବଂ ଜାଗରୂକତା"
+        },
+        {
+          "name": "ସର୍ପ ସାଥୀ",
+          "desc": "କର୍ଣ୍ଣଟକ ଏବଂ ତମିଲନାଡୁରେ ସାପ ବାଚାର ଏବଂ ଗ୍ରାମ୍ୟ ଶିକ୍ଷା"
+        },
+        {
+          "name": "ନିସର୍ଗ ନିଯୁକ୍ତ",
+          "desc": "ବନ୍ୟଜୀବ ସଂରକ୍ଷଣ ଏବଂ ସାପ ଦାଣ୍ଡ କାର୍ଯ୍ୟକ୍ରମ"
+        }
+      ]
+    },
+    "pa": {
+      "hero": {
+        "title": "ਭਾਰਤ ਵਿੱਚ ਨਾੱਕ ਦੀ ਡਰ ਨਾਲ ਜਿੰਦਗੀਆਂ ਬਚਾਇਓ",
+        "subtitle": "ਹਰ ਮਿੰਟ ਮਹੱਤਵਪੂਰਨ ਹੈ। ਜਾਣਕਾਰੀ, ਪਹੁੰਚ ਅਤੇ ਸੰਚਾਰ ਦੇ ਰਾਹੀਂ, ਬੀਐਸਵੀ ਸਮਾਜਾਂ ਨੂੰ ਤੇਜ਼ੀ ਨਾਲ ਕੰਮ ਕਰਨ ਅਤੇ ਜਿੰਦਗੀਆਂ ਬਚਾਉਣ ਵਿੱਚ ਮਦਦ ਕਰ ਰਿਹਾ ਹੈ।",
+        "leftTop": "ਭਾਰਤ ਹੁਣੇ ਹੀ ਖੋ ਜੀ ਲੈਂਦਾ ਹੈ",
+        "bigNumber": "50,000",
+        "leftBottom": "ਜਿੰਦਗੀਆਂ ਸਾਪ ਦੇ ਡੱਸਣ ਕਾਰਨ ਹਰ ਸਾਲ",
+        "rightMain": "ਸਾਪ ਦਾ ਵਾਰ,",
+        "rightSub": "ਅਸਪਤਾਲ ਵਿੱਚ ਹੀ ਉਪਚਾਰ!",
+        "tagline": "ਸਾਪ ਦਾ ਡੱਸਣਾ? ਕੇਵਲ ਅਸਪਤਾਲ ਹੀ ਠੀਕ ਕਰ ਸਕਦਾ ਹੈ।"
+      },
+      "about": {
+        "story": "ਭਾਰਤ ਵਿੱਚ ਸਾਪ ਦੇ ਡੱਸਣ ਕਾਰਨ ਨਿਸ਼ਕ੍ਰਿਆ ਯਾਤਰਾ ਹੈ। ਹਰ ਸਾਲ, ਲਗਭਗ 58,000 ਜਿੰਦਗੀਆਂ ਸਾਪ ਦੇ ਡੱਸਣ ਨਾਲ ਗੁਆਈਆਂ ਜਾਂਦੀਆਂ ਹਨ - ਜਿਨ੍ਹਾਂ ਵਿੱਚੋਂ ਜ਼ਿਆਦਤਰ ਸਮੇਂ 'ਤੇ ਅਸਪਤਾਲ ਦੇ ਉਪਚਾਰ ਨਾਲ ਰੋਕੀ ਜਾ ਸਕਦੀ ਹਨ। ਮੁਹਿੰਮ 'ਸਾਪ ਦਾ ਵਾਰ, ਅਸਪਤਾਲ ਵਿੱਚ ਹੀ ਉਪਚਾਰ' ਨੂੰ ਸੂਖਮ ਕਰਨਾ ਹੈ: ਜڑی ਬੂਟੀਆਂ ਤੋਂ ਅਸਪਤਾਲਾਂ ਤੱਕ, ਡਰ ਤੋਂ ਤਥਿਆਂ ਤੱਕ, ਦੇਰੀ ਤੋਂ ਫੈਸਲੇ ਕਰ ਲੈਣਾ।",
+        "mission": "2030 ਤੱਕ ਭਾਰਤ ਵਿੱਚ ਰੋਕ ਕੇ ਮਾਰੇ ਗਏ ਸਾਪ ਦੇ ਡੱਸਣ ਦੇ ਮਰਨਾਂ ਨੂੰ ਖਤਮ ਕਰਨ ਲਈ ਜਾਣਕਾਰੀ, ਸਿੱਖਿਆ, ਅਤੇ ਪ੍ਰਾਈਮਰੀ ਸਿਹਤ ਕੇਂਦਰਾਂ 'ਤੇ ਗੁਣਵੱਤਾ ਵਾਲਾ ਐਂਟੀ-ਸਾਪ ਦੇ ਜਹਿਰ (ਏਐਸਵੀ) ਦੀ ਪਹੁੰਚ ਸੁਨਿਸ਼ਚਿਤ ਕਰਨ ਲਈ।",
+        "vision": "ਇੱਕ ਐਸਾ ਦੇਸ਼ ਜਿੱਥੇ ਸਾਪ ਦੇ ਡੱਸਣ ਕਾਰਨ ਕੋਈ ਜਿੰਦਗੀ ਨਹੀਂ ਗੁਵਾਈ ਜਾ ਰਹੀ - ਜਿੱਥੇ ਹਰ ਪਿੰਡ ਨਿਸ਼ਾਨੀਆਂ ਨੂੰ ਜਾਣਦਾ ਹੈ, ਹਰ ਡਾਕਟਰ ਨੂੰ ਟ੍ਰੇਨ ਕੀਤਾ ਜਾਂਦਾ ਹੈ, ਅਤੇ ਹਰ ਅਸਪਤਾਲ ਤਿਆਰ ਹੈ।",
+        "objectives": [
+          "ਤੁਰੰਤ ਹਸਪਤਾਲ ਵਿੱਚ ਜਾਣ ਲਈ ਵਿਵਹਾਰ ਬਦਲੋ",
+          "ਸਾਰੇ ਪੱਧਰਾਂ 'ਤੇ ਸਿਹਤ ਕਿਰਤੀਆਂ ਨੂੰ ਸਿਖਾਓ",
+          "ਗ੍ਰਾਸਰੂਟ ਮੋਹਿੰਮਾਂ ਰਾਹੀਂ ਪਿੰਡਾਂ ਦੀਆਂ ਸਮੁਦਾਇਕਾਂ ਨੂੰ ਸਿੱਖਿਓ",
+          "ਐੱਨਜੀਓਜ਼, ਸਰਕਾਰਾਂ ਅਤੇ ਸੀਐੱਸਆਰ ਸੰਸਥਾਵਾਂ ਨਾਲ ਸਾਂਝੇਦਾਰੀ ਕਰੋ",
+          "ਭਾਰਤ ਵਿੱਚ ਐਸਵੀ ਨੂੰ ਪਹੁੰਚਯੋਗ ਅਤੇ ਸਸਤਾ ਬਣਾਓ"
+        ],
+        "burden": "58,000 ਅੰਦਾਜ਼ਿਤ ਮੌਤਾਂ ਸਾਲਾਨਾ | ਹਰ ਸਾਲ 1.2 ਮਿਲੀਅਨ ਡੱਸੇ | 70% ਮੌਤਾਂ ਸਮੀ-ਸਮੇਂ ਜਾਂ ਆਸਾਨ ਐਸਵੀ ਨਾਲ ਰੋਕੀਆਂ ਜਾ ਸਕਦੀਆਂ ਹਨ।"
+      },
+      "emergencyDos": [
+        {
+          "title": "ਸ਼ਾਂਤ ਰਹੋ",
+          "desc": "ਫਿਰਦਾਂ ਦਿਲ ਦੀ ਧੜਕਨ ਵਧਾ ਦਿੰਦਾ ਹੈ ਅਤੇ ਜ਼ਹਿਰ ਨੂੰ ਤੇਜ਼ੀ ਨਾਲ ਫੈਲਾਉਂਦਾ ਹੈ। ਪੀੜਤ ਨੂੰ ਸਥਿਰ ਅਤੇ ਭਰੋਸਾਹ ਦਿਓ।"
+        },
+        {
+          "title": "ਅੰਗ ਨੂੰ ਅਨਮੋਬਿਲਾਈਜ਼ ਕਰੋ",
+          "desc": "ਇੱਕ ਸਪਲਿੰਟ ਜਾਂ ਸਲਿੰਗ ਉਪਯੋਗ ਕਰੋ। ਕੱਟੇ ਹੋਏ limb ਨੂੰ ਦਿਲ ਦੇ ਸਤਰ ਤੋਂ ਹੇਠਾਂ ਰੱਖੋ।"
+        },
+        {
+          "title": "ਕਸਦੀਆਂ ਸ਼ਹਿਰਾਂ ਨੂੰ ਹਟਾਓ",
+          "desc": "ਅੰਗੂਠੀਆਂ, ਘੜੀਆਂ, ਪੈਰ ਦੇ ਸੋਨੇ ਅਤੇ ਕੱਟ ਭਾਰੀਆਂ ਪੁਸਤਕਾਂ ਹਟਾਓ - ਫੂਲਣ ਵਾਲਾ ਖੀਚਿਆਂ ਮੋੜੇਗਾ।"
+        },
+        {
+          "title": "ਨਜ਼ਦੀਕੀ ਅਸਪਤਾਲ ਵਿੱਚ ਪਹੁੰਚੋ",
+          "desc": "ਤੁਰੰਤ ਇੱਕ ਵਾਹਨ ਵਿੱਚ ਲਿਆਉਣ ਲਈ। ਸਮਾਂ = ਜਿੰਦਗੀ। ਪੰਜੇ ਨਾ ਕਰੋ, ਦੇਰ ਨਾ ਕਰੋ।"
+        },
+        {
+          "title": "ਸਾਪ ਨੂੰ ਨੋਟ ਕਰੋ",
+          "desc": "ਰੰਗ, ਆਕਾਰ, ਨਮੂਨਾ ਯਾਦ ਰੱਖੋ (ਇਸ ਨੂੰ ਫੜਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਨਾ ਕਰੋ)। ਇੱਕ ਸੁਰੱਖਿਅਤ ਦੂਰੀ ਤੋਂ ਫੋਟੋ ਲੈਣਾ ਮਦਦ ਕਰਦਾ ਹੈ।"
+        },
+        {
+          "title": "ਏਐਸਵੀ ਉਪਚਾਰ ਲਵੋ",
+          "desc": "ਐਂਟੀ-ਸਾਪ ਦੇ ਜਹਿਰ (ਏਐਸਵੀ) ਇੱਕਮਾਤਰ ਸਾਬਤ ਕੀਤੀ ਗਈ ਉਪਚਾਰ ਹੈ। ਇਹ ਜ਼ਿਆਦातर ਹਸਪਤਾਲਾਂ ਵਿੱਚ ਉਪਲਬਧ ਹੈ।"
+        }
+      ],
+      "emergencyDonts": [
+        {
+          "title": "ਇਹ ਜਖਮ ਨੂੰ ਨਾ ਕੱਟੋ",
+          "desc": "ਕੱਟਣ ਨਾਲ ਇਨਫੈਕਸ਼ਨ ਹੁੰਦੀ ਹੈ ਅਤੇ ਜ਼ਹਿਰ ਨਹੀਂ ਹਟਾਉਂਦਾ।"
+        },
+        {
+          "title": "ਜ਼ਹਿਰ ਨੂੰ ਚੁਸਾਕ ਨਹੀਂ ਕਰੋ।",
+          "desc": "ਇਹ ਦੁਆਤਕਾਰੀ ਲਈ ਅਸੰਭਵ ਅਤੇ ਖਤਰਨਾਕ ਹੈ।"
+        },
+        {
+          "title": "ਜڑی-बੂਟੀਆਂ ਜਾਂ ਪੇਸਟਾਂ ਨੂੰ ਲਾਗੂ ਨਾ ਕਰੋ।",
+          "desc": "ਕੋئی ਪਰੰਪਰਾਗਤ ਉਪਚਾਰ ਜ਼ਹਿਰ ਨੂੰ ਨਿਰੰਤਰ ਨਹੀਂ ਕਰਦਾ। ਉਹ ਅਸਲੀ ਇਲਾਜ ਵਿੱਚ ਦੇਰੀ ਕਰਦੇ ਹਨ।"
+        },
+        {
+          "title": "ਕੰਟੇ ਵਾਲੇ ਟਰਨਿਕੇਟ ਨਾ ਵਰਤੋਂ।",
+          "desc": "ਇਹ ਟਿਸ਼ੂ ਦੀ ਮੌਤ ਅਤੇ ਅਮਪੁਟੇਸ਼ਨ ਦਾ ਖਤਰਾ ਪੈਦਾ ਕਰਦੇ ਹਨ।"
+        },
+        {
+          "title": "ਇਲਾਜ ਵਿੱਚ ਦੇਰੀ ਨਾ ਕਰੋ।",
+          "desc": "ਹਰ ਮਿੰਟ ਮਹੱਤਵਪੂਰਨ ਹੈ। ਫੋਰੈਂਬਦਸ਼ਕ ਦੇ ਹਸਪਤਾਲ ਜਟਦਾ ਕਰੋ।"
+        },
+        {
+          "title": "ਆਸਥਾ ਔਸ਼ਧੀਆਂ ਨੂੰ ਨਾ ਮਿਲੋ।",
+          "desc": "ਆਸਥਾ ਔਸ਼ਧੀਆਂ ਜ਼ਹਿਰ ਦਾ ਇਲਾਜ ਨਹੀਂ ਕਰ ਸਕਦੀਆਂ। ਸਿਰਫ਼ ਹਸਪਤਾਲਾਂ ਵਿੱਚ ASV ਹੋ ਸਕਦਾ ਹੈ।"
+        }
+      ],
+      "myths": [
+        {
+          "myth": "ਜ਼ਹਿਰ ਨੂੰ ਜ਼ਖਮ ਵਿੱਚੋਂ ਚੁਸਕੇ ਕੱਢਿਆ ਜਾ ਸਕਦਾ ਹੈ।",
+          "fact": "ਜ਼ਹਿਰ ਚੁਸਣਾ ਖਤਰਨਾਕ ਅਤੇ ਅਸੰਭਵ ਹੈ। ਇਹ ਜ਼ਖਮ ਵਿੱਚ ਬੈਕਟੀਰੀਆ ਦਾਖਲ ਕਰ ਸਕਦਾ ਹੈ ਅਤੇ ਦੁਆਤਕਾਰੀ ਨੂੰ ਨੁਕਸਾਨ ਪੁਹੁੰਚਾ ਸਕਦਾ ਹੈ। ਸਿਰਫ਼ ਹਸਪਤਾਲ ਵਿੱਚ ਦਿੱਤਾ ਗਿਆ ASV (ਐਂਟੀ-ਸਨੈਕ ਵੈਨਮ) ਜ਼ਹਿਰ ਨੂੰ ਨਿਰੰਤਰ ਕਰ ਸਕਦਾ ਹੈ।"
+        },
+        {
+          "myth": "ਜڑی ਬੂਟੀਆਂ ਅਤੇ ਪਰੰਪਰਾਗਤ ਦਵਾਈਆਂ ਸੂਰਮਾ ਦੌਰਾਂ ਦਾ ਇਲਾਜ ਕਰ ਸਕਦੀਆਂ ਹਨ।",
+          "fact": "ਕੋئی ਜੜੀਬੂਟੀ ਵਿਦਿਆਨਿਕ ਤਰੀਕੇ ਨਾਲ ਸੂਰਮਾ ਝੋਨੂੰ ਦੀ ਨਿਰੰਤਰਤਾ ਦਾ ਪ੍ਰਮਾਣਿਤ ਨਹੀਂ ਹੋਇਆ ਹੈ। ਪਰੰਪਰਾਗਤ ਔਸ਼ਧੀਆਂ ਦੁਆਰਾ ਹਸਪਤਾਲ ਦੇ ਇਲਾਜ ਵਿੱਚ ਦੇਰੀ ਮੌਤ ਦਾ ਇੱਕ ਮੂਢੀ ਕਾਰਨ ਹੈ।"
+        },
+        {
+          "myth": "ਆਸਥਾ ਔਸ਼ਧੀਆਂ ਇੱਕ ਜ਼ਹਿਰ ਫਟੇ ਪੀੜਤ ਨੂੰ ਬਚਾ ਸਕਦੀਆਂ ਹਨ।",
+          "fact": "ਆਸਥਾ ਔਸ਼ਧੀਆਂ ਕੀਮਤੀ ਸਮਾਂ ਬਰਬਾਦ ਕਰਦੀਆਂ ਹਨ। ਜ਼ਹਿਰ ਤੇਜ਼ੀ ਨਾਲ ਕਾਰਵਾਈ ਕਰਦਾ ਹੈ - ਹਰ ਕੰਮ ਦੇ ਵਿੱਚ ਖੋਈ ਮਿੰਟ ਜੀਵਨ ਦੇ ਮੌਕੇ ਨੂੰ ਘਟਾਉਂਦੀ ਹੈ। ਸਦਾ ਪੀੜਤ ਨੂੰ ਸਭ ਤੋਂ ਨੇੜੇ ਦੇ ਹਸਪਤਾਲ ਵਿੱਚ ਜਾਨਾ।"
+        },
+        {
+          "myth": "ਜ਼ਖਮ ਨੂੰ ਕੱਟਣਾ ਅਤੇ ਲਾਟ ਪਾਉਣਾ ਜ਼ਹਿਰ ਨੂੰ ਹਟਾਉਂਦਾ ਹੈ।",
+          "fact": "ਜ਼ਖਮ ਨੂੰ ਕੱਟਣਾ ਹੋਰ ਨੁਕਸਾਨ ਪੈਦਾ ਕਰਦਾ ਹੈ, ਖੂਨ ਭੁਤਨ ਵਧਾਉਂਦਾ ਹੈ, ਇਨਫੈਕਸ਼ਨ ਦਾ ਖਤਰਾਂ ਨੂੰ ਵਧਾਉਂਦਾ ਹੈ ਅਤੇ ਜ਼ਹਿਰ ਨੂੰ ਹਟਾਉਂਦਾ ਨਹੀਂ ਹੈ। ਬਦਲੇ ਵਿੱਚ ਅੰਗ ਨੂੰ ਅਚਲ ਕਰਨਾ।"
+        },
+        {
+          "myth": "ਕੰਟੇ ਵਾਲਾ ਟਰਨਿਕੇਟ ਜ਼ਹਿਰ ਦੇ ਫੈਲਾਵ ਨੂੰ ਰੋਕਦਾ ਹੈ।",
+          "fact": "ਕੰਟੇ ਵਾਲੇ ਟਰਨਿਕੇਟ ਖੂਨ ਦਾ ਸੁਧਾ ਬੰਦ ਕਰਦੇ ਹਨ, ਟਿਸ਼ੂ ਦੀ ਮੌਤ ਪੈਦਾ ਕਰਦੇ ਹਨ ਅਤੇ ਅਮਪੁਟੇਸ਼ਨ ਦਾ ਖਤਰਾ ਪੈਦਾ ਕਰਦੇ ਹਨ। ਜੇਕਰ ਨਿਰਦੇਸ਼ਿਤ ਕੀਤਾ ਜਾਵੇ ਤਾਂ ਢਿੱਲ ਦਬਾਅ ਬੈਂਡਿਡੇਜ ਵਰਤੋ ਅਤੇ ਹਸਪਤਾਲ ਦੇ ਲਈ ਜਲਦੀ ਕਰੋ।"
+        },
+        {
+          "myth": "ਸਾਰੇ ਵਿਭਿੰਨ ਪ੍ਰਕਾਰ ਦੇ ਨਾਗਨ ਹਨ।",
+          "fact": "ਭਾਰਤ ਵਿੱਚ 300+ ਨਾਗਨ ਪ੍ਰਕਾਰਾਂ ਵਿੱਚੋਂ ਕੇਵਲ 60 ਨਾਗਨ ਜ਼ਹਿਰ ਪੈਦਾ ਕਰਦੇ ਹਨ। ਭਾਰਤ ਦੇ \"ਬਿਗ ਫੋਰ\" - ਰੱਸਲ ਦਾ ਵਾਈਪਰ, ਸਾਓ-ਸਕੇਲਡ ਵਾਈਪਰ, ਕਾਮਨ ਕ੍ਰੇਟ, ਸਪੈਕਟੇਕਲ ਕੋਬਰਾ - ਜ਼ਿਆਦਤਰ ਮੌਤਾਂ ਦਾ ਕਾਰਨ ਬਣਦੇ ਹਨ।"
+        }
+      ],
+      "resources": [
+        {
+          "title": "ਸੂਰਮਾ ਫਟੇ ਐਮਰਜੈਂਸੀ ਪੋਸਟਰ।",
+          "category": "ਪੋਸਟਰ।",
+          "desc": "ਕਲਿਨਿਕਾਂ ਅਤੇ ਪਿੰਡਾਂ ਲਈ ਵਾਲ ਤੇ ਲਗਾਉਣਯੋਗ A2 ਐਮਰਜੈਂਸੀ ਸੰਦਰਭ ਪੋਸਟਰ।"
+        },
+        {
+          "title": "ਪਹਿਲੀ-ਗੋਲੀ ਦਾ ਬ੍ਰੋਸ਼ਰ (ਬਹੁਭਾਸ਼ੀ)।",
+          "category": "ਬ੍ਰੋਸ਼ਰ।",
+          "desc": "9 ਭਾਰਤੀ ਭਾਸ਼ਾਵਾਂ ਵਿੱਚ 8-ਪੇਜ ਦੀ ਗਾਈਡ।"
+        },
+        {
+          "title": "ਜ਼ਹਿਰ ਫਟੇ ਜਾਣਕਾਰੀ ਕਾਰਟੂਨ।",
+          "category": "ਕਾਮਿਕਸ",
+          "desc": "ਸਕੂਲਾਂ ਅਤੇ ਪਿੰਨ ਵਾਸੀਆਂ ਲਈ ਮਨੋਰੰਜਕ ਕਾਮਿਕ ਸਟ੍ਰਿਪ"
+        },
+        {
+          "title": "ਡਾਕਟਰੀ ਟ੍ਰੇਨਿੰਗ ਮੈਨੂਅਲ",
+          "category": "ਟ੍ਰੇਨਿੰਗ",
+          "desc": "ਸੰਪੂਰਨ ASV ਪ੍ਰਬੰਧਨ ਪ੍ਰੋਟੋਕੋਲ"
+        },
+        {
+          "title": "ASVS ਪੁਨਰਸਥਾਪਨਾ ਵੀਡੀਓ",
+          "category": "ਵੀਡੀਓ",
+          "desc": "ਸਿਹਤ ਕਾਮੀਆਂ ਲਈ ਟਪਕਰੇ ਵਿੱਡੀਓ ਗਾਈਡ"
+        },
+        {
+          "title": "ਐਮਰਜੈਂਸੀ ਰਿਸਪਾਂਸ ਚੈਕਲਿਸਟ",
+          "category": "ਗਾਂਇਡਸ",
+          "desc": "ASHA ਕਰਮਚਾਰੀਆਂ ਲਈ ਤੁਰੰਤ ਸੰਦਰਭ ਕਾਰਡ"
+        }
+      ],
+      "impactStats": [
+        {
+          "label": "ਤਬਾਹੀ ਕਾਰਾਂ",
+          "suffix": "+"
+        },
+        {
+          "label": "ਤਬ ਵੀ ਕਾਮੀ",
+          "suffix": "+"
+        },
+        {
+          "label": "ਪਿੰਡ ਪਹੁੰਚੇ",
+          "suffix": "+"
+        },
+        {
+          "label": "ਜਾਗਰੂਕਤਾ ਸੈਸ਼ਨ",
+          "suffix": "+"
+        },
+        {
+          "label": "ਸ਼ਹਿਰਾਂ ਦਾ ਕਵਰਾ",
+          "suffix": "+"
+        },
+        {
+          "label": "ਸਾਥੀ NGOs",
+          "suffix": "+"
+        },
+        {
+          "label": "ਨਿਰਮਾਣ ਯੂਨਿਟ"
+        },
+        {
+          "label": "ਮਜ਼ੂਬਤ ਫੀਲਡ ਫੋਰਸ",
+          "suffix": "+"
+        }
+      ],
+      "heroStats": [
+        {
+          "label": "ਤਬਾਹੀ ਕਾਰਾਂ",
+          "suffix": "+"
+        },
+        {
+          "label": "ਕਾਮੀਆਂ ਦੀ ਟ੍ਰੇਨਿੰਗ",
+          "suffix": "+"
+        },
+        {
+          "label": "ਗਾਂਵਾਂ ਦੀ ਪੁੱਜ",
+          "suffix": "+"
+        },
+        {
+          "label": "ਸਰਗਰਮ ਸੇਵਕ",
+          "suffix": "+"
+        }
+      ],
+      "states": [
+        {
+          "code": "ਐਮ ਐਚ",
+          "name": "ਮਹਾਰਾਸ਼ਟਰ"
+        },
+        {
+          "code": "ਕੇ ਏ",
+          "name": "ਕਾਰਨਾਟਕ"
+        },
+        {
+          "code": "ਟੀ ਐਨ",
+          "name": "ਤਮਿਲ ਨਾਡੂ"
+        },
+        {
+          "code": "ਏ ਪੀ",
+          "name": "ਅੰਧਰ ਪ੍ਰਦੇਸ਼"
+        },
+        {
+          "code": "ਟੀ ਜੀ",
+          "name": "ਤੇਲੰਗਾਣਾ"
+        },
+        {
+          "code": "ਐਮ ਪੀ",
+          "name": "ਮਧਿਆ ਪ੍ਰਦੇਸ਼"
+        },
+        {
+          "code": "ਓ ਡੀ",
+          "name": "ਉਡੀਸ਼ਾ"
+        }
+      ],
+      "footer": {
+        "tagline": "ਸਾਅਪ ਦਾ ਵਾਰ, ਅਸਪਤਾਲ ਵਿੱਚ ਹੀ ਉਪਚਾਰ",
+        "description": "ਭਾਰਤ ਦੀ ਰਾਸ਼ਟਰਗਤ ਸਾਅਪ ਦਾਗ੍ਰਹਿਣ ਜਾਣਕਾਰੀ ਮੁਹਿੰਮ — ਜਾਗਰੂਕਤਾ, ਪਹੁੰਚ ਅਤੇ ਸਮੇਂ ' ਤੇ ਹਸਪਤਾਲ ਦੇ ਇਲਾਜ ਰਾਹੀਂ ਜਿੰਦੀਆਂ ਬਚਾਉਣਾ।",
+        "columns": [
+          {
+            "title": "ਉਪਕਰਮ",
+            "links": [
+              {
+                "label": "ਬਾਰੇ"
+              },
+              {
+                "label": "ਐਮਰਜੈਂਸੀ ਗਾਈਡ"
+              },
+              {
+                "label": "ਮਿਥ ਅਤੇ ਤਥਯ"
+              },
+              {
+                "label": "ਸਾਧਨ"
+              }
+            ]
+          },
+          {
+            "title": "ਸਹਿਯੋਗ",
+            "links": [
+              {
+                "label": "ਕੁਇਜ਼ ਲਓ"
+              },
+              {
+                "label": "ਸਾਡ ਨਾਲ ਭਾਗੀਦਾਰੀ करो"
+              },
+              {
+                "label": "ਗੈਰ ਸਰਕਾਰੀ ਸੰਵੈਧਾਨਿਕ"
+              },
+              {
+                "label": "ਸੇਵਕ"
+              },
+              {
+                "label": "ਪ੍ਰਭਾਵ ਕਥਾਵਾਂ"
+              },
+              {
+                "label": "ਰਿਪੋਰਟਾਂ"
+              }
+            ]
+          },
+          {
+            "title": "ਕਾਨੂੰਨੀ",
+            "links": [
+              {
+                "label": "ਗੋਪਨੀਤਾ ਨੀਤੀ"
+              },
+              {
+                "label": "ਸੇਵਾ ਦੀਆਂ ਸ਼ਰਤਾਂ"
+              },
+              {
+                "label": "ਕੂڪي ਨੀਤੀ"
+              }
+            ]
+          }
+        ],
+        "copyright": "© 2025 ਭਾਰਤ ਸੇਰਮਸ ਅਤੇ ਟਿਕਾਕਰਣ ਲਿਮਟਿਡ। ਸਾਰੇ ਅਧਿਕਾਰ ਸੰਰਕਸ਼ਿਤ ਹਨ।"
+      },
+      "ngos": [
+        {
+          "name": "ਐੱਸਐੱਚਈ ਫਾਉਂਡੇਸ਼ਨ",
+          "desc": "ਪਿੰਡੀਆ ਮਹਾਰਾਸ਼ਟਰ ਵਿੱਚ ਸਾਂਝੀ ਸਿਹਤ ਅਤੇ ਜਾਗਰੂਕਤਾ"
+        },
+        {
+          "name": "ਸਰਪ ਸਾਥੀ",
+          "desc": "ਕਾਰਨਾਟਕ ਅਤੇ ਤਾਮਿਲਨਾਡੂ ਵਿੱਚ ਨਾਖੀ ਬਚਾਅ ਅਤੇ ਪਿੰਡ ਦੀ ਸਿੱਖਿਆ"
+        },
+        {
+          "name": "ਨਿਸਰਗ ਫਾਉਂਡੇਸ਼ਨ",
+          "desc": "ਵਾਈਲਡਲਾਈਫ ਸੰਰਕਸ਼ਣ ਅਤੇ ਨਾਖੀ ਦੰਸ਼ ਦੌਰਾਨ ਜਾਗਰੂਕਤਾ ਮੁਹਿੰਮਾਂ"
+        }
+      ]
+    },
+    "bn": {
+      "hero": {
+        "title": "ভারতের বিভিন্ন স্থানে সাপের কামড়ে জীবন বাঁচানো",
+        "subtitle": "প্রতি মিনিট গুরুত্বপূর্ণ। সচেনতা, প্রবেশাধিকার, এবং যোগাযোগের মাধ্যমে, বি এস ভি কমিউনিটিকে দ্রুত কাজ করতে এবং জীবন বাঁচাতে সাহায্য করছে।",
+        "leftTop": "ভারত হারায়",
+        "bigNumber": "৫০,০০০",
+        "leftBottom": "প্রতি বছর সাপের কামড়ে জীবন",
+        "rightMain": "সাপের আক্রমণ,",
+        "rightSub": "হাসপাতালে চিকিৎসা!",
+        "tagline": "সাপের কামড়? শুধুমাত্র হাসপাতালই সঠিক চিকিৎসা দিতে পারে।"
+      },
+      "about": {
+        "story": "ভারতে সাপের কামড় একটি নিরব জরুরি অবস্থা। প্রতি বছর, আনুমানিক ৫৮,০০০ জীবন সাপের কামড়ে হারিয়ে যায় - এর বেশিরভাগই সময়মত হাসপাতালে চিকিৎসা দ্বারা প্রতিরোধযোগ্য। \"সাপের আক্রমণ, হাসপাতালে চিকিৎসা\" প্রচারণা নির্ভর করে কাহিনীতে পরিবর্তন আনতে: হার্বস থেকে হাসপাতাল, ভয় থেকে সত্য, বিলম্ব থেকে নীরব সিদ্ধান্ত।",
+        "mission": "ভারতের ২০৩০ সালের মধ্যে প্রতিরোধযোগ্য সাপের কামড়ের মৃত্যুর সংখ্যা শূন্য করতে সচেতনতা, শিক্ষা এবং প্রতিটি প্রাথমিক স্বাস্থ্য কেন্দ্রে মানসম্মত অ্যান্টি-স্নেক ভেনম (এএসভি) নিশ্চিত করতে।",
+        "vision": "একটি জাতি যেখানে সাপের কামড়ে কোনো জীবন হারায় না - যেখানে প্রতিটি গ্রাম চিহ্নগুলি জানে, প্রতিটি চিকিৎসক প্রশিক্ষিত, এবং প্রতিটি হাসপাতাল প্রস্তুত।",
+        "objectives": [
+          "তাত্ক্ষণিক হাসপাতালে ভর্তি হওয়ার জন্য আচরণ পরিবর্তন করুন",
+          "সব স্তরে স্বাস্থ্যকর্মীদের প্রশিক্ষিত করুন",
+          "মাঠ পর্যায়ের কর্মসূচির মাধ্যমে গ্রামীণ সম্প্রদায়কে শিক্ষিত করুন",
+          "এনজিও, সরকার, এবং সিআরএসআর সংগঠনের সাথে অংশীদারিত্ব করুন",
+          "ভারতের প্রতিটি স্থানে এএসভির প্রবেশাধিকার এবং সামর্থ্য নিশ্চিত করুন"
+        ],
+        "burden": "৫৮,০০০ আনুমানিক মৃত্যু প্রতি বছর | প্রতি বছর ১.২ মিলিয়ন কামড় | ৭০% মৃত্যু সময়মত এএসভির সাথে প্রতিরোধযোগ্য"
+      },
+      "emergencyDos": [
+        {
+          "title": "শান্ত থাকুন",
+          "desc": "উদ্বেগ হার্টের গতি বাড়ায় এবং বিষ দ্রুত ছড়িয়ে দেয়। আক্রান্ত ব্যক্তিকে স্থির ও আশ্বস্ত রাখুন।"
+        },
+        {
+          "title": "অঙ্গটি অচল করুন",
+          "desc": "একটি স্প্লিন্ট বা স্লিং ব্যবহার করুন। কামড়ানো অঙ্গটি হৃদয়ের স্তরের নিচে রাখুন।"
+        },
+        {
+          "title": "টাইট আইটেমগুলো সরান",
+          "desc": "কামড়ের কাছে আংটি, ঘড়ি, পায়ের বন্ধন এবং টাইট পোশাক খুলে ফেলুন - ফুলে যাওয়া ঘটবে।"
+        },
+        {
+          "title": "নিকটতম হাসপাতালে পৌঁছান",
+          "desc": "তাত্ক্ষণিকভাবে একটি গাড়িতে পরিবহন করুন। সময় = জীবন। অপেক্ষা করবেন না, বিলম্ব করবেন না।"
+        },
+        {
+          "title": "সাপটি লক্ষ্য করুন",
+          "desc": "রঙ, আকার, প্যাটার্ন মনে রাখুন (এটি ধরার চেষ্টা করবেন না)। নিরাপদ দূরত্ব থেকে একটি ছবি সাহায্য করে।"
+        },
+        {
+          "title": "এএসভি চিকিৎসা সন্ধান করুন",
+          "desc": "অ্যান্টি-স্নেক ভেনম (এএসভি) হল একমাত্র প্রমাণিত চিকিৎসা। এটি অধিকাংশ হাসপাতালে উপলব্ধ।"
+        }
+      ],
+      "emergencyDonts": [
+        {
+          "title": "কামড়ের স্থানটিকে কাটবেন না",
+          "desc": "কাটা সংক্রমণ সৃষ্টি করে এবং বিষ অপসারণ করে না।"
+        },
+        {
+          "title": "বিষ শুষে নেবেন না",
+          "desc": "এটি উদ্ধারকর্তার জন্য অকার্যকর এবং বিপজ্জনক।"
+        },
+        {
+          "title": "গাছপালা বা পেস্ট প্রয়োগ করবেন না",
+          "desc": "কোনো প্রথাগত প্রতিকার বিষের ক্রিয়াকে নিষ্ক্রিয় করে না। এগুলি প্রকৃত চিকিৎসায় বিলম্ব ঘটায়।"
+        },
+        {
+          "title": "টাইট টুর্নিকেট ব্যবহার করবেন না",
+          "desc": "এগুলি টিস্যু মৃত্যুর এবং অঙ্গচ্ছেদের ঝুঁকি সৃষ্টি করে।"
+        },
+        {
+          "title": "চিকিৎসায় বিলম্ব করবেন না",
+          "desc": "প্রতি মিনিট গুরুত্বপূর্ণ। দ্রুত হাসপাতালে যান।"
+        },
+        {
+          "title": "বিশ্বাস নিরাময়কারীকে দেখবেন না",
+          "desc": "বিশ্বাস নিরাময়কারীরা বিষের চিকিৎসা করতে পারে না। শুধুমাত্র ASV বিশিষ্ট হাসপাতালগুলো পারে।"
+        }
+      ],
+      "myths": [
+        {
+          "myth": "বিষটি ক্ষত স্থান থেকে শুষে নেওয়া যায়",
+          "fact": "বিষ শুষে নেওয়া বিপজ্জনক এবং অকার্যকর। এটি ক্ষতের মধ্যে ব্যাকটেরিয়া প্রবেশ করাতে পারে এবং উদ্ধারকারীকে ক্ষতি করতে পারে। হাসপাতলে দেওয়া ASV (অ্যান্টি-স্নেক ভেনম) বিষের কার্যকারিতা নিষ্ক্রিয় করতে পারে।"
+        },
+        {
+          "myth": "গাছপালা গ্রহণ এবং প্রথাগত ওষুধগুলি সাপের কামড় নিরাময় করতে পারে",
+          "fact": "কোনো গাছপালা বৈজ্ঞানিকভাবে সাপের বিষ নিষ্ক্রিয় করতে প্রমাণিত হয়নি। প্রথাগত চিকিৎসকদের কাছে যাওয়ার কারণে হাসপাতালে চিকিৎসায় বিলম্ব মৃত্যুর একটি প্রধান কারণ।"
+        },
+        {
+          "myth": "বিশ্বাস নিরাময়কারীরা সাপের কামড়ের শিকারকে বাঁচাতে পারেন",
+          "fact": "বিশ্বাস নিরাময় মূল্যবান সময় নষ্ট করে। বিষ দ্রুত কার্যকর হয় — প্রতিটি মিনিট হারানো বাঁচার সম্ভাবনা কমায়। সর্বদা শিকারীকে নিকটবর্তী হাসপাতালে দ্রুত নিয়ে যান।"
+        },
+        {
+          "myth": "ক্ষত কেটে এবং রক্ত ​​ফেললে বিষ অপসারিত হয়",
+          "fact": "ক্ষত কাটলে আরও ক্ষতি হয়, রক্তপাত বৃদ্ধি পায়, সংক্রমণের ঝুঁকি বাড়ে, এবং বিষ অপসারণ করে না। পরিবর্তে অঙ্গটি স্থিতিশীল করুন।"
+        },
+        {
+          "myth": "একটি টাইট টুর্নিকেট বিষের বিস্তার প্রতিরোধ করে",
+          "fact": "টাইট টুর্নিকেট রক্ত স্রোত কেটে দেয়, টিস্যু মৃত্যু সৃষ্টি করে, এবং অঙ্গচ্ছেদের দিকে নিয়ে যেতে পারে। নির্দেশনা অনুযায়ী একটি ঢিলা চাপের ব্যান্ডেজ ব্যবহার করুন এবং হাসপাতালে দ্রুত যান।"
+        },
+        {
+          "myth": "সকল সাপ বিষাক্ত।",
+          "fact": "ভারতের 300+ সাপ প্রজাতির মধ্যে শুধুমাত্র প্রায় 60টি বিষাক্ত। ভারতের \"বিগ ফোর\" — রাসেলের ভিপার, ছুরি-মাপের ভিপার, কমন ক্রেট, চশমা কোবরা — সবচেয়ে বেশি মৃত্যুর কারণ।"
+        }
+      ],
+      "resources": [
+        {
+          "title": "সাপের কামড় জরুরি পোস্টার",
+          "category": "পোস্টার",
+          "desc": "ক্লিনিক এবং গ্রামের জন্য দেয়াল-মাউন্টেবল A2 জরুরি প্রতিক্রিয়া পোস্টার"
+        },
+        {
+          "title": "প্রথম-সাহায্য ব্রোশিওর (বহুভাষী)",
+          "category": "ব্রোশিওর",
+          "desc": "9টি ভারতীয় ভাষায় 8 পৃষ্ঠার গাইড"
+        },
+        {
+          "title": "সাপের কামড় সচেতনতা কমিক",
+          "category": "কমিক্স",
+          "desc": "বিদ্যালয় এবং গ্রামীণ সম্প্রদায়ের জন্য আকর্ষণীয় কমিক স্ট্রিপ"
+        },
+        {
+          "title": "চিকিৎসক প্রশিক্ষণ ম্যানুয়াল",
+          "category": "প্রশিক্ষণ",
+          "desc": "সাম্প্রতিক ASV প্রশাসনের প্রোটোকল"
+        },
+        {
+          "title": "ASVS পুনর্গঠন ভিডিও",
+          "category": "ভিডিও",
+          "desc": "স্বাস্থ্যকর্মীদের জন্য পদক্ষেপ-অনুসারে ভিডিও গাইড"
+        },
+        {
+          "title": "জরুরি প্রতিক্রিয়া চেকলিস্ট",
+          "category": "গাইড",
+          "desc": "অাশা কর্মীদের জন্য দ্রুত রেফারেন্স কার্ড"
+        }
+      ],
+      "impactStats": [
+        {
+          "label": "জীবন প্রভাবিত হয়েছে",
+          "suffix": "+"
+        },
+        {
+          "label": "স্বাস্থ্যকর্মী প্রশিক্ষিত",
+          "suffix": "+"
+        },
+        {
+          "label": "পল্লী পৌঁছানো",
+          "suffix": "+"
+        },
+        {
+          "label": "সচেতনতা সেশন",
+          "suffix": "+"
+        },
+        {
+          "label": "শহর ঢোকানো",
+          "suffix": "+"
+        },
+        {
+          "label": "পার্টনার NGO",
+          "suffix": "+"
+        },
+        {
+          "label": "কারখানা ইউনিট"
+        },
+        {
+          "label": "শক্তিশালী মাঠ বাহিনী",
+          "suffix": "+"
+        }
+      ],
+      "heroStats": [
+        {
+          "label": "জীবন প্রভাবিত হয়েছে",
+          "suffix": "+"
+        },
+        {
+          "label": "কর্মী প্রশিক্ষিত",
+          "suffix": "+"
+        },
+        {
+          "label": "গাঁও পৌঁছেছে",
+          "suffix": "+"
+        },
+        {
+          "label": "সক্রিয় স্বেচ্ছাসেবক",
+          "suffix": "+"
+        }
+      ],
+      "states": [
+        {
+          "code": "মহারাষ্ট্র",
+          "name": "মহারাষ্ট্র"
+        },
+        {
+          "code": "কর্ণাটক",
+          "name": "কর্ণাটক"
+        },
+        {
+          "code": "তামিলনাড়ু",
+          "name": "তামিলনাড়ু"
+        },
+        {
+          "code": "আন্ধ্র প্রদেশ",
+          "name": "আন্ধ্র প্রদেশ"
+        },
+        {
+          "code": "তেলঙ্গানা",
+          "name": "তেলঙ্গানা"
+        },
+        {
+          "code": "মধ্যপ্রদেশ",
+          "name": "মধ্যপ্রদেশ"
+        },
+        {
+          "code": "ওডিশা",
+          "name": "ওডিশা"
+        }
+      ],
+      "footer": {
+        "tagline": "সাপের সংকট, হাসপাতালে চিকিৎসা",
+        "description": "ভারতের জাতীয় সাপের কামড় সচেতনতা উদ্যোগ — সচেতনতা, প্রবেশাধিকার এবং সময়মতো হাসপাতালে চিকিৎসার মাধ্যমে জীবন রক্ষা।",
+        "columns": [
+          {
+            "title": "মহারণ",
+            "links": [
+              {
+                "label": "সম্পর্কে"
+              },
+              {
+                "label": "জরুরী গাইড"
+              },
+              {
+                "label": "মিথ vs সত্য"
+              },
+              {
+                "label": "সম্পদ"
+              }
+            ]
+          },
+          {
+            "title": "জড়িত হন",
+            "links": [
+              {
+                "label": "কোশ্চেন নিন"
+              },
+              {
+                "label": "আমাদের সাথে অংশীদারিত্ব করুন"
+              },
+              {
+                "label": "এনজিও নেটওয়ার্ক"
+              },
+              {
+                "label": "স্বেচ্ছাসেবক"
+              },
+              {
+                "label": "প্রভাবের গল্প"
+              },
+              {
+                "label": "প্রতিবেদন"
+              }
+            ]
+          },
+          {
+            "title": "আইনগত",
+            "links": [
+              {
+                "label": "গোপনীয়তা নীতি"
+              },
+              {
+                "label": "পরিষেবার শর্তাবলী"
+              },
+              {
+                "label": "কুকি নীতি"
+              }
+            ]
+          }
+        ],
+        "copyright": "© 2025 ভারত সেরামস এন্ড ভ্যাকসিনস লিমিটেড। সর্বস্বত্ব সংরক্ষিত।"
+      },
+      "ngos": [
+        {
+          "name": "SHE ফাউন্ডেশন",
+          "desc": "গ্রামীণ মহারাষ্ট্রে স্বাস্থ্য এবং সচেতনতা"
+        },
+        {
+          "name": "সার্প সাথী",
+          "desc": "কর্ণাটক এবং তামিলনাড়ুর সাপ উদ্ধার এবং গ্রামীণ শিক্ষা"
+        },
+        {
+          "name": "নিসর্গ ফাউন্ডেশন",
+          "desc": "বন্যজীবন সংরক্ষণ এবং সাপের কামড় সম্পর্কে সচেতনতা প্রচারণা"
+        }
+      ]
+    }
+  },
+  "translationStatus": {
+    "hi": {
+      "status": "pending_review",
+      "generatedBy": "ai",
+      "generatedByUser": "Super Administrator",
+      "generatedAt": "2026-06-17T04:23:04.024Z"
+    },
+    "mr": {
+      "status": "pending_review",
+      "generatedBy": "ai",
+      "generatedByUser": "Super Administrator",
+      "generatedAt": "2026-06-17T04:23:07.706Z"
+    },
+    "kn": {
+      "status": "pending_review",
+      "generatedBy": "ai",
+      "generatedByUser": "Super Administrator",
+      "generatedAt": "2026-06-17T04:23:07.714Z"
+    },
+    "ta": {
+      "status": "pending_review",
+      "generatedBy": "ai",
+      "generatedByUser": "Super Administrator",
+      "generatedAt": "2026-06-17T04:23:07.722Z"
+    },
+    "te": {
+      "status": "pending_review",
+      "generatedBy": "ai",
+      "generatedByUser": "Super Administrator",
+      "generatedAt": "2026-06-17T04:23:07.731Z"
+    },
+    "or": {
+      "status": "pending_review",
+      "generatedBy": "ai",
+      "generatedByUser": "Super Administrator",
+      "generatedAt": "2026-06-17T04:23:07.739Z"
+    },
+    "pa": {
+      "status": "pending_review",
+      "generatedBy": "ai",
+      "generatedByUser": "Super Administrator",
+      "generatedAt": "2026-06-17T04:23:07.756Z"
+    },
+    "bn": {
+      "status": "pending_review",
+      "generatedBy": "ai",
+      "generatedByUser": "Super Administrator",
+      "generatedAt": "2026-06-17T04:23:07.770Z"
+    }
+  },
+  "heroSlides": [
+    {
+      "id": "hero-1782105891224",
+      "image": "/api/media/d00808ea-71b3-4b46-805e-4a6f92ff60c0",
+      "order": 1,
+      "active": true,
+      "desktopImage": "/api/media/d00808ea-71b3-4b46-805e-4a6f92ff60c0",
+      "mobileImage": "/api/media/d00808ea-71b3-4b46-805e-4a6f92ff60c0"
+    },
+    {
+      "id": "hero-1782107239259",
+      "image": "/api/media/37a166e3-9dfa-4e58-805d-4a25f4f0d9af",
+      "order": 2,
+      "active": true,
+      "desktopImage": "/api/media/37a166e3-9dfa-4e58-805d-4a25f4f0d9af",
+      "mobileImage": "/api/media/37a166e3-9dfa-4e58-805d-4a25f4f0d9af"
+    },
+    {
+      "id": "hero-1782106053495",
+      "image": "/api/media/d00808ea-71b3-4b46-805e-4a6f92ff60c0",
+      "order": 3,
+      "active": true,
+      "desktopImage": "/api/media/d00808ea-71b3-4b46-805e-4a6f92ff60c0"
+    }
+  ],
+  "awareness": {
+    "items": [
+      {
+        "title": "test",
+        "desc": "test",
+        "label": "test",
+        "image": "/api/media/816c3564-3243-49e9-b145-a8a7a93aafd1",
+        "href": ""
+      }
+    ]
   }
 }
