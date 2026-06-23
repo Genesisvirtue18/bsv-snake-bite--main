@@ -1,0 +1,505 @@
+{
+  "hero": {
+    "image": "https://customer-assets.emergentagent.com/job_15106444-6c2b-464f-9e93-4c1b70dc4182/artifacts/gna0d471_image.png",
+    "title": "Saving Lives From Snakebite Across India",
+    "subtitle": "Every minute matters. Through awareness, access, and communication, BSV is helping communities act fast and save lives.",
+    "cta1": "",
+    "cta2": ""
+  },
+  "heroStats": [
+    {
+      "id": "lives",
+      "label": "Lives Impacted",
+      "value": 250000,
+      "suffix": "+",
+      "icon": "Heart"
+    },
+    {
+      "id": "workers",
+      "label": "Workers Trained",
+      "value": 12500,
+      "suffix": "+",
+      "icon": "GraduationCap"
+    },
+    {
+      "id": "villages",
+      "label": "Villages Reached",
+      "value": 3800,
+      "suffix": "+",
+      "icon": "MapPin"
+    },
+    {
+      "id": "volunteers",
+      "label": "Active Volunteers",
+      "value": 4200,
+      "suffix": "+",
+      "icon": "Users"
+    }
+  ],
+  "logos": {
+    "partners": "https://customer-assets.emergentagent.com/job_15106444-6c2b-464f-9e93-4c1b70dc4182/artifacts/ou3picpg_image.png"
+  },
+  "impactStats": [
+    {
+      "id": "lives",
+      "label": "Lives Impacted",
+      "value": 250000,
+      "suffix": "+",
+      "icon": "Heart"
+    },
+    {
+      "id": "workers",
+      "label": "Healthcare Workers Trained",
+      "value": 12500,
+      "suffix": "+",
+      "icon": "Stethoscope"
+    },
+    {
+      "id": "villages",
+      "label": "Villages Reached",
+      "value": 3800,
+      "suffix": "+",
+      "icon": "MapPin"
+    },
+    {
+      "id": "sessions",
+      "label": "Awareness Sessions",
+      "value": 4200,
+      "suffix": "+",
+      "icon": "Megaphone"
+    },
+    {
+      "id": "cities",
+      "label": "Cities Covered",
+      "value": 180,
+      "suffix": "+",
+      "icon": "Building2"
+    },
+    {
+      "id": "ngos",
+      "label": "Partner NGOs",
+      "value": 45,
+      "suffix": "+",
+      "icon": "Handshake"
+    },
+    {
+      "id": "units",
+      "label": "Manufacturing Units",
+      "value": 6,
+      "suffix": "",
+      "icon": "Factory"
+    },
+    {
+      "id": "field",
+      "label": "Strong Field Force",
+      "value": 2200,
+      "suffix": "+",
+      "icon": "Users"
+    }
+  ],
+  "states": [
+    {
+      "code": "MH",
+      "name": "Maharashtra",
+      "lives": 58000,
+      "villages": 720,
+      "sessions": 880,
+      "color": "#de2527"
+    },
+    {
+      "code": "KA",
+      "name": "Karnataka",
+      "lives": 42000,
+      "villages": 540,
+      "sessions": 620,
+      "color": "#151f6d"
+    },
+    {
+      "code": "TN",
+      "name": "Tamil Nadu",
+      "lives": 38000,
+      "villages": 480,
+      "sessions": 580,
+      "color": "#de2527"
+    },
+    {
+      "code": "AP",
+      "name": "Andhra Pradesh",
+      "lives": 32000,
+      "villages": 410,
+      "sessions": 490,
+      "color": "#151f6d"
+    },
+    {
+      "code": "TG",
+      "name": "Telangana",
+      "lives": 28000,
+      "villages": 360,
+      "sessions": 420,
+      "color": "#de2527"
+    },
+    {
+      "code": "MP",
+      "name": "Madhya Pradesh",
+      "lives": 30000,
+      "villages": 520,
+      "sessions": 540,
+      "color": "#151f6d"
+    },
+    {
+      "code": "OD",
+      "name": "Odisha",
+      "lives": 22000,
+      "villages": 380,
+      "sessions": 360,
+      "color": "#de2527"
+    }
+  ],
+  "about": {
+    "story": "Snakebite is a silent emergency in India. Every year, an estimated 58,000 lives are lost to snakebite — most of them preventable with timely hospital treatment. The campaign “Saap Ka Vaar, Aspataal Mein Hi Upchaar” was born to change the narrative: from herbs to hospitals, from fear to facts, from delay to decisive action.",
+    "mission": "To eliminate preventable snakebite deaths in India by 2030 through awareness, education, and ensuring access to quality anti-snake venom (ASV) at every primary health center.",
+    "vision": "A nation where no life is lost to snakebite — where every village knows the signs, every clinician is trained, and every hospital is ready.",
+    "objectives": [
+      "Drive behavior change toward immediate hospitalization",
+      "Train healthcare professionals at all levels",
+      "Educate rural communities through grassroots activations",
+      "Partner with NGOs, governments, and CSR organizations",
+      "Make ASV accessible and affordable across India"
+    ],
+    "burden": "58,000 estimated deaths annually | 1.2 million bites every year | 70% deaths preventable with timely ASV"
+  },
+  "myths": [
+    {
+      "id": 1,
+      "myth": "Venom can be sucked out of the wound",
+      "fact": "Sucking venom is dangerous and ineffective. It can introduce bacteria into the wound and harm the rescuer. Only ASV (Anti-Snake Venom) administered in a hospital can neutralize venom."
+    },
+    {
+      "id": 2,
+      "myth": "Herbal remedies and traditional medicines can cure snakebite",
+      "fact": "No herb has been scientifically proven to neutralize snake venom. Delay in hospital treatment by visiting traditional healers is a leading cause of death."
+    },
+    {
+      "id": 3,
+      "myth": "Faith healers can save a snakebite victim",
+      "fact": "Faith healing wastes precious time. Venom acts fast — every minute lost reduces survival chances. Always rush the victim to the nearest hospital."
+    },
+    {
+      "id": 4,
+      "myth": "Cutting the wound and bleeding it out removes venom",
+      "fact": "Cutting the wound causes more harm, increases bleeding, infection risk, and does NOT remove venom. Immobilize the limb instead."
+    },
+    {
+      "id": 5,
+      "myth": "Tying a tight tourniquet stops venom spread",
+      "fact": "Tight tourniquets cut blood flow, cause tissue death, and may lead to amputation. Use a loose pressure bandage if instructed and rush to hospital."
+    },
+    {
+      "id": 6,
+      "myth": "All snakes are venomous",
+      "fact": "Only about 60 of India’s 300+ snake species are venomous. India’s “Big Four” — Russell’s Viper, Saw-scaled Viper, Common Krait, Spectacled Cobra — cause most fatalities."
+    }
+  ],
+  "emergencyDos": [
+    {
+      "title": "Stay Calm",
+      "desc": "Panic increases heart rate and spreads venom faster. Keep the victim still and reassured."
+    },
+    {
+      "title": "Immobilize the Limb",
+      "desc": "Use a splint or sling. Keep the bitten limb below heart level."
+    },
+    {
+      "title": "Remove Tight Items",
+      "desc": "Take off rings, watches, anklets, and tight clothing near the bite — swelling will follow."
+    },
+    {
+      "title": "Reach Nearest Hospital",
+      "desc": "Transport immediately in a vehicle. Time = life. Do not wait, do not delay."
+    },
+    {
+      "title": "Note the Snake",
+      "desc": "Remember color, size, pattern (do NOT try to catch it). A photo from a safe distance helps."
+    },
+    {
+      "title": "Seek ASV Treatment",
+      "desc": "Anti-Snake Venom (ASV) is the only proven treatment. It is available at most hospitals."
+    }
+  ],
+  "emergencyDonts": [
+    {
+      "title": "Do NOT Cut the Wound",
+      "desc": "Cutting causes infection and does not remove venom."
+    },
+    {
+      "title": "Do NOT Suck the Venom",
+      "desc": "It is ineffective and dangerous for the rescuer."
+    },
+    {
+      "title": "Do NOT Apply Herbs or Pastes",
+      "desc": "No traditional remedy neutralizes venom. They delay real treatment."
+    },
+    {
+      "title": "Do NOT Use Tight Tourniquets",
+      "desc": "They cause tissue death and amputation risk."
+    },
+    {
+      "title": "Do NOT Delay Treatment",
+      "desc": "Every minute counts. Rush to hospital immediately."
+    },
+    {
+      "title": "Do NOT Visit Faith Healers",
+      "desc": "Faith healers cannot treat venom. Only hospitals with ASV can."
+    }
+  ],
+  "resources": [
+    {
+      "id": "r1",
+      "title": "Snakebite Emergency Poster",
+      "category": "Posters",
+      "desc": "Wall-mountable A2 emergency response poster for clinics and villages",
+      "preview": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600",
+      "file": "#"
+    },
+    {
+      "id": "r2",
+      "title": "First-Aid Brochure (Multilingual)",
+      "category": "Brochures",
+      "desc": "8-page guide in 9 Indian languages",
+      "preview": "https://images.unsplash.com/photo-1532153975070-2e9ab71f1b14?w=600",
+      "file": "#"
+    },
+    {
+      "id": "r3",
+      "title": "Snakebite Awareness Comic",
+      "category": "Comics",
+      "desc": "Engaging comic strip for schools and rural communities",
+      "preview": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600",
+      "file": "#"
+    },
+    {
+      "id": "r4",
+      "title": "Clinician Training Manual",
+      "category": "Training",
+      "desc": "Comprehensive ASV administration protocol",
+      "preview": "https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=600",
+      "file": "#"
+    },
+    {
+      "id": "r5",
+      "title": "ASVS Reconstitution Video",
+      "category": "Videos",
+      "desc": "Step-by-step video guide for healthcare professionals",
+      "preview": "https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=600",
+      "file": "#"
+    },
+    {
+      "id": "r6",
+      "title": "Emergency Response Checklist",
+      "category": "Guides",
+      "desc": "Quick reference card for ASHA workers",
+      "preview": "https://images.unsplash.com/photo-1631815588090-d4bfec5b1fe5?w=600",
+      "file": "#"
+    }
+  ],
+  "quiz": [
+    {
+      "q": "What is the FIRST thing you should do after a snakebite?",
+      "options": [
+        "Suck the venom out",
+        "Apply herbs",
+        "Stay calm and rush to hospital",
+        "Cut the wound"
+      ],
+      "correct": 2
+    },
+    {
+      "q": "Which of these is the only proven treatment for venomous snakebite?",
+      "options": [
+        "Herbal medicine",
+        "Anti-Snake Venom (ASV)",
+        "Prayer",
+        "Cold water"
+      ],
+      "correct": 1
+    },
+    {
+      "q": "Should you apply a tight tourniquet?",
+      "options": [
+        "Yes, always",
+        "No, never",
+        "Only on legs",
+        "Only for 5 mins"
+      ],
+      "correct": 1
+    },
+    {
+      "q": "How many people die from snakebite in India every year approximately?",
+      "options": [
+        "5,000",
+        "20,000",
+        "58,000",
+        "100,000"
+      ],
+      "correct": 2
+    },
+    {
+      "q": "Which is NOT one of India’s “Big Four” venomous snakes?",
+      "options": [
+        "Russell’s Viper",
+        "Common Krait",
+        "King Cobra",
+        "Saw-scaled Viper"
+      ],
+      "correct": 2
+    },
+    {
+      "q": "Where should a snakebite victim be treated?",
+      "options": [
+        "Faith healer",
+        "Home with herbs",
+        "Hospital immediately",
+        "Local pharmacy"
+      ],
+      "correct": 2
+    }
+  ],
+  "ngos": [
+    {
+      "name": "SHE Foundation",
+      "desc": "Community health and awareness across rural Maharashtra"
+    },
+    {
+      "name": "Sarpa Sathi",
+      "desc": "Snake rescue and rural education in Karnataka & Tamil Nadu"
+    },
+    {
+      "name": "Nisarg Foundation",
+      "desc": "Wildlife conservation and snakebite awareness drives"
+    }
+  ],
+  "contact": {
+    "email": "campaign@bsvindia.com",
+    "phone": "+91 22 6664 8000",
+    "address": "BSV Bharat Serums & Vaccines Ltd., Plot No. 16, Veera Industrial Estate, Andheri (W), Mumbai 400053, India"
+  },
+  "footer": {
+    "tagline": "Saap Ka Vaar, Aspataal Mein Hi Upchaar",
+    "description": "India’s National Snakebite Awareness Initiative — saving lives through awareness, access, and timely hospital treatment.",
+    "columns": [
+      {
+        "title": "Campaign",
+        "links": [
+          {
+            "label": "About",
+            "url": "#about"
+          },
+          {
+            "label": "Emergency Guide",
+            "url": "#emergency"
+          },
+          {
+            "label": "Myths vs Facts",
+            "url": "#myths"
+          },
+          {
+            "label": "Resources",
+            "url": "#resources"
+          }
+        ]
+      },
+      {
+        "title": "Engage",
+        "links": [
+          {
+            "label": "Take Quiz",
+            "url": "#quiz"
+          },
+          {
+            "label": "Partner With Us",
+            "url": "#partner"
+          },
+          {
+            "label": "NGO Network",
+            "url": "/ngo-network"
+          },
+          {
+            "label": "Volunteer",
+            "url": "/volunteer"
+          },
+          {
+            "label": "Impact Stories",
+            "url": "/impact-stories"
+          },
+          {
+            "label": "Reports",
+            "url": "/reports"
+          }
+        ]
+      },
+      {
+        "title": "Legal",
+        "links": [
+          {
+            "label": "Privacy Policy",
+            "url": "/privacy"
+          },
+          {
+            "label": "Terms of Service",
+            "url": "/terms"
+          },
+          {
+            "label": "Cookie Policy",
+            "url": "/cookies"
+          }
+        ]
+      }
+    ],
+    "social": {
+      "youtube": "https://youtube.com",
+      "facebook": "https://facebook.com",
+      "instagram": "https://instagram.com",
+      "linkedin": "https://linkedin.com",
+      "twitter": "https://twitter.com"
+    },
+    "copyright": "© 2025 Bharat Serums and Vaccines Ltd. All rights reserved."
+  },
+  "sections": {
+    "hero": {
+      "enabled": true,
+      "order": 1
+    },
+    "impact": {
+      "enabled": true,
+      "order": 2
+    },
+    "about": {
+      "enabled": true,
+      "order": 3
+    },
+    "emergency": {
+      "enabled": true,
+      "order": 4
+    },
+    "myths": {
+      "enabled": true,
+      "order": 5
+    },
+    "resources": {
+      "enabled": true,
+      "order": 6
+    },
+    "quiz": {
+      "enabled": true,
+      "order": 7
+    },
+    "partner": {
+      "enabled": true,
+      "order": 8
+    },
+    "contact": {
+      "enabled": true,
+      "order": 9
+    }
+  }
+}
