@@ -828,14 +828,31 @@ function AwarenessSection({ t }) {
 }
 
 function AccessSection({ t }) {
-  const icons = [BookOpen, Stethoscope, GraduationCap]
   const hrefs = ['#stories', '#outreach', '#resources']
+  const images = [
+    'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80&fit=crop',
+    'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80&fit=crop',
+    'https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?w=600&q=80&fit=crop',
+  ]
+  const labelColors = [BRAND.blue, BRAND.red, `linear-gradient(90deg, ${BRAND.red}, ${BRAND.blue})`]
+  const badges = ['Hands-on', 'KOL', 'Clinical']
   return (
     <section id="access" className="section-pad bg-slate-50">
       <div className="container mx-auto px-4">
         <SectionHeader badge={t.badges.access} title={t.access.title} subtitle={t.access.subtitle} />
         <div className="grid md:grid-cols-3 gap-6">
-          {t.access.items.map((it, i) => <PillarCard key={i} reverseGradient icon={icons[i] || BookOpen} title={it.title} desc={it.desc} href={hrefs[i]} />)}
+          {t.access.items.map((it, i) => (
+            <PictorialCard
+              key={i}
+              image={images[i]}
+              label={it.title}
+              labelColor={labelColors[i]}
+              title={it.title}
+              desc={it.desc}
+              href={hrefs[i]}
+              badge={badges[i]}
+            />
+          ))}
         </div>
       </div>
     </section>
@@ -843,14 +860,31 @@ function AccessSection({ t }) {
 }
 
 function CommunicationSection({ t }) {
-  const icons = [FileText, Video, ImageIcon]
   const hrefs = ['#resources', '#video', '#gallery']
+  const images = [
+    'https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=600&q=80&fit=crop',
+    'https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?w=600&q=80&fit=crop',
+    'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=600&q=80&fit=crop',
+  ]
+  const labelColors = [BRAND.red, BRAND.blue, `linear-gradient(90deg, ${BRAND.blue}, ${BRAND.red})`]
+  const badges = ['Print', 'Video', 'Visual']
   return (
     <section id="communication" className="section-pad bg-white">
       <div className="container mx-auto px-4">
         <SectionHeader badge={t.badges.communication} title={t.communication.title} subtitle={t.communication.subtitle} />
         <div className="grid md:grid-cols-3 gap-6">
-          {t.communication.items.map((it, i) => <PillarCard key={i} icon={icons[i] || FileText} title={it.title} desc={it.desc} href={hrefs[i]} />)}
+          {t.communication.items.map((it, i) => (
+            <PictorialCard
+              key={i}
+              image={images[i]}
+              label={it.title}
+              labelColor={labelColors[i]}
+              title={it.title}
+              desc={it.desc}
+              href={hrefs[i]}
+              badge={badges[i]}
+            />
+          ))}
         </div>
       </div>
     </section>
