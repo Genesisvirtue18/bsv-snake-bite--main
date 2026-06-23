@@ -544,7 +544,7 @@ function Hero({ content, t }) {
   return (
     <section
       id="home"
-      className="relative overflow-hidden pt-20 sm:pt-24 pb-8 sm:pb-12 bg-gradient-to-b from-slate-50 via-white to-slate-50"
+      className="relative overflow-hidden pt-20 sm:pt-24 pb-4 sm:pb-6 bg-gradient-to-b from-slate-50 via-white to-slate-50"
     >
       <div className="container mx-auto px-3 sm:px-4 lg:px-8">
         <div className="relative">
@@ -638,7 +638,7 @@ function HeroStatsSection({ content, t }) {
 
   return (
     <section className="bg-white border-b border-slate-100">
-      <div className="py-10 md:py-14">
+      <div className="py-6 md:py-8">
         {/* Mobile: horizontal scroll carousel — Desktop: 5-col grid */}
 
         {/* Mobile scroll strip */}
@@ -707,8 +707,8 @@ function HeroStatsSection({ content, t }) {
         </div>
 
         {/* Attractive quote block */}
-        <div className="mt-10 max-w-3xl mx-auto">
-          <div className="relative rounded-2xl px-8 md:px-12 py-7 text-center overflow-hidden"
+        <div className="mt-6 max-w-3xl mx-auto">
+          <div className="relative rounded-2xl px-6 md:px-10 py-5 text-center overflow-hidden"
             style={{ background: 'linear-gradient(135deg, #EFF8FF 0%, #F0FDF4 100%)', border: '1px solid #BFDBFE' }}>
             {/* Decorative quote mark */}
             <span className="absolute top-3 left-5 text-6xl font-serif leading-none select-none opacity-20" style={{ color: BRAND.deep }}>"</span>
@@ -739,7 +739,7 @@ function VideoSection({ videos, t }) {
   return (
     <section id="video" className="section-pad bg-white">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-10">
+        <div className="text-center mb-6">
           <span className="inline-block mb-2 text-[11px] font-bold uppercase tracking-[0.14em]" style={{ color: BRAND.deep }}>{t.badges.watch}</span>
           <h2 className="font-display text-[22px] md:text-[28px] font-bold mb-3 leading-tight" style={{ color: BRAND.navy }}>{t.video.title}</h2>
         </div>
@@ -785,9 +785,16 @@ function VideoSection({ videos, t }) {
         </div>
 
         {/* Watch More button */}
-        <div className="text-center mt-8">
-          <a href="/impact-stories" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200" style={{ background: BRAND.deep }}>
-            {t.video.watchMore || 'Watch More'} <ArrowRight className="w-4 h-4" />
+        <div className="text-center mt-5">
+          <a
+            href="https://www.youtube.com/@bsvindia/videos"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+            style={{ background: BRAND.deep }}
+          >
+            {t.video.watchMore || 'Watch More'}
+            <ArrowRight className="w-4 h-4" />
           </a>
         </div>
 
@@ -1351,7 +1358,7 @@ function Footer({ content, t, settings }) {
   const f = content?.footer || {}
   return (
     <footer className="text-white" style={{ background: `linear-gradient(135deg, ${BRAND.navy} 0%, ${BRAND.deep} 100%)` }}>
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-8">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           <div>
             <div className="font-display font-semibold text-xl mb-2">BSV Campaign</div>
