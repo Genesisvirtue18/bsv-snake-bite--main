@@ -12,7 +12,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Badge } from '@/components/ui/badge'
 import { motion } from 'framer-motion'
 import { toast } from 'sonner'
-import { Heart, GraduationCap, MapPin, Users, Megaphone, Building2, Stethoscope, Globe, Menu, X, Phone, Mail, ChevronRight, Lightbulb, Shield, ShieldAlert, Sparkles, Play, ArrowRight, BookOpen, Video, ImageIcon, Search, FileText, Activity, TrendingUp, Award } from 'lucide-react'
+import { Heart, GraduationCap, MapPin, Users, Megaphone, Building2, Stethoscope, Globe, Menu, X, Phone, Mail, ChevronRight, Lightbulb, Shield, ShieldAlert, Sparkles, Play, ArrowRight, BookOpen, Video, ImageIcon, Search, FileText, Activity, TrendingUp, Award, CheckCircle2 } from 'lucide-react'
 import { LANGUAGES, getT } from '@/lib/translations'
 import AnimatedCounter from '@/components/AnimatedCounter'
 import MiniIndiaMap from '@/components/MiniIndiaMap'
@@ -998,35 +998,101 @@ function GallerySection({ albums, t }) {
 }
 
 function MythsSection({ content, t }) {
-  const [flipped, setFlipped] = useState(null)
+  const [expanded, setExpanded] = useState(null)
+  const myths = content?.myths || []
+
+  const CATEGORIES = [
+    {
+      label: 'Physical Actions',
+      icon: ShieldAlert,
+      color: BRAND.red,
+      thumb: 'https://images.unsplash.com/photo-1603714228681-b399854b8f80?w=120&q=80&fit=crop',
+      ids: [1, 4],
+    },
+    {
+      label: 'Traditional Healing',
+      icon: Lightbulb,
+      color: BRAND.blue,
+      thumb: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=120&q=80&fit=crop',
+      ids: [2, 3],
+    },
+    {
+      label: 'Snake Facts & First Aid',
+      icon: Shield,
+      color: '#059669',
+      thumb: 'https://images.unsplash.com/photo-1518467437099-b2f8b7b71d8f?w=120&q=80&fit=crop',
+      ids: [5, 6],
+    },
+  ]
+
   return (
-    <section id="myths" className="section-pad bg-white">
+    <section id="myths" className="section-pad" style={{ background: '#EEF2FF' }}>
       <div className="container mx-auto px-4">
         <SectionHeader badge={t.badges.myths} title={t.myths.title} subtitle={t.myths.subtitle} />
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {(content?.myths || []).map(m => (
-            <div key={m.id} onClick={() => setFlipped(flipped === m.id ? null : m.id)} className="cursor-pointer" style={{ perspective: '1000px' }}>
-              <div className="relative w-full min-h-[280px] transition-transform duration-700" style={{ transformStyle: 'preserve-3d', transform: flipped === m.id ? 'rotateY(180deg)' : 'rotateY(0deg)' }}>
-                <div className="absolute inset-0" style={{ backfaceVisibility: 'hidden' }}>
-                  <Card className="h-full border-2 bg-gradient-to-br from-red-50 to-white shadow-lg hover:shadow-2xl" style={{ borderColor: BRAND.red }}>
-                    <CardContent className="p-6 h-full flex flex-col">
-                      <div className="flex items-center gap-2 mb-3"><ShieldAlert className="w-6 h-6" style={{ color: BRAND.red }} /><Badge className="border-0" style={{ background: BRAND.red }}>{t.myths.myth}</Badge></div>
-                      <p className="font-display font-semibold text-lg mb-4 flex-1" style={{ color: BRAND.blue }}>&ldquo;{m.myth}&rdquo;</p>
-                      <div className="flex items-center text-sm font-semibold" style={{ color: BRAND.red }}>{t.myths.tap} <ChevronRight className="w-4 h-4 ml-1" /></div>
-                    </CardContent>
-                  </Card>
+        <div className="grid md:grid-cols-3 gap-6">
+          {CATEGORIES.map((cat) => {
+            const CatIcon = cat.icon
+            const catMyths = myths.filter(m => cat.ids.includes(m.id))
+            return (
+              <div key={cat.label} className="bg-white rounded-2xl shadow-sm overflow-hidden">
+                {/* Category header */}
+                <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: cat.color + '18' }}>
+                      <CatIcon className="w-4 h-4" style={{ color: cat.color }} />
+                    </div>
+                    <span className="font-bold text-base" style={{ color: BRAND.blue }}>{cat.label}</span>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-slate-400" />
                 </div>
-                <div className="absolute inset-0" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
-                  <Card className="h-full border-2 border-green-600 bg-gradient-to-br from-green-50 to-white shadow-lg">
-                    <CardContent className="p-6 h-full flex flex-col">
-                      <div className="flex items-center gap-2 mb-3"><Lightbulb className="w-6 h-6 text-green-600" /><Badge className="bg-green-600 border-0">{t.myths.fact}</Badge></div>
-                      <p className="text-slate-700 leading-relaxed text-sm flex-1">{m.fact}</p>
-                    </CardContent>
-                  </Card>
+
+                {/* Myth items */}
+                <div className="divide-y divide-slate-100">
+                  {catMyths.map((m) => {
+                    const isOpen = expanded === m.id
+                    return (
+                      <div
+                        key={m.id}
+                        className="cursor-pointer hover:bg-slate-50 transition-colors duration-150"
+                        onClick={() => setExpanded(isOpen ? null : m.id)}
+                      >
+                        {/* Row */}
+                        <div className="flex gap-3 p-4">
+                          <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-slate-100">
+                            <img src={cat.thumb} alt="" className="w-full h-full object-cover" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-1.5 mb-1">
+                              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full text-white" style={{ background: BRAND.red }}>
+                                {t.myths.myth}
+                              </span>
+                            </div>
+                            <p className="font-semibold text-sm leading-snug line-clamp-2" style={{ color: BRAND.blue }}>
+                              &ldquo;{m.myth}&rdquo;
+                            </p>
+                            <div className="flex items-center gap-1 mt-1.5 text-xs font-medium" style={{ color: isOpen ? '#059669' : BRAND.red }}>
+                              {isOpen ? <><CheckCircle2 className="w-3 h-3" /> Hide fact</> : <><ChevronRight className="w-3 h-3" /> {t.myths.tap}</>}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Expanded fact */}
+                        {isOpen && (
+                          <div className="mx-4 mb-4 p-3 rounded-xl bg-green-50 border border-green-100">
+                            <div className="flex items-center gap-1.5 mb-1.5">
+                              <Lightbulb className="w-3.5 h-3.5 text-green-600" />
+                              <span className="text-[10px] font-bold text-green-700 uppercase tracking-wide">{t.myths.fact}</span>
+                            </div>
+                            <p className="text-sm text-green-900 leading-relaxed">{m.fact}</p>
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>
