@@ -595,7 +595,7 @@ function Hero({ content, t }) {
           )}
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 md:gap-3 max-w-5xl mx-auto mt-6 relative z-10">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 md:gap-3 max-w-5xl mx-auto mt-6 relative z-10">
           {stats.map((s, i) => {
             const Icon = ICONS[s.icon] || Heart
 
@@ -649,7 +649,6 @@ function VideoSection({ videos, t }) {
         <div className="text-center mb-10">
           <Badge variant="outline" className="mb-3" style={{ color: BRAND.red, borderColor: BRAND.red }}>{t.badges.watch}</Badge>
           <h2 className="font-display text-3xl md:text-5xl font-semibold mb-3" style={{ color: BRAND.blue }}>{t.video.title}</h2>
-          <p className="text-slate-600 text-lg max-w-2xl mx-auto">{t.video.subtitle}</p>
         </div>
 
         <div className="grid lg:grid-cols-[2fr_1fr] gap-6">
@@ -692,6 +691,13 @@ function VideoSection({ videos, t }) {
           </div>
         </div>
 
+        {/* Watch More button */}
+        <div className="text-center mt-8">
+          <a href="/impact-stories" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200" style={{ background: BRAND.red }}>
+            {t.video.watchMore || 'Watch More'} <ArrowRight className="w-4 h-4" />
+          </a>
+        </div>
+
         {active && (
           <Dialog open onOpenChange={() => setActive(null)}>
             <DialogContent className="max-w-4xl p-0 overflow-hidden bg-black">
@@ -705,7 +711,7 @@ function VideoSection({ videos, t }) {
               </div>
               <div className="p-4 bg-white">
                 <div className="font-display font-semibold text-lg" style={{ color: BRAND.blue }}>{active.title}</div>
-                {active.description && <p className="text-sm text-slate-600 mt-1">{active.description}</p>}
+                {active.description && <p className="text-sm text-slate-600 mt-1 line-clamp-3">{active.description}</p>}
               </div>
             </DialogContent>
           </Dialog>
@@ -796,32 +802,57 @@ function PictorialCard({ image, label, labelColor, title, desc, href, badge }) {
 }
 
 function AwarenessSection({ t }) {
-  const hrefs = ['#gallery', '/ngo-network', '#video']
-  const images = [
-    'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=600&q=80&fit=crop',
-    'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=600&q=80&fit=crop',
-    'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=600&q=80&fit=crop',
+  const items = t.awareness.items || []
+  const main = items.slice(0, 2)
+  const ngo = items[2]
+  const mainImages = [
+    'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800&q=80&fit=crop',
+    'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=800&q=80&fit=crop',
   ]
-  const labelColors = [BRAND.red, BRAND.blue, `linear-gradient(90deg, ${BRAND.blue}, ${BRAND.red})`]
-  const badges = ['7 States', 'NGO Network', 'Digital']
+  const mainColors = [BRAND.red, BRAND.blue]
+  const mainBadges = ['7 States', 'Digital Reach']
+  const mainHrefs = ['#gallery', '#video']
+
   return (
     <section id="awareness" className="section-pad bg-white">
       <div className="container mx-auto px-4">
         <SectionHeader badge={t.badges.awareness} title={t.awareness.title} subtitle={t.awareness.subtitle} />
-        <div className="grid md:grid-cols-3 gap-6">
-          {t.awareness.items.map((it, i) => (
+
+        {/* Top 2 prominent pictorial cards */}
+        <div className="grid md:grid-cols-2 gap-6 mb-6">
+          {main.map((it, i) => (
             <PictorialCard
               key={i}
-              image={images[i]}
+              image={mainImages[i]}
               label={it.title}
-              labelColor={labelColors[i]}
+              labelColor={mainColors[i]}
               title={it.title}
               desc={it.desc}
-              href={hrefs[i]}
-              badge={badges[i]}
+              href={mainHrefs[i]}
+              badge={mainBadges[i]}
             />
           ))}
         </div>
+
+        {/* NGO — single wide smaller box */}
+        {ngo && (
+          <div
+            className="flex items-center gap-5 p-5 rounded-2xl border border-slate-200 bg-slate-50 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
+            onClick={() => { if (typeof window !== 'undefined') window.location.href = '/ngo-network' }}
+          >
+            <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">
+              <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=200&q=80&fit=crop" alt="NGO" className="w-full h-full object-cover" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full text-white" style={{ background: BRAND.blue }}>NGO Network</span>
+              </div>
+              <h3 className="font-bold text-base" style={{ color: BRAND.blue }}>{ngo.title}</h3>
+              <p className="text-slate-500 text-sm mt-0.5">{ngo.desc}</p>
+            </div>
+            <ArrowRight className="w-5 h-5 flex-shrink-0 text-slate-400" />
+          </div>
+        )}
       </div>
     </section>
   )
