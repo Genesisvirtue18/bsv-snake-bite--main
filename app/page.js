@@ -633,11 +633,11 @@ function HeroStatsSection({ content, t }) {
   return (
     <section className="bg-white border-b border-slate-100">
       <div className="container mx-auto px-4 py-10 md:py-14">
-        {/* 5 stat cards — Coursera-style clean strip */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 md:gap-8 max-w-5xl mx-auto">
+        {/* 5 stat cards with border + hover */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-5 max-w-5xl mx-auto">
           {stats.map((s, i) => {
             const Icon = ICONS[s.icon] || Heart
-            const colors = iconMap[s.icon] || { bg: BRAND.aqua + '25', color: BRAND.deep }
+            const colors = iconMap[s.icon] || { bg: '#EFF6FF', color: BRAND.deep }
             return (
               <motion.div
                 key={s.id}
@@ -645,33 +645,44 @@ function HeroStatsSection({ content, t }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08, duration: 0.4 }}
-                className="flex flex-col items-center text-center group"
+                className="group flex flex-col items-center text-center rounded-2xl px-4 py-6 border border-slate-200 bg-white hover:border-slate-300 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-default"
+                style={{ borderTop: `3px solid ${colors.color}` }}
               >
                 <div
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300"
+                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300"
                   style={{ background: colors.bg }}
                 >
-                  <Icon className="w-6 h-6" style={{ color: colors.color }} />
+                  <Icon className="w-5 h-5" style={{ color: colors.color }} />
                 </div>
                 <div
-                  className="font-display font-bold text-2xl md:text-3xl leading-none mb-1"
+                  className="font-display font-bold text-2xl md:text-[28px] leading-none mb-1.5"
                   style={{ color: BRAND.navy }}
                 >
                   <AnimatedCounter value={s.value} suffix={s.suffix} />
                 </div>
-                <div className="text-xs md:text-sm text-slate-500 font-medium leading-snug">{s.label}</div>
+                <div className="text-[11px] md:text-xs text-slate-500 font-medium leading-snug">{s.label}</div>
               </motion.div>
             )
           })}
         </div>
 
-        {/* Divider */}
-        <div className="h-px bg-slate-100 max-w-3xl mx-auto my-8" />
-
-        {/* Quote */}
-        <p className="text-center text-slate-600 text-base md:text-lg max-w-3xl mx-auto leading-relaxed font-normal" style={{ fontFamily: "'Inter', sans-serif" }}>
-          "Driving awareness by dispelling long-term standing myths and educating rural populations on evidence-based snakebite first aid and treatment."
-        </p>
+        {/* Attractive quote block */}
+        <div className="mt-10 max-w-3xl mx-auto">
+          <div className="relative rounded-2xl px-8 md:px-12 py-7 text-center overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #EFF8FF 0%, #F0FDF4 100%)', border: '1px solid #BFDBFE' }}>
+            {/* Decorative quote mark */}
+            <span className="absolute top-3 left-5 text-6xl font-serif leading-none select-none opacity-20" style={{ color: BRAND.deep }}>"</span>
+            <span className="absolute bottom-1 right-5 text-6xl font-serif leading-none select-none opacity-20" style={{ color: BRAND.deep }}>"</span>
+            <p className="relative text-[15px] md:text-base leading-relaxed font-medium" style={{ color: BRAND.navy }}>
+              Driving awareness by dispelling long-term standing myths and educating rural populations on evidence-based snakebite first aid and treatment.
+            </p>
+            <div className="mt-3 flex items-center justify-center gap-2">
+              <div className="h-px w-8 rounded" style={{ background: BRAND.deep }} />
+              <span className="text-[11px] font-semibold uppercase tracking-widest" style={{ color: BRAND.deep }}>BSV Campaign Mission</span>
+              <div className="h-px w-8 rounded" style={{ background: BRAND.deep }} />
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   )
