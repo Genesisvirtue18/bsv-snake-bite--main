@@ -2951,5 +2951,27 @@
         "href": ""
       }
     ]
+  },
+  "communication": {
+    "items": [
+      {
+        "title": "Posters & Brochures",
+        "desc": "Multilingual print materials for clinics and villages.",
+        "image": "/api/media/816c3564-3243-49e9-b145-a8a7a93aafd1",
+        "href": ""
+      },
+      {
+        "title": "Awareness Videos",
+        "desc": "Vox pops, myth-busting reels, KOL interviews.",
+        "image": "/api/media/816c3564-3243-49e9-b145-a8a7a93aafd1",
+        "href": ""
+      },
+      {
+        "title": "Comic & Visual Stories",
+        "desc": "Engaging visual content for schools and rural communities.",
+        "image": "/api/media/816c3564-3243-49e9-b145-a8a7a93aafd1",
+        "href": ""
+      }
+    ]
   }
 }
