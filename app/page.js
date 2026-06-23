@@ -642,28 +642,28 @@ function HeroStatsSection({ content, t }) {
         {/* Mobile: horizontal scroll carousel — Desktop: 5-col grid */}
 
         {/* Mobile scroll strip */}
-        <div className="md:hidden overflow-x-auto no-scrollbar scroll-snap-x px-4">
-          <div className="flex gap-3 w-max pb-2">
+        <div className="md:hidden overflow-x-auto no-scrollbar scroll-snap-x px-3">
+          <div className="flex gap-2.5 w-max pb-2">
             {stats.map((s, i) => {
               const Icon = ICONS[s.icon] || Heart
               const colors = iconMap[s.icon] || { bg: '#EFF6FF', color: BRAND.deep }
               return (
                 <motion.div
                   key={s.id}
-                  initial={{ opacity: 0, x: 30 }}
+                  initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.07, duration: 0.35 }}
-                  className="group flex flex-col items-center text-center rounded-2xl px-5 py-5 bg-white flex-shrink-0 w-[148px] snap-start"
-                  style={{ border: '1px solid #e2e8f0', borderTop: `3px solid ${colors.color}`, boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}
+                  className="group flex flex-col items-center text-center rounded-xl px-3 py-4 bg-white flex-shrink-0 w-[112px] snap-start"
+                  style={{ border: '1px solid #e2e8f0', borderTop: `3px solid ${colors.color}`, boxShadow: '0 2px 6px rgba(0,0,0,0.05)' }}
                 >
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ background: colors.bg }}>
-                    <Icon className="w-5 h-5" style={{ color: colors.color }} />
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center mb-2" style={{ background: colors.bg }}>
+                    <Icon className="w-4 h-4" style={{ color: colors.color }} />
                   </div>
-                  <div className="font-display font-bold text-xl leading-none mb-1.5" style={{ color: BRAND.navy }}>
+                  <div className="font-display font-bold text-[17px] leading-none mb-1" style={{ color: BRAND.navy }}>
                     <AnimatedCounter value={s.value} suffix={s.suffix} />
                   </div>
-                  <div className="text-[10px] text-slate-500 font-medium leading-snug">{s.label}</div>
+                  <div className="text-[9px] text-slate-500 font-medium leading-snug">{s.label}</div>
                 </motion.div>
               )
             })}
