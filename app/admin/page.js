@@ -1115,12 +1115,21 @@ export default function AdminPage() {
 
                 {/* MYTHS */}
                 <Card><CardContent className="p-5">
-                  <div className="flex justify-between mb-3"><h3 className="font-display font-bold text-lg text-bsv-blue">Myths vs Facts</h3><Button size="sm" variant="outline" onClick={() => setContent({ ...content, myths: [...content.myths, { id: Date.now(), myth: '', fact: '' }] })}><Plus className="w-3 h-3 mr-1" />Add</Button></div>
+                  <div className="flex justify-between mb-3"><h3 className="font-display font-bold text-lg text-bsv-blue">Myths vs Facts</h3><Button size="sm" variant="outline" onClick={() => setContent({ ...content, myths: [...content.myths, { id: Date.now(), myth: '', fact: '', image: '' }] })}><Plus className="w-3 h-3 mr-1" />Add</Button></div>
                   {content.myths.map((m, i) => (
                     <div key={m.id} className="border rounded p-3 mb-2 space-y-2">
                       <div className="flex justify-between"><Badge className="bg-bsv-red">Myth #{i + 1}</Badge><Button size="sm" variant="ghost" onClick={() => setContent({ ...content, myths: content.myths.filter((_, idx) => idx !== i) })}><Trash2 className="w-3 h-3 text-red-500" /></Button></div>
                       <Input value={m.myth} placeholder="Myth statement" onChange={e => { const a = [...content.myths]; a[i] = { ...a[i], myth: e.target.value }; setContent({ ...content, myths: a }) }} />
                       <Textarea value={m.fact} placeholder="Scientific fact" onChange={e => { const a = [...content.myths]; a[i] = { ...a[i], fact: e.target.value }; setContent({ ...content, myths: a }) }} />
+                      <MediaPicker
+                        label="Myth Image"
+                        value={m.image || ''}
+                        onChange={v => {
+                          const a = [...content.myths]
+                          a[i] = { ...a[i], image: v }
+                          setContent({ ...content, myths: a })
+                        }}
+                      />
                     </div>))}
                 </CardContent></Card>
 

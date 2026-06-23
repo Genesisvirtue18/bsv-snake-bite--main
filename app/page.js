@@ -1159,7 +1159,9 @@ function MythsSection({ content, t }) {
                         {/* Row */}
                         <div className="flex gap-3 p-4">
                           <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-slate-100">
-                            <img src={cat.thumb} alt="" className="w-full h-full object-cover" />
+                            {m.image && (
+                              <img src={m.image} alt={m.myth} className="w-full h-full object-cover" />
+                            )}
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-1.5 mb-1">
