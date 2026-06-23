@@ -2909,10 +2909,22 @@
   "awareness": {
     "items": [
       {
-        "title": "test",
-        "desc": "test",
+        "title": "Onground Activations",
+        "desc": "School Engagement, Nukkad Natak, and Community drives across 7 states — meeting people where they live.",
         "label": "test",
         "image": "/api/media/816c3564-3243-49e9-b145-a8a7a93aafd1",
+        "href": ""
+      },
+      {
+        "title": "Mass Media",
+        "desc": "Radio Campaign, PR, and YouTube Influencer campaign reaching millions across India.",
+        "image": "/api/media/816c3564-3243-49e9-b145-a8a7a93aafd1",
+        "href": ""
+      },
+      {
+        "title": "",
+        "desc": "",
+        "image": "",
         "href": ""
       }
     ]
