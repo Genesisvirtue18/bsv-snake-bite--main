@@ -226,8 +226,8 @@ function Header({ lang, setLang, t, settings }) {
         {
           title: 'Print Materials',
           items: [
-            { label: 'Posters & Brochures', href: '#resources', desc: 'Multilingual print materials' },
-            { label: 'All Downloads', href: '#resources', desc: 'Complete resource library' },
+            { label: 'Posters & Brochures', href: '/downloads', desc: 'Multilingual print materials' },
+            { label: 'All Downloads', href: '/downloads', desc: 'Complete resource library' },
           ]
         },
         {
@@ -1501,7 +1501,7 @@ function App() {
         <GallerySection albums={albums} t={t} />
         <MythsSection content={resolved} t={t} />
         <QuizSection t={t} lang={lang} />
-        <ResourcesSection content={resolved} lang={lang} t={t} />
+        {/* <ResourcesSection content={resolved} lang={lang} t={t} /> */}
         <ContactSection content={resolved} t={t} />
       </main>
       <Footer content={resolved} t={t} settings={settings} />
