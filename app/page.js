@@ -1233,11 +1233,14 @@ function ResourcesSection({ content, lang, t }) {
   )
 }
 
+const CONTACT_ADDRESS = 'BSV (A Mankind Group Company)\n3rd Floor, Liberty Tower, Plot No. K-10, Behind Reliable Plaza, Kalwa Industrial Estate, Airoli, Navi Mumbai, Thane 400708'
+const CONTACT_EMAIL = 'campaign@bsvindia.com'
+
 function ContactSection({ content, t }) {
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' })
   const [submitting, setSubmitting] = useState(false)
   const submit = async () => {
-    if (!form.name || !form.email || !form.message) { toast.error('Please fill all required fields'); return }
+    if (!form.name || !form.email || !form.phone || !form.message) { toast.error('Please fill all required fields including Phone Number'); return }
     setSubmitting(true)
     try {
       const res = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) })
@@ -1245,35 +1248,46 @@ function ContactSection({ content, t }) {
     } catch { toast.error('Error') }
     setSubmitting(false)
   }
+  const email = content?.contact?.email || CONTACT_EMAIL
+  const address = CONTACT_ADDRESS
   return (
     <section id="contact" className="section-pad bg-white">
       <div className="container mx-auto px-4">
         <SectionHeader badge={t.badges.contact} title={t.contact.title} subtitle={t.contact.subtitle} />
         <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          {/* Info panel — email + address only */}
           <Card className="border-0 shadow-xl">
             <CardContent className="p-8 space-y-6">
               <div className="flex gap-4">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: `${BRAND.red}1a` }}><Mail className="w-5 h-5" style={{ color: BRAND.red }} /></div>
-                <div><div className="font-display font-semibold" style={{ color: BRAND.blue }}>{t.contact.email}</div><div className="text-slate-600">{content?.contact?.email}</div></div>
+                <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: `${BRAND.deep}18` }}>
+                  <Mail className="w-5 h-5" style={{ color: BRAND.deep }} />
+                </div>
+                <div>
+                  <div className="font-display font-semibold mb-0.5" style={{ color: BRAND.navy }}>{t.contact.email}</div>
+                  <a href={`mailto:${email}`} className="text-slate-600 hover:underline text-sm">{email}</a>
+                </div>
               </div>
               <div className="flex gap-4">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: `${BRAND.red}1a` }}><Phone className="w-5 h-5" style={{ color: BRAND.red }} /></div>
-                <div><div className="font-display font-semibold" style={{ color: BRAND.blue }}>{t.contact.phone}</div><div className="text-slate-600">{content?.contact?.phone}</div></div>
-              </div>
-              <div className="flex gap-4">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: `${BRAND.red}1a` }}><MapPin className="w-5 h-5" style={{ color: BRAND.red }} /></div>
-                <div><div className="font-display font-semibold" style={{ color: BRAND.blue }}>{t.contact.office}</div><div className="text-slate-600 text-sm">{content?.contact?.address}</div></div>
+                <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: `${BRAND.deep}18` }}>
+                  <MapPin className="w-5 h-5" style={{ color: BRAND.deep }} />
+                </div>
+                <div>
+                  <div className="font-display font-semibold mb-1" style={{ color: BRAND.navy }}>{t.contact.office}</div>
+                  <div className="text-slate-600 text-sm leading-relaxed whitespace-pre-line">{address}</div>
+                </div>
               </div>
             </CardContent>
           </Card>
+
+          {/* Contact form */}
           <Card className="border-0 shadow-xl">
             <CardContent className="p-8 space-y-4">
-              <h3 className="font-display font-semibold text-2xl" style={{ color: BRAND.blue }}>{t.contact.send}</h3>
+              <h3 className="font-display font-semibold text-xl" style={{ color: BRAND.navy }}>{t.contact.send}</h3>
               <div><Label>{t.contact.name} *</Label><Input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} /></div>
               <div><Label>{t.contact.email} *</Label><Input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} /></div>
-              <div><Label>{t.contact.phone}</Label><Input value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} /></div>
+              <div><Label>{t.contact.phone} *</Label><Input type="tel" placeholder="+91 XXXXX XXXXX" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} /></div>
               <div><Label>{t.contact.message} *</Label><Textarea value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} rows={4} /></div>
-              <Button onClick={submit} disabled={submitting} className="w-full text-white" style={{ background: BRAND.blue }}>{submitting ? t.contact.sending : t.contact.sendMessage}</Button>
+              <Button onClick={submit} disabled={submitting} className="w-full text-white" style={{ background: BRAND.deep }}>{submitting ? t.contact.sending : t.contact.sendMessage}</Button>
             </CardContent>
           </Card>
         </div>
@@ -1319,9 +1333,28 @@ function Footer({ content, t, settings }) {
             </ul>
           </div>
         </div>
-        <div className="border-t border-white/10 pt-6 flex flex-wrap items-center justify-between gap-4 text-sm text-white/60">
+        {/* Disclaimer + PV Statement */}
+        <div className="border-t border-white/10 pt-6 mb-6 space-y-4">
+          <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.06)' }}>
+            <p className="text-[11px] text-white/60 leading-relaxed">
+              <span className="font-semibold text-white/80 uppercase tracking-wide text-[10px] mr-1">Disclaimer:</span>
+              This is issued in public interest by Bharat Serums and Vaccines Limited and Mankind Pharma Limited. Information appearing on this material is for general awareness only. Nothing contained in this material constitutes medical advice. Please consult your doctor for medical advice or any questions or concern you may have regarding your condition.
+            </p>
+          </div>
+          <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.06)' }}>
+            <p className="text-[11px] text-white/60 leading-relaxed">
+              <span className="font-semibold text-white/80 uppercase tracking-wide text-[10px] mr-1">Pharmacovigilance:</span>
+              To Report Suspected Adverse Reaction, Contact Bharat Serums and Vaccines Ltd. at{' '}
+              <a href="mailto:pv@bsvgroup.com" className="text-white/80 underline hover:text-white">pv@bsvgroup.com</a>
+              {' '}or visit the website{' '}
+              <a href="https://www.bsvgroup.com/adverse/" target="_blank" rel="noopener noreferrer" className="text-white/80 underline hover:text-white">bsvgroup.com/adverse</a>
+            </p>
+          </div>
+        </div>
+
+        <div className="border-t border-white/10 pt-5 flex flex-wrap items-center justify-between gap-4 text-xs text-white/50">
           <div>{f.copyright || '© 2025 Bharat Serums and Vaccines Ltd. All rights reserved.'}</div>
-          <div><a href="/admin" className="hover:text-white">{t.footer.admin}</a></div>
+          <div><a href="/admin" className="hover:text-white/80">{t.footer.admin}</a></div>
         </div>
       </div>
     </footer>
