@@ -2929,5 +2929,27 @@
         "label": "NGO Network"
       }
     ]
+  },
+  "access": {
+    "items": [
+      {
+        "title": "Workshops",
+        "desc": "Hands-on training for clinicians, RMPs, and ASHA workers.",
+        "image": "/api/media/816c3564-3243-49e9-b145-a8a7a93aafd1",
+        "href": ""
+      },
+      {
+        "title": "Clinician Engagement",
+        "desc": "Beyond Monsoons, Venom to Vial, panel discussions with KOLs.",
+        "image": "/api/media/816c3564-3243-49e9-b145-a8a7a93aafd1",
+        "href": ""
+      },
+      {
+        "title": "Training Modules",
+        "desc": "Medical resources, ASV administration protocols, clinical education.",
+        "image": "",
+        "href": ""
+      }
+    ]
   }
 }
