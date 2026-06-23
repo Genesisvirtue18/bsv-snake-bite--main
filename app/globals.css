@@ -6,59 +6,65 @@
 
 @layer base {
   :root {
+    --primary-cyan: #0EAFC5;
+    --deep-blue: #0D71B8;
+    --medium-blue: #4C96C9;
+    --light-aqua: #8BD1DE;
+    --dark-navy: #201F5E;
     --background: 0 0% 100%;
-    --foreground: 232 67% 25%;
+    --foreground: 240 49% 25%;
     --card: 0 0% 100%;
-    --card-foreground: 232 67% 25%;
+    --card-foreground: 240 49% 25%;
     --popover: 0 0% 100%;
-    --popover-foreground: 232 67% 25%;
-    --primary: 232 67% 25%;
+    --popover-foreground: 240 49% 25%;
+    --primary: 191 86% 42%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 232 67% 25%;
-    --muted: 210 40% 96.1%;
+    --secondary: 200 30% 96%;
+    --secondary-foreground: 240 49% 25%;
+    --muted: 200 20% 96%;
     --muted-foreground: 215 16% 47%;
-    --accent: 359 73% 51%;
+    --accent: 191 86% 42%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 359 73% 51%;
+    --destructive: 191 86% 42%;
     --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 232 67% 25%;
+    --border: 200 25% 90%;
+    --input: 200 25% 90%;
+    --ring: 191 86% 42%;
     --radius: 0.75rem;
   }
 }
 
 @layer base {
   * { @apply border-border; }
-  body { 
-    @apply bg-background text-foreground; 
+  body {
+    @apply bg-background text-foreground;
     font-family: 'Inter', sans-serif;
     font-weight: 400;
   }
   h1, h2, h3, h4, h5, h6, .font-display {
     font-family: 'Poppins', sans-serif;
-    font-weight: 500; /* Poppins Medium per brand guidelines */
-    letter-spacing: -0.01em;
+    font-weight: 600;
+    letter-spacing: -0.02em;
   }
-  /* Cap heading boldness — only allow up to semibold (600) on display headings */
   .font-display.font-bold,
   .font-display.font-extrabold,
-  .font-display.font-black { font-weight: 600; }
+  .font-display.font-black { font-weight: 700; }
 }
 
-.bsv-blue { color: #151f6d; }
-.bg-bsv-blue { background-color: #151f6d; }
-.bsv-red { color: #de2527; }
-.bg-bsv-red { background-color: #de2527; }
-.border-bsv-blue { border-color: #151f6d; }
-.border-bsv-red { border-color: #de2527; }
+.bsv-navy  { color: #201F5E; }
+.bg-bsv-navy { background-color: #201F5E; }
+.bsv-cyan  { color: #0EAFC5; }
+.bg-bsv-cyan { background-color: #0EAFC5; }
+.bsv-deep  { color: #0D71B8; }
+.bg-bsv-deep { background-color: #0D71B8; }
+.border-bsv-navy { border-color: #201F5E; }
+.border-bsv-cyan { border-color: #0EAFC5; }
 
 .gradient-bsv {
-  background: linear-gradient(135deg, #151f6d 0%, #2a3a9e 100%);
+  background: linear-gradient(135deg, #201F5E 0%, #0D71B8 100%);
 }
 .gradient-hero-overlay {
-  background: linear-gradient(90deg, rgba(21,31,109,0.85) 0%, rgba(21,31,109,0.4) 60%, transparent 100%);
+  background: linear-gradient(90deg, rgba(32,31,94,0.88) 0%, rgba(13,113,184,0.5) 60%, transparent 100%);
 }
 
 @keyframes pulse-ring {
