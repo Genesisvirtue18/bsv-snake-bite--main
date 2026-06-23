@@ -688,8 +688,8 @@ function VideoSection({ videos, t }) {
     <section id="video" className="section-pad bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-10">
-          <span className="inline-block mb-3 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-widest" style={{ background: BRAND.aqua + '30', color: BRAND.deep, border: `1px solid ${BRAND.aqua}` }}>{t.badges.watch}</span>
-          <h2 className="font-display text-3xl md:text-5xl font-semibold mb-3" style={{ color: BRAND.blue }}>{t.video.title}</h2>
+          <span className="inline-block mb-2 text-[11px] font-bold uppercase tracking-[0.14em]" style={{ color: BRAND.deep }}>{t.badges.watch}</span>
+          <h2 className="font-display text-[22px] md:text-[28px] font-bold mb-3 leading-tight" style={{ color: BRAND.navy }}>{t.video.title}</h2>
         </div>
 
         <div className="grid lg:grid-cols-[2fr_1fr] gap-6">
@@ -698,12 +698,12 @@ function VideoSection({ videos, t }) {
             {featured.thumbnail && <img src={featured.thumbnail} alt={featured.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />}
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition" style={{ background: BRAND.red }}>
-                <Play className="w-10 h-10 md:w-12 md:h-12 text-white fill-white ml-1" />
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition bg-white/90 backdrop-blur-sm">
+                <Play className="w-7 h-7 md:w-9 md:h-9 fill-current ml-1" style={{ color: BRAND.navy }} />
               </div>
             </div>
             <div className="absolute bottom-0 left-0 right-0 p-6 text-left text-white">
-              <Badge className="border-0 mb-2" style={{ background: BRAND.red }}>{featured.category || t.video.featured}</Badge>
+              <Badge className="border-0 mb-2" style={{ background: BRAND.deep }}>{featured.category || t.video.featured}</Badge>
               <h3 className="font-display text-xl md:text-3xl font-semibold drop-shadow-md">{featured.title}</h3>
               {featured.description && <p className="text-sm md:text-base text-white/85 mt-1 line-clamp-2 max-w-2xl">{featured.description}</p>}
             </div>
@@ -764,10 +764,10 @@ function VideoSection({ videos, t }) {
 
 function SectionHeader({ badge, title, subtitle }) {
   return (
-    <div className="text-center mb-12">
-      <span className="inline-block mb-3 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-widest" style={{ background: BRAND.aqua + '30', color: BRAND.deep, border: `1px solid ${BRAND.aqua}` }}>{badge}</span>
-      <h2 className="font-display text-3xl md:text-5xl font-semibold mb-3" style={{ color: BRAND.navy }}>{title}</h2>
-      <p className="text-slate-500 text-lg max-w-2xl mx-auto font-normal">{subtitle}</p>
+    <div className="text-center mb-10">
+      <span className="inline-block mb-2 text-[11px] font-bold uppercase tracking-[0.14em]" style={{ color: BRAND.deep }}>{badge}</span>
+      <h2 className="font-display text-[22px] md:text-[28px] font-bold mb-3 leading-tight" style={{ color: BRAND.navy }}>{title}</h2>
+      {subtitle && <p className="text-slate-500 text-sm md:text-base max-w-xl mx-auto font-normal leading-relaxed">{subtitle}</p>}
     </div>
   )
 }
@@ -797,7 +797,7 @@ function PillarCard({ icon: Icon, title, desc, reverseGradient, href }) {
   )
 }
 
-function PictorialCard({ image, label, labelColor, title, desc, href, badge }) {
+function PictorialCard({ image, label, title, desc, href, badge }) {
   const onClick = () => {
     if (!href) return
     if (href.startsWith('#')) document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
@@ -806,35 +806,24 @@ function PictorialCard({ image, label, labelColor, title, desc, href, badge }) {
   return (
     <div
       onClick={onClick}
-      className="group cursor-pointer rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white border border-slate-100"
+      className="group cursor-pointer rounded-xl overflow-hidden border border-slate-200 bg-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
     >
-      {/* Image + label overlay */}
-      <div className="relative h-48 overflow-hidden bg-slate-200">
+      {/* Image */}
+      <div className="relative h-44 overflow-hidden bg-slate-100">
         {image
           ? <img src={image} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-          : <div className="w-full h-full" style={{ background: `linear-gradient(135deg, ${BRAND.blue}, ${BRAND.red})` }} />
+          : <div className="w-full h-full" style={{ background: `linear-gradient(135deg, ${BRAND.navy}, ${BRAND.deep})` }} />
         }
-        {/* Dark scrim at bottom */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-        {/* Category label banner */}
-        <div className="absolute bottom-0 left-0 right-0 px-4 py-2.5" style={{ background: labelColor || BRAND.blue }}>
-          <span className="text-white text-[11px] font-bold uppercase tracking-widest">{label || title}</span>
-        </div>
       </div>
 
-      {/* Card body */}
-      <div className="p-5">
-        {/* Brand row */}
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: `linear-gradient(135deg, ${BRAND.blue}, ${BRAND.red})` }}>
-            <span className="text-white text-[8px] font-black">B</span>
-          </div>
-          <span className="text-xs text-slate-400 font-medium">BSV Campaign</span>
-          {badge && <span className="ml-auto text-[10px] font-semibold px-2 py-0.5 rounded-full text-white" style={{ background: BRAND.red }}>{badge}</span>}
+      {/* Card body — Coursera style */}
+      <div className="p-4">
+        <div className="text-[10px] font-bold uppercase tracking-[0.12em] mb-1.5" style={{ color: BRAND.deep }}>
+          {label || badge || title}
         </div>
-        <h3 className="font-bold text-base leading-snug mb-2 group-hover:text-[#0EAFC5] transition-colors" style={{ color: BRAND.blue }}>{title}</h3>
-        <p className="text-slate-500 text-sm leading-relaxed line-clamp-2">{desc}</p>
-        <div className="mt-4 flex items-center gap-1 text-xs font-semibold" style={{ color: BRAND.red }}>
+        <h3 className="font-display font-semibold text-[15px] leading-snug mb-1.5 group-hover:underline underline-offset-2 decoration-slate-300" style={{ color: BRAND.navy }}>{title}</h3>
+        <p className="text-slate-500 text-[13px] leading-relaxed line-clamp-2 mb-3">{desc}</p>
+        <div className="flex items-center gap-1 text-[13px] font-semibold" style={{ color: BRAND.deep }}>
           Explore <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
         </div>
       </div>
@@ -850,7 +839,6 @@ function AwarenessSection({ t }) {
     'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800&q=80&fit=crop',
     'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=800&q=80&fit=crop',
   ]
-  const mainColors = [BRAND.red, BRAND.blue]
   const mainBadges = ['7 States', 'Digital Reach']
   const mainHrefs = ['#gallery', '#video']
 
@@ -860,13 +848,12 @@ function AwarenessSection({ t }) {
         <SectionHeader badge={t.badges.awareness} title={t.awareness.title} subtitle={t.awareness.subtitle} />
 
         {/* Top 2 prominent pictorial cards */}
-        <div className="grid md:grid-cols-2 gap-6 mb-6">
+        <div className="grid md:grid-cols-2 gap-5 mb-5">
           {main.map((it, i) => (
             <PictorialCard
               key={i}
               image={mainImages[i]}
               label={it.title}
-              labelColor={mainColors[i]}
               title={it.title}
               desc={it.desc}
               href={mainHrefs[i]}
@@ -906,19 +893,17 @@ function AccessSection({ t }) {
     'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80&fit=crop',
     'https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?w=600&q=80&fit=crop',
   ]
-  const labelColors = [BRAND.blue, BRAND.red, `linear-gradient(90deg, ${BRAND.red}, ${BRAND.blue})`]
   const badges = ['Hands-on', 'KOL', 'Clinical']
   return (
     <section id="access" className="section-pad bg-slate-50">
       <div className="container mx-auto px-4">
         <SectionHeader badge={t.badges.access} title={t.access.title} subtitle={t.access.subtitle} />
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-5">
           {t.access.items.map((it, i) => (
             <PictorialCard
               key={i}
               image={images[i]}
               label={it.title}
-              labelColor={labelColors[i]}
               title={it.title}
               desc={it.desc}
               href={hrefs[i]}
@@ -938,19 +923,17 @@ function CommunicationSection({ t }) {
     'https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?w=600&q=80&fit=crop',
     'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=600&q=80&fit=crop',
   ]
-  const labelColors = [BRAND.red, BRAND.blue, `linear-gradient(90deg, ${BRAND.blue}, ${BRAND.red})`]
   const badges = ['Print', 'Video', 'Visual']
   return (
     <section id="communication" className="section-pad bg-white">
       <div className="container mx-auto px-4">
         <SectionHeader badge={t.badges.communication} title={t.communication.title} subtitle={t.communication.subtitle} />
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-5">
           {t.communication.items.map((it, i) => (
             <PictorialCard
               key={i}
               image={images[i]}
               label={it.title}
-              labelColor={labelColors[i]}
               title={it.title}
               desc={it.desc}
               href={hrefs[i]}
@@ -996,14 +979,14 @@ function StoriesSection({ stories, t }) {
                   {s.heroImage && <img src={s.heroImage} alt={s.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-700" />}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4 text-white">
-                    <Badge className="mb-2 border-0" style={{ background: BRAND.red }}>{s.category}</Badge>
+                    <Badge className="mb-2 border-0" style={{ background: BRAND.deep }}>{s.category}</Badge>
                     <h3 className="font-display font-semibold text-xl drop-shadow-lg line-clamp-2">{s.title}</h3>
                     {s.state && <p className="text-xs text-white/80 mt-1"><MapPin className="w-3 h-3 inline mr-1" />{s.state}</p>}
                   </div>
                 </div>
                 <CardContent className="p-4">
                   <p className="text-sm text-slate-600 line-clamp-2">{s.description}</p>
-                  <div className="mt-2 inline-flex items-center text-sm font-semibold group-hover:translate-x-1 transition" style={{ color: BRAND.red }}>{t.stories.readMore}</div>
+                  <div className="mt-2 inline-flex items-center text-sm font-semibold group-hover:translate-x-1 transition" style={{ color: BRAND.deep }}>{t.stories.readMore}</div>
                 </CardContent>
               </Card>
             </Link>
