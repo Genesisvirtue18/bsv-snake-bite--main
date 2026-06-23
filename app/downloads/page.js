@@ -13,14 +13,14 @@ export default function DownloadsPage() {
     const [settings, setSettings] = useState(DEFAULT_CONTENT?.settings || {})
     const t = getT(lang)
 
-    const [content, setContent] = useState(DEFAULT_CONTENT)
-    const resources = content?.resources || []
+    const [content, setContent] = useState(null)
+    const resources = content?.resources
 
     useEffect(() => {
         fetch('/api/content')
-            .then((r) => (r.ok ? r.json() : DEFAULT_CONTENT))
-            .then((d) => setContent(d || DEFAULT_CONTENT))
-            .catch(() => setContent(DEFAULT_CONTENT))
+            .then((r) => r.json())
+            .then((d) => setContent(d))
+            .catch(console.error)
 
         fetch('/api/settings')
             .then((r) => (r.ok ? r.json() : null))
@@ -57,7 +57,7 @@ export default function DownloadsPage() {
                         </div>
 
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {resources.map((r) => (
+                            {resources?.map((r) => (
                                 <Card
                                     key={r.id}
                                     className="group overflow-hidden hover:shadow-2xl transition hover:-translate-y-1"
@@ -94,7 +94,7 @@ export default function DownloadsPage() {
                                                 }
                                             }}
                                         >
-                                            {t.resources?.download || 'Download'}
+                                            {t.resources?.download}
                                         </Button>
                                     </CardContent>
                                 </Card>
