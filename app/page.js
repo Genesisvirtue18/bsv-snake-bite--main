@@ -258,19 +258,20 @@ function Header({ lang, setLang, t, settings }) {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-300 ${scrolled
-        ? 'bg-white backdrop-blur-lg border-b border-slate-200/80 shadow-lg'
-        : 'bg-white backdrop-blur-md border-b border-slate-200/50 shadow-sm'
+      className={`fixed top-0 left-0 right-0 z-[9999] bg-white transition-all duration-300 ${scrolled
+        ? 'border-b shadow-lg'
+        : 'border-b border-slate-100 shadow-sm'
         }`}
+      style={{ borderColor: scrolled ? BRAND.blue + '22' : undefined }}
       onMouseLeave={() => setMegaOpen(null)}
     >
       <div className="container mx-auto px-3 sm:px-4">
         <div className="flex items-center justify-between h-16 sm:h-20">
 
-          {/* Logo - Original + Tagline same color as brand */}
+          {/* Logo + Tagline */}
           <button
             onClick={() => go('#home')}
-            className="flex items-center gap-2 flex-1 min-w-0"
+            className="flex items-center gap-2 sm:gap-3 flex-shrink-0"
             style={{ transform: open ? 'scale(0.95)' : 'scale(1)' }}
           >
             <img
@@ -279,23 +280,19 @@ function Header({ lang, setLang, t, settings }) {
               className="h-8 sm:h-12 md:h-14 w-auto flex-shrink-0"
               draggable={false}
             />
-
-            <div className="min-w-0 flex-1">
-              <div
-                className="text-[8px] sm:text-[11px] md:text-xs font-medium leading-tight"
-                style={{ color: BRAND.blue }}
-              >
-                Saap Ka Vaar, Aspataal Mein Hi Upchaar
+            <div className="max-w-[72px] sm:max-w-[100px]">
+              <div className="text-[9px] sm:text-[11px] font-semibold leading-snug text-left" style={{ color: BRAND.blue }}>
+                Saap Ka Vaar,<br />Aspataal Mein<br />Hi Upchaar
               </div>
             </div>
           </button>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
-            <button onClick={() => go('#home')} className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-[#de2527] hover:bg-slate-50/80 rounded-lg transition-all duration-200">
+          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1 flex-1 justify-center">
+            <button onClick={() => go('#home')} className="px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:bg-red-50" style={{ color: BRAND.blue }} onMouseEnter={e => e.currentTarget.style.color = BRAND.red} onMouseLeave={e => e.currentTarget.style.color = BRAND.blue}>
               {t.nav.home}
             </button>
-            <button onClick={() => go('#video')} className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-[#de2527] hover:bg-slate-50/80 rounded-lg transition-all duration-200">
+            <button onClick={() => go('#video')} className="px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:bg-red-50" style={{ color: BRAND.blue }} onMouseEnter={e => e.currentTarget.style.color = BRAND.red} onMouseLeave={e => e.currentTarget.style.color = BRAND.blue}>
               {t.nav.watch}
             </button>
 
@@ -309,28 +306,26 @@ function Header({ lang, setLang, t, settings }) {
                 }}
               >
                 <button
-                  className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 inline-flex items-center gap-1.5 ${megaOpen === key
-                    ? 'text-[#de2527] bg-red-50/80'
-                    : 'text-slate-600 hover:text-[#de2527] hover:bg-slate-50/80'
-                    }`}
+                  className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 inline-flex items-center gap-1 ${megaOpen === key ? 'bg-red-50' : 'hover:bg-red-50'}`}
+                  style={{ color: megaOpen === key ? BRAND.red : BRAND.blue }}
                 >
                   {megaMenus[key].label}
-                  <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-200 ${megaOpen === key ? 'rotate-90 text-[#de2527]' : ''}`} />
+                  <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-200 ${megaOpen === key ? 'rotate-90' : ''}`} />
                 </button>
               </div>
             ))}
 
-            <button onClick={() => go('#outreach')} className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-[#de2527] hover:bg-slate-50/80 rounded-lg transition-all duration-200">
+            <button onClick={() => go('#outreach')} className="px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:bg-red-50" style={{ color: BRAND.blue }} onMouseEnter={e => e.currentTarget.style.color = BRAND.red} onMouseLeave={e => e.currentTarget.style.color = BRAND.blue}>
               {t.nav.outreach}
             </button>
 
-            <button onClick={() => go('#contact')} className="px-4 py-2 text-sm font-medium text-white rounded-lg transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5" style={{ background: `linear-gradient(135deg, ${BRAND.blue}, ${BRAND.red})` }}>
+            <button onClick={() => go('#contact')} className="px-4 py-2 text-sm font-semibold text-white rounded-lg transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 ml-1" style={{ background: BRAND.red }}>
               {t.nav.contact}
             </button>
           </nav>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
             <img
               src={settings?.branding?.mankindLogo}
               alt="Mankind"
@@ -342,10 +337,11 @@ function Header({ lang, setLang, t, settings }) {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="gap-1 sm:gap-2 border-slate-200 hover:border-[#de2527] hover:bg-red-50/50 transition-all duration-200 rounded-xl px-1 sm:px-3"
+                  className="gap-1 sm:gap-2 transition-all duration-200 rounded-xl px-1 sm:px-3"
+                  style={{ borderColor: BRAND.blue + '40', color: BRAND.blue }}
                 >
-                  <Globe className="w-4 h-4 text-slate-500" />
-                  <span className="hidden sm:inline text-sm font-medium text-slate-600">
+                  <Globe className="w-4 h-4" />
+                  <span className="hidden sm:inline text-sm font-medium">
                     {LANGUAGES.find(l => l.code === lang)?.native}
                   </span>
                 </Button>
@@ -364,16 +360,16 @@ function Header({ lang, setLang, t, settings }) {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Mobile Menu Button - Animated */}
+            {/* Mobile Menu Button */}
             <button
-              className="lg:hidden p-1.5 sm:p-2 rounded-xl hover:bg-slate-100 active:bg-slate-200 transition-all duration-300"
+              className="lg:hidden p-1.5 sm:p-2 rounded-xl hover:bg-red-50 active:bg-red-100 transition-all duration-300"
               onClick={() => setOpen(!open)}
             >
               <motion.div
                 animate={{ rotate: open ? 90 : 0 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
               >
-                {open ? <X className="w-5 h-5 sm:w-6 sm:h-6 text-slate-600" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6 text-slate-600" />}
+                {open ? <X className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: BRAND.red }} /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: BRAND.blue }} />}
               </motion.div>
             </button>
           </div>
@@ -385,7 +381,8 @@ function Header({ lang, setLang, t, settings }) {
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.15, ease: "easeOut" }}
-            className="hidden lg:block absolute left-0 right-0 top-full bg-white backdrop-blur-lg border-t border-slate-200/80 shadow-2xl rounded-b-2xl z-[99999]"
+            className="hidden lg:block absolute left-0 right-0 top-full bg-white backdrop-blur-lg border-t shadow-2xl rounded-b-2xl z-[99999]"
+            style={{ borderColor: BRAND.blue + '22' }}
             onMouseEnter={() => setMegaOpen(megaOpen)}
           >
             <div className="container mx-auto px-4 py-8">
@@ -422,7 +419,7 @@ function Header({ lang, setLang, t, settings }) {
                     <ul className="space-y-3">
                       {g.items.map((it, ii) => (
                         <li key={ii}>
-                          <button onClick={() => go(it.href)} className="w-full text-left group p-2 rounded-xl hover:bg-slate-50 transition-all duration-200">
+                          <button onClick={() => go(it.href)} className="w-full text-left group p-2 rounded-xl hover:bg-red-50 transition-all duration-200">
                             <div className="font-display font-semibold text-sm group-hover:text-[#de2527] transition-colors" style={{ color: BRAND.blue }}>
                               {it.label}
                             </div>
