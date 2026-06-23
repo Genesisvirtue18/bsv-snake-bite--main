@@ -280,8 +280,8 @@ function Header({ lang, setLang, t, settings }) {
               className="h-8 sm:h-12 md:h-14 w-auto flex-shrink-0"
               draggable={false}
             />
-            <div className="max-w-[72px] sm:max-w-[100px]">
-              <div className="text-[9px] sm:text-[11px] font-semibold leading-snug text-left" style={{ color: BRAND.blue }}>
+            <div className="flex-shrink-0">
+              <div className="text-[9px] sm:text-[11px] font-semibold leading-snug text-left whitespace-nowrap" style={{ color: BRAND.blue }}>
                 Saap Ka Vaar,<br />Aspataal Mein Hi Upchaar
               </div>
             </div>
