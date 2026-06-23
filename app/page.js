@@ -1374,19 +1374,20 @@ function App() {
   useEffect(() => {
     const c = settings?.branding?.colors
     if (!c) return
+    // Merge only the admin-configurable fields — preserve the full DEFAULT_BRAND structure
     BRAND = {
+      ...DEFAULT_BRAND,
       blue: c.primary || DEFAULT_BRAND.blue,
-      red: c.accent || DEFAULT_BRAND.red,
-      white: c.background || DEFAULT_BRAND.white,
-      surface: c.surface || DEFAULT_BRAND.surface,
+      navy: c.primary || DEFAULT_BRAND.navy,
       heading: c.headingColor || DEFAULT_BRAND.heading,
       text: c.textColor || DEFAULT_BRAND.text,
+      white: c.background || DEFAULT_BRAND.white,
+      surface: c.surface || DEFAULT_BRAND.surface,
     }
-    // Inject CSS vars for any utility class that relies on them
     if (typeof document !== 'undefined') {
       const root = document.documentElement
       root.style.setProperty('--brand-primary', BRAND.blue)
-      root.style.setProperty('--brand-accent', BRAND.red)
+      root.style.setProperty('--brand-accent', BRAND.cyan)
       root.style.setProperty('--brand-bg', BRAND.white)
       root.style.setProperty('--brand-surface', BRAND.surface)
       root.style.setProperty('--brand-heading', BRAND.heading)
