@@ -1,6 +1,7 @@
 'use client'
 /* eslint-disable react-hooks/set-state-in-effect, react-hooks/immutability */
 
+import { DEFAULT_CONTENT } from '@/lib/defaultContent'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -343,11 +344,11 @@ function Header({ lang, setLang, t, settings }) {
             {/* Contact CTA — always visible on desktop */}
             <button
               onClick={() => go('#contact')}
-              className="hidden lg:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-              style={{ background: BRAND.deep }}
+              className="items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white rounded-lg shadow-md hover:opacity-90 hover:-translate-y-0.5 transition-all duration-200 flex-shrink-0"
+              style={{ background: BRAND.deep, display: 'inline-flex' }}
             >
               <Phone className="w-3.5 h-3.5" />
-              {t.nav.contact}
+              Contact Us
             </button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -618,7 +619,7 @@ function Hero({ content, t }) {
 }
 
 function HeroStatsSection({ content, t }) {
-  const stats = content?.heroStats || []
+  const stats = DEFAULT_CONTENT.heroStats
   if (!stats.length) return null
 
   const iconMap = {
@@ -762,10 +763,11 @@ function VideoSection({ videos, t }) {
   )
 }
 
-function SectionHeader({ badge, title, subtitle }) {
+function SectionHeader({ badge, title, subtitle, accent }) {
+  const accentColor = accent || BRAND.deep
   return (
     <div className="text-center mb-10">
-      <span className="inline-block mb-2 text-[11px] font-bold uppercase tracking-[0.14em]" style={{ color: BRAND.deep }}>{badge}</span>
+      <span className="inline-block mb-2 text-[11px] font-bold uppercase tracking-[0.14em]" style={{ color: accentColor }}>{badge}</span>
       <h2 className="font-display text-[22px] md:text-[28px] font-bold mb-3 leading-tight" style={{ color: BRAND.navy }}>{title}</h2>
       {subtitle && <p className="text-slate-500 text-sm md:text-base max-w-xl mx-auto font-normal leading-relaxed">{subtitle}</p>}
     </div>
@@ -797,7 +799,8 @@ function PillarCard({ icon: Icon, title, desc, reverseGradient, href }) {
   )
 }
 
-function PictorialCard({ image, label, title, desc, href, badge }) {
+function PictorialCard({ image, label, title, desc, href, badge, accent }) {
+  const accentColor = accent || BRAND.deep
   const onClick = () => {
     if (!href) return
     if (href.startsWith('#')) document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
@@ -806,24 +809,25 @@ function PictorialCard({ image, label, title, desc, href, badge }) {
   return (
     <div
       onClick={onClick}
-      className="group cursor-pointer rounded-xl overflow-hidden border border-slate-200 bg-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+      className="group cursor-pointer rounded-xl overflow-hidden bg-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+      style={{ border: '1px solid #e2e8f0', borderTop: `3px solid ${accentColor}` }}
     >
       {/* Image */}
       <div className="relative h-44 overflow-hidden bg-slate-100">
         {image
           ? <img src={image} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-          : <div className="w-full h-full" style={{ background: `linear-gradient(135deg, ${BRAND.navy}, ${BRAND.deep})` }} />
+          : <div className="w-full h-full" style={{ background: `linear-gradient(135deg, ${BRAND.navy}, accentColor})` }} />
         }
       </div>
 
       {/* Card body — Coursera style */}
       <div className="p-4">
-        <div className="text-[10px] font-bold uppercase tracking-[0.12em] mb-1.5" style={{ color: BRAND.deep }}>
+        <div className="text-[10px] font-bold uppercase tracking-[0.12em] mb-1.5" style={{ color: accentColor }}>
           {label || badge || title}
         </div>
         <h3 className="font-display font-semibold text-[15px] leading-snug mb-1.5 group-hover:underline underline-offset-2 decoration-slate-300" style={{ color: BRAND.navy }}>{title}</h3>
         <p className="text-slate-500 text-[13px] leading-relaxed line-clamp-2 mb-3">{desc}</p>
-        <div className="flex items-center gap-1 text-[13px] font-semibold" style={{ color: BRAND.deep }}>
+        <div className="flex items-center gap-1 text-[13px] font-semibold group-hover:translate-x-0.5 transition-transform" style={{ color: accentColor }}>
           Explore <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
         </div>
       </div>
@@ -842,10 +846,11 @@ function AwarenessSection({ t }) {
   const mainBadges = ['7 States', 'Digital Reach']
   const mainHrefs = ['#gallery', '#video']
 
+  const ACCENT = '#0EAFC5'  // cyan — Awareness section identity
   return (
     <section id="awareness" className="section-pad bg-white">
       <div className="container mx-auto px-4">
-        <SectionHeader badge={t.badges.awareness} title={t.awareness.title} subtitle={t.awareness.subtitle} />
+        <SectionHeader badge={t.badges.awareness} title={t.awareness.title} subtitle={t.awareness.subtitle} accent={ACCENT} />
 
         {/* Top 2 prominent pictorial cards */}
         <div className="grid md:grid-cols-2 gap-5 mb-5">
@@ -858,27 +863,27 @@ function AwarenessSection({ t }) {
               desc={it.desc}
               href={mainHrefs[i]}
               badge={mainBadges[i]}
+              accent={ACCENT}
             />
           ))}
         </div>
 
-        {/* NGO — single wide smaller box */}
+        {/* NGO — single wide row */}
         {ngo && (
           <div
-            className="flex items-center gap-5 p-5 rounded-2xl border border-slate-200 bg-slate-50 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
+            className="flex items-center gap-5 p-5 rounded-xl bg-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
+            style={{ border: `1px solid #e2e8f0`, borderLeft: `3px solid ${ACCENT}` }}
             onClick={() => { if (typeof window !== 'undefined') window.location.href = '/ngo-network' }}
           >
-            <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">
+            <div className="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0">
               <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=200&q=80&fit=crop" alt="NGO" className="w-full h-full object-cover" />
             </div>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full text-white" style={{ background: BRAND.blue }}>NGO Network</span>
-              </div>
-              <h3 className="font-bold text-base" style={{ color: BRAND.blue }}>{ngo.title}</h3>
-              <p className="text-slate-500 text-sm mt-0.5">{ngo.desc}</p>
+              <div className="text-[10px] font-bold uppercase tracking-[0.12em] mb-0.5" style={{ color: ACCENT }}>NGO Network</div>
+              <h3 className="font-display font-semibold text-[15px]" style={{ color: BRAND.navy }}>{ngo.title}</h3>
+              <p className="text-slate-500 text-[13px] mt-0.5">{ngo.desc}</p>
             </div>
-            <ArrowRight className="w-5 h-5 flex-shrink-0 text-slate-400" />
+            <ArrowRight className="w-4 h-4 flex-shrink-0 text-slate-400" />
           </div>
         )}
       </div>
@@ -894,10 +899,11 @@ function AccessSection({ t }) {
     'https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?w=600&q=80&fit=crop',
   ]
   const badges = ['Hands-on', 'KOL', 'Clinical']
+  const ACCENT = '#16A34A'  // green — Access section identity
   return (
-    <section id="access" className="section-pad bg-slate-50">
+    <section id="access" style={{ background: '#F0FDF4' }} className="section-pad">
       <div className="container mx-auto px-4">
-        <SectionHeader badge={t.badges.access} title={t.access.title} subtitle={t.access.subtitle} />
+        <SectionHeader badge={t.badges.access} title={t.access.title} subtitle={t.access.subtitle} accent={ACCENT} />
         <div className="grid md:grid-cols-3 gap-5">
           {t.access.items.map((it, i) => (
             <PictorialCard
@@ -908,6 +914,7 @@ function AccessSection({ t }) {
               desc={it.desc}
               href={hrefs[i]}
               badge={badges[i]}
+              accent={ACCENT}
             />
           ))}
         </div>
@@ -924,10 +931,11 @@ function CommunicationSection({ t }) {
     'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=600&q=80&fit=crop',
   ]
   const badges = ['Print', 'Video', 'Visual']
+  const ACCENT = '#7C3AED'  // purple — Brand Advocacy section identity
   return (
-    <section id="communication" className="section-pad bg-white">
+    <section id="communication" style={{ background: '#F5F3FF' }} className="section-pad">
       <div className="container mx-auto px-4">
-        <SectionHeader badge={t.badges.communication} title={t.communication.title} subtitle={t.communication.subtitle} />
+        <SectionHeader badge={t.badges.communication} title={t.communication.title} subtitle={t.communication.subtitle} accent={ACCENT} />
         <div className="grid md:grid-cols-3 gap-5">
           {t.communication.items.map((it, i) => (
             <PictorialCard
@@ -938,6 +946,7 @@ function CommunicationSection({ t }) {
               desc={it.desc}
               href={hrefs[i]}
               badge={badges[i]}
+              accent={ACCENT}
             />
           ))}
         </div>
