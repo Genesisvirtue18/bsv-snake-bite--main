@@ -330,10 +330,6 @@ function Header({ lang, setLang, t, settings }) {
             <button onClick={() => go('#outreach')} className="px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:bg-cyan-50" style={{ color: BRAND.blue }} onMouseEnter={e => e.currentTarget.style.color = BRAND.red} onMouseLeave={e => e.currentTarget.style.color = BRAND.blue}>
               {t.nav.outreach}
             </button>
-
-            <button onClick={() => go('#contact')} className="px-4 py-2 text-sm font-semibold text-white rounded-lg transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 ml-1" style={{ background: BRAND.deep }}>
-              {t.nav.contact}
-            </button>
           </nav>
 
           {/* Right Actions */}
@@ -344,6 +340,15 @@ function Header({ lang, setLang, t, settings }) {
               className="h-8 sm:h-10 md:h-12 w-auto flex-shrink-0"
               draggable={false}
             />
+            {/* Contact CTA — always visible on desktop */}
+            <button
+              onClick={() => go('#contact')}
+              className="hidden lg:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+              style={{ background: BRAND.deep }}
+            >
+              <Phone className="w-3.5 h-3.5" />
+              {t.nav.contact}
+            </button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -607,41 +612,65 @@ function Hero({ content, t }) {
           )}
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 md:gap-3 max-w-5xl mx-auto mt-6 relative z-10">
+      </div>
+    </section>
+  )
+}
+
+function HeroStatsSection({ content, t }) {
+  const stats = content?.heroStats || []
+  if (!stats.length) return null
+
+  const iconMap = {
+    Heart: { bg: '#FFF0F0', color: '#E0525A' },
+    MapPin: { bg: '#EFF6FF', color: BRAND.deep },
+    Stethoscope: { bg: '#F0FDF4', color: '#16A34A' },
+    Building2: { bg: '#FFF7ED', color: '#EA7B2C' },
+    Users: { bg: '#F5F3FF', color: '#7C3AED' },
+  }
+
+  return (
+    <section className="bg-white border-b border-slate-100">
+      <div className="container mx-auto px-4 py-10 md:py-14">
+        {/* 5 stat cards — Coursera-style clean strip */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 md:gap-8 max-w-5xl mx-auto">
           {stats.map((s, i) => {
             const Icon = ICONS[s.icon] || Heart
-
+            const colors = iconMap[s.icon] || { bg: BRAND.aqua + '25', color: BRAND.deep }
             return (
               <motion.div
                 key={s.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
+                transition={{ delay: i * 0.08, duration: 0.4 }}
+                className="flex flex-col items-center text-center group"
               >
-                <Card className="bg-white/95 backdrop-blur shadow-xl hover:-translate-y-1 transition border-0">
-                  <CardContent className="p-3 sm:p-4">
-                    <Icon
-                      className="w-5 h-5 sm:w-6 sm:h-6 mb-1.5"
-                      style={{ color: BRAND.red }}
-                    />
-
-                    <div
-                      className="font-display font-bold text-xl md:text-2xl mb-0.5 leading-tight"
-                      style={{ color: BRAND.blue }}
-                    >
-                      <AnimatedCounter value={s.value} suffix={s.suffix} />
-                    </div>
-
-                    <div className="text-[11px] md:text-xs text-slate-700 font-semibold leading-tight">
-                      {s.label}
-                    </div>
-                  </CardContent>
-                </Card>
+                <div
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300"
+                  style={{ background: colors.bg }}
+                >
+                  <Icon className="w-6 h-6" style={{ color: colors.color }} />
+                </div>
+                <div
+                  className="font-display font-bold text-2xl md:text-3xl leading-none mb-1"
+                  style={{ color: BRAND.navy }}
+                >
+                  <AnimatedCounter value={s.value} suffix={s.suffix} />
+                </div>
+                <div className="text-xs md:text-sm text-slate-500 font-medium leading-snug">{s.label}</div>
               </motion.div>
             )
           })}
         </div>
+
+        {/* Divider */}
+        <div className="h-px bg-slate-100 max-w-3xl mx-auto my-8" />
+
+        {/* Quote */}
+        <p className="text-center text-slate-600 text-base md:text-lg max-w-3xl mx-auto leading-relaxed font-normal" style={{ fontFamily: "'Inter', sans-serif" }}>
+          "Driving awareness by dispelling long-term standing myths and educating rural populations on evidence-based snakebite first aid and treatment."
+        </p>
       </div>
     </section>
   )
@@ -1400,6 +1429,7 @@ function App() {
       <Header lang={lang} setLang={setLang} t={t} settings={settings} />
       <main>
         <Hero content={resolved} t={t} />
+        <HeroStatsSection content={resolved} t={t} />
         <VideoSection videos={videos} t={t} />
         <AwarenessSection t={t} />
         <AccessSection t={t} />
