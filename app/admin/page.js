@@ -598,6 +598,458 @@ export default function AdminPage() {
                   </CardContent>
                 </Card>
 
+                {/* AWARENESS */}
+                <Card>
+                  <CardContent className="p-5 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-display font-bold text-lg text-bsv-blue">
+                        Awareness Cards
+                      </h3>
+
+                      <Button
+                        type="button"
+                        className="bg-bsv-red"
+                        onClick={() => {
+                          const items = content.awareness?.items || []
+
+                          setContent({
+                            ...content,
+                            awareness: {
+                              ...(content.awareness || {}),
+                              items: [
+                                ...items,
+                                {
+                                  title: '',
+                                  desc: '',
+                                  label: '',
+                                  image: '',
+                                  href: '',
+                                },
+                              ],
+                            },
+                          })
+                        }}
+                      >
+                        <Plus className="w-4 h-4 mr-1" />
+                        Add Card
+                      </Button>
+                    </div>
+
+                    {(content.awareness?.items || []).map((item, i) => (
+                      <div key={i} className="border rounded-xl p-4 bg-white space-y-3">
+                        <div className="flex items-center justify-between">
+                          <div className="font-semibold text-bsv-blue">
+                            Card {i + 1}
+                          </div>
+
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => {
+                              const items = [...(content.awareness?.items || [])]
+                              items.splice(i, 1)
+
+                              setContent({
+                                ...content,
+                                awareness: {
+                                  ...(content.awareness || {}),
+                                  items,
+                                },
+                              })
+                            }}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+
+                        <div>
+                          <Label>Label</Label>
+                          <Input
+                            value={item.label || ''}
+                            onChange={e => {
+                              const items = [...(content.awareness?.items || [])]
+                              items[i] = { ...items[i], label: e.target.value }
+
+                              setContent({
+                                ...content,
+                                awareness: {
+                                  ...(content.awareness || {}),
+                                  items,
+                                },
+                              })
+                            }}
+                          />
+                        </div>
+
+                        <div>
+                          <Label>Title</Label>
+                          <Input
+                            value={item.title || ''}
+                            onChange={e => {
+                              const items = [...(content.awareness?.items || [])]
+                              items[i] = { ...items[i], title: e.target.value }
+
+                              setContent({
+                                ...content,
+                                awareness: {
+                                  ...(content.awareness || {}),
+                                  items,
+                                },
+                              })
+                            }}
+                          />
+                        </div>
+
+                        <div>
+                          <Label>Description</Label>
+                          <Textarea
+                            rows={2}
+                            value={item.desc || ''}
+                            onChange={e => {
+                              const items = [...(content.awareness?.items || [])]
+                              items[i] = { ...items[i], desc: e.target.value }
+
+                              setContent({
+                                ...content,
+                                awareness: {
+                                  ...(content.awareness || {}),
+                                  items,
+                                },
+                              })
+                            }}
+                          />
+                        </div>
+
+                        <div>
+                          <Label>Link</Label>
+                          <Input
+                            value={item.href || ''}
+                            placeholder="#gallery / #video / /ngo-network"
+                            onChange={e => {
+                              const items = [...(content.awareness?.items || [])]
+                              items[i] = { ...items[i], href: e.target.value }
+
+                              setContent({
+                                ...content,
+                                awareness: {
+                                  ...(content.awareness || {}),
+                                  items,
+                                },
+                              })
+                            }}
+                          />
+                        </div>
+
+                        <MediaPicker
+                          label="Image"
+                          value={item.image || ''}
+                          onChange={v => {
+                            const items = [...(content.awareness?.items || [])]
+                            items[i] = { ...items[i], image: v }
+
+                            setContent({
+                              ...content,
+                              awareness: {
+                                ...(content.awareness || {}),
+                                items,
+                              },
+                            })
+                          }}
+                        />
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+
+                {/* ACCESS */}
+                <Card>
+                  <CardContent className="p-5 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-display font-bold text-lg text-bsv-blue">
+                        Access Cards
+                      </h3>
+
+                      <Button
+                        type="button"
+                        className="bg-bsv-red"
+                        onClick={() => {
+                          const items = content.access?.items || []
+
+                          setContent({
+                            ...content,
+                            access: {
+                              ...(content.access || {}),
+                              items: [
+                                ...items,
+                                {
+                                  title: '',
+                                  desc: '',
+                                  image: '',
+                                  href: '',
+                                },
+                              ],
+                            },
+                          })
+                        }}
+                      >
+                        <Plus className="w-4 h-4 mr-1" />
+                        Add Card
+                      </Button>
+                    </div>
+
+                    {(content.access?.items || []).map((item, i) => (
+                      <div key={i} className="border rounded-xl p-4 bg-white space-y-3">
+                        <div className="flex items-center justify-between">
+                          <div className="font-semibold text-bsv-blue">
+                            Card {i + 1}
+                          </div>
+
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => {
+                              const items = [...(content.access?.items || [])]
+                              items.splice(i, 1)
+
+                              setContent({
+                                ...content,
+                                access: {
+                                  ...(content.access || {}),
+                                  items,
+                                },
+                              })
+                            }}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+
+                        <div>
+                          <Label>Title</Label>
+                          <Input
+                            value={item.title || ''}
+                            onChange={e => {
+                              const items = [...(content.access?.items || [])]
+                              items[i] = { ...items[i], title: e.target.value }
+
+                              setContent({
+                                ...content,
+                                access: {
+                                  ...(content.access || {}),
+                                  items,
+                                },
+                              })
+                            }}
+                          />
+                        </div>
+
+                        <div>
+                          <Label>Description</Label>
+                          <Textarea
+                            rows={2}
+                            value={item.desc || ''}
+                            onChange={e => {
+                              const items = [...(content.access?.items || [])]
+                              items[i] = { ...items[i], desc: e.target.value }
+
+                              setContent({
+                                ...content,
+                                access: {
+                                  ...(content.access || {}),
+                                  items,
+                                },
+                              })
+                            }}
+                          />
+                        </div>
+
+                        <div>
+                          <Label>Link</Label>
+                          <Input
+                            value={item.href || ''}
+                            placeholder="#stories / #outreach / #resources"
+                            onChange={e => {
+                              const items = [...(content.access?.items || [])]
+                              items[i] = { ...items[i], href: e.target.value }
+
+                              setContent({
+                                ...content,
+                                access: {
+                                  ...(content.access || {}),
+                                  items,
+                                },
+                              })
+                            }}
+                          />
+                        </div>
+
+                        <MediaPicker
+                          label="Image"
+                          value={item.image || ''}
+                          onChange={v => {
+                            const items = [...(content.access?.items || [])]
+                            items[i] = { ...items[i], image: v }
+
+                            setContent({
+                              ...content,
+                              access: {
+                                ...(content.access || {}),
+                                items,
+                              },
+                            })
+                          }}
+                        />
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+
+                {/* BRAND ADVOCACY */}
+                <Card>
+                  <CardContent className="p-5 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-display font-bold text-lg text-bsv-blue">
+                        Brand Advocacy Cards
+                      </h3>
+
+                      <Button
+                        type="button"
+                        className="bg-bsv-red"
+                        onClick={() => {
+                          const items = content.communication?.items || []
+
+                          setContent({
+                            ...content,
+                            communication: {
+                              ...(content.communication || {}),
+                              items: [
+                                ...items,
+                                {
+                                  title: '',
+                                  desc: '',
+                                  image: '',
+                                  href: '',
+                                },
+                              ],
+                            },
+                          })
+                        }}
+                      >
+                        <Plus className="w-4 h-4 mr-1" />
+                        Add Card
+                      </Button>
+                    </div>
+
+                    {(content.communication?.items || []).map((item, i) => (
+                      <div key={i} className="border rounded-xl p-4 bg-white space-y-3">
+                        <div className="flex items-center justify-between">
+                          <div className="font-semibold text-bsv-blue">
+                            Card {i + 1}
+                          </div>
+
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => {
+                              const items = [...(content.communication?.items || [])]
+                              items.splice(i, 1)
+
+                              setContent({
+                                ...content,
+                                communication: {
+                                  ...(content.communication || {}),
+                                  items,
+                                },
+                              })
+                            }}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+
+                        <div>
+                          <Label>Title</Label>
+                          <Input
+                            value={item.title || ''}
+                            onChange={e => {
+                              const items = [...(content.communication?.items || [])]
+                              items[i] = { ...items[i], title: e.target.value }
+
+                              setContent({
+                                ...content,
+                                communication: {
+                                  ...(content.communication || {}),
+                                  items,
+                                },
+                              })
+                            }}
+                          />
+                        </div>
+
+                        <div>
+                          <Label>Description</Label>
+                          <Textarea
+                            rows={2}
+                            value={item.desc || ''}
+                            onChange={e => {
+                              const items = [...(content.communication?.items || [])]
+                              items[i] = { ...items[i], desc: e.target.value }
+
+                              setContent({
+                                ...content,
+                                communication: {
+                                  ...(content.communication || {}),
+                                  items,
+                                },
+                              })
+                            }}
+                          />
+                        </div>
+
+                        <div>
+                          <Label>Link</Label>
+                          <Input
+                            value={item.href || ''}
+                            placeholder="#resources / #video / #gallery"
+                            onChange={e => {
+                              const items = [...(content.communication?.items || [])]
+                              items[i] = { ...items[i], href: e.target.value }
+
+                              setContent({
+                                ...content,
+                                communication: {
+                                  ...(content.communication || {}),
+                                  items,
+                                },
+                              })
+                            }}
+                          />
+                        </div>
+
+                        <MediaPicker
+                          label="Image"
+                          value={item.image || ''}
+                          onChange={v => {
+                            const items = [...(content.communication?.items || [])]
+                            items[i] = { ...items[i], image: v }
+
+                            setContent({
+                              ...content,
+                              communication: {
+                                ...(content.communication || {}),
+                                items,
+                              },
+                            })
+                          }}
+                        />
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+
 
                 {/* IMPACT STATS */}
                 <Card><CardContent className="p-5">

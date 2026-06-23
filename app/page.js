@@ -871,18 +871,18 @@ function PictorialCard({ image, label, title, desc, href, badge, accent }) {
       style={{ border: '1px solid #e2e8f0', borderTop: `3px solid ${accentColor}` }}
     >
       {/* Image */}
-      <div className="relative h-44 overflow-hidden bg-slate-100">
-        {image
-          ? <img src={image} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-          : <div className="w-full h-full" style={{ background: `linear-gradient(135deg, ${BRAND.navy}, accentColor})` }} />
-        }
-      </div>
+      {image && (
+        <div className="relative h-44 overflow-hidden">
+          <img
+            src={image}
+            alt={title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        </div>
+      )}
 
       {/* Card body — Coursera style */}
       <div className="p-4">
-        <div className="text-[10px] font-bold uppercase tracking-[0.12em] mb-1.5" style={{ color: accentColor }}>
-          {label || badge || title}
-        </div>
         <h3 className="font-display font-semibold text-[15px] leading-snug mb-1.5 group-hover:underline underline-offset-2 decoration-slate-300" style={{ color: BRAND.navy }}>{title}</h3>
         <p className="text-slate-500 text-[13px] leading-relaxed line-clamp-2 mb-3">{desc}</p>
         <div className="flex items-center gap-1 text-[13px] font-semibold group-hover:translate-x-0.5 transition-transform" style={{ color: accentColor }}>
@@ -893,85 +893,62 @@ function PictorialCard({ image, label, title, desc, href, badge, accent }) {
   )
 }
 
-function AwarenessSection({ t }) {
-  const items = t.awareness.items || []
-  const main = items.slice(0, 2)
-  const ngo = items[2]
-  const mainImages = [
-    'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800&q=80&fit=crop',
-    'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=800&q=80&fit=crop',
-  ]
-  const mainBadges = ['7 States', 'Digital Reach']
-  const mainHrefs = ['#gallery', '#video']
+function AwarenessSection({ content, t }) {
+  const cards = content?.awareness?.items || []
+  const ACCENT = '#0EAFC5'
 
-  const ACCENT = '#0EAFC5'  // cyan — Awareness section identity
   return (
     <section id="awareness" className="section-pad bg-white">
       <div className="container mx-auto px-4">
-        <SectionHeader badge={t.badges.awareness} title={t.awareness.title} subtitle={t.awareness.subtitle} accent={ACCENT} />
+        <SectionHeader
+          badge={t.badges.awareness}
+          title={t.awareness.title}
+          subtitle={t.awareness.subtitle}
+          accent={ACCENT}
+        />
 
-        {/* Top 2 prominent pictorial cards */}
-        <div className="grid md:grid-cols-2 gap-5 mb-5">
-          {main.map((it, i) => (
+        <div className="grid md:grid-cols-3 gap-5">
+          {cards.map((it, i) => (
             <PictorialCard
               key={i}
-              image={mainImages[i]}
-              label={it.title}
+              image={it.image}
+              label={it.label}
               title={it.title}
               desc={it.desc}
-              href={mainHrefs[i]}
-              badge={mainBadges[i]}
+              href={it.href}
               accent={ACCENT}
             />
           ))}
         </div>
-
-        {/* NGO — single wide row */}
-        {ngo && (
-          <div
-            className="flex items-center gap-5 p-5 rounded-xl bg-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
-            style={{ border: `1px solid #e2e8f0`, borderLeft: `3px solid ${ACCENT}` }}
-            onClick={() => { if (typeof window !== 'undefined') window.location.href = '/ngo-network' }}
-          >
-            <div className="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0">
-              <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=200&q=80&fit=crop" alt="NGO" className="w-full h-full object-cover" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="text-[10px] font-bold uppercase tracking-[0.12em] mb-0.5" style={{ color: ACCENT }}>NGO Network</div>
-              <h3 className="font-display font-semibold text-[15px]" style={{ color: BRAND.navy }}>{ngo.title}</h3>
-              <p className="text-slate-500 text-[13px] mt-0.5">{ngo.desc}</p>
-            </div>
-            <ArrowRight className="w-4 h-4 flex-shrink-0 text-slate-400" />
-          </div>
-        )}
       </div>
     </section>
   )
 }
 
-function AccessSection({ t }) {
-  const hrefs = ['#stories', '#outreach', '#resources']
-  const images = [
-    'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80&fit=crop',
-    'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80&fit=crop',
-    'https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?w=600&q=80&fit=crop',
-  ]
-  const badges = ['Hands-on', 'KOL', 'Clinical']
-  const ACCENT = '#16A34A'  // green — Access section identity
+function AccessSection({ content, t }) {
+  const cards = content?.access?.items || []
+  const ACCENT = '#16A34A'
+
+  if (!cards.length) return null
+
   return (
     <section id="access" style={{ background: '#F0FDF4' }} className="section-pad">
       <div className="container mx-auto px-4">
-        <SectionHeader badge={t.badges.access} title={t.access.title} subtitle={t.access.subtitle} accent={ACCENT} />
+        <SectionHeader
+          badge={t.badges.access}
+          title={content?.access?.title || t.access.title}
+          subtitle={content?.access?.subtitle || t.access.subtitle}
+          accent={ACCENT}
+        />
+
         <div className="grid md:grid-cols-3 gap-5">
-          {t.access.items.map((it, i) => (
+          {cards.map((it, i) => (
             <PictorialCard
               key={i}
-              image={images[i]}
-              label={it.title}
+              image={it.image}
               title={it.title}
               desc={it.desc}
-              href={hrefs[i]}
-              badge={badges[i]}
+              href={it.href}
               accent={ACCENT}
             />
           ))}
@@ -981,29 +958,30 @@ function AccessSection({ t }) {
   )
 }
 
-function CommunicationSection({ t }) {
-  const hrefs = ['#resources', '#video', '#gallery']
-  const images = [
-    'https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=600&q=80&fit=crop',
-    'https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?w=600&q=80&fit=crop',
-    'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=600&q=80&fit=crop',
-  ]
-  const badges = ['Print', 'Video', 'Visual']
-  const ACCENT = '#7C3AED'  // purple — Brand Advocacy section identity
+function CommunicationSection({ content, t }) {
+  const cards = content?.communication?.items || []
+  const ACCENT = '#7C3AED'
+
+  if (!cards.length) return null
+
   return (
     <section id="communication" style={{ background: '#F5F3FF' }} className="section-pad">
       <div className="container mx-auto px-4">
-        <SectionHeader badge={t.badges.communication} title={t.communication.title} subtitle={t.communication.subtitle} accent={ACCENT} />
+        <SectionHeader
+          badge={t.badges.communication}
+          title={content?.communication?.title || t.communication.title}
+          subtitle={content?.communication?.subtitle || t.communication.subtitle}
+          accent={ACCENT}
+        />
+
         <div className="grid md:grid-cols-3 gap-5">
-          {t.communication.items.map((it, i) => (
+          {cards.map((it, i) => (
             <PictorialCard
               key={i}
-              image={images[i]}
-              label={it.title}
+              image={it.image}
               title={it.title}
               desc={it.desc}
-              href={hrefs[i]}
-              badge={badges[i]}
+              href={it.href}
               accent={ACCENT}
             />
           ))}
@@ -1515,9 +1493,9 @@ function App() {
         <Hero content={resolved} t={t} />
         <HeroStatsSection content={resolved} t={t} />
         <VideoSection videos={videos} t={t} />
-        <AwarenessSection t={t} />
-        <AccessSection t={t} />
-        <CommunicationSection t={t} />
+        <AwarenessSection content={resolved} t={t} />
+        <AccessSection content={resolved} t={t} />
+        <CommunicationSection content={resolved} t={t} />
         <OutreachSection content={resolved} t={t} />
         <StoriesSection stories={stories} t={t} />
         <GallerySection albums={albums} t={t} />
