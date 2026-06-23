@@ -178,7 +178,8 @@
     {
       "id": 1,
       "myth": "Venom can be sucked out of the wound",
-      "fact": "Sucking venom is dangerous and ineffective. It can introduce bacteria into the wound and harm the rescuer. Only ASV (Anti-Snake Venom) administered in a hospital can neutralize venom."
+      "fact": "Sucking venom is dangerous and ineffective. It can introduce bacteria into the wound and harm the rescuer. Only ASV (Anti-Snake Venom) administered in a hospital can neutralize venom.",
+      "image": "/api/media/31be671a-a4a1-48bc-82dc-9ae9bd972a6d"
     },
     {
       "id": 2,
