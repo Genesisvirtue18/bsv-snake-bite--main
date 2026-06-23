@@ -638,9 +638,46 @@ function HeroStatsSection({ content, t }) {
 
   return (
     <section className="bg-white border-b border-slate-100">
-      <div className="container mx-auto px-4 py-10 md:py-14">
-        {/* 5 stat cards with border + hover */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-5 max-w-5xl mx-auto">
+      <div className="py-10 md:py-14">
+        {/* Mobile: horizontal scroll carousel — Desktop: 5-col grid */}
+
+        {/* Mobile scroll strip */}
+        <div className="md:hidden overflow-x-auto no-scrollbar scroll-snap-x px-4">
+          <div className="flex gap-3 w-max pb-2">
+            {stats.map((s, i) => {
+              const Icon = ICONS[s.icon] || Heart
+              const colors = iconMap[s.icon] || { bg: '#EFF6FF', color: BRAND.deep }
+              return (
+                <motion.div
+                  key={s.id}
+                  initial={{ opacity: 0, x: 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.07, duration: 0.35 }}
+                  className="group flex flex-col items-center text-center rounded-2xl px-5 py-5 bg-white flex-shrink-0 w-[148px] snap-start"
+                  style={{ border: '1px solid #e2e8f0', borderTop: `3px solid ${colors.color}`, boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}
+                >
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ background: colors.bg }}>
+                    <Icon className="w-5 h-5" style={{ color: colors.color }} />
+                  </div>
+                  <div className="font-display font-bold text-xl leading-none mb-1.5" style={{ color: BRAND.navy }}>
+                    <AnimatedCounter value={s.value} suffix={s.suffix} />
+                  </div>
+                  <div className="text-[10px] text-slate-500 font-medium leading-snug">{s.label}</div>
+                </motion.div>
+              )
+            })}
+          </div>
+          {/* Scroll hint dots */}
+          <div className="flex justify-center gap-1.5 mt-3">
+            {stats.map((_, i) => (
+              <div key={i} className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop 5-col grid */}
+        <div className="hidden md:grid md:grid-cols-5 gap-5 max-w-5xl mx-auto px-4">
           {stats.map((s, i) => {
             const Icon = ICONS[s.icon] || Heart
             const colors = iconMap[s.icon] || { bg: '#EFF6FF', color: BRAND.deep }
@@ -660,13 +697,10 @@ function HeroStatsSection({ content, t }) {
                 >
                   <Icon className="w-5 h-5" style={{ color: colors.color }} />
                 </div>
-                <div
-                  className="font-display font-bold text-2xl md:text-[28px] leading-none mb-1.5"
-                  style={{ color: BRAND.navy }}
-                >
+                <div className="font-display font-bold text-[28px] leading-none mb-1.5" style={{ color: BRAND.navy }}>
                   <AnimatedCounter value={s.value} suffix={s.suffix} />
                 </div>
-                <div className="text-[11px] md:text-xs text-slate-500 font-medium leading-snug">{s.label}</div>
+                <div className="text-xs text-slate-500 font-medium leading-snug">{s.label}</div>
               </motion.div>
             )
           })}
