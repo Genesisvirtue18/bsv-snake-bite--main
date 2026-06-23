@@ -750,15 +750,77 @@ function PillarCard({ icon: Icon, title, desc, reverseGradient, href }) {
   )
 }
 
+function PictorialCard({ image, label, labelColor, title, desc, href, badge }) {
+  const onClick = () => {
+    if (!href) return
+    if (href.startsWith('#')) document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
+    else if (typeof window !== 'undefined') window.location.href = href
+  }
+  return (
+    <div
+      onClick={onClick}
+      className="group cursor-pointer rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white border border-slate-100"
+    >
+      {/* Image + label overlay */}
+      <div className="relative h-48 overflow-hidden bg-slate-200">
+        {image
+          ? <img src={image} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          : <div className="w-full h-full" style={{ background: `linear-gradient(135deg, ${BRAND.blue}, ${BRAND.red})` }} />
+        }
+        {/* Dark scrim at bottom */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        {/* Category label banner */}
+        <div className="absolute bottom-0 left-0 right-0 px-4 py-2.5" style={{ background: labelColor || BRAND.blue }}>
+          <span className="text-white text-[11px] font-bold uppercase tracking-widest">{label || title}</span>
+        </div>
+      </div>
+
+      {/* Card body */}
+      <div className="p-5">
+        {/* Brand row */}
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: `linear-gradient(135deg, ${BRAND.blue}, ${BRAND.red})` }}>
+            <span className="text-white text-[8px] font-black">B</span>
+          </div>
+          <span className="text-xs text-slate-400 font-medium">BSV Campaign</span>
+          {badge && <span className="ml-auto text-[10px] font-semibold px-2 py-0.5 rounded-full text-white" style={{ background: BRAND.red }}>{badge}</span>}
+        </div>
+        <h3 className="font-bold text-base leading-snug mb-2 group-hover:text-[#de2527] transition-colors" style={{ color: BRAND.blue }}>{title}</h3>
+        <p className="text-slate-500 text-sm leading-relaxed line-clamp-2">{desc}</p>
+        <div className="mt-4 flex items-center gap-1 text-xs font-semibold" style={{ color: BRAND.red }}>
+          Explore <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function AwarenessSection({ t }) {
-  const icons = [Megaphone, Users, Video]
   const hrefs = ['#gallery', '/ngo-network', '#video']
+  const images = [
+    'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=600&q=80&fit=crop',
+    'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=600&q=80&fit=crop',
+    'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=600&q=80&fit=crop',
+  ]
+  const labelColors = [BRAND.red, BRAND.blue, `linear-gradient(90deg, ${BRAND.blue}, ${BRAND.red})`]
+  const badges = ['7 States', 'NGO Network', 'Digital']
   return (
     <section id="awareness" className="section-pad bg-white">
       <div className="container mx-auto px-4">
         <SectionHeader badge={t.badges.awareness} title={t.awareness.title} subtitle={t.awareness.subtitle} />
         <div className="grid md:grid-cols-3 gap-6">
-          {t.awareness.items.map((it, i) => <PillarCard key={i} icon={icons[i] || Megaphone} title={it.title} desc={it.desc} href={hrefs[i]} />)}
+          {t.awareness.items.map((it, i) => (
+            <PictorialCard
+              key={i}
+              image={images[i]}
+              label={it.title}
+              labelColor={labelColors[i]}
+              title={it.title}
+              desc={it.desc}
+              href={hrefs[i]}
+              badge={badges[i]}
+            />
+          ))}
         </div>
       </div>
     </section>
