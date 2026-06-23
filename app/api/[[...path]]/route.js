@@ -4,6 +4,30 @@ import { Readable } from 'node:stream'
 import { DEFAULT_CONTENT } from '@/lib/defaultContent'
 import { DEFAULT_SETTINGS } from '@/lib/defaultSettings'
 import { getDb, ROLES, can, signToken, verifyPassword, hashPassword, getUserFromRequest, ObjectId } from '@/lib/auth'
+import { exec } from 'node:child_process'
+import { writeFileSync } from 'node:fs'
+import { join } from 'node:path'
+
+// Auto-commit and push content changes to git
+async function gitPushContent(content, user) {
+  const repoDir = process.cwd()
+  const contentFile = join(repoDir, 'content-export.json')
+  writeFileSync(contentFile, JSON.stringify(content, null, 2))
+  const commitMsg = `cms: content update by ${user?.email || 'admin'} [${new Date().toISOString()}]`
+  const cmd = [
+    `cd "${repoDir}"`,
+    'git add content-export.json',
+    `git commit -m "${commitMsg}" --allow-empty`,
+    'git push origin main'
+  ].join(' && ')
+  return new Promise((resolve) => {
+    exec(cmd, { env: { ...process.env, GIT_TERMINAL_PROMPT: '0' } }, (err, stdout, stderr) => {
+      if (err) console.error('[git-push]', stderr || err.message)
+      else console.log('[git-push] pushed:', stdout.trim())
+      resolve(!err)
+    })
+  })
+}
 
 export const runtime = 'nodejs'
 
@@ -142,6 +166,8 @@ async function handleRoute(request, { params }) {
       const auth = requireAuth(request, 'content.update'); if (auth.error) return auth.error
       const body = await request.json()
       await db.collection('site_content').updateOne({ id: 'main' }, { $set: { data: body, updatedAt: new Date() } }, { upsert: true })
+      // Auto-push to git in background (non-blocking)
+      gitPushContent(body, auth.user).catch(() => {})
       return cors(NextResponse.json({ success: true }))
     }
     if (route === '/content/reset' && method === 'POST') {
