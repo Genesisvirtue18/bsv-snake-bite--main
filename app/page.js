@@ -871,7 +871,7 @@ function AwarenessSection({ content, t }) {
   }
 
   return (
-    <section id="awareness" className="section-pad" style={{ background: 'linear-gradient(135deg, #EEF5FF 0%, #DBEAFE 100%)' }}>
+    <section id="awareness" className="section-pad" style={{ background: '#FFF2F2' }}>
       <div className="max-w-6xl mx-auto px-4">
 
         <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-center">
@@ -1080,7 +1080,7 @@ function OutreachSection({ content, t }) {
     enabled: true,
   }))
   return (
-    <section id="outreach" className="section-pad bg-gradient-to-b from-white to-slate-50">
+    <section id="outreach" className="section-pad" style={{ background: '#FFFBEB' }}>
       <div className="container mx-auto px-4">
         <SectionHeader badge={t.badges.outreach} title={t.outreach.title} subtitle={t.outreach.subtitle} />
         <StatesGrid states={states} t={t} />
@@ -1092,7 +1092,7 @@ function OutreachSection({ content, t }) {
 function StoriesSection({ stories, t }) {
   if (!stories?.length) return null
   return (
-    <section id="stories" className="section-pad bg-white">
+    <section id="stories" className="section-pad" style={{ background: '#F0FDFB' }}>
       <div className="container mx-auto px-4">
         <SectionHeader badge={t.badges.stories} title={t.stories.title} subtitle={t.stories.subtitle} />
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1133,7 +1133,7 @@ function GallerySection({ albums, t }) {
   const filtered = published.filter(a => (filter === 'all' || a.category === filter) && (!q || `${a.title} ${a.description}`.toLowerCase().includes(q.toLowerCase())))
   if (!published.length) return null
   return (
-    <section id="gallery" className="section-pad bg-slate-50">
+    <section id="gallery" className="section-pad" style={{ background: '#FDF8FF' }}>
       <div className="container mx-auto px-4">
         <SectionHeader badge={t.badges.gallery} title={t.gallery.title} subtitle={t.gallery.subtitle} />
         <div className="flex flex-wrap gap-2 mb-6 items-center">
@@ -1205,7 +1205,7 @@ function MythsSection({ content, t }) {
   ]
 
   return (
-    <section id="myths" className="section-pad" style={{ background: '#F0F8FF' }}>
+    <section id="myths" className="section-pad" style={{ background: '#FFF7ED' }}>
       <div className="container mx-auto px-4">
         <SectionHeader badge={t.badges.myths} title={t.myths.title} subtitle={t.myths.subtitle} accent={BSV_RED} />
         <div className="grid md:grid-cols-3 gap-6">
