@@ -226,7 +226,6 @@ function Header({ lang, setLang, t, settings }) {
   }
 
   const menu = [
-    { id: 'home', label: t.nav.home, href: '#home' },
     { id: 'video', label: t.nav.watch, href: '#video' },
     { id: 'awareness', label: t.nav.awareness, href: '#awareness' },
     { id: 'access', label: t.nav.access, href: '#access' },
@@ -255,34 +254,30 @@ function Header({ lang, setLang, t, settings }) {
       style={{ borderColor: scrolled ? BRAND.blue + '22' : undefined }}
       onMouseLeave={() => setMegaOpen(null)}
     >
-      <div className="container mx-auto px-3 sm:px-4">
-        <div className="flex items-center justify-between h-16 sm:h-20">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
+        <div className="flex items-center justify-between h-16">
 
-          {/* Logo + Tagline */}
+          {/* Logo — clicking navigates to top */}
           <button
             onClick={() => go('#home')}
-            className="flex items-center gap-2 sm:gap-3 flex-shrink-0"
-            style={{ transform: open ? 'scale(0.95)' : 'scale(1)' }}
+            className="flex items-center gap-2.5 flex-shrink-0 group"
           >
             <img
               src={settings?.branding?.bsvLogo}
               alt="BSV"
-              className="h-8 sm:h-12 md:h-14 w-auto flex-shrink-0"
+              className="h-10 sm:h-12 w-auto flex-shrink-0"
               draggable={false}
             />
-            <div className="flex-shrink-0">
-              <div className="text-[9px] sm:text-[11px] font-semibold leading-snug text-left whitespace-nowrap" style={{ color: BRAND.blue }}>
+            <div className="hidden sm:block flex-shrink-0 border-l border-slate-200 pl-2.5">
+              <div className="text-[10px] font-semibold leading-snug text-left whitespace-nowrap" style={{ color: BRAND.blue }}>
                 Saap Ka Vaar,<br />Aspataal Mein Hi Upchaar
               </div>
             </div>
           </button>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation — no Home button, logo handles it */}
           <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1 flex-1 justify-center">
-            <button onClick={() => go('#home')} className="px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:bg-cyan-50" style={{ color: BRAND.blue }} onMouseEnter={e => e.currentTarget.style.color = BSV_RED} onMouseLeave={e => e.currentTarget.style.color = BRAND.blue}>
-              {t.nav.home}
-            </button>
-            <button onClick={() => go('#video')} className="px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:bg-cyan-50" style={{ color: BRAND.blue }} onMouseEnter={e => e.currentTarget.style.color = BSV_RED} onMouseLeave={e => e.currentTarget.style.color = BRAND.blue}>
+            <button onClick={() => go('#video')} className="px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all duration-200 hover:bg-slate-50" style={{ color: BRAND.blue }} onMouseEnter={e => e.currentTarget.style.color = BSV_RED} onMouseLeave={e => e.currentTarget.style.color = BRAND.blue}>
               {t.nav.watch}
             </button>
 
@@ -296,51 +291,56 @@ function Header({ lang, setLang, t, settings }) {
                 }}
               >
                 <button
-                  className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 inline-flex items-center gap-1 ${megaOpen === key ? 'bg-cyan-50' : 'hover:bg-cyan-50'}`}
+                  className={`px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all duration-200 inline-flex items-center gap-1 ${megaOpen === key ? 'bg-slate-50' : 'hover:bg-slate-50'}`}
                   style={{ color: megaOpen === key ? BSV_RED : BRAND.blue }}
                 >
                   {megaMenus[key].label}
-                  <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-200 ${megaOpen === key ? 'rotate-90' : ''}`} />
+                  <ChevronRight className={`w-3 h-3 transition-transform duration-200 ${megaOpen === key ? 'rotate-90' : ''}`} />
                 </button>
               </div>
             ))}
 
-            <button onClick={() => go('#outreach')} className="px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:bg-cyan-50" style={{ color: BRAND.blue }} onMouseEnter={e => e.currentTarget.style.color = BSV_RED} onMouseLeave={e => e.currentTarget.style.color = BRAND.blue}>
+            <button onClick={() => go('#outreach')} className="px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all duration-200 hover:bg-slate-50" style={{ color: BRAND.blue }} onMouseEnter={e => e.currentTarget.style.color = BSV_RED} onMouseLeave={e => e.currentTarget.style.color = BRAND.blue}>
               {t.nav.outreach}
+            </button>
+            <button onClick={() => go('#about')} className="px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all duration-200 hover:bg-slate-50" style={{ color: BRAND.blue }} onMouseEnter={e => e.currentTarget.style.color = BSV_RED} onMouseLeave={e => e.currentTarget.style.color = BRAND.blue}>
+              About Campaign
             </button>
           </nav>
 
-          {/* Right Actions */}
-          <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-3 flex-shrink-0">
+          {/* Right: Mankind logo + Contact + Language — tight and clean */}
+          <div className="flex items-center gap-2 flex-shrink-0">
             <img
               src={settings?.branding?.mankindLogo}
               alt="Mankind"
-              className="h-7 sm:h-9 md:h-11 w-auto flex-shrink-0"
+              className="h-8 sm:h-10 w-auto flex-shrink-0"
               draggable={false}
             />
+
+            {/* Divider */}
+            <div className="hidden lg:block h-6 w-px bg-slate-200 mx-1" />
 
             {/* Contact CTA — desktop only */}
             <button
               onClick={() => go('#contact')}
-              className="hidden lg:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white rounded-lg shadow-md hover:opacity-90 hover:-translate-y-0.5 transition-all duration-200 flex-shrink-0"
+              className="hidden lg:inline-flex items-center gap-1.5 px-3.5 py-1.5 text-[13px] font-semibold text-white rounded-lg hover:opacity-90 transition-all duration-200 flex-shrink-0"
               style={{ background: `linear-gradient(135deg, ${BSV_RED} 0%, #a81b1d 100%)` }}
             >
-              <Phone className="w-3.5 h-3.5" />
               Contact Us
             </button>
 
-            {/* Language selector — globe icon only on mobile */}
+            {/* Language — globe + short code */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
-                  className="gap-1.5 transition-all duration-200 rounded-xl px-2 lg:px-3"
-                  style={{ borderColor: BRAND.blue + '40', color: BRAND.blue }}
+                  className="gap-1 transition-all duration-200 rounded-lg px-2 h-8"
+                  style={{ color: BRAND.blue }}
                 >
-                  <Globe className="w-4 h-4 flex-shrink-0" />
-                  <span className="hidden lg:inline text-sm font-medium">
-                    {LANGUAGES.find(l => l.code === lang)?.native}
+                  <Globe className="w-3.5 h-3.5 flex-shrink-0" />
+                  <span className="text-[12px] font-medium hidden lg:inline">
+                    {LANGUAGES.find(l => l.code === lang)?.code?.toUpperCase() || 'EN'}
                   </span>
                 </Button>
               </DropdownMenuTrigger>
@@ -360,7 +360,7 @@ function Header({ lang, setLang, t, settings }) {
 
             {/* Hamburger — mobile/tablet only */}
             <button
-              className="lg:hidden p-2 rounded-xl hover:bg-slate-100 active:bg-slate-200 transition-all duration-200 flex-shrink-0"
+              className="lg:hidden p-1.5 rounded-lg hover:bg-slate-100 active:bg-slate-200 transition-all duration-200 flex-shrink-0"
               onClick={() => setOpen(!open)}
               aria-label="Open menu"
             >
