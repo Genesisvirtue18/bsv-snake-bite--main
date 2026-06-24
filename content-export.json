@@ -3017,14 +3017,14 @@
     "subheading": "Engaging communities through powerful street theatre performances to spread awareness about snakebite prevention and life-saving first aid.",
     "states": [
       {
-        "state": "up",
+        "state": "Andra Pradesh",
         "code": "UP",
         "cities": [
           {
             "id": "city-1782293008068",
-            "name": "New City",
+            "name": "Visakhapatnam",
             "image": "/api/media/816c3564-3243-49e9-b145-a8a7a93aafd1",
-            "desc": "test",
+            "desc": "NUKKAD NATAK",
             "gallery": [
               "/api/media/31be671a-a4a1-48bc-82dc-9ae9bd972a6d",
               "/api/media/816c3564-3243-49e9-b145-a8a7a93aafd1",
