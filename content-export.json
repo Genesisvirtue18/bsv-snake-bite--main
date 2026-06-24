@@ -509,6 +509,43 @@
       "order": 9
     }
   },
+  "sectionText": {
+    "access": {
+      "subtitle": "Ensuring clinicians and community health workers have the training and resources to save lives.",
+      "items": [
+        {
+          "title": "Training Modules",
+          "desc": "Medical resources, ASV administration protocols, clinical education."
+        },
+        {
+          "title": "Clinician Engagement",
+          "desc": "Beyond Monsoons, Venom to Vial, panel discussions with KOLs."
+        },
+        {
+          "title": "Workshops",
+          "desc": "Hands-on training for clinicians, RMPs, and ASHA workers."
+        }
+      ]
+    },
+    "communication": {
+      "title": "Amplifying Impact Across India",
+      "subtitle": "Engaging audiences across high snakebite prevalent areas in India.",
+      "items": [
+        {
+          "title": "Posters & Brochures",
+          "desc": "Multilingual print materials for clinics and villages."
+        },
+        {
+          "title": "Awareness Videos",
+          "desc": "Vox pops, myth-busting reels, KOL interviews."
+        },
+        {
+          "title": "Comic & Visual Stories",
+          "desc": "Engaging visual content for schools and rural communities."
+        }
+      ]
+    }
+  },
   "translations": {
     "hi": {
       "hero": {
@@ -2972,6 +3009,29 @@
         "desc": "Engaging visual content for schools and rural communities.",
         "image": "/api/media/816c3564-3243-49e9-b145-a8a7a93aafd1",
         "href": ""
+      }
+    ]
+  },
+  "nukkadNatak": {
+    "heading": "Nukkad Natak",
+    "subheading": "Engaging communities through powerful street theatre performances to spread awareness about snakebite prevention and life-saving first aid.",
+    "states": [
+      {
+        "state": "up",
+        "code": "UP",
+        "cities": [
+          {
+            "id": "city-1782293008068",
+            "name": "New City",
+            "image": "/api/media/816c3564-3243-49e9-b145-a8a7a93aafd1",
+            "desc": "Description here...",
+            "gallery": [
+              "/api/media/31be671a-a4a1-48bc-82dc-9ae9bd972a6d",
+              "/api/media/816c3564-3243-49e9-b145-a8a7a93aafd1",
+              "/api/media/2ed70dfe-7778-450c-b9c4-d41a4b6bfb62"
+            ]
+          }
+        ]
       }
     ]
   }
