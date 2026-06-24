@@ -683,7 +683,7 @@ function VideoSection({ videos, content, t }) {
       {featured && (
         <section id="video" className="mission-section section-pad">
           <div className="max-w-6xl mx-auto px-4">
-            <div className="mission-inner gap-8 lg:gap-10">
+            <div className="mission-inner">
 
               {/* Left — featured video with border */}
               <button
