@@ -913,7 +913,7 @@ function AwarenessSection({ content, t }) {
   }
 
   return (
-    <section id="awareness" className="section-pad" style={{ background: 'linear-gradient(135deg, #201F5E 0%, #0D71B8 100%)' }}>
+    <section id="awareness" className="section-pad" style={{ background: 'linear-gradient(135deg, #EEF5FF 0%, #DBEAFE 100%)' }}>
       <div className="max-w-6xl mx-auto px-4">
 
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-center">
@@ -923,19 +923,12 @@ function AwarenessSection({ content, t }) {
             <span className="inline-block mb-3 text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: ACCENT }}>
               {t.badges.awareness}
             </span>
-            <h2 className="font-display text-[22px] md:text-[26px] font-bold text-white leading-snug mb-3">
+            <h2 className="font-display text-[22px] md:text-[26px] font-bold leading-snug mb-3" style={{ color: '#201F5E' }}>
               {t.awareness.title}
             </h2>
-            <p className="text-white/65 text-[13px] leading-relaxed mb-6">
+            <p className="text-slate-600 text-[13px] leading-relaxed">
               {t.awareness.subtitle}
             </p>
-            <button
-              onClick={() => go('#gallery')}
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-lg bg-white transition-all duration-200 hover:bg-slate-100"
-              style={{ color: '#201F5E' }}
-            >
-              Explore All <ArrowRight className="w-4 h-4" />
-            </button>
           </div>
 
           {/* Cards — horizontal scroll on mobile, 3-col grid on desktop */}
@@ -991,30 +984,62 @@ function AwarenessSection({ content, t }) {
 function AccessSection({ content, t }) {
   const cards = content?.access?.items || []
   const ACCENT = '#16A34A'
-
+  const DEFAULT_LABELS = ['Training', 'KOL Program', 'Workshop']
+  const go = (href) => {
+    if (!href) return
+    if (href.startsWith('#')) document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
+    else if (typeof window !== 'undefined') window.location.href = href
+  }
   if (!cards.length) return null
-
   return (
     <section id="access" style={{ background: '#F0FDF4' }} className="section-pad">
-      <div className="container mx-auto px-4">
-        <SectionHeader
-          badge={t.badges.access}
-          title={content?.access?.title || t.access.title}
-          subtitle={content?.access?.subtitle || t.access.subtitle}
-          accent={ACCENT}
-        />
-
-        <div className="grid md:grid-cols-3 gap-5">
-          {cards.map((it, i) => (
-            <PictorialCard
-              key={i}
-              image={it.image}
-              title={it.title}
-              desc={it.desc}
-              href={it.href}
-              accent={ACCENT}
-            />
-          ))}
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-center">
+          {/* Left info panel */}
+          <div className="w-full lg:w-60 xl:w-64 flex-shrink-0">
+            <span className="inline-block mb-3 text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: ACCENT }}>
+              {t.badges.access}
+            </span>
+            <h2 className="font-display text-[22px] md:text-[26px] font-bold leading-snug mb-3" style={{ color: '#201F5E' }}>
+              {content?.access?.title || t.access.title}
+            </h2>
+            <p className="text-slate-600 text-[13px] leading-relaxed">
+              {content?.access?.subtitle || t.access.subtitle}
+            </p>
+          </div>
+          {/* Cards */}
+          <div className="flex-1 w-full min-w-0 overflow-x-auto no-scrollbar lg:overflow-visible">
+            <div className="flex gap-4 lg:grid lg:grid-cols-3 lg:gap-4 pb-3 lg:pb-0 w-max lg:w-full">
+              {cards.map((card, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, duration: 0.4 }}
+                  onClick={() => go(card.href)}
+                  className="w-60 md:w-64 lg:w-auto flex-shrink-0 lg:flex-shrink bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                >
+                  <div className="relative overflow-hidden" style={{ aspectRatio: '4/3', background: '#0f172a' }}>
+                    {card.image
+                      ? <img src={card.image} alt={card.title} className="w-full h-full object-contain group-hover:scale-[1.03] transition-transform duration-500" />
+                      : <div className="w-full h-full flex items-center justify-center"><Sparkles className="w-12 h-12 text-white/20" /></div>
+                    }
+                    <div className="absolute bottom-0 left-0 right-0 px-3 py-2" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)' }}>
+                      <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-white/85">{DEFAULT_LABELS[i]}</span>
+                    </div>
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-display font-semibold text-[14px] leading-snug mb-1.5 text-[#201F5E]">{card.title}</h3>
+                    <p className="text-slate-500 text-[12px] leading-relaxed line-clamp-2 mb-3">{card.desc}</p>
+                    <div className="flex items-center gap-1 text-[12px] font-semibold" style={{ color: ACCENT }}>
+                      Explore <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -1024,33 +1049,63 @@ function AccessSection({ content, t }) {
 function CommunicationSection({ content, t }) {
   const cards = content?.communication?.items || []
   const fits = ['contain', 'cover', 'contain']
-  const ACCENT = '#7C3AED'  // purple — Brand Advocacy section identity
-
+  const ACCENT = '#7C3AED'
+  const DEFAULT_LABELS = ['Print Media', 'Video', 'Visual Stories']
+  const go = (href) => {
+    if (!href) return
+    if (href.startsWith('#')) document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
+    else if (typeof window !== 'undefined') window.location.href = href
+  }
   if (!cards.length) return null
-
-
   return (
     <section id="communication" style={{ background: '#F5F3FF' }} className="section-pad">
-      <div className="container mx-auto px-4">
-        <SectionHeader
-          badge={t.badges.communication}
-          title={content?.communication?.title || t.communication.title}
-          subtitle={content?.communication?.subtitle || t.communication.subtitle}
-          accent={ACCENT}
-        />
-
-        <div className="grid md:grid-cols-3 gap-5">
-          {cards.map((it, i) => (
-            <PictorialCard
-              key={i}
-              image={it.image}
-              title={it.title}
-              desc={it.desc}
-              href={it.href}
-              accent={ACCENT}
-              objectFit={fits[i]}
-            />
-          ))}
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-center">
+          {/* Left info panel */}
+          <div className="w-full lg:w-60 xl:w-64 flex-shrink-0">
+            <span className="inline-block mb-3 text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: ACCENT }}>
+              {t.badges.communication}
+            </span>
+            <h2 className="font-display text-[22px] md:text-[26px] font-bold leading-snug mb-3" style={{ color: '#201F5E' }}>
+              {content?.communication?.title || t.communication.title}
+            </h2>
+            <p className="text-slate-600 text-[13px] leading-relaxed">
+              {content?.communication?.subtitle || t.communication.subtitle}
+            </p>
+          </div>
+          {/* Cards */}
+          <div className="flex-1 w-full min-w-0 overflow-x-auto no-scrollbar lg:overflow-visible">
+            <div className="flex gap-4 lg:grid lg:grid-cols-3 lg:gap-4 pb-3 lg:pb-0 w-max lg:w-full">
+              {cards.map((card, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, duration: 0.4 }}
+                  onClick={() => go(card.href)}
+                  className="w-60 md:w-64 lg:w-auto flex-shrink-0 lg:flex-shrink bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                >
+                  <div className="relative overflow-hidden" style={{ aspectRatio: '4/3', background: '#0f172a' }}>
+                    {card.image
+                      ? <img src={card.image} alt={card.title} className={`w-full h-full transition-transform duration-500 group-hover:scale-[1.03] ${fits[i] === 'contain' ? 'object-contain' : 'object-cover'}`} />
+                      : <div className="w-full h-full flex items-center justify-center"><Sparkles className="w-12 h-12 text-white/20" /></div>
+                    }
+                    <div className="absolute bottom-0 left-0 right-0 px-3 py-2" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)' }}>
+                      <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-white/85">{DEFAULT_LABELS[i]}</span>
+                    </div>
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-display font-semibold text-[14px] leading-snug mb-1.5 text-[#201F5E]">{card.title}</h3>
+                    <p className="text-slate-500 text-[12px] leading-relaxed line-clamp-2 mb-3">{card.desc}</p>
+                    <div className="flex items-center gap-1 text-[12px] font-semibold" style={{ color: ACCENT }}>
+                      Explore <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
