@@ -10,10 +10,10 @@ import { Textarea } from '@/components/ui/textarea'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog'
 import { Switch } from '@/components/ui/switch'
 import { toast } from 'sonner'
-import { Shield, Save, RefreshCw, LogOut, Users, FileText, Award, MessageSquare, BarChart3, Lock, Eye, Download, Trash2, Plus, Image as ImageIcon, Building2, FileImage, Sparkles, Upload, Edit, Heart, Megaphone, UserPlus, Globe, Settings, Layers, Play, BookOpen, CheckCircle2, Clock, Images, X, HelpCircle, Palette } from 'lucide-react'
+import { Shield, Save, RefreshCw, LogOut, Users, FileText, Award, MessageSquare, BarChart3, Lock, Eye, Download, Trash2, Plus, Image as ImageIcon, Building2, FileImage, Sparkles, Upload, Edit, Heart, Megaphone, UserPlus, Globe, Settings, Layers, Play, BookOpen, CheckCircle2, Clock, Images, X, HelpCircle, Palette, Drama } from 'lucide-react'
 
 const LANGS = ['en', 'hi', 'mr', 'kn', 'ta', 'te', 'or', 'pa', 'bn']
 const LANG_NAMES = { en: 'English', hi: 'हिन्दी', mr: 'मराठी', kn: 'ಕನ್ನಡ', ta: 'தமிழ்', te: 'తెలుగు', or: 'ଓଡ଼ିଆ', pa: 'ਪੰਜਾਬੀ', bn: 'বাংলা' }
@@ -442,9 +442,10 @@ export default function AdminPage() {
             <TabsTrigger value="dashboard"><BarChart3 className="w-4 h-4 mr-1" />Dashboard</TabsTrigger>
             <TabsTrigger value="content"><FileText className="w-4 h-4 mr-1" />Sections</TabsTrigger>
             <TabsTrigger value="media"><ImageIcon className="w-4 h-4 mr-1" />Media</TabsTrigger>
-            {/*<TabsTrigger value="stories"><Heart className="w-4 h-4 mr-1" />Stories</TabsTrigger> */}
+            <TabsTrigger value="stories"><Heart className="w-4 h-4 mr-1" />Stories</TabsTrigger>
             <TabsTrigger value="ngos"><Building2 className="w-4 h-4 mr-1" />NGOs</TabsTrigger>
-            {/*<TabsTrigger value="gallery"><Images className="w-4 h-4 mr-1" />Gallery</TabsTrigger>*/}
+            <TabsTrigger value="nukkad"><Drama className="w-4 h-4 mr-1" />Nukkad Natak</TabsTrigger>
+            <TabsTrigger value="gallery"><Images className="w-4 h-4 mr-1" />Gallery</TabsTrigger>
             <TabsTrigger value="videos"><Play className="w-4 h-4 mr-1" />Videos</TabsTrigger>
             <TabsTrigger value="reports"><FileImage className="w-4 h-4 mr-1" />Reports</TabsTrigger>
             <TabsTrigger value="leads"><Users className="w-4 h-4 mr-1" />Leads</TabsTrigger>
@@ -1183,6 +1184,11 @@ export default function AdminPage() {
             <NgosView ngos={ngos} api={api} reload={() => loadAll(token)} />
           </TabsContent>
 
+          {/* NUKKAD NATAK - ADMIN */}
+          <TabsContent value="nukkad">
+            <NukkadNatakAdminView content={content} setContent={setContent} api={api} />
+          </TabsContent>
+
           {/* REPORTS */}
           <TabsContent value="reports">
             <ReportsView reports={reports} api={api} reload={() => loadAll(token)} />
@@ -1428,6 +1434,278 @@ function NgosView({ ngos, api, reload }) {
   )
 }
 
+// AdminPage ke andar, sab components ke baad yeh component add karein
+
+function NukkadNatakAdminView({ content, setContent, api }) {
+  const nukkadData = content?.nukkadNatak || {
+    heading: 'Nukkad Natak',
+    subheading: 'Engaging communities through powerful street theatre performances to spread awareness about snakebite prevention and life-saving first aid.',
+    states: []
+  }
+
+  const addState = () => {
+    const states = [...(nukkadData.states || [])]
+    states.push({
+      state: 'New State',
+      cities: []
+    })
+    setContent({
+      ...content,
+      nukkadNatak: {
+        ...nukkadData,
+        states
+      }
+    })
+  }
+
+  const updateState = (index, field, value) => {
+    const states = [...(nukkadData.states || [])]
+    states[index][field] = value
+    setContent({
+      ...content,
+      nukkadNatak: {
+        ...nukkadData,
+        states
+      }
+    })
+  }
+
+  const deleteState = (index) => {
+    if (!confirm('Delete this state and all its cities?')) return
+    const states = (nukkadData.states || []).filter((_, i) => i !== index)
+    setContent({
+      ...content,
+      nukkadNatak: {
+        ...nukkadData,
+        states
+      }
+    })
+  }
+
+  const addCity = (stateIndex) => {
+    const states = [...(nukkadData.states || [])]
+    states[stateIndex].cities.push({
+      name: 'New City',
+      image: '',
+      desc: 'Description here...',
+      gallery: []
+    })
+    setContent({
+      ...content,
+      nukkadNatak: {
+        ...nukkadData,
+        states
+      }
+    })
+  }
+
+  const updateCity = (stateIndex, cityIndex, field, value) => {
+    const states = [...(nukkadData.states || [])]
+    states[stateIndex].cities[cityIndex][field] = value
+    setContent({
+      ...content,
+      nukkadNatak: {
+        ...nukkadData,
+        states
+      }
+    })
+  }
+
+  const deleteCity = (stateIndex, cityIndex) => {
+    if (!confirm('Delete this city?')) return
+    const states = [...(nukkadData.states || [])]
+    states[stateIndex].cities = states[stateIndex].cities.filter((_, i) => i !== cityIndex)
+    setContent({
+      ...content,
+      nukkadNatak: {
+        ...nukkadData,
+        states
+      }
+    })
+  }
+
+  const saveNukkadData = async () => {
+    const r = await api('/api/content', 'PUT', content)
+    if (r.ok) toast.success('Nukkad Natak data saved!')
+    else toast.error('Save failed')
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex justify-between items-center sticky top-16 bg-slate-50 py-2 z-20">
+        <div>
+          <h2 className="font-display font-extrabold text-2xl text-bsv-blue">Nukkad Natak</h2>
+          <p className="text-sm text-muted-foreground">Manage street theatre performances by state and city</p>
+        </div>
+        <div className="flex gap-2">
+          <Button onClick={saveNukkadData} className="bg-bsv-red">
+            <Save className="w-4 h-4 mr-1" />
+            Save Changes
+          </Button>
+        </div>
+      </div>
+
+      {/* Heading & Subheading */}
+      <Card>
+        <CardContent className="p-5 space-y-3">
+          <h3 className="font-display font-bold text-lg text-bsv-blue">Page Content</h3>
+          <div className="grid md:grid-cols-2 gap-3">
+            <div>
+              <Label>Heading</Label>
+              <Input
+                value={nukkadData.heading || ''}
+                onChange={e => setContent({
+                  ...content,
+                  nukkadNatak: {
+                    ...nukkadData,
+                    heading: e.target.value
+                  }
+                })}
+                placeholder="Nukkad Natak"
+              />
+            </div>
+            <div>
+              <Label>Subheading</Label>
+              <Input
+                value={nukkadData.subheading || ''}
+                onChange={e => setContent({
+                  ...content,
+                  nukkadNatak: {
+                    ...nukkadData,
+                    subheading: e.target.value
+                  }
+                })}
+                placeholder="Engaging communities through powerful street theatre..."
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* States */}
+      <Card>
+        <CardContent className="p-5 space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="font-display font-bold text-lg text-bsv-blue">
+              States & Cities ({nukkadData.states?.length || 0})
+            </h3>
+            <Button onClick={addState} className="bg-bsv-red">
+              <Plus className="w-4 h-4 mr-1" />
+              Add State
+            </Button>
+          </div>
+
+          {(nukkadData.states || []).map((state, stateIndex) => (
+            <div key={stateIndex} className="border rounded-xl p-4 bg-white space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="font-semibold text-bsv-blue">
+                  {state.state || 'New State'}
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    onClick={() => addCity(stateIndex)}
+                  >
+                    <Plus className="w-3 h-3 mr-1" />
+                    Add City
+                  </Button>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => deleteState(stateIndex)}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Sirf State Name - Code hata diya */}
+              <div>
+                <Label className="text-xs">State Name</Label>
+                <Input
+                  value={state.state || ''}
+                  onChange={e => updateState(stateIndex, 'state', e.target.value)}
+                  placeholder="e.g. Andhra Pradesh"
+                />
+              </div>
+
+              {/* Cities */}
+              <div className="space-y-3 mt-2">
+                <Label className="text-sm font-semibold">Cities</Label>
+                {(state.cities || []).map((city, cityIndex) => (
+                  <div key={cityIndex} className="border rounded-lg p-3 bg-slate-50 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="font-medium text-sm text-bsv-blue">
+                        {city.name || 'New City'}
+                      </div>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => deleteCity(stateIndex, cityIndex)}
+                      >
+                        <Trash2 className="w-3 h-3 text-red-500" />
+                      </Button>
+                    </div>
+
+                    {/* Sirf City Name - ID hata diya */}
+                    <div>
+                      <Label className="text-xs">City Name</Label>
+                      <Input
+                        value={city.name || ''}
+                        onChange={e => updateCity(stateIndex, cityIndex, 'name', e.target.value)}
+                        placeholder="e.g. Visakhapatnam"
+                      />
+                    </div>
+
+                    <div>
+                      <Label className="text-xs">Description</Label>
+                      <Textarea
+                        rows={2}
+                        value={city.desc || ''}
+                        onChange={e => updateCity(stateIndex, cityIndex, 'desc', e.target.value)}
+                        placeholder="Description of Nukkad Natak in this city..."
+                      />
+                    </div>
+
+                    <MediaPicker
+                      label="City Cover Image"
+                      value={city.image || ''}
+                      onChange={v => updateCity(stateIndex, cityIndex, 'image', v)}
+                    />
+
+                    <MultiMediaPicker
+                      label="City Gallery Images"
+                      values={city.gallery || []}
+                      onChange={v => updateCity(stateIndex, cityIndex, 'gallery', v)}
+                      max={30}
+                    />
+                  </div>
+                ))}
+
+                {(!state.cities || state.cities.length === 0) && (
+                  <div className="text-center py-4 text-muted-foreground text-sm border border-dashed rounded-lg">
+                    No cities added yet. Click "Add City" to get started.
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+
+          {(!nukkadData.states || nukkadData.states.length === 0) && (
+            <div className="text-center py-8 text-muted-foreground border border-dashed rounded-xl">
+              No states added yet. Click "Add State" to get started.
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
 function ReportsView({ reports, api, reload }) {
   const [editing, setEditing] = useState(null)
   const save = async () => {
@@ -1640,25 +1918,18 @@ function GalleryView({ items, api, reload }) {
                 </Select>
               </div>
               <div><Label>Description</Label><Textarea rows={2} value={editing.description} onChange={e => setEditing({ ...editing, description: e.target.value })} /></div>
-              <div><Label>Cover Image URL</Label><Input value={editing.coverImage} onChange={e => setEditing({ ...editing, coverImage: e.target.value })} placeholder="https:// or /api/media/..." /></div>
+              <MediaPicker
+                label="Cover Image"
+                value={editing.coverImage || ''}
+                onChange={v => setEditing({ ...editing, coverImage: v })}
+              />
 
-              <div>
-                <Label>Photos ({editing.images?.length || 0})</Label>
-                <div className="flex gap-2 mb-2">
-                  <Input value={newImage} onChange={e => setNewImage(e.target.value)} placeholder="Paste image URL" />
-                  <Button type="button" onClick={addImage} size="sm" style={{ background: '#151f6d' }}>Add</Button>
-                </div>
-                <div className="grid grid-cols-4 gap-2 max-h-60 overflow-y-auto">
-                  {(editing.images || []).map((img, idx) => (
-                    <div key={idx} className="relative group">
-                      <img src={img} alt="" className="w-full h-20 object-cover rounded" />
-                      <button type="button" onClick={() => removeImage(idx)} className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center opacity-0 group-hover:opacity-100">
-                        <X className="w-3 h-3" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <MultiMediaPicker
+                label="Photos"
+                values={editing.images || []}
+                onChange={v => setEditing({ ...editing, images: v })}
+                max={30}
+              />
 
               <div className="grid grid-cols-2 gap-3">
                 <div><Label>Order</Label><Input type="number" value={editing.order || 0} onChange={e => setEditing({ ...editing, order: parseInt(e.target.value) || 0 })} /></div>

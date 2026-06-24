@@ -151,15 +151,15 @@ function Header({ lang, setLang, t, settings }) {
         {
           title: 'On-Ground Activations',
           items: [
-            { label: 'Nukkad Natak, Wall Paintings, Bus Branding', href: '#awareness', desc: 'Community outreach programs' },
-            { label: 'Campaign Moments', href: '#gallery', desc: 'See campaign in action' },
+            { label: 'Nukkad Natak, Wall Paintings, Bus Branding', href: '/nukkad-natak', desc: 'Community outreach programs' },
+            { label: 'Campaign Moments', href: '/nukkad-natak', desc: 'See campaign in action' },
           ]
         },
         {
           title: 'NGO Collaborations',
           items: [
             { label: 'Partner Network Across India', href: '/ngo-network', desc: 'Our NGO partners' },
-            { label: 'Real-life Impact Stories', href: '#stories', desc: 'Stories from the field' },
+            { label: 'Real-life Impact Stories', href: '/impact-stories', desc: 'Stories from the field' },
           ]
         },
         {
@@ -185,14 +185,14 @@ function Header({ lang, setLang, t, settings }) {
           title: 'Clinician Engagement',
           items: [
             { label: 'Beyond Monsoons Program', href: '#access', desc: 'Venom to Vial initiative' },
-            { label: 'Field Stories', href: '#stories', desc: 'Stories from clinicians' },
+            { label: 'Field Stories', href: '/impact-stories', desc: 'Stories from clinicians' },
           ]
         },
         {
           title: 'Training Modules',
           items: [
-            { label: 'ASV Protocols', href: '#resources', desc: 'Clinical education materials' },
-            { label: 'Download Library', href: '#resources', desc: 'All resources in one place' },
+            { label: 'ASV Protocols', href: '/downloads', desc: 'Clinical education materials' },
+            { label: 'Download Library', href: '/downloads', desc: 'All resources in one place' },
           ]
         },
       ]
@@ -217,8 +217,8 @@ function Header({ lang, setLang, t, settings }) {
         {
           title: 'Visual Stories',
           items: [
-            { label: 'Comic & Visual Stories', href: '#gallery', desc: 'Engaging visual content' },
-            { label: 'Browse Gallery', href: '#gallery', desc: 'Photo gallery' },
+            { label: 'Comic & Visual Stories', href: '#/downloads', desc: 'Engaging visual content' },
+            { label: 'Browse Gallery', href: '/gallery', desc: 'Photo gallery' },
           ]
         },
       ]
@@ -766,9 +766,9 @@ function VideoSection({ videos, content, t }) {
 
       {active && (
         <Dialog open onOpenChange={() => setActive(null)}>
-          <DialogContent className="max-w-4xl p-0 overflow-hidden bg-black">
+          <DialogContent className="max-w-4xl w-[92vw] max-h-[82vh] overflow-y-auto p-0 bg-black mt-10">
             <DialogHeader className="sr-only"><DialogTitle>{active.title}</DialogTitle><DialogDescription>{active.description}</DialogDescription></DialogHeader>
-            <div className="aspect-video w-full">
+            <div className="aspect-video w-full max-h-[65vh] bg-black">
               {active.youtubeId ? (
                 <iframe className="w-full h-full" src={`https://www.youtube.com/embed/${active.youtubeId}?autoplay=1&rel=0`} title={active.title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
               ) : active.url ? (
@@ -1462,10 +1462,10 @@ function Footer({ content, t, settings }) {
             <ul className="space-y-2 text-sm text-white/80">
               <li><a href="#awareness" className="hover:text-white">{t.nav.awareness}</a></li>
               <li><a href="#access" className="hover:text-white">{t.nav.access}</a></li>
-              <li><a href="#communication" className="hover:text-white">{t.nav.communication}</a></li>
-              <li><a href="#stories" className="hover:text-white">{t.nav.stories}</a></li>
-              <li><a href="#gallery" className="hover:text-white">{t.nav.gallery}</a></li>
-              <li><a href="#resources" className="hover:text-white">{t.nav.resources}</a></li>
+              <li><a href="#communication" className="hover:text-white">Brand Advocacy</a></li>
+              <li><a href="/impact-stories" className="hover:text-white">{t.nav.stories}</a></li>
+              <li><a href="/gallery" className="hover:text-white">{t.nav.gallery}</a></li>
+              {/*<li><a href="#resources" className="hover:text-white">{t.nav.resources}</a></li>*/}
             </ul>
           </div>
           <div>
@@ -1695,8 +1695,8 @@ function App() {
         <AccessSection content={resolved} t={t} />
         <CommunicationSection content={resolved} t={t} />
         <OutreachSection content={resolved} t={t} />
-        <StoriesSection stories={stories} t={t} />
-        <GallerySection albums={albums} t={t} />
+        {/* <StoriesSection stories={stories} t={t} />
+        <GallerySection albums={albums} t={t} /> */}
         <MythsSection content={resolved} t={t} />
         <QuizSection t={t} lang={lang} />
         {/* <ResourcesSection content={resolved} lang={lang} t={t} /> */}

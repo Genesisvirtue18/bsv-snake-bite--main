@@ -3,10 +3,11 @@
 import { useEffect, useState } from 'react'
 import { DEFAULT_CONTENT } from '@/lib/defaultContent'
 import { getT } from '@/lib/translations'
-import SiteHeader from '@/components/SiteHeader'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { ArrowLeft } from 'lucide-react'
+import Link from 'next/link'
 
 export default function DownloadsPage() {
     const [lang, setLang] = useState('en')
@@ -32,12 +33,19 @@ export default function DownloadsPage() {
 
     return (
         <>
-            <SiteHeader
-                lang={lang}
-                setLang={setLang}
-                t={t}
-                settings={settings}
-            />
+            <header className="bg-bsv-blue text-white py-4">
+                <div className="container mx-auto px-4 flex items-center gap-3">
+                    <Link href="/">
+                        <Button variant="ghost" className="text-white hover:bg-white/10">
+                            <ArrowLeft className="w-4 h-4 mr-1" />Home
+                        </Button>
+                    </Link>
+                    <div>
+                        <div className="font-display font-extrabold text-xl">Downloads</div>
+                        <div className="text-xs text-white/70">Resource library</div>
+                    </div>
+                </div>
+            </header>
 
             <main className="min-h-screen bg-slate-50 pt-24 pb-16">
                 <section id="resources" className="section-pad bg-slate-50">
