@@ -874,14 +874,14 @@ function AwarenessSection({ content, t }) {
     <section id="awareness" className="section-pad" style={{ background: 'linear-gradient(135deg, #EEF5FF 0%, #DBEAFE 100%)' }}>
       <div className="max-w-6xl mx-auto px-4">
 
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-center">
+        <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-center">
 
           {/* Left info panel */}
-          <div className="w-full lg:w-60 xl:w-64 flex-shrink-0">
+          <div className="w-full md:w-48 lg:w-60 xl:w-64 flex-shrink-0">
             <span className="inline-block mb-3 text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: ACCENT }}>
               {t.badges.awareness}
             </span>
-            <h2 className="font-display text-[22px] md:text-[26px] font-bold leading-snug mb-3" style={{ color: '#201F5E' }}>
+            <h2 className="font-display text-[22px] md:text-[22px] lg:text-[26px] font-bold leading-snug mb-3" style={{ color: '#201F5E' }}>
               {t.awareness.title}
             </h2>
             <p className="text-slate-600 text-[13px] leading-relaxed">
@@ -900,7 +900,7 @@ function AwarenessSection({ content, t }) {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.4 }}
                   onClick={() => go(card.href)}
-                  className="w-60 md:w-64 lg:w-auto flex-shrink-0 lg:flex-shrink bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                  className="w-60 flex-shrink-0 lg:w-auto lg:flex-shrink bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
                 >
                   {/* Full-visible image */}
                   <div className="relative overflow-hidden" style={{ aspectRatio: '4/3', background: '#0f172a' }}>
@@ -952,13 +952,13 @@ function AccessSection({ content, t }) {
   return (
     <section id="access" style={{ background: '#F0FDF4' }} className="section-pad">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-center">
+        <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-center">
           {/* Left info panel */}
-          <div className="w-full lg:w-60 xl:w-64 flex-shrink-0">
+          <div className="w-full md:w-48 lg:w-60 xl:w-64 flex-shrink-0">
             <span className="inline-block mb-3 text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: ACCENT }}>
               {t.badges.access}
             </span>
-            <h2 className="font-display text-[22px] md:text-[26px] font-bold leading-snug mb-3" style={{ color: '#201F5E' }}>
+            <h2 className="font-display text-[22px] md:text-[22px] lg:text-[26px] font-bold leading-snug mb-3" style={{ color: '#201F5E' }}>
               {content?.access?.title || t.access.title}
             </h2>
             <p className="text-slate-600 text-[13px] leading-relaxed">
@@ -976,7 +976,7 @@ function AccessSection({ content, t }) {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.4 }}
                   onClick={() => go(card.href)}
-                  className="w-60 md:w-64 lg:w-auto flex-shrink-0 lg:flex-shrink bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                  className="w-60 flex-shrink-0 lg:w-auto lg:flex-shrink bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
                 >
                   <div className="relative overflow-hidden" style={{ aspectRatio: '4/3', background: '#0f172a' }}>
                     {card.image
@@ -1018,13 +1018,13 @@ function CommunicationSection({ content, t }) {
   return (
     <section id="communication" style={{ background: '#F5F3FF' }} className="section-pad">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-center">
+        <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-center">
           {/* Left info panel */}
-          <div className="w-full lg:w-60 xl:w-64 flex-shrink-0">
+          <div className="w-full md:w-48 lg:w-60 xl:w-64 flex-shrink-0">
             <span className="inline-block mb-3 text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: ACCENT }}>
               {t.badges.communication}
             </span>
-            <h2 className="font-display text-[22px] md:text-[26px] font-bold leading-snug mb-3" style={{ color: '#201F5E' }}>
+            <h2 className="font-display text-[22px] md:text-[22px] lg:text-[26px] font-bold leading-snug mb-3" style={{ color: '#201F5E' }}>
               {content?.communication?.title || t.communication.title}
             </h2>
             <p className="text-slate-600 text-[13px] leading-relaxed">
@@ -1042,7 +1042,7 @@ function CommunicationSection({ content, t }) {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.4 }}
                   onClick={() => go(card.href)}
-                  className="w-60 md:w-64 lg:w-auto flex-shrink-0 lg:flex-shrink bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                  className="w-60 flex-shrink-0 lg:w-auto lg:flex-shrink bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
                 >
                   <div className="relative overflow-hidden" style={{ aspectRatio: '4/3', background: '#0f172a' }}>
                     {card.image
