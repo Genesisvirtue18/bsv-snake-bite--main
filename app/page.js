@@ -399,7 +399,7 @@ function Header({ lang, setLang, t, settings }) {
                     </div>
                     <div className="text-sm text-white/85 leading-relaxed">
                       {megaOpen === 'awareness' ? 'Through education, outreach, and action — turning fear into facts.' :
-                        megaOpen === 'access' ? 'Ensuring every snakebite victim gets the right care at the right time.' :
+                        megaOpen === 'access' ? 'Ensuring snakebite victim gets the right care at the right time.' :
                           'Using every medium to reach every corner of India.'}
                     </div>
                     <button onClick={() => go(`#${megaOpen}`)} className="mt-5 inline-flex items-center gap-2 text-sm font-semibold hover:underline underline-offset-2 transition-all group">
