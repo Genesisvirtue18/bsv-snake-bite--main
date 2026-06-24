@@ -90,13 +90,13 @@ function StatesGrid({ states = [], t }) {
                 {/* Metrics */}
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   <div className="rounded-lg p-2.5" style={{ background: '#EFF6FF' }}>
-                    <div className="text-[9px] uppercase tracking-wide text-slate-500 mb-0.5">Activities Conducted</div>
+                    <div className="text-[9px] uppercase tracking-wide text-slate-500 mb-0.5">{t.outreach.activities}</div>
                     <div className="font-display font-bold text-lg" style={{ color: BRAND.deep }}>
                       <AnimatedCounter value={s.campaigns || 0} />
                     </div>
                   </div>
                   <div className="rounded-lg p-2.5" style={{ background: '#FFF0F0' }}>
-                    <div className="text-[9px] uppercase tracking-wide text-slate-500 mb-0.5">Workshops Held</div>
+                    <div className="text-[9px] uppercase tracking-wide text-slate-500 mb-0.5">{t.outreach.workshopsHeld}</div>
                     <div className="font-display font-bold text-lg" style={{ color: '#de2527' }}>
                       <AnimatedCounter value={s.workshops || 0} />
                     </div>
@@ -303,9 +303,6 @@ function Header({ lang, setLang, t, settings }) {
             <button onClick={() => go('#outreach')} className="px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all duration-200 hover:bg-slate-50" style={{ color: BRAND.blue }} onMouseEnter={e => e.currentTarget.style.color = BSV_RED} onMouseLeave={e => e.currentTarget.style.color = BRAND.blue}>
               {t.nav.outreach}
             </button>
-            <button onClick={() => go('#about')} className="px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all duration-200 hover:bg-slate-50" style={{ color: BRAND.blue }} onMouseEnter={e => e.currentTarget.style.color = BSV_RED} onMouseLeave={e => e.currentTarget.style.color = BRAND.blue}>
-              About Campaign
-            </button>
           </nav>
 
           {/* Right: Mankind logo + Contact + Language — tight and clean */}
@@ -326,7 +323,7 @@ function Header({ lang, setLang, t, settings }) {
               className="hidden lg:inline-flex items-center gap-1.5 px-3.5 py-1.5 text-[13px] font-semibold text-white rounded-lg hover:opacity-90 transition-all duration-200 flex-shrink-0"
               style={{ background: `linear-gradient(135deg, ${BSV_RED} 0%, #a81b1d 100%)` }}
             >
-              Contact Us
+              {t.common.contactUs}
             </button>
 
             {/* Language — globe + short code */}
@@ -681,7 +678,7 @@ function VideoSection({ videos, content, t }) {
                   </div>
                 </div>
                 <div className="absolute bottom-4 left-5">
-                  <Badge className="border-0 text-[10px]" style={{ background: BSV_RED }}>{featured.category || 'Campaign Film'}</Badge>
+                  <Badge className="border-0 text-[10px]" style={{ background: BSV_RED }}>{featured.category || t.common.campaignFilm}</Badge>
                 </div>
               </button>
 
@@ -693,7 +690,7 @@ function VideoSection({ videos, content, t }) {
                 </p>
                 <div className="mission-divider">
                   <div className="mission-author font-display">{featured.title || 'BSV Campaign'}</div>
-                  <div className="mission-org">Bharat Serums & Vaccines Ltd. — National Snakebite Awareness Initiative</div>
+                  <div className="mission-org">{t.common.bsvOrg}</div>
                 </div>
               </div>
 
@@ -925,7 +922,7 @@ function AwarenessSection({ content, t }) {
                     </h3>
                     <p className="text-slate-500 text-[12px] leading-relaxed line-clamp-2 mb-3">{card.desc}</p>
                     <div className="flex items-center gap-1 text-[12px] font-semibold" style={{ color: ACCENT }}>
-                      Explore <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                      {t.common.explore} <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
                 </motion.div>
@@ -991,7 +988,7 @@ function AccessSection({ content, t }) {
                     <h3 className="font-display font-semibold text-[14px] leading-snug mb-1.5 text-[#201F5E]">{card.title}</h3>
                     <p className="text-slate-500 text-[12px] leading-relaxed line-clamp-2 mb-3">{card.desc}</p>
                     <div className="flex items-center gap-1 text-[12px] font-semibold" style={{ color: ACCENT }}>
-                      Explore <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                      {t.common.explore} <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
                 </motion.div>
@@ -1057,7 +1054,7 @@ function CommunicationSection({ content, t }) {
                     <h3 className="font-display font-semibold text-[14px] leading-snug mb-1.5 text-[#201F5E]">{card.title}</h3>
                     <p className="text-slate-500 text-[12px] leading-relaxed line-clamp-2 mb-3">{card.desc}</p>
                     <div className="flex items-center gap-1 text-[12px] font-semibold" style={{ color: ACCENT }}>
-                      Explore <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                      {t.common.explore} <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
                 </motion.div>
@@ -1634,7 +1631,7 @@ function App() {
           transition={{ delay: 0.4, duration: 0.5 }}
           className="text-white/50 text-[11px] font-semibold uppercase tracking-[0.2em] mb-4"
         >
-          India&rsquo;s National Snakebite Awareness Initiative
+          {t.common.initiative}
         </motion.p>
 
         <motion.h1
