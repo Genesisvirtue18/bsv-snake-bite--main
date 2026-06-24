@@ -671,7 +671,7 @@ function HeroStatsSection({ content, t }) {
   )
 }
 
-function VideoSection({ videos, t }) {
+function VideoSection({ videos, content, t }) {
   const [active, setActive] = useState(null)
   const published = (videos || []).filter(v => v.published !== false)
   const featured = published.find(v => v.featured) || published[0]
@@ -681,38 +681,38 @@ function VideoSection({ videos, t }) {
     <>
       {/* ── Mission block (Coursera testimonial style) ── */}
       {featured && (
-        <section id="video" style={{ background: BRAND.navy }}>
+        <section id="video" className="mission-section section-pad">
           <div className="max-w-6xl mx-auto px-4">
-            <div className="flex flex-col lg:flex-row min-h-[400px]">
+            <div className="mission-inner gap-8 lg:gap-10">
 
-              {/* Left — featured video */}
+              {/* Left — featured video with border */}
               <button
                 onClick={() => setActive(featured)}
-                className="group relative w-full lg:w-[55%] flex-shrink-0 aspect-video lg:aspect-auto lg:min-h-[440px] overflow-hidden bg-black"
+                className="mission-video-wrap group"
               >
                 {featured.thumbnail && (
-                  <img src={featured.thumbnail} alt={featured.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-700 opacity-90" />
+                  <img src={featured.thumbnail} alt={featured.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all duration-300" style={{ background: BSV_RED }}>
                     <Play className="w-7 h-7 md:w-9 md:h-9 fill-white text-white ml-1" />
                   </div>
                 </div>
-                <div className="absolute bottom-4 left-5 right-5">
-                  <Badge className="border-0 mb-2 text-[10px]" style={{ background: BSV_RED }}>{featured.category || 'Campaign Film'}</Badge>
+                <div className="absolute bottom-4 left-5">
+                  <Badge className="border-0 text-[10px]" style={{ background: BSV_RED }}>{featured.category || 'Campaign Film'}</Badge>
                 </div>
               </button>
 
-              {/* Right — mission text */}
-              <div className="flex-1 flex flex-col justify-center px-8 md:px-12 py-10 lg:py-14" style={{ background: BRAND.navy }}>
-                <div className="text-6xl font-serif leading-none mb-4 select-none" style={{ color: BSV_RED, opacity: 0.7 }}>&ldquo;</div>
-                <p className="font-display text-[18px] md:text-[22px] leading-relaxed font-medium text-white mb-6">
-                  {featured.description || 'To eliminate preventable snakebite deaths in India through awareness, education, and ensuring access to quality anti-snake venom at every primary health center.'}
+              {/* Right — mission text (dark text on pastel bg) */}
+              <div className="mission-panel">
+                <div className="mission-quote-mark">&ldquo;</div>
+                <p className="mission-quote-text font-display">
+                  {content?.about?.mission || DEFAULT_CONTENT.about.mission}
                 </p>
-                <div className="border-t border-white/10 pt-5">
-                  <div className="font-display font-semibold text-white text-[15px]">{featured.title || 'BSV Campaign'}</div>
-                  <div className="text-[12px] mt-0.5" style={{ color: BRAND.aqua }}>Bharat Serums & Vaccines Ltd. — National Snakebite Awareness Initiative</div>
+                <div className="mission-divider">
+                  <div className="mission-author font-display">{featured.title || 'BSV Campaign'}</div>
+                  <div className="mission-org">Bharat Serums & Vaccines Ltd. — National Snakebite Awareness Initiative</div>
                 </div>
               </div>
 
@@ -1630,7 +1630,7 @@ function App() {
       <main>
         <Hero content={resolved} t={t} />
         <HeroStatsSection content={resolved} t={t} />
-        <VideoSection videos={videos} t={t} />
+        <VideoSection videos={videos} content={resolved} t={t} />
         <AwarenessSection content={resolved} t={t} />
         <AccessSection content={resolved} t={t} />
         <CommunicationSection content={resolved} t={t} />
