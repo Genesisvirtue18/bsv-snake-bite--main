@@ -915,13 +915,18 @@ function AwarenessSection({ content, t }) {
   return (
     <section id="awareness" className="section-pad" style={{ background: 'linear-gradient(135deg, #201F5E 0%, #0D71B8 100%)' }}>
       <div className="container mx-auto px-4">
+
+        {/* Section badge — top of section */}
+        <div className="text-center mb-8">
+          <span className="inline-block text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: ACCENT }}>
+            {t.badges.awareness}
+          </span>
+        </div>
+
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
 
           {/* Left info panel */}
           <div className="w-full lg:w-56 xl:w-64 flex-shrink-0">
-            <span className="inline-block mb-3 text-[11px] font-bold uppercase tracking-[0.14em]" style={{ color: ACCENT }}>
-              {t.badges.awareness}
-            </span>
             <h2 className="font-display text-[24px] md:text-[28px] font-bold text-white leading-tight mb-4">
               {t.awareness.title}
             </h2>
