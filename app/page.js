@@ -605,65 +605,46 @@ function HeroStatsSection({ content, t }) {
   const stats = DEFAULT_CONTENT.heroStats
   if (!stats.length) return null
 
+  const StatCard = ({ s, i, mobile }) => {
+    const Icon = ICONS[s.icon] || Heart
+    return (
+      <motion.div
+        key={s.id}
+        initial={{ opacity: 0, y: mobile ? 0 : 12, x: mobile ? 16 : 0 }}
+        whileInView={{ opacity: 1, y: 0, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: i * 0.07, duration: 0.35 }}
+        className={`stat-pill${mobile ? ' flex-shrink-0 snap-start' : ''}`}
+      >
+        {/* Icon square */}
+        <div className="stat-pill-icon">
+          <Icon className="w-5 h-5" style={{ color: '#0D71B8' }} />
+        </div>
+        {/* Text */}
+        <div className="stat-pill-text">
+          <div className="stat-pill-number">
+            <AnimatedCounter value={s.value} suffix={s.suffix} />
+          </div>
+          <div className="stat-pill-label">{s.label}</div>
+        </div>
+      </motion.div>
+    )
+  }
+
   return (
-    <section style={{ background: '#F8FAFF', borderBottom: '1px solid #E2E8F0' }}>
-      <div className="max-w-6xl mx-auto px-4 py-8 md:py-10">
+    <section className="stat-section">
+      <div className="max-w-6xl mx-auto px-4 py-6 md:py-8">
 
         {/* Mobile: horizontal scroll */}
         <div className="md:hidden overflow-x-auto no-scrollbar scroll-snap-x">
-          <div className="flex gap-3 w-max pb-2">
-            {stats.map((s, i) => {
-              const Icon = ICONS[s.icon] || Heart
-              return (
-                <motion.div
-                  key={s.id}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.07, duration: 0.35 }}
-                  className="flex-shrink-0 w-[120px] snap-start bg-white rounded-xl px-3 py-4"
-                  style={{ borderTop: `3px solid ${BSV_RED}` }}
-                >
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center mb-2.5" style={{ background: `${BSV_RED}15` }}>
-                    <Icon className="w-4 h-4" style={{ color: BSV_RED }} />
-                  </div>
-                  <div className="font-display font-bold text-[16px] leading-none mb-1" style={{ color: '#201F5E' }}>
-                    <AnimatedCounter value={s.value} suffix={s.suffix} />
-                  </div>
-                  <div className="text-[9px] text-slate-500 font-medium leading-snug">{s.label}</div>
-                </motion.div>
-              )
-            })}
-          </div>
-          <div className="flex justify-center gap-1.5 mt-3">
-            {stats.map((_, i) => <div key={i} className="w-1.5 h-1.5 rounded-full bg-slate-300" />)}
+          <div className="flex gap-3 w-max pb-1">
+            {stats.map((s, i) => <StatCard key={s.id} s={s} i={i} mobile />)}
           </div>
         </div>
 
-        {/* Desktop 5-col grid */}
-        <div className="hidden md:grid md:grid-cols-5 gap-4">
-          {stats.map((s, i) => {
-            const Icon = ICONS[s.icon] || Heart
-            return (
-              <motion.div
-                key={s.id}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08, duration: 0.4 }}
-                className="bg-white rounded-xl px-4 py-5 hover:-translate-y-0.5 hover:shadow-md transition-all duration-300"
-                style={{ borderTop: `3px solid ${BSV_RED}` }}
-              >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ background: `${BSV_RED}15` }}>
-                  <Icon className="w-5 h-5" style={{ color: BSV_RED }} />
-                </div>
-                <div className="font-display font-bold text-[22px] leading-none mb-1.5" style={{ color: '#201F5E' }}>
-                  <AnimatedCounter value={s.value} suffix={s.suffix} />
-                </div>
-                <div className="text-[11px] text-slate-500 font-medium leading-snug">{s.label}</div>
-              </motion.div>
-            )
-          })}
+        {/* Desktop: single row */}
+        <div className="hidden md:flex gap-3 flex-wrap justify-between">
+          {stats.map((s, i) => <StatCard key={s.id} s={s} i={i} />)}
         </div>
 
       </div>
