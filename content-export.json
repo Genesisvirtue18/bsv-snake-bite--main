@@ -3021,23 +3021,23 @@
         "code": "UP",
         "cities": [
           {
-            "id": "city-1782293008068",
-            "name": "Visakhapatnam",
-            "image": "/api/media/816c3564-3243-49e9-b145-a8a7a93aafd1",
-            "desc": "NUKKAD NATAK",
-            "gallery": [
-              "/api/media/31be671a-a4a1-48bc-82dc-9ae9bd972a6d",
-              "/api/media/816c3564-3243-49e9-b145-a8a7a93aafd1",
-              "/api/media/2ed70dfe-7778-450c-b9c4-d41a4b6bfb62"
-            ]
-          },
-          {
             "name": "Visakhapatnam",
             "image": "/api/media/816c3564-3243-49e9-b145-a8a7a93aafd1",
             "desc": "Nukkad natak",
             "gallery": [
               "/api/media/31be671a-a4a1-48bc-82dc-9ae9bd972a6d",
               "/api/media/d00808ea-71b3-4b46-805e-4a6f92ff60c0"
+            ]
+          },
+          {
+            "name": "Visakhapatnam",
+            "image": "/api/media/816c3564-3243-49e9-b145-a8a7a93aafd1",
+            "desc": "Nukkad Natak",
+            "gallery": [
+              "/api/media/31be671a-a4a1-48bc-82dc-9ae9bd972a6d",
+              "/api/media/816c3564-3243-49e9-b145-a8a7a93aafd1",
+              "/api/media/2ed70dfe-7778-450c-b9c4-d41a4b6bfb62",
+              "/api/media/70b133ac-c77a-418e-9a06-bc2fcecd7d31"
             ]
           }
         ]
