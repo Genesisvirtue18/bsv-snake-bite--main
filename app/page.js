@@ -50,41 +50,8 @@ function StatesGrid({ states = [], t }) {
     workshops: acc.workshops + (s.workshops || 0),
   }), { lives: 0, campaigns: 0, workshops: 0 })
 
-  const PILLARS = [
-    { icon: Megaphone, label: 'Awareness', desc: 'Educating communities', color: '#de2527' },
-    { icon: Stethoscope, label: 'Access', desc: 'Reaching healthcare', color: '#16A34A' },
-    { icon: Building2, label: 'Availability', desc: 'ASV at every PHC', color: '#EA7B2C' },
-    { icon: Activity, label: 'Action', desc: 'Timely hospital care', color: '#0EAFC5' },
-  ]
   return (
     <div className="space-y-8">
-      {/* Four Pillars Banner */}
-      <div className="rounded-2xl shadow-xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #201F5E 0%, #0D71B8 100%)' }}>
-        <div className="px-6 pt-6 pb-2 text-center">
-          <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/50">Campaign Framework</span>
-        </div>
-        <div className="grid grid-cols-4 gap-0 px-4 pb-5">
-          {PILLARS.map(({ icon: Icon, label, desc, color }) => (
-            <div key={label} className="flex flex-col items-center text-center px-2 py-3">
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center mb-2" style={{ background: `${color}25` }}>
-                <Icon className="w-5 h-5 md:w-6 md:h-6" style={{ color }} />
-              </div>
-              <div className="font-display font-bold text-white text-[13px] md:text-sm">{label}</div>
-              <div className="text-white/50 text-[10px] mt-0.5 hidden md:block">{desc}</div>
-            </div>
-          ))}
-        </div>
-        <div className="border-t border-white/10 px-6 py-4 text-center">
-          <p className="text-white/75 text-[13px] md:text-sm leading-relaxed">
-            The framework focuses on four critical pillars —{' '}
-            <span className="font-semibold" style={{ color: '#de2527' }}>Awareness</span>,{' '}
-            <span className="font-semibold" style={{ color: '#4ADE80' }}>Access</span>,{' '}
-            <span className="font-semibold" style={{ color: '#FB923C' }}>Availability</span>, and{' '}
-            <span className="font-semibold" style={{ color: '#22D3EE' }}>Action</span>.
-          </p>
-        </div>
-      </div>
-
       {/* State cards with mini India map */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {active.map((s, i) => {
