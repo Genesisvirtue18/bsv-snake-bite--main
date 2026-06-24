@@ -1369,46 +1369,76 @@ function ContactSection({ content, t }) {
   }
   const email = content?.contact?.email || CONTACT_EMAIL
   const address = CONTACT_ADDRESS
+  const ACCENT = BRAND.deep
   return (
-    <section id="contact" className="section-pad bg-white">
-      <div className="container mx-auto px-4">
-        <SectionHeader badge={t.badges.contact} title={t.contact.title} subtitle={t.contact.subtitle} />
-        <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {/* Info panel — email + address only */}
-          <Card className="border-0 shadow-xl">
-            <CardContent className="p-8 space-y-6">
-              <div className="flex gap-4">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: `${BRAND.deep}18` }}>
-                  <Mail className="w-5 h-5" style={{ color: BRAND.deep }} />
-                </div>
-                <div>
-                  <div className="font-display font-semibold mb-0.5" style={{ color: BRAND.navy }}>{t.contact.email}</div>
-                  <a href={`mailto:${email}`} className="text-slate-600 hover:underline text-sm">{email}</a>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: `${BRAND.deep}18` }}>
-                  <MapPin className="w-5 h-5" style={{ color: BRAND.deep }} />
-                </div>
-                <div>
-                  <div className="font-display font-semibold mb-1" style={{ color: BRAND.navy }}>{t.contact.office}</div>
-                  <div className="text-slate-600 text-sm leading-relaxed whitespace-pre-line">{address}</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+    <section id="contact" style={{ background: '#F0F6FF' }} className="section-pad">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="flex flex-col lg:flex-row gap-10 lg:gap-14 items-start">
 
-          {/* Contact form */}
-          <Card className="border-0 shadow-xl">
-            <CardContent className="p-8 space-y-4">
-              <h3 className="font-display font-semibold text-xl" style={{ color: BRAND.navy }}>{t.contact.send}</h3>
-              <div><Label>{t.contact.name} *</Label><Input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} /></div>
-              <div><Label>{t.contact.email} *</Label><Input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} /></div>
-              <div><Label>{t.contact.phone} *</Label><Input type="tel" placeholder="+91 XXXXX XXXXX" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} /></div>
-              <div><Label>{t.contact.message} *</Label><Textarea value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} rows={4} /></div>
-              <Button onClick={submit} disabled={submitting} className="w-full text-white" style={{ background: `linear-gradient(135deg, ${BSV_RED} 0%, #a81b1d 100%)` }}>{submitting ? t.contact.sending : t.contact.sendMessage}</Button>
-            </CardContent>
-          </Card>
+          {/* Left info panel */}
+          <div className="w-full lg:w-64 xl:w-72 flex-shrink-0">
+            <span className="inline-block mb-3 text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: ACCENT }}>
+              {t.badges.contact}
+            </span>
+            <h2 className="font-display text-[22px] md:text-[26px] font-bold leading-snug mb-3" style={{ color: '#201F5E' }}>
+              {t.contact.title}
+            </h2>
+            <p className="text-slate-600 text-[13px] leading-relaxed mb-8">
+              {t.contact.subtitle}
+            </p>
+
+            <div className="space-y-5">
+              <div className="flex gap-3 items-start">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${ACCENT}15` }}>
+                  <Mail className="w-4.5 h-4.5" style={{ color: ACCENT }} />
+                </div>
+                <div>
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">{t.contact.email}</div>
+                  <a href={`mailto:${email}`} className="text-[13px] font-medium text-slate-700 hover:underline">{email}</a>
+                </div>
+              </div>
+              <div className="flex gap-3 items-start">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${ACCENT}15` }}>
+                  <MapPin className="w-4.5 h-4.5" style={{ color: ACCENT }} />
+                </div>
+                <div>
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">{t.contact.office}</div>
+                  <div className="text-[13px] leading-relaxed text-slate-700 whitespace-pre-line">{address}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right — form */}
+          <div className="flex-1 w-full">
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 md:p-8">
+              <h3 className="font-display font-semibold text-[17px] mb-5" style={{ color: '#201F5E' }}>{t.contact.send}</h3>
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-[12px] font-semibold text-slate-600 mb-1 block">{t.contact.name} *</Label>
+                  <Input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className="h-10 text-sm" />
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <Label className="text-[12px] font-semibold text-slate-600 mb-1 block">{t.contact.email} *</Label>
+                    <Input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className="h-10 text-sm" />
+                  </div>
+                  <div>
+                    <Label className="text-[12px] font-semibold text-slate-600 mb-1 block">{t.contact.phone} *</Label>
+                    <Input type="tel" placeholder="+91 XXXXX XXXXX" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} className="h-10 text-sm" />
+                  </div>
+                </div>
+                <div>
+                  <Label className="text-[12px] font-semibold text-slate-600 mb-1 block">{t.contact.message} *</Label>
+                  <Textarea value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} rows={4} className="text-sm resize-none" />
+                </div>
+                <Button onClick={submit} disabled={submitting} className="w-full text-white h-11 text-sm font-semibold" style={{ background: `linear-gradient(135deg, ${BSV_RED} 0%, #a81b1d 100%)` }}>
+                  {submitting ? t.contact.sending : t.contact.sendMessage}
+                </Button>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
