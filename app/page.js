@@ -35,6 +35,7 @@ const DEFAULT_BRAND = {
   text: '#334155',
 }
 let BRAND = { ...DEFAULT_BRAND }
+const BSV_RED = '#de2527'  // BSV brand red — used for accents, awareness, urgency
 
 /* =============================================================
    STYLIZED INDIA STATE GRID — each card has a mini India map
@@ -49,24 +50,39 @@ function StatesGrid({ states = [], t }) {
     workshops: acc.workshops + (s.workshops || 0),
   }), { lives: 0, campaigns: 0, workshops: 0 })
 
+  const PILLARS = [
+    { icon: Megaphone, label: 'Awareness', desc: 'Educating communities', color: '#de2527' },
+    { icon: Stethoscope, label: 'Access', desc: 'Reaching healthcare', color: '#16A34A' },
+    { icon: Building2, label: 'Availability', desc: 'ASV at every PHC', color: '#EA7B2C' },
+    { icon: Activity, label: 'Action', desc: 'Timely hospital care', color: '#0EAFC5' },
+  ]
   return (
     <div className="space-y-8">
-      {/* Aggregate strip */}
-      <div className="grid grid-cols-3 gap-3 md:gap-6 rounded-2xl bg-gradient-to-r from-[#201F5E] to-[#0D71B8] p-5 md:p-7 shadow-xl">
-        {[
-          { label: t.outreach.activeStates, value: active.length, icon: MapPin },
-          { label: t.outreach.livesImpacted, value: totals.lives, icon: Heart, suffix: '+' },
-          { label: t.outreach.campaignsRun, value: totals.campaigns, icon: Megaphone, suffix: '+' },
-        ].map((s, i) => {
-          const Icon = s.icon
-          return (
-            <div key={i} className="text-center text-white">
-              <Icon className="w-5 h-5 md:w-6 md:h-6 mx-auto mb-2 opacity-80" />
-              <div className="font-display text-2xl md:text-4xl font-semibold"><AnimatedCounter value={s.value} suffix={s.suffix || ''} /></div>
-              <div className="text-[10px] md:text-xs uppercase tracking-wider opacity-80 mt-1">{s.label}</div>
+      {/* Four Pillars Banner */}
+      <div className="rounded-2xl shadow-xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #201F5E 0%, #0D71B8 100%)' }}>
+        <div className="px-6 pt-6 pb-2 text-center">
+          <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/50">Campaign Framework</span>
+        </div>
+        <div className="grid grid-cols-4 gap-0 px-4 pb-5">
+          {PILLARS.map(({ icon: Icon, label, desc, color }) => (
+            <div key={label} className="flex flex-col items-center text-center px-2 py-3">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center mb-2" style={{ background: `${color}25` }}>
+                <Icon className="w-5 h-5 md:w-6 md:h-6" style={{ color }} />
+              </div>
+              <div className="font-display font-bold text-white text-[13px] md:text-sm">{label}</div>
+              <div className="text-white/50 text-[10px] mt-0.5 hidden md:block">{desc}</div>
             </div>
-          )
-        })}
+          ))}
+        </div>
+        <div className="border-t border-white/10 px-6 py-4 text-center">
+          <p className="text-white/75 text-[13px] md:text-sm leading-relaxed">
+            The framework focuses on four critical pillars —{' '}
+            <span className="font-semibold" style={{ color: '#de2527' }}>Awareness</span>,{' '}
+            <span className="font-semibold" style={{ color: '#4ADE80' }}>Access</span>,{' '}
+            <span className="font-semibold" style={{ color: '#FB923C' }}>Availability</span>, and{' '}
+            <span className="font-semibold" style={{ color: '#22D3EE' }}>Action</span>.
+          </p>
+        </div>
       </div>
 
       {/* State cards with mini India map */}
@@ -105,22 +121,16 @@ function StatesGrid({ states = [], t }) {
                 </div>
 
                 {/* Metrics */}
-                <div className="grid grid-cols-3 gap-2 mb-4">
-                  <div>
-                    <div className="text-[10px] uppercase tracking-wide text-slate-500">{t.outreach.lives}</div>
-                    <div className="font-display font-semibold text-base" style={{ color: BRAND.red }}>
-                      <AnimatedCounter value={s.beneficiaries || 0} />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-[10px] uppercase tracking-wide text-slate-500">{t.outreach.camps}</div>
-                    <div className="font-display font-semibold text-base" style={{ color: BRAND.blue }}>
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  <div className="rounded-lg p-2.5" style={{ background: '#EFF6FF' }}>
+                    <div className="text-[9px] uppercase tracking-wide text-slate-500 mb-0.5">Activities Conducted</div>
+                    <div className="font-display font-bold text-lg" style={{ color: BRAND.deep }}>
                       <AnimatedCounter value={s.campaigns || 0} />
                     </div>
                   </div>
-                  <div>
-                    <div className="text-[10px] uppercase tracking-wide text-slate-500">{t.outreach.workshops}</div>
-                    <div className="font-display font-semibold text-base" style={{ color: BRAND.blue }}>
+                  <div className="rounded-lg p-2.5" style={{ background: '#FFF0F0' }}>
+                    <div className="text-[9px] uppercase tracking-wide text-slate-500 mb-0.5">Workshops Held</div>
+                    <div className="font-display font-bold text-lg" style={{ color: '#de2527' }}>
                       <AnimatedCounter value={s.workshops || 0} />
                     </div>
                   </div>
@@ -302,10 +312,10 @@ function Header({ lang, setLang, t, settings }) {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1 flex-1 justify-center">
-            <button onClick={() => go('#home')} className="px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:bg-cyan-50" style={{ color: BRAND.blue }} onMouseEnter={e => e.currentTarget.style.color = BRAND.red} onMouseLeave={e => e.currentTarget.style.color = BRAND.blue}>
+            <button onClick={() => go('#home')} className="px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:bg-cyan-50" style={{ color: BRAND.blue }} onMouseEnter={e => e.currentTarget.style.color = BSV_RED} onMouseLeave={e => e.currentTarget.style.color = BRAND.blue}>
               {t.nav.home}
             </button>
-            <button onClick={() => go('#video')} className="px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:bg-cyan-50" style={{ color: BRAND.blue }} onMouseEnter={e => e.currentTarget.style.color = BRAND.red} onMouseLeave={e => e.currentTarget.style.color = BRAND.blue}>
+            <button onClick={() => go('#video')} className="px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:bg-cyan-50" style={{ color: BRAND.blue }} onMouseEnter={e => e.currentTarget.style.color = BSV_RED} onMouseLeave={e => e.currentTarget.style.color = BRAND.blue}>
               {t.nav.watch}
             </button>
 
@@ -320,7 +330,7 @@ function Header({ lang, setLang, t, settings }) {
               >
                 <button
                   className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 inline-flex items-center gap-1 ${megaOpen === key ? 'bg-cyan-50' : 'hover:bg-cyan-50'}`}
-                  style={{ color: megaOpen === key ? BRAND.red : BRAND.blue }}
+                  style={{ color: megaOpen === key ? BSV_RED : BRAND.blue }}
                 >
                   {megaMenus[key].label}
                   <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-200 ${megaOpen === key ? 'rotate-90' : ''}`} />
@@ -328,7 +338,7 @@ function Header({ lang, setLang, t, settings }) {
               </div>
             ))}
 
-            <button onClick={() => go('#outreach')} className="px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:bg-cyan-50" style={{ color: BRAND.blue }} onMouseEnter={e => e.currentTarget.style.color = BRAND.red} onMouseLeave={e => e.currentTarget.style.color = BRAND.blue}>
+            <button onClick={() => go('#outreach')} className="px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:bg-cyan-50" style={{ color: BRAND.blue }} onMouseEnter={e => e.currentTarget.style.color = BSV_RED} onMouseLeave={e => e.currentTarget.style.color = BRAND.blue}>
               {t.nav.outreach}
             </button>
           </nav>
@@ -346,7 +356,7 @@ function Header({ lang, setLang, t, settings }) {
             <button
               onClick={() => go('#contact')}
               className="hidden lg:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white rounded-lg shadow-md hover:opacity-90 hover:-translate-y-0.5 transition-all duration-200 flex-shrink-0"
-              style={{ background: BRAND.deep }}
+              style={{ background: `linear-gradient(135deg, ${BSV_RED} 0%, #a81b1d 100%)` }}
             >
               <Phone className="w-3.5 h-3.5" />
               Contact Us
@@ -411,7 +421,7 @@ function Header({ lang, setLang, t, settings }) {
           >
             <div className="container mx-auto px-4 py-8">
               <div className="grid grid-cols-4 gap-8">
-                <div className="col-span-1 rounded-2xl p-6 text-white relative overflow-hidden" style={{ background: `linear-gradient(145deg, ${BRAND.blue}, ${BRAND.red})` }}>
+                <div className="col-span-1 rounded-2xl p-6 text-white relative overflow-hidden" style={{ background: `linear-gradient(145deg, ${BRAND.navy}, ${BSV_RED})` }}>
                   <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
                   <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
                   <div className="relative z-10">
@@ -857,8 +867,9 @@ function PillarCard({ icon: Icon, title, desc, reverseGradient, href }) {
   )
 }
 
-function PictorialCard({ image, label, title, desc, href, badge, accent }) {
+function PictorialCard({ image, label, title, desc, href, badge, accent, objectFit }) {
   const accentColor = accent || BRAND.deep
+  const fit = objectFit || 'cover'
   const onClick = () => {
     if (!href) return
     if (href.startsWith('#')) document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
@@ -871,15 +882,12 @@ function PictorialCard({ image, label, title, desc, href, badge, accent }) {
       style={{ border: '1px solid #e2e8f0', borderTop: `3px solid ${accentColor}` }}
     >
       {/* Image */}
-      {image && (
-        <div className="relative h-44 overflow-hidden">
-          <img
-            src={image}
-            alt={title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-        </div>
-      )}
+      <div className="relative h-44 overflow-hidden bg-slate-50 flex items-center justify-center">
+        {image
+          ? <img src={image} alt={title} className={`w-full h-full transition-transform duration-500 ${fit === 'contain' ? 'object-contain p-3 group-hover:scale-105' : 'object-cover group-hover:scale-105'}`} />
+          : <div className="w-full h-full" style={{ background: `linear-gradient(135deg, ${BRAND.navy}, ${accentColor})` }} />
+        }
+      </div>
 
       {/* Card body — Coursera style */}
       <div className="p-4">
@@ -895,8 +903,7 @@ function PictorialCard({ image, label, title, desc, href, badge, accent }) {
 
 function AwarenessSection({ content, t }) {
   const cards = content?.awareness?.items || []
-  const ACCENT = '#0EAFC5'
-
+  const ACCENT = '#de2527'  // BSV red — Awareness section identity
   return (
     <section id="awareness" className="section-pad bg-white">
       <div className="container mx-auto px-4">
@@ -960,9 +967,11 @@ function AccessSection({ content, t }) {
 
 function CommunicationSection({ content, t }) {
   const cards = content?.communication?.items || []
-  const ACCENT = '#7C3AED'
+  const fits = ['contain', 'cover', 'contain']
+  const ACCENT = '#7C3AED'  // purple — Brand Advocacy section identity
 
   if (!cards.length) return null
+
 
   return (
     <section id="communication" style={{ background: '#F5F3FF' }} className="section-pad">
@@ -983,6 +992,7 @@ function CommunicationSection({ content, t }) {
               desc={it.desc}
               href={it.href}
               accent={ACCENT}
+              objectFit={fits[i]}
             />
           ))}
         </div>
@@ -1105,14 +1115,14 @@ function MythsSection({ content, t }) {
     {
       label: 'Physical Actions',
       icon: ShieldAlert,
-      color: BRAND.red,
+      color: BSV_RED,
       thumb: 'https://images.unsplash.com/photo-1603714228681-b399854b8f80?w=120&q=80&fit=crop',
       ids: [1, 4],
     },
     {
       label: 'Traditional Healing',
       icon: Lightbulb,
-      color: BRAND.blue,
+      color: BRAND.deep,
       thumb: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=120&q=80&fit=crop',
       ids: [2, 3],
     },
@@ -1128,7 +1138,7 @@ function MythsSection({ content, t }) {
   return (
     <section id="myths" className="section-pad" style={{ background: '#F0F8FF' }}>
       <div className="container mx-auto px-4">
-        <SectionHeader badge={t.badges.myths} title={t.myths.title} subtitle={t.myths.subtitle} />
+        <SectionHeader badge={t.badges.myths} title={t.myths.title} subtitle={t.myths.subtitle} accent={BSV_RED} />
         <div className="grid md:grid-cols-3 gap-6">
           {CATEGORIES.map((cat) => {
             const CatIcon = cat.icon
@@ -1325,7 +1335,7 @@ function ContactSection({ content, t }) {
               <div><Label>{t.contact.email} *</Label><Input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} /></div>
               <div><Label>{t.contact.phone} *</Label><Input type="tel" placeholder="+91 XXXXX XXXXX" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} /></div>
               <div><Label>{t.contact.message} *</Label><Textarea value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} rows={4} /></div>
-              <Button onClick={submit} disabled={submitting} className="w-full text-white" style={{ background: BRAND.deep }}>{submitting ? t.contact.sending : t.contact.sendMessage}</Button>
+              <Button onClick={submit} disabled={submitting} className="w-full text-white" style={{ background: `linear-gradient(135deg, ${BSV_RED} 0%, #a81b1d 100%)` }}>{submitting ? t.contact.sending : t.contact.sendMessage}</Button>
             </CardContent>
           </Card>
         </div>
@@ -1433,7 +1443,7 @@ function App() {
     }
   }, [settings])
 
-  const t = getT(lang)
+  const rawT = getT(lang)
 
   const resolved = (() => {
     if (!content) return null
@@ -1453,6 +1463,14 @@ function App() {
     }
     return merge(content, trans)
   })()
+
+  // Merge CMS sectionText overrides into t so section titles/subtitles/items are CMS-driven
+  const st = resolved?.sectionText || DEFAULT_CONTENT.sectionText
+  const t = {
+    ...rawT,
+    access: { ...rawT.access, ...(st?.access || {}) },
+    communication: { ...rawT.communication, ...(st?.communication || {}) },
+  }
 
   useEffect(() => {
     if (typeof window === 'undefined') return
