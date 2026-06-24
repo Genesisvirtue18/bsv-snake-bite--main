@@ -3,10 +3,10 @@
 import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { 
-  Drama, X, ChevronLeft, ChevronRight, 
+import {
+  Drama, X, ChevronLeft, ChevronRight,
   ArrowRight, Image as ImageIcon, MapPin, ChevronUp, Plus,
-  Home
+  ArrowLeft
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -29,7 +29,7 @@ function GalleryLightbox({ images, currentIndex, onClose, onPrev, onNext, cityNa
   }, [onClose, onPrev, onNext])
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-[999] bg-black/95 backdrop-blur-xl flex items-center justify-center"
       onClick={onClose}
     >
@@ -46,7 +46,7 @@ function GalleryLightbox({ images, currentIndex, onClose, onPrev, onNext, cityNa
           <X className="w-6 h-6 md:w-7 md:h-7" />
         </button>
       </div>
-      
+
       <button
         onClick={(e) => { e.stopPropagation(); onPrev() }}
         className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition p-2 md:p-3 hover:bg-white/10 rounded-full"
@@ -54,7 +54,7 @@ function GalleryLightbox({ images, currentIndex, onClose, onPrev, onNext, cityNa
       >
         <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
       </button>
-      
+
       <button
         onClick={(e) => { e.stopPropagation(); onNext() }}
         className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition p-2 md:p-3 hover:bg-white/10 rounded-full"
@@ -63,7 +63,7 @@ function GalleryLightbox({ images, currentIndex, onClose, onPrev, onNext, cityNa
         <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
       </button>
 
-      <div 
+      <div
         className="relative w-[92vw] max-w-5xl h-[70vh] md:h-[80vh]"
         onClick={(e) => e.stopPropagation()}
       >
@@ -108,12 +108,12 @@ export default function NukkadNatakPage() {
           fetch('/api/settings'),
           fetch('/api/content')
         ])
-        
+
         if (settingsRes.ok) {
           const data = await settingsRes.json()
           setSettings(data)
         }
-        
+
         if (contentRes.ok) {
           const data = await contentRes.json()
           setContent(data)
@@ -198,13 +198,28 @@ export default function NukkadNatakPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Home Button - Fixed Position */}
-      <Link 
-        href="/"
-        className="fixed top-4 left-4 z-50 p-2.5 rounded-full bg-white shadow-lg hover:shadow-xl transition-all hover:scale-105 border border-slate-200"
-        aria-label="Go to Home"
-      >
-        <Home className="w-5 h-5" style={{ color: BRAND.blue }} />
-      </Link>
+      <header className="bg-bsv-blue text-white py-4">
+        <div className="container mx-auto px-4 flex items-center gap-3">
+          <Link href="/">
+            <Button
+              variant="ghost"
+              className="text-white hover:bg-white/10"
+            >
+              <ArrowLeft className="w-4 h-4 mr-1" />
+              Home
+            </Button>
+          </Link>
+
+          <div>
+            <div className="font-display font-extrabold text-xl">
+              Nukkad Natak
+            </div>
+            <div className="text-xs text-white/70">
+              Community Awareness Through Street Plays
+            </div>
+          </div>
+        </div>
+      </header>
 
       <main>
         {/* Hero Section */}
@@ -213,11 +228,11 @@ export default function NukkadNatakPage() {
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 mb-4">
               <Drama className="w-8 h-8" style={{ color: BRAND.blue }} />
             </div>
-            
+
             <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4" style={{ color: BRAND.blue }}>
               {nukkadData?.heading || 'Nukkad Natak'}
             </h1>
-            
+
             <p className="text-slate-600 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
               {nukkadData?.subheading || ''}
             </p>
@@ -281,7 +296,7 @@ export default function NukkadNatakPage() {
                                   e.currentTarget.src = '/images/placeholder-city.jpg'
                                 }}
                               />
-                              
+
                               {/* City Name Badge */}
                               <div className="absolute top-3 left-3 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-sm border border-white/10">
                                 <MapPin className="w-3 h-3 text-white" />
