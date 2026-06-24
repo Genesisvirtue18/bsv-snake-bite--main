@@ -269,7 +269,7 @@ function Header({ lang, setLang, t, settings }) {
               draggable={false}
             />
             <div className="hidden sm:block flex-shrink-0 border-l border-slate-200 pl-2.5">
-              <div className="text-[10px] font-semibold leading-snug text-left whitespace-nowrap" style={{ color: BRAND.blue }}>
+              <div className="text-[10px] font-bold leading-snug text-left whitespace-nowrap" style={{ color: BRAND.blue }}>
                 Saap Ka Vaar,<br />Aspataal Mein Hi Upchaar
               </div>
             </div>
