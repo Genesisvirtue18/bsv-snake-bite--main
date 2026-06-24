@@ -1130,7 +1130,7 @@ function GallerySection({ albums, t }) {
         <div className="flex flex-wrap gap-2 mb-6 items-center">
           <div className="relative flex-1 min-w-[200px] max-w-sm">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-            <Input placeholder={t.gallery.search} value={q} onChange={e => setQ(e.target.value)} className="pl-9" />
+            <Input placeholder={t.gallery.search} value={q} onChange={e => setQ(e.target.value)} className="pl-9" autoComplete="off" />
           </div>
           {categories.map(c => (
             <Button key={c} size="sm" variant={filter === c ? 'default' : 'outline'} onClick={() => setFilter(c)} className={filter === c ? '' : ''} style={filter === c ? { background: BRAND.blue } : undefined}>
