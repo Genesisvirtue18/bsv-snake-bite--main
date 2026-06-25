@@ -217,7 +217,7 @@ function Header({ lang, setLang, t, settings }) {
         {
           title: 'Visual Stories',
           items: [
-            { label: 'Comic & Visual Stories', href: '#/downloads', desc: 'Engaging visual content' },
+            { label: 'Comic & Visual Stories', href: '/downloads', desc: 'Engaging visual content' },
             { label: 'Browse Gallery', href: '/gallery', desc: 'Photo gallery' },
           ]
         },
