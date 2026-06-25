@@ -2236,7 +2236,7 @@ function SettingsView({ api }) {
                 <div><Label>Campaign Name</Label><Input value={s.branding.campaignName} onChange={e => updateBranding('campaignName', e.target.value)} /></div>
                 <div className="md:col-span-2"><Label>Tagline</Label><Input value={s.branding.tagline} onChange={e => updateBranding('tagline', e.target.value)} /></div>
               </div>
-              <MediaPicker label="Header Logo (light backgrounds)" value={s.branding.headerLogo} onChange={v => updateBranding('headerLogo', v)} />
+              <MediaPicker label="Admin Header/Loading Logo" value={s.branding.headerLogo} onChange={v => updateBranding('headerLogo', v)} />
               <MediaPicker label="BSV Logo" value={s.branding.bsvLogo || ''} onChange={v => updateBranding('bsvLogo', v)} />
               <MediaPicker label="Mankind Logo" value={s.branding.mankindLogo || ''} onChange={v => updateBranding('mankindLogo', v)} />
               <MediaPicker label="Footer Logo" value={s.branding.footerLogo} onChange={v => updateBranding('footerLogo', v)} />
