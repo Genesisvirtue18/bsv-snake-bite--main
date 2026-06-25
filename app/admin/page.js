@@ -447,7 +447,8 @@ export default function AdminPage() {
             <TabsTrigger value="nukkad"><Drama className="w-4 h-4 mr-1" />Nukkad Natak</TabsTrigger>
             <TabsTrigger value="gallery"><Images className="w-4 h-4 mr-1" />Gallery</TabsTrigger>
             <TabsTrigger value="videos"><Play className="w-4 h-4 mr-1" />Videos</TabsTrigger>
-            {/*<TabsTrigger value="quiz"><Award className="w-4 h-4 mr-1" />Quiz Results</TabsTrigger>
+            {/*<TabsTrigger value="leads"><Users className="w-4 h-4 mr-1" />Leads</TabsTrigger>
+            <TabsTrigger value="quiz"><Award className="w-4 h-4 mr-1" />Quiz Results</TabsTrigger>
             <TabsTrigger value="quizq"><HelpCircle className="w-4 h-4 mr-1" />Quiz Q&amp;A</TabsTrigger>*/}
             <TabsTrigger value="contacts"><MessageSquare className="w-4 h-4 mr-1" />Contacts</TabsTrigger>
             <TabsTrigger value="footer"><Layers className="w-4 h-4 mr-1" />Footer</TabsTrigger>
@@ -461,11 +462,7 @@ export default function AdminPage() {
           <TabsContent value="dashboard">
             <div className="grid md:grid-cols-4 gap-4 mb-4">
               {[
-                { label: 'Leads', value: analytics?.totals?.leads || 0, icon: Users, color: 'bg-blue-500' },
-                { label: 'Quiz', value: analytics?.totals?.quiz || 0, icon: Award, color: 'bg-red-500' },
                 { label: 'Contacts', value: analytics?.totals?.contacts || 0, icon: MessageSquare, color: 'bg-green-500' },
-                { label: 'Partnerships', value: analytics?.totals?.partnerships || 0, icon: Shield, color: 'bg-purple-500' },
-                { label: 'Volunteers', value: analytics?.totals?.volunteers || 0, icon: UserPlus, color: 'bg-orange-500' },
                 { label: 'Media Files', value: analytics?.totals?.media || 0, icon: ImageIcon, color: 'bg-pink-500' },
                 { label: 'Impact Stories', value: analytics?.totals?.impactStories || 0, icon: Heart, color: 'bg-rose-500' },
                 { label: 'Languages', value: 9, icon: Globe, color: 'bg-cyan-500' },
@@ -473,11 +470,6 @@ export default function AdminPage() {
                 const Icon = s.icon
                 return <Card key={i}><CardContent className="p-4"><div className={`w-10 h-10 rounded ${s.color} flex items-center justify-center mb-2`}><Icon className="w-5 h-5 text-white" /></div><div className="text-2xl font-display font-extrabold text-bsv-blue">{s.value}</div><div className="text-xs text-muted-foreground">{s.label}</div></CardContent></Card>
               })}
-            </div>
-            <div className="grid md:grid-cols-3 gap-4">
-              <Card><CardContent className="p-5"><h3 className="font-display font-bold mb-3">Leads by State</h3>{analytics?.byState?.slice(0, 10).map(s => <div key={s._id} className="flex justify-between py-1 border-b last:border-0 text-sm"><span>{s._id || 'Unknown'}</span><Badge variant="outline">{s.count}</Badge></div>)}{!analytics?.byState?.length && <p className="text-sm text-muted-foreground">No data</p>}</CardContent></Card>
-              <Card><CardContent className="p-5"><h3 className="font-display font-bold mb-3">Leads by Purpose</h3>{analytics?.byPurpose?.map(s => <div key={s._id} className="flex justify-between py-1 border-b last:border-0 text-sm"><span>{s._id || 'Unknown'}</span><Badge variant="outline">{s.count}</Badge></div>)}{!analytics?.byPurpose?.length && <p className="text-sm text-muted-foreground">No data</p>}</CardContent></Card>
-              <Card><CardContent className="p-5"><h3 className="font-display font-bold mb-3">Myth Heatmap (Quiz)</h3>{analytics?.mythHeatmap?.slice(0, 5).map(s => <div key={s._id} className="py-1 border-b last:border-0"><div className="flex justify-between text-sm"><span className="font-medium">{s._id || '?'}</span><Badge>{s.count}</Badge></div></div>)}{!analytics?.mythHeatmap?.length && <p className="text-sm text-muted-foreground">No data</p>}</CardContent></Card>
             </div>
           </TabsContent>
 
