@@ -506,7 +506,7 @@ function Hero({ content, t }) {
           <img
             src={imageUrl}
             alt="BSV Snakebite Awareness Campaign"
-            className="w-full h-full object-cover object-left sm:object-center"
+            className="w-full h-full object-cover object-left sm:object-[center_58%]"
             loading="eager"
           />
         </div>
