@@ -487,14 +487,15 @@ function Hero({ content, t }) {
   return (
     <section
       id="home"
-      className="relative overflow-hidden pt-16 sm:pt-20 pb-4 sm:pb-6 bg-gradient-to-b from-slate-50 via-white to-slate-50"
+      className="relative overflow-hidden pt-14 sm:pt-20 pb-0 sm:pb-6 bg-gradient-to-b from-slate-50 via-white to-slate-50"
     >
-      <div className="container mx-auto px-3 sm:px-4 lg:px-8">
-        <div className="relative w-full h-[280px] sm:h-[360px] lg:h-[520px] overflow-hidden rounded-[20px] sm:rounded-[24px]">
+      {/* Mobile: full-bleed, no padding, no radius so image text isn't clipped */}
+      <div className="sm:container sm:mx-auto sm:px-4 lg:px-8">
+        <div className="relative w-full h-[56vw] min-h-[220px] max-h-[320px] sm:h-[360px] sm:max-h-none lg:h-[520px] overflow-hidden rounded-none sm:rounded-[24px]">
           <img
             src={imageUrl}
             alt="BSV Snakebite Awareness Campaign"
-            className="w-full h-full object-cover object-center sm:object-[center_58%]"
+            className="w-full h-full object-cover object-left sm:object-[center_58%]"
             loading="eager"
           />
         </div>
