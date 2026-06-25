@@ -255,7 +255,7 @@ function Header({ lang, setLang, t, settings }) {
       onMouseLeave={() => setMegaOpen(null)}
     >
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-14 sm:h-16">
 
           {/* Logo — clicking navigates to top */}
           <button
@@ -274,7 +274,7 @@ function Header({ lang, setLang, t, settings }) {
             <img
               src="/images/saanplogo.png"
               alt="Saap Ka Vaar"
-              className="hidden sm:block h-9 sm:h-10 w-auto flex-shrink-0"
+              className="h-10 sm:h-12 md:h-14 w-auto flex-shrink-0 ml-1 sm:ml-2"
               draggable={false}
             />
           </button>
@@ -487,14 +487,14 @@ function Hero({ content, t }) {
   return (
     <section
       id="home"
-      className="relative overflow-hidden pt-20 sm:pt-24 pb-4 sm:pb-6 bg-gradient-to-b from-slate-50 via-white to-slate-50"
+      className="relative overflow-hidden pt-16 sm:pt-20 pb-4 sm:pb-6 bg-gradient-to-b from-slate-50 via-white to-slate-50"
     >
       <div className="container mx-auto px-3 sm:px-4 lg:px-8">
-        <div className="relative w-full h-[220px] sm:h-[320px] lg:h-[500px] overflow-hidden rounded-[24px]">
+        <div className="relative w-full h-[280px] sm:h-[360px] lg:h-[520px] overflow-hidden rounded-[20px] sm:rounded-[24px]">
           <img
             src={imageUrl}
             alt="BSV Snakebite Awareness Campaign"
-            className="w-full h-full object-cover object-left sm:object-[center_58%]"
+            className="w-full h-full object-cover object-center sm:object-[center_58%]"
             loading="eager"
           />
         </div>
