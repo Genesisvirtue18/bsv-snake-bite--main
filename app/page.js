@@ -473,47 +473,12 @@ function Header({ lang, setLang, t, settings }) {
 }
 
 function Hero({ content, t }) {
-  const stats = content?.heroStats || []
+  const imageUrl =
+    content?.heroImage ||
+    content?.heroSlides?.[0]?.desktopImage ||
+    content?.heroSlides?.[0]?.mobileImage
 
-  const slides = Array.isArray(content?.heroSlides)
-    ? content.heroSlides
-      .filter(slide => (slide?.desktopImage || slide?.mobileImage) && slide.active !== false)
-      .sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0))
-    : []
-
-  const sliderRef = useRef(null)
-  const [activeSlide, setActiveSlide] = useState(0)
-
-  const scrollToSlide = (index) => {
-    if (!sliderRef.current) return
-
-    const slider = sliderRef.current
-    const card = slider.querySelector('[data-hero-card]')
-    if (!card) return
-
-    const gap = 20
-    const left = index * (card.offsetWidth + gap)
-
-    slider.scrollTo({
-      left,
-      behavior: 'smooth',
-    })
-
-    setActiveSlide(index)
-  }
-
-  const scrollHero = (direction) => {
-    if (!slides.length) return
-
-    const nextIndex =
-      direction === 'next'
-        ? Math.min(activeSlide + 1, slides.length - 1)
-        : Math.max(activeSlide - 1, 0)
-
-    scrollToSlide(nextIndex)
-  }
-
-  if (!slides.length) return null
+  if (!imageUrl) return null
 
   return (
     <section
@@ -521,78 +486,14 @@ function Hero({ content, t }) {
       className="relative overflow-hidden pt-20 sm:pt-24 pb-4 sm:pb-6 bg-gradient-to-b from-slate-50 via-white to-slate-50"
     >
       <div className="container mx-auto px-3 sm:px-4 lg:px-8">
-        <div className="relative">
-
-          {/* Desktop Left Arrow */}
-          {slides.length > 1 && (
-            <button
-              type="button"
-              onClick={() => scrollHero('prev')}
-              className="hidden md:flex absolute left-3 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white shadow-lg text-2xl font-bold items-center justify-center"
-              style={{ color: BRAND.blue }}
-            >
-              ‹
-            </button>
-          )}
-
-          <div
-            ref={sliderRef}
-            className="overflow-x-auto no-scrollbar scroll-smooth pb-4"
-          >
-            <div className="flex gap-4 sm:gap-5 w-max">
-              {slides.map((slide, i) => (
-                <div
-                  key={slide.id || i}
-                  data-hero-card
-                  className="relative w-[82vw] sm:w-[46vw] lg:w-[47vw] h-[260px] sm:h-[320px] lg:h-[360px] overflow-hidden rounded-[1.5rem] shadow-none bg-white flex-shrink-0"
-                >
-                  <picture>
-                    <source
-                      media="(max-width: 768px)"
-                      srcSet={slide.mobileImage || slide.desktopImage}
-                    />
-
-                    <img
-                      src={slide.desktopImage || slide.mobileImage}
-                      alt=""
-                      className="w-full h-full object-cover"
-                    />
-                  </picture>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Desktop Right Arrow */}
-          {slides.length > 1 && (
-            <button
-              type="button"
-              onClick={() => scrollHero('next')}
-              className="hidden md:flex absolute right-3 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white shadow-lg text-2xl font-bold items-center justify-center"
-              style={{ color: BRAND.blue }}
-            >
-              ›
-            </button>
-          )}
-
-          {/* Dots */}
-          {slides.length > 1 && (
-            <div className="hidden md:flex justify-center gap-2 mt-4">
-              {slides.map((_, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => scrollToSlide(i)}
-                  className={`h-2 rounded-full transition-all ${i === activeSlide
-                    ? 'w-8 bg-bsv-red'
-                    : 'w-2 bg-slate-300'
-                    }`}
-                />
-              ))}
-            </div>
-          )}
+        <div className="relative w-full h-[220px] sm:h-[320px] lg:h-[500px] overflow-hidden rounded-[24px]">
+          <img
+            src={imageUrl}
+            alt="BSV Snakebite Awareness Campaign"
+            className="w-full h-full object-cover object-center"
+            loading="eager"
+          />
         </div>
-
       </div>
     </section>
   )
@@ -904,8 +805,8 @@ function AwarenessSection({ content, t }) {
                     {card.image
                       ? <img src={card.image} alt={card.title} className="w-full h-full object-contain group-hover:scale-[1.03] transition-transform duration-500" />
                       : <div className="w-full h-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #201F5Ecc, #de252744)' }}>
-                          <Sparkles className="w-12 h-12 text-white/30" />
-                        </div>
+                        <Sparkles className="w-12 h-12 text-white/30" />
+                      </div>
                     }
                     {/* Bottom label ribbon — always uses DEFAULT_LABELS, not card title */}
                     <div className="absolute bottom-0 left-0 right-0 px-3 py-2" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)' }}>

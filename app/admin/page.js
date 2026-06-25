@@ -519,83 +519,25 @@ export default function AdminPage() {
                   </div>
                 </CardContent></Card>
 
-                {/* HERO SLIDES */}
+                {/* HERO IMAGE */}
                 <Card>
                   <CardContent className="p-5 space-y-4">
                     <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <h3 className="font-display font-bold text-lg text-bsv-blue">Hero Slides</h3>
-                      </div>
-
-                      <Button type="button" onClick={addHeroSlide} className="bg-bsv-red">
-                        <Plus className="w-4 h-4 mr-1" />
-                        Add Slide
-                      </Button>
+                      <h3 className="font-display font-bold text-lg text-bsv-blue">
+                        Hero Image
+                      </h3>
                     </div>
 
-                    <div className="space-y-4">
-                      {getHeroSlides().map((slide, index) => (
-                        <div key={slide.id} className="border rounded-xl p-4 bg-white space-y-3">
-                          <div className="flex items-center justify-between gap-3">
-                            <div className="font-semibold text-bsv-blue">
-                              Slide {index + 1}
-                            </div>
-
-                            <div className="flex items-center gap-3">
-                              <div className="flex items-center gap-2 text-sm">
-                                <span>Active</span>
-                                <Switch
-                                  checked={slide.active !== false}
-                                  onCheckedChange={c => updateHeroSlide(slide.id, { active: c })}
-                                />
-                              </div>
-
-                              <Button
-                                type="button"
-                                size="sm"
-                                variant="destructive"
-                                onClick={() => deleteHeroSlide(slide.id)}
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
-                            </div>
-                          </div>
-
-                          <div className="grid md:grid-cols-2 gap-3">
-                            <MediaPicker
-                              label="Desktop Image (1920 × 1080)"
-                              value={slide.desktopImage || ''}
-                              onChange={v => updateHeroSlide(slide.id, { desktopImage: v })}
-                            />
-
-                            <MediaPicker
-                              label="Mobile Image (1200 × 1500)"
-                              value={slide.mobileImage || ''}
-                              onChange={v => updateHeroSlide(slide.id, { mobileImage: v })}
-                            />
-                          </div>
-
-                          <div className="max-w-xs">
-                            <Label>Sort Order</Label>
-                            <Input
-                              type="number"
-                              value={slide.order ?? index + 1}
-                              onChange={e =>
-                                updateHeroSlide(slide.id, {
-                                  order: Number(e.target.value) || 0,
-                                })
-                              }
-                            />
-                          </div>
-                        </div>
-                      ))}
-
-                      {!getHeroSlides().length && (
-                        <div className="border border-dashed rounded-xl p-8 text-center text-muted-foreground">
-                          Add Slides.
-                        </div>
-                      )}
-                    </div>
+                    <MediaPicker
+                      label="Hero Image (1920 × 1080)"
+                      value={content.heroImage || ''}
+                      onChange={v =>
+                        setContent({
+                          ...content,
+                          heroImage: v,
+                        })
+                      }
+                    />
                   </CardContent>
                 </Card>
 
@@ -1373,8 +1315,6 @@ function ImpactStoriesView({ stories, api, reload }) {
                 <div><Label>NGO</Label><Input value={editing.ngo} onChange={e => setEditing({ ...editing, ngo: e.target.value })} /></div>
               </div>
               <MediaPicker label="Hero Image" value={editing.heroImage} onChange={v => setEditing({ ...editing, heroImage: v })} />
-              <MediaPicker label="Before Image" value={editing.beforeImage} onChange={v => setEditing({ ...editing, beforeImage: v })} />
-              <MediaPicker label="After Image" value={editing.afterImage} onChange={v => setEditing({ ...editing, afterImage: v })} />
               <MultiMediaPicker label="Story Gallery (multiple images)" values={editing.gallery || []} onChange={v => setEditing({ ...editing, gallery: v })} max={30} />
               <div><Label>Video URL</Label><Input value={editing.video || ''} onChange={e => setEditing({ ...editing, video: e.target.value })} /></div>
               <div className="flex items-center gap-2"><Switch checked={editing.published} onCheckedChange={c => setEditing({ ...editing, published: c })} /><Label>Published</Label></div>
