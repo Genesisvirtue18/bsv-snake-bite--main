@@ -277,18 +277,6 @@ function Header({ lang, setLang, t, settings }) {
               className="hidden sm:block h-9 sm:h-10 w-auto flex-shrink-0"
               draggable={false}
             />
-
-            {/* Tagline */}
-            <div className="hidden sm:block flex-shrink-0 border-l border-slate-200 pl-3">
-              <div
-                className="text-[10px] font-bold leading-snug text-left whitespace-nowrap"
-                style={{ color: BRAND.blue }}
-              >
-                Saap Ka Vaar,
-                <br />
-                Aspataal Mein Hi Upchaar
-              </div>
-            </div>
           </button>
 
           {/* Desktop Navigation — no Home button, logo handles it */}
