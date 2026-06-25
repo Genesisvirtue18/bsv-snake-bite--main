@@ -260,17 +260,33 @@ function Header({ lang, setLang, t, settings }) {
           {/* Logo — clicking navigates to top */}
           <button
             onClick={() => go('#home')}
-            className="flex items-center gap-2.5 flex-shrink-0 group"
+            className="flex items-center gap-3 flex-shrink-0 group"
           >
+            {/* BSV Logo */}
             <img
               src={settings?.branding?.bsvLogo}
               alt="BSV"
               className="h-10 sm:h-12 w-auto flex-shrink-0"
               draggable={false}
             />
-            <div className="hidden sm:block flex-shrink-0 border-l border-slate-200 pl-2.5">
-              <div className="text-[10px] font-bold leading-snug text-left whitespace-nowrap" style={{ color: BRAND.blue }}>
-                Saap Ka Vaar,<br />Aspataal Mein Hi Upchaar
+
+            {/* Campaign Logo */}
+            <img
+              src="/images/saanplogo.png"
+              alt="Saap Ka Vaar"
+              className="hidden sm:block h-9 sm:h-10 w-auto flex-shrink-0"
+              draggable={false}
+            />
+
+            {/* Tagline */}
+            <div className="hidden sm:block flex-shrink-0 border-l border-slate-200 pl-3">
+              <div
+                className="text-[10px] font-bold leading-snug text-left whitespace-nowrap"
+                style={{ color: BRAND.blue }}
+              >
+                Saap Ka Vaar,
+                <br />
+                Aspataal Mein Hi Upchaar
               </div>
             </div>
           </button>
@@ -490,7 +506,7 @@ function Hero({ content, t }) {
           <img
             src={imageUrl}
             alt="BSV Snakebite Awareness Campaign"
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-left sm:object-center"
             loading="eager"
           />
         </div>
