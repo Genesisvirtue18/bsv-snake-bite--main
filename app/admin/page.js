@@ -447,13 +447,9 @@ export default function AdminPage() {
             <TabsTrigger value="nukkad"><Drama className="w-4 h-4 mr-1" />Nukkad Natak</TabsTrigger>
             <TabsTrigger value="gallery"><Images className="w-4 h-4 mr-1" />Gallery</TabsTrigger>
             <TabsTrigger value="videos"><Play className="w-4 h-4 mr-1" />Videos</TabsTrigger>
-            <TabsTrigger value="reports"><FileImage className="w-4 h-4 mr-1" />Reports</TabsTrigger>
-            <TabsTrigger value="leads"><Users className="w-4 h-4 mr-1" />Leads</TabsTrigger>
             {/*<TabsTrigger value="quiz"><Award className="w-4 h-4 mr-1" />Quiz Results</TabsTrigger>
             <TabsTrigger value="quizq"><HelpCircle className="w-4 h-4 mr-1" />Quiz Q&amp;A</TabsTrigger>*/}
             <TabsTrigger value="contacts"><MessageSquare className="w-4 h-4 mr-1" />Contacts</TabsTrigger>
-            <TabsTrigger value="partnerships"><Megaphone className="w-4 h-4 mr-1" />Partners</TabsTrigger>
-            <TabsTrigger value="volunteers"><UserPlus className="w-4 h-4 mr-1" />Volunteers</TabsTrigger>
             <TabsTrigger value="footer"><Layers className="w-4 h-4 mr-1" />Footer</TabsTrigger>
             <TabsTrigger value="users"><Settings className="w-4 h-4 mr-1" />Users</TabsTrigger>
             <TabsTrigger value="translations"><Globe className="w-4 h-4 mr-1" />Translations</TabsTrigger>
