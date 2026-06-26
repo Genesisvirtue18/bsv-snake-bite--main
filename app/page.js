@@ -102,24 +102,6 @@ function StatesGrid({ states = [], t }) {
                     </div>
                   </div>
                 </div>
-
-                {/* Progress vs largest state */}
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between text-[10px] text-slate-500">
-                    <span className="uppercase tracking-wide">{t.outreach.reach}</span>
-                    <span className="font-semibold" style={{ color: BRAND.blue }}>{pct}%</span>
-                  </div>
-                  <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${pct}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1.2, delay: i * 0.05 }}
-                      className="h-full rounded-full"
-                      style={{ background: `linear-gradient(90deg, ${BRAND.blue} 0%, ${BRAND.red} 100%)` }}
-                    />
-                  </div>
-                </div>
               </div>
 
               {/* Hover ribbon */}
@@ -1404,7 +1386,6 @@ function Footer({ content, t, settings }) {
 
         <div className="border-t border-white/10 pt-5 flex flex-wrap items-center justify-between gap-4 text-xs text-white/50">
           <div>{f.copyright || '© 2025 Bharat Serums and Vaccines Ltd. All rights reserved.'}</div>
-          <div><a href="/admin" className="hover:text-white/80">{t.footer.admin}</a></div>
         </div>
       </div>
     </footer>
