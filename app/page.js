@@ -537,135 +537,157 @@ function HeroStatsSection({ content, t }) {
   )
 }
 
+function MissionSection({ content }) {
+  const missionText =
+    content?.about?.mission ||
+    'To eliminate preventable snakebite deaths in India by 2030 through awareness, education, and ensuring access to quality anti-snake venom (ASV) at every primary health center.'
+
+  return (
+    <section className="section-pad bg-gradient-to-b from-white to-slate-50">
+      <div className="container mx-auto px-4">
+        <div className="max-w-6xl mx-auto rounded-[24px] border border-sky-100 bg-white shadow-lg px-5 py-6 md:px-10 md:py-8">
+
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="h-px w-14 md:w-28 bg-sky-300" />
+            <div className="text-center">
+              <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-sky-50">
+                <Activity className="w-5 h-5" style={{ color: BRAND.deep }} />
+              </div>
+              <h2 className="font-display text-[20px] md:text-[26px] font-bold tracking-[0.14em]" style={{ color: BRAND.navy }}>
+                OUR MISSION
+              </h2>
+            </div>
+            <div className="h-px w-14 md:w-28 bg-sky-300" />
+          </div>
+
+          <div className="relative">
+            <div className="absolute -top-2 left-0 text-4xl md:text-6xl leading-none font-bold" style={{ color: BSV_RED }}>
+              “
+            </div>
+
+            <p className="text-center font-display font-semibold text-[19px] md:text-[28px] leading-[1.5] md:leading-[1.45] px-5 md:px-16" style={{ color: BRAND.navy }}>
+              {missionText}
+            </p>
+
+            <div className="absolute -bottom-7 right-0 text-4xl md:text-6xl leading-none font-bold" style={{ color: BSV_RED }}>
+              ”
+            </div>
+          </div>
+
+          <div className="w-44 h-px bg-slate-200 mx-auto my-5" />
+
+          <p className="text-center text-[15px] md:text-lg font-semibold" style={{ color: BRAND.deep }}>
+            BSV National Snakebite Awareness Initiative
+          </p>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function VideoSection({ videos, content, t }) {
   const [active, setActive] = useState(null)
   const published = (videos || []).filter(v => v.published !== false)
   const featured = published.find(v => v.featured) || published[0]
-  const others = published.filter(v => v.id !== featured?.id)
+
+  if (!featured) return null
 
   return (
     <>
-      {/* ── Mission block (Coursera testimonial style) ── */}
-      {featured && (
-        <section id="video" className="mission-section section-pad">
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="mission-inner">
+      <section id="video" className="section-pad bg-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto rounded-[26px] border border-slate-100 bg-white shadow-sm px-5 py-8 md:px-10 md:py-10">
 
-              {/* Left — featured video with border */}
+            <div className="text-center mb-8">
+              <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full text-white shadow-md" style={{ background: BSV_RED }}>
+                <Play className="w-5 h-5 fill-current ml-0.5" />
+              </div>
+
+              <div className="flex items-center justify-center gap-4">
+                <div className="h-px w-12 md:w-24" style={{ background: BSV_RED }} />
+                <h2 className="font-display text-[24px] md:text-[34px] font-bold" style={{ color: BRAND.navy }}>
+                  WATCH THE CAMPAIGN
+                </h2>
+                <div className="h-px w-12 md:w-24" style={{ background: BSV_RED }} />
+              </div>
+            </div>
+
+            <div className="grid lg:grid-cols-2 gap-7 md:gap-10 items-center">
               <button
                 onClick={() => setActive(featured)}
-                className="mission-video-wrap group"
+                className="relative group overflow-hidden rounded-2xl shadow-lg bg-slate-900 text-left"
               >
-                {featured.thumbnail && (
-                  <img src={featured.thumbnail} alt={featured.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                <div className="aspect-video">
+                  {featured.thumbnail && (
+                    <img
+                      src={featured.thumbnail}
+                      alt={featured.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
+                    />
+                  )}
+                </div>
+
+                <div className="absolute inset-0 bg-black/25" />
+
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all duration-300" style={{ background: BSV_RED }}>
+                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all" style={{ background: BSV_RED }}>
                     <Play className="w-7 h-7 md:w-9 md:h-9 fill-white text-white ml-1" />
                   </div>
                 </div>
-                <div className="absolute bottom-4 left-5">
-                  <Badge className="border-0 text-[10px]" style={{ background: BSV_RED }}>{featured.category || t.common.campaignFilm}</Badge>
+
+                <div className="absolute bottom-4 left-4">
+                  <span className="inline-flex rounded-full px-4 py-2 text-xs md:text-sm font-bold text-white" style={{ background: BSV_RED }}>
+                    {featured.category || 'Campaign Video'}
+                  </span>
                 </div>
               </button>
 
-              {/* Right — mission text (dark text on pastel bg) */}
-              <div className="mission-panel">
-                <div className="mission-quote-mark">&ldquo;</div>
-                <p className="mission-quote-text font-display">
-                  {content?.about?.mission || DEFAULT_CONTENT.about.mission}
-                </p>
-                <div className="mission-divider">
-                  <div className="mission-author font-display">{featured.title || 'BSV Campaign'}</div>
-                  <div className="mission-org">{t.common.bsvOrg}</div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ── Rest of videos ── */}
-      {others.length > 0 && (
-        <section className="section-pad bg-white">
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="flex items-center justify-between mb-6">
               <div>
-                <span className="inline-block mb-1 text-[11px] font-bold uppercase tracking-[0.14em]" style={{ color: BRAND.deep }}>{t.badges.watch}</span>
-                <h2 className="font-display text-[20px] md:text-[24px] font-bold leading-tight" style={{ color: BRAND.navy }}>{t.video.more || 'More Videos'}</h2>
+                <h3 className="font-display text-[22px] md:text-[30px] font-bold mb-3" style={{ color: BRAND.navy }}>
+                  {featured.title || 'Amitabh Bachchan Video'}
+                </h3>
+
+                <div className="w-20 h-1 rounded-full mb-5" style={{ background: BRAND.deep }} />
+
+                <p className="text-slate-600 text-[15px] md:text-lg leading-7 md:leading-8">
+                  {featured.description ||
+                    'Renowned actor Amitabh Bachchan joins hands with BSV to spread awareness about snakebite prevention, debunk common myths, and encourage timely hospital treatment through this nationwide public awareness campaign.'}
+                </p>
               </div>
-              <a
-                href="https://www.youtube.com/@bsvindia/videos"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-lg font-semibold text-[13px] text-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
-                style={{ background: BRAND.deep }}
-              >
-                {t.video.watchMore || 'View All'}
-                <ArrowRight className="w-4 h-4" />
-              </a>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {others.map((v, i) => (
-                <motion.button
-                  key={v.id}
-                  onClick={() => setActive(v)}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.06, duration: 0.35 }}
-                  className="group text-left rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 bg-white border border-slate-100"
-                >
-                  <div className="relative aspect-video overflow-hidden bg-slate-900">
-                    {v.thumbnail && <img src={v.thumbnail} alt={v.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />}
-                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                      <div className="w-11 h-11 rounded-full flex items-center justify-center group-hover:scale-110 transition-all" style={{ background: BSV_RED }}>
-                        <Play className="w-5 h-5 fill-white text-white ml-0.5" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider mb-1.5" style={{ color: BRAND.deep }}>{v.category || 'Campaign'}</div>
-                    <div className="font-display font-semibold text-[14px] leading-snug line-clamp-2" style={{ color: BRAND.navy }}>{v.title}</div>
-                    {v.description && <p className="text-[12px] text-slate-500 mt-1.5 line-clamp-2">{v.description}</p>}
-                  </div>
-                </motion.button>
-              ))}
-            </div>
-
-            <div className="sm:hidden text-center mt-5">
-              <a
-                href="https://www.youtube.com/@bsvindia/videos"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg font-semibold text-[13px] text-white"
-                style={{ background: BRAND.deep }}
-              >
-                {t.video.watchMore || 'View All'}
-                <ArrowRight className="w-4 h-4" />
-              </a>
             </div>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {active && (
         <Dialog open onOpenChange={() => setActive(null)}>
           <DialogContent className="max-w-4xl w-[92vw] max-h-[82vh] overflow-y-auto p-0 bg-black mt-10">
-            <DialogHeader className="sr-only"><DialogTitle>{active.title}</DialogTitle><DialogDescription>{active.description}</DialogDescription></DialogHeader>
+            <DialogHeader className="sr-only">
+              <DialogTitle>{active.title}</DialogTitle>
+              <DialogDescription>{active.description}</DialogDescription>
+            </DialogHeader>
+
             <div className="aspect-video w-full max-h-[65vh] bg-black">
               {active.youtubeId ? (
-                <iframe className="w-full h-full" src={`https://www.youtube.com/embed/${active.youtubeId}?autoplay=1&rel=0`} title={active.title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+                <iframe
+                  className="w-full h-full"
+                  src={`https://www.youtube.com/embed/${active.youtubeId}?autoplay=1&rel=0`}
+                  title={active.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
               ) : active.url ? (
                 <video src={active.url} controls autoPlay className="w-full h-full" />
               ) : null}
             </div>
+
             <div className="p-4 bg-white">
-              <div className="font-display font-semibold text-lg" style={{ color: BRAND.blue }}>{active.title}</div>
-              {active.description && <p className="text-sm text-slate-600 mt-1 line-clamp-3">{active.description}</p>}
+              <div className="font-display font-semibold text-lg" style={{ color: BRAND.blue }}>
+                {active.title}
+              </div>
+              {active.description && (
+                <p className="text-sm text-slate-600 mt-1 line-clamp-3">{active.description}</p>
+              )}
             </div>
           </DialogContent>
         </Dialog>
@@ -1577,6 +1599,7 @@ function App() {
       <main>
         <Hero content={resolved} t={t} />
         <HeroStatsSection content={resolved} t={t} />
+        <MissionSection content={resolved} />
         <VideoSection videos={videos} content={resolved} t={t} />
         <AwarenessSection content={resolved} t={t} />
         <AccessSection content={resolved} t={t} />
