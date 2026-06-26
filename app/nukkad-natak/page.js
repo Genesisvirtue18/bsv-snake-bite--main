@@ -49,7 +49,7 @@ function GalleryLightbox({ images, currentIndex, onClose, onPrev, onNext, cityNa
 
       <button
         onClick={(e) => { e.stopPropagation(); onPrev() }}
-        className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition p-2 md:p-3 hover:bg-white/10 rounded-full"
+        className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-[1002] bg-white/90 text-black shadow-xl p-2.5 md:p-3 rounded-full"
         aria-label="Previous image"
       >
         <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
@@ -57,7 +57,7 @@ function GalleryLightbox({ images, currentIndex, onClose, onPrev, onNext, cityNa
 
       <button
         onClick={(e) => { e.stopPropagation(); onNext() }}
-        className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition p-2 md:p-3 hover:bg-white/10 rounded-full"
+        className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-[1002] bg-white/90 text-black shadow-xl p-2.5 md:p-3 rounded-full"
         aria-label="Next image"
       >
         <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
