@@ -85,12 +85,12 @@ export default function StoryDetailPage() {
       </header>
 
       {/* Hero */}
-      <div className="relative h-[60vh] overflow-hidden">
+      <div className="relative h-[55vh] md:h-[65vh] lg:h-[72vh] overflow-hidden">
         {story.heroImage ? (
           <img
             src={story.heroImage}
             alt={story.title}
-            className="w-full h-full object-cover object-top"
+            className="w-full h-full object-cover"
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-bsv-blue to-bsv-red" />
