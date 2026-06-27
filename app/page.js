@@ -542,44 +542,84 @@ function MissionSection({ content }) {
     content?.about?.mission ||
     'To eliminate preventable snakebite deaths in India by 2030 through awareness, education, and ensuring access to quality anti-snake venom (ASV) at every primary health center.'
 
+  const MissionPillar = ({ icon: Icon, label }) => (
+    <div className="flex flex-col items-center justify-center px-3">
+      <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#EFF5FF] flex items-center justify-center mb-2 shadow-sm">
+        <Icon className="w-6 h-6 md:w-7 md:h-7" style={{ color: '#075BD8' }} />
+      </div>
+      <div className="text-[13px] md:text-[16px] font-semibold text-center" style={{ color: BRAND.navy }}>
+        {label}
+      </div>
+    </div>
+  )
+
   return (
-    <section className="section-pad bg-gradient-to-b from-white to-slate-50">
+    <section className="section-pad bg-[#F7FAFF]">
       <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto rounded-[24px] border border-sky-100 bg-white shadow-lg px-5 py-6 md:px-10 md:py-8">
+        <div className="relative max-w-6xl mx-auto overflow-hidden rounded-[30px] bg-white border border-[#E7EEF8] shadow-[0_22px_60px_rgba(15,23,42,0.10)] px-6 py-8 md:px-16 md:py-12">
 
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="h-px w-14 md:w-28 bg-sky-300" />
-            <div className="text-center">
-              <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-sky-50">
-                <Activity className="w-5 h-5" style={{ color: BRAND.deep }} />
+          {/* Background design */}
+          <div className="pointer-events-none absolute left-0 bottom-0 w-56 h-56 rounded-tr-[190px] border-t border-r border-[#E7EEF8]" />
+          <div className="pointer-events-none absolute left-7 bottom-7 w-44 h-44 rounded-tr-[150px] border-t border-r border-[#E7EEF8]" />
+          <div className="pointer-events-none absolute left-8 bottom-10 w-20 h-20 opacity-60 bg-[radial-gradient(circle,#8DB8F8_2px,transparent_2px)] [background-size:14px_14px]" />
+          <div className="pointer-events-none absolute right-28 top-28 hidden md:block w-48 h-48 opacity-50 bg-[radial-gradient(circle,#B7D3FF_2px,transparent_2px)] [background-size:12px_12px]" />
+
+          {/* Top pulse line */}
+          <div className="flex items-center justify-center mb-8 md:mb-10">
+            <div className="relative h-px w-24 md:w-44 bg-gradient-to-r from-[#075BD8] to-[#DE2527]">
+              <span className="absolute -left-1 -top-[3px] w-2 h-2 rounded-full border border-[#075BD8] bg-white" />
+            </div>
+
+            <div className="mx-5 w-14 h-14 md:w-16 md:h-16 rounded-full bg-white shadow-[0_12px_28px_rgba(15,23,42,0.12)] flex items-center justify-center">
+              <Activity className="w-7 h-7 md:w-8 md:h-8" style={{ color: '#075BD8' }} />
+            </div>
+
+            <div className="relative h-px w-24 md:w-44 bg-gradient-to-r from-[#075BD8] to-[#DE2527]">
+              <span className="absolute -right-1 -top-[3px] w-2 h-2 rounded-full border border-[#DE2527] bg-white" />
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-[1fr_0.95fr] gap-8 md:gap-12 items-center">
+
+            {/* Mission text */}
+            <div className="order-2 md:order-1 relative">
+              <div className="w-14 h-14 rounded-full bg-[#FDEBEE] flex items-center justify-center text-[54px] font-black leading-none mb-5" style={{ color: BSV_RED }}>
+                “
               </div>
-              <h2 className="font-display text-[20px] md:text-[26px] font-bold tracking-[0.14em]" style={{ color: BRAND.navy }}>
-                OUR MISSION
-              </h2>
+
+              <p className="font-display text-[20px] md:text-[25px] leading-[1.75] font-semibold max-w-xl" style={{ color: BRAND.navy }}>
+                {missionText}
+              </p>
+
+              <div className="flex justify-end mt-1 md:mr-3">
+                <div className="w-14 h-14 rounded-full bg-[#FDEBEE] flex items-center justify-center text-[54px] font-black leading-none" style={{ color: BSV_RED }}>
+                  ”
+                </div>
+              </div>
             </div>
-            <div className="h-px w-14 md:w-28 bg-sky-300" />
+
+            {/* Snake image */}
+            <div className="order-1 md:order-2 flex justify-center">
+              <img
+                src="/images/mission-snake-shield.png"
+                alt="Snakebite protection illustration"
+                className="w-[245px] md:w-[360px] h-auto object-contain"
+                draggable={false}
+              />
+            </div>
           </div>
 
-          <div className="relative">
-            <div className="absolute -top-2 left-0 text-4xl md:text-6xl leading-none font-bold" style={{ color: BSV_RED }}>
-              “
-            </div>
-
-            <p className="text-center font-display font-semibold text-[19px] md:text-[28px] leading-[1.5] md:leading-[1.45] px-5 md:px-16" style={{ color: BRAND.navy }}>
-              {missionText}
-            </p>
-
-            <div className="absolute -bottom-7 right-0 text-4xl md:text-6xl leading-none font-bold" style={{ color: BSV_RED }}>
-              ”
+          {/* Bottom icons */}
+          <div className="mt-8 md:mt-10 max-w-4xl mx-auto rounded-[24px] bg-white border border-[#E9EEF6] shadow-[0_14px_32px_rgba(15,23,42,0.08)] px-4 py-4">
+            <div className="grid grid-cols-3 divide-x divide-slate-200">
+              <MissionPillar icon={Users} label="Awareness" />
+              <MissionPillar icon={BookOpen} label="Education" />
+              <MissionPillar icon={Heart} label="Access to ASV" />
             </div>
           </div>
 
-          <div className="w-44 h-px bg-slate-200 mx-auto my-5" />
-
-          <p className="text-center text-[15px] md:text-lg font-semibold" style={{ color: BRAND.deep }}>
-            BSV National Snakebite Awareness Initiative
-          </p>
         </div>
+        
       </div>
     </section>
   )
