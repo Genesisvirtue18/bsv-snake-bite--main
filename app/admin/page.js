@@ -451,7 +451,6 @@ export default function AdminPage() {
             <TabsTrigger value="quiz"><Award className="w-4 h-4 mr-1" />Quiz Results</TabsTrigger>
             <TabsTrigger value="quizq"><HelpCircle className="w-4 h-4 mr-1" />Quiz Q&amp;A</TabsTrigger>*/}
             <TabsTrigger value="contacts"><MessageSquare className="w-4 h-4 mr-1" />Contacts</TabsTrigger>
-            <TabsTrigger value="footer"><Layers className="w-4 h-4 mr-1" />Footer</TabsTrigger>
             <TabsTrigger value="users"><Settings className="w-4 h-4 mr-1" />Users</TabsTrigger>
             <TabsTrigger value="translations"><Globe className="w-4 h-4 mr-1" />Translations</TabsTrigger>
             <TabsTrigger value="dictionary"><BookOpen className="w-4 h-4 mr-1" />Dictionary</TabsTrigger>
