@@ -1675,43 +1675,202 @@ function ReportsView({ reports, api, reload }) {
 
 function UsersView({ users, api, reload }) {
   const [editing, setEditing] = useState(null)
-  const roles = ['super_admin', 'content_admin', 'campaign_manager', 'regional_manager', 'media_manager', 'lead_manager']
+
   const save = async () => {
-    if (editing.id) await api(`/api/users/${editing.id}`, 'PATCH', { name: editing.name, role: editing.role, active: editing.active, ...(editing.password ? { password: editing.password } : {}) })
-    else await api('/api/users', 'POST', editing)
-    setEditing(null); reload(); toast.success('Saved')
+    if (!editing?.name) {
+      toast.error('Name required')
+      return
+    }
+
+    if (!editing?.id && !editing?.email) {
+      toast.error('Email required')
+      return
+    }
+
+    if (!editing?.id && !editing?.password) {
+      toast.error('Password required')
+      return
+    }
+
+    const payload = {
+      name: editing.name,
+      role: 'super_admin',
+      active: editing.active !== false,
+      ...(editing.password ? { password: editing.password } : {}),
+    }
+
+    if (editing.id) {
+      await api(`/api/users/${editing.id}`, 'PATCH', payload)
+    } else {
+      await api('/api/users', 'POST', {
+        email: editing.email,
+        password: editing.password,
+        name: editing.name,
+        role: 'super_admin',
+        active: editing.active !== false,
+      })
+    }
+
+    setEditing(null)
+    reload()
+    toast.success('Saved')
   }
-  const del = async (id) => { if (confirm('Delete user?')) { await api(`/api/users/${id}`, 'DELETE'); reload() } }
+
+  const del = async (id) => {
+    if (confirm('Delete user?')) {
+      await api(`/api/users/${id}`, 'DELETE')
+      reload()
+      toast.success('Deleted')
+    }
+  }
+
   return (
-    <Card><CardContent className="p-5">
-      <div className="flex justify-between mb-3"><h3 className="font-display font-bold text-lg">User Accounts ({users.length})</h3><Button onClick={() => setEditing({ email: '', password: '', name: '', role: 'content_admin', active: true })} className="bg-bsv-red"><UserPlus className="w-4 h-4 mr-1" />New User</Button></div>
-      <table className="w-full text-sm">
-        <thead><tr className="border-b text-left"><th className="p-2">Name</th><th className="p-2">Email</th><th className="p-2">Role</th><th className="p-2">Status</th><th className="p-2">Actions</th></tr></thead>
-        <tbody>{users.map(u => (
-          <tr key={u.id} className="border-b">
-            <td className="p-2 font-medium">{u.name}</td>
-            <td className="p-2">{u.email}</td>
-            <td className="p-2"><Badge variant="outline">{u.role}</Badge></td>
-            <td className="p-2">{u.active ? <Badge className="bg-green-500">Active</Badge> : <Badge variant="outline">Disabled</Badge>}</td>
-            <td className="p-2"><Button size="sm" variant="outline" onClick={() => setEditing(u)}><Edit className="w-3 h-3" /></Button><Button size="sm" variant="ghost" onClick={() => del(u.id)}><Trash2 className="w-3 h-3 text-red-500" /></Button></td>
-          </tr>))}</tbody>
-      </table>
-      {editing && (
-        <Dialog open onOpenChange={() => setEditing(null)}>
-          <DialogContent>
-            <DialogHeader><DialogTitle>{editing.id ? 'Edit' : 'New'} User</DialogTitle></DialogHeader>
-            <div className="space-y-3">
-              <div><Label>Name</Label><Input value={editing.name} onChange={e => setEditing({ ...editing, name: e.target.value })} /></div>
-              <div><Label>Email</Label><Input value={editing.email} disabled={!!editing.id} onChange={e => setEditing({ ...editing, email: e.target.value })} /></div>
-              <div><Label>{editing.id ? 'New Password (leave empty to keep)' : 'Password'}</Label><Input type="password" value={editing.password || ''} onChange={e => setEditing({ ...editing, password: e.target.value })} /></div>
-              <div><Label>Role</Label><Select value={editing.role} onValueChange={v => setEditing({ ...editing, role: v })}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent>{roles.map(r => <SelectItem key={r} value={r}>{r.replace('_', ' ')}</SelectItem>)}</SelectContent></Select></div>
-              <div className="flex items-center gap-2"><Switch checked={editing.active !== false} onCheckedChange={c => setEditing({ ...editing, active: c })} /><Label>Active</Label></div>
-              <Button onClick={save} className="w-full bg-bsv-red">Save</Button>
-            </div>
-          </DialogContent>
-        </Dialog>
-      )}
-    </CardContent></Card>
+    <Card>
+      <CardContent className="p-5">
+        <div className="flex justify-between mb-3">
+          <h3 className="font-display font-bold text-lg">
+            User Accounts ({users.length})
+          </h3>
+
+          <Button
+            onClick={() =>
+              setEditing({
+                email: '',
+                password: '',
+                name: '',
+                role: 'super_admin',
+                active: true,
+              })
+            }
+            className="bg-bsv-red"
+          >
+            <UserPlus className="w-4 h-4 mr-1" />
+            New User
+          </Button>
+        </div>
+
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b text-left">
+              <th className="p-2">Name</th>
+              <th className="p-2">Email</th>
+              <th className="p-2">Status</th>
+              <th className="p-2">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {users.map(u => (
+              <tr key={u.id} className="border-b">
+                <td className="p-2 font-medium">{u.name}</td>
+                <td className="p-2">{u.email}</td>
+                <td className="p-2">
+                  {u.active !== false ? (
+                    <Badge className="bg-green-500">Active</Badge>
+                  ) : (
+                    <Badge variant="outline">Disabled</Badge>
+                  )}
+                </td>
+                <td className="p-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() =>
+                      setEditing({
+                        ...u,
+                        role: 'super_admin',
+                        password: '',
+                      })
+                    }
+                  >
+                    <Edit className="w-3 h-3" />
+                  </Button>
+
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => del(u.id)}
+                  >
+                    <Trash2 className="w-3 h-3 text-red-500" />
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {!users.length && (
+          <p className="text-center text-muted-foreground py-8">
+            No users yet
+          </p>
+        )}
+
+        {editing && (
+          <Dialog open onOpenChange={() => setEditing(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{editing.id ? 'Edit' : 'New'} User</DialogTitle>
+                <DialogDescription>
+                  Users get full admin access by default.
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="space-y-3">
+                <div>
+                  <Label>Name</Label>
+                  <Input
+                    value={editing.name || ''}
+                    onChange={e =>
+                      setEditing({ ...editing, name: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div>
+                  <Label>Email</Label>
+                  <Input
+                    value={editing.email || ''}
+                    disabled={!!editing.id}
+                    onChange={e =>
+                      setEditing({ ...editing, email: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div>
+                  <Label>
+                    {editing.id
+                      ? 'New Password (leave empty to keep)'
+                      : 'Password'}
+                  </Label>
+                  <Input
+                    type="password"
+                    value={editing.password || ''}
+                    onChange={e =>
+                      setEditing({ ...editing, password: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Switch
+                    checked={editing.active !== false}
+                    onCheckedChange={c =>
+                      setEditing({ ...editing, active: c })
+                    }
+                  />
+                  <Label>Active</Label>
+                </div>
+
+                <Button onClick={save} className="w-full bg-bsv-red">
+                  Save
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        )}
+      </CardContent>
+    </Card>
   )
 }
 
