@@ -496,11 +496,11 @@
       "order": 4
     },
     "myths": {
-      "enabled": true,
+      "enabled": false,
       "order": 5
     },
     "resources": {
-      "enabled": true,
+      "enabled": false,
       "order": 6
     },
     "quiz": {
