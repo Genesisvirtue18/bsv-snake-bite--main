@@ -589,73 +589,117 @@ function VideoSection({ videos, content, t }) {
   const [active, setActive] = useState(null)
   const published = (videos || []).filter(v => v.published !== false)
   const featured = published.find(v => v.featured) || published[0]
+  const others = published.filter(v => v.id !== featured?.id)
 
   if (!featured) return null
 
   return (
     <>
       <section id="video" className="section-pad bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto rounded-[26px] border border-slate-100 bg-white shadow-sm px-5 py-8 md:px-10 md:py-10">
-
-            <div className="text-center mb-8">
-              <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full text-white shadow-md" style={{ background: BSV_RED }}>
-                <Play className="w-5 h-5 fill-current ml-0.5" />
-              </div>
-
-              <div className="flex items-center justify-center gap-4">
-                <div className="h-px w-12 md:w-24" style={{ background: BSV_RED }} />
-                <h2 className="font-display text-[24px] md:text-[34px] font-bold" style={{ color: BRAND.navy }}>
-                  WATCH THE CAMPAIGN
-                </h2>
-                <div className="h-px w-12 md:w-24" style={{ background: BSV_RED }} />
-              </div>
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-8">
+            <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full text-white shadow-md" style={{ background: BSV_RED }}>
+              <Play className="w-5 h-5 fill-current ml-0.5" />
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-7 md:gap-10 items-center">
-              <button
-                onClick={() => setActive(featured)}
-                className="relative group overflow-hidden rounded-2xl shadow-lg bg-slate-900 text-left"
-              >
-                <div className="aspect-video">
-                  {featured.thumbnail && (
-                    <img
-                      src={featured.thumbnail}
-                      alt={featured.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
-                    />
-                  )}
-                </div>
-
-                <div className="absolute inset-0 bg-black/25" />
-
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all" style={{ background: BSV_RED }}>
-                    <Play className="w-7 h-7 md:w-9 md:h-9 fill-white text-white ml-1" />
-                  </div>
-                </div>
-
-                <div className="absolute bottom-4 left-4">
-                  <span className="inline-flex rounded-full px-4 py-2 text-xs md:text-sm font-bold text-white" style={{ background: BSV_RED }}>
-                    {featured.category || 'Campaign Video'}
-                  </span>
-                </div>
-              </button>
-
-              <div>
-                <h3 className="font-display text-[22px] md:text-[30px] font-bold mb-3" style={{ color: BRAND.navy }}>
-                  {featured.title || 'Amitabh Bachchan Video'}
-                </h3>
-
-                <div className="w-20 h-1 rounded-full mb-5" style={{ background: BRAND.deep }} />
-
-                <p className="text-slate-600 text-[15px] md:text-lg leading-7 md:leading-8">
-                  {featured.description ||
-                    'Renowned actor Amitabh Bachchan joins hands with BSV to spread awareness about snakebite prevention, debunk common myths, and encourage timely hospital treatment through this nationwide public awareness campaign.'}
-                </p>
-              </div>
+            <div className="flex items-center justify-center gap-4">
+              <div className="h-px w-12 md:w-24" style={{ background: BSV_RED }} />
+              <h2 className="font-display text-[24px] md:text-[34px] font-bold" style={{ color: BRAND.navy }}>
+                WATCH THE CAMPAIGN
+              </h2>
+              <div className="h-px w-12 md:w-24" style={{ background: BSV_RED }} />
             </div>
           </div>
+
+          <div className="grid lg:grid-cols-2 gap-7 md:gap-10 items-center mb-10">
+            <button
+              onClick={() => setActive(featured)}
+              className="relative group overflow-hidden rounded-2xl shadow-lg bg-slate-900 text-left"
+            >
+              <div className="aspect-video">
+                {featured.thumbnail && (
+                  <img
+                    src={featured.thumbnail}
+                    alt={featured.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
+                  />
+                )}
+              </div>
+
+              <div className="absolute inset-0 bg-black/25" />
+
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all" style={{ background: BSV_RED }}>
+                  <Play className="w-7 h-7 md:w-9 md:h-9 fill-white text-white ml-1" />
+                </div>
+              </div>
+
+              <div className="absolute bottom-4 left-4">
+                <span className="inline-flex rounded-full px-4 py-2 text-xs md:text-sm font-bold text-white" style={{ background: BSV_RED }}>
+                  {featured.category || 'Campaign Video'}
+                </span>
+              </div>
+            </button>
+
+            <div>
+              <h3 className="font-display text-[22px] md:text-[30px] font-bold mb-3" style={{ color: BRAND.navy }}>
+                {featured.title || 'Amitabh Bachchan Video'}
+              </h3>
+
+              <div className="w-20 h-1 rounded-full mb-5" style={{ background: BRAND.deep }} />
+
+              <p className="text-slate-600 text-[15px] md:text-lg leading-7 md:leading-8">
+                {featured.description ||
+                  'Actor Amitabh Bachchan joins hands with BSV to spread awareness about snakebite prevention, debunk common myths, and encourage timely hospital treatment through this nationwide public awareness campaign.'}
+              </p>
+            </div>
+          </div>
+
+          {others.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {others.map((v, i) => (
+                <motion.button
+                  key={v.id}
+                  onClick={() => setActive(v)}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.06, duration: 0.35 }}
+                  className="group text-left rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 bg-white border border-slate-100"
+                >
+                  <div className="relative aspect-video overflow-hidden bg-slate-900">
+                    {v.thumbnail && (
+                      <img
+                        src={v.thumbnail}
+                        alt={v.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                      />
+                    )}
+
+                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                      <div className="w-11 h-11 rounded-full flex items-center justify-center group-hover:scale-110 transition-all" style={{ background: BSV_RED }}>
+                        <Play className="w-5 h-5 fill-white text-white ml-0.5" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4">
+                    <div className="text-[10px] font-semibold uppercase tracking-wider mb-1.5" style={{ color: BRAND.deep }}>
+                      {v.category || 'Campaign'}
+                    </div>
+                    <div className="font-display font-semibold text-[14px] leading-snug line-clamp-2" style={{ color: BRAND.navy }}>
+                      {v.title}
+                    </div>
+                    {v.description && (
+                      <p className="text-[12px] text-slate-500 mt-1.5 line-clamp-2">
+                        {v.description}
+                      </p>
+                    )}
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
