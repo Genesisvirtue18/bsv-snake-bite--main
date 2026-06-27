@@ -544,7 +544,7 @@ function MissionSection({ content }) {
 
   const MissionPillar = ({ icon: Icon, label }) => (
     <div className="flex flex-col items-center justify-center px-3">
-      <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#EFF5FF] flex items-center justify-center mb-2 shadow-sm">
+      <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#EFF5FF] flex items-center justify-center mb-2 shadow-sm border border-[#DCEBFF]">
         <Icon className="w-6 h-6 md:w-7 md:h-7" style={{ color: '#075BD8' }} />
       </div>
       <div className="text-[13px] md:text-[16px] font-semibold text-center" style={{ color: BRAND.navy }}>
@@ -556,16 +556,14 @@ function MissionSection({ content }) {
   return (
     <section className="section-pad bg-[#F7FAFF]">
       <div className="container mx-auto px-4">
-        <div className="relative max-w-6xl mx-auto overflow-hidden rounded-[30px] bg-white border border-[#E7EEF8] shadow-[0_22px_60px_rgba(15,23,42,0.10)] px-6 py-8 md:px-16 md:py-12">
+        <div className="relative max-w-6xl mx-auto overflow-hidden rounded-[30px] bg-white border border-[#E7EEF8] shadow-[0_22px_60px_rgba(15,23,42,0.10)] px-6 py-8 md:px-16 md:py-11">
 
-          {/* Background design */}
-          <div className="pointer-events-none absolute left-0 bottom-0 w-56 h-56 rounded-tr-[190px] border-t border-r border-[#E7EEF8]" />
-          <div className="pointer-events-none absolute left-7 bottom-7 w-44 h-44 rounded-tr-[150px] border-t border-r border-[#E7EEF8]" />
-          <div className="pointer-events-none absolute left-8 bottom-10 w-20 h-20 opacity-60 bg-[radial-gradient(circle,#8DB8F8_2px,transparent_2px)] [background-size:14px_14px]" />
-          <div className="pointer-events-none absolute right-28 top-28 hidden md:block w-48 h-48 opacity-50 bg-[radial-gradient(circle,#B7D3FF_2px,transparent_2px)] [background-size:12px_12px]" />
+          
+          
+          
+          <div className="pointer-events-none absolute right-28 top-32 hidden md:block w-48 h-48 opacity-50 bg-[radial-gradient(circle,#B7D3FF_2px,transparent_2px)] [background-size:12px_12px]" />
 
-          {/* Top pulse line */}
-          <div className="flex items-center justify-center mb-8 md:mb-10">
+          <div className="flex items-center justify-center mb-5">
             <div className="relative h-px w-24 md:w-44 bg-gradient-to-r from-[#075BD8] to-[#DE2527]">
               <span className="absolute -left-1 -top-[3px] w-2 h-2 rounded-full border border-[#075BD8] bg-white" />
             </div>
@@ -579,9 +577,17 @@ function MissionSection({ content }) {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-[1fr_0.95fr] gap-8 md:gap-12 items-center">
+          <div className="text-center mb-8 md:mb-7">
+            <h2 className="font-display text-[24px] md:text-[34px] font-bold tracking-[0.22em]" style={{ color: BRAND.navy }}>
+              OUR MISSION
+            </h2>
+            <div className="mt-3 flex items-center justify-center gap-1">
+              <span className="h-[2px] w-14 bg-[#075BD8]" />
+              <span className="h-[2px] w-14 bg-[#DE2527]" />
+            </div>
+          </div>
 
-            {/* Mission text */}
+          <div className="grid md:grid-cols-[1fr_0.95fr] gap-8 md:gap-12 items-center">
             <div className="order-2 md:order-1 relative">
               <div className="w-14 h-14 rounded-full bg-[#FDEBEE] flex items-center justify-center text-[54px] font-black leading-none mb-5" style={{ color: BSV_RED }}>
                 “
@@ -598,18 +604,16 @@ function MissionSection({ content }) {
               </div>
             </div>
 
-            {/* Snake image */}
             <div className="order-1 md:order-2 flex justify-center">
               <img
                 src="/images/mission-snake-shield.png"
                 alt="Snakebite protection illustration"
-                className="w-[245px] md:w-[360px] h-auto object-contain"
+                className="w-[255px] md:w-[380px] h-auto object-contain"
                 draggable={false}
               />
             </div>
           </div>
 
-          {/* Bottom icons */}
           <div className="mt-8 md:mt-10 max-w-4xl mx-auto rounded-[24px] bg-white border border-[#E9EEF6] shadow-[0_14px_32px_rgba(15,23,42,0.08)] px-4 py-4">
             <div className="grid grid-cols-3 divide-x divide-slate-200">
               <MissionPillar icon={Users} label="Awareness" />
@@ -617,9 +621,7 @@ function MissionSection({ content }) {
               <MissionPillar icon={Heart} label="Access to ASV" />
             </div>
           </div>
-
         </div>
-        
       </div>
     </section>
   )
