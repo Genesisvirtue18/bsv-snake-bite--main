@@ -544,7 +544,7 @@ function MissionSection({ content }) {
 
   const MissionPillar = ({ icon: Icon, label }) => (
     <div className="flex flex-col items-center justify-center px-3">
-      <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#EFF5FF] flex items-center justify-center mb-2 shadow-sm border border-[#DCEBFF]">
+      <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#EFF5FF] flex items-center justify-center mb-2 shadow-sm border border-[#DCEBFF]">
         <Icon className="w-6 h-6 md:w-7 md:h-7" style={{ color: '#075BD8' }} />
       </div>
       <div className="text-[13px] md:text-[16px] font-semibold text-center" style={{ color: BRAND.navy }}>
@@ -556,14 +556,14 @@ function MissionSection({ content }) {
   return (
     <section className="section-pad bg-[#F7FAFF]">
       <div className="container mx-auto px-4">
-        <div className="relative max-w-6xl mx-auto overflow-hidden rounded-[30px] bg-white border border-[#E7EEF8] shadow-[0_22px_60px_rgba(15,23,42,0.10)] px-6 py-8 md:px-16 md:py-11">
+        <div className="relative max-w-6xl mx-auto overflow-hidden rounded-[30px] bg-white border border-[#E7EEF8] shadow-[0_18px_45px_rgba(15,23,42,0.08)] px-6 py-6 md:px-12 md:py-8">
 
           
           
           
           <div className="pointer-events-none absolute right-28 top-32 hidden md:block w-48 h-48 opacity-50 bg-[radial-gradient(circle,#B7D3FF_2px,transparent_2px)] [background-size:12px_12px]" />
 
-          <div className="flex items-center justify-center mb-5">
+          <div className="flex items-center justify-center mb-3">
             <div className="relative h-px w-24 md:w-44 bg-gradient-to-r from-[#075BD8] to-[#DE2527]">
               <span className="absolute -left-1 -top-[3px] w-2 h-2 rounded-full border border-[#075BD8] bg-white" />
             </div>
@@ -577,7 +577,7 @@ function MissionSection({ content }) {
             </div>
           </div>
 
-          <div className="text-center mb-8 md:mb-7">
+          <div className="text-center mb-5">
             <h2 className="font-display text-[24px] md:text-[34px] font-bold tracking-[0.22em]" style={{ color: BRAND.navy }}>
               OUR MISSION
             </h2>
@@ -587,13 +587,13 @@ function MissionSection({ content }) {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-[1fr_0.95fr] gap-8 md:gap-12 items-center">
+          <div className="grid md:grid-cols-[1fr_0.95fr] gap-6 md:gap-8 items-center">
             <div className="order-2 md:order-1 relative">
-              <div className="w-14 h-14 rounded-full bg-[#FDEBEE] flex items-center justify-center text-[54px] font-black leading-none mb-5" style={{ color: BSV_RED }}>
+              <div className="w-14 h-14 rounded-full bg-[#FDEBEE] flex items-center justify-center text-[54px] font-black leading-none mb-3" style={{ color: BSV_RED }}>
                 “
               </div>
 
-              <p className="font-display text-[20px] md:text-[25px] leading-[1.75] font-semibold max-w-xl" style={{ color: BRAND.navy }}>
+              <p className="font-display text-[18px] md:text-[22px] leading-[1.6] font-semibold max-w-xl" style={{ color: BRAND.navy }}>
                 {missionText}
               </p>
 
@@ -608,13 +608,13 @@ function MissionSection({ content }) {
               <img
                 src="/images/mission-snake-shield.png"
                 alt="Snakebite protection illustration"
-                className="w-[255px] md:w-[380px] h-auto object-contain"
+                className="w-[220px] md:w-[320px] h-auto object-contain"
                 draggable={false}
               />
             </div>
           </div>
 
-          <div className="mt-8 md:mt-10 max-w-4xl mx-auto rounded-[24px] bg-white border border-[#E9EEF6] shadow-[0_14px_32px_rgba(15,23,42,0.08)] px-4 py-4">
+          <div className="mt-5 md:mt-6 max-w-4xl mx-auto rounded-[24px] bg-white border border-[#E9EEF6] shadow-[0_14px_32px_rgba(15,23,42,0.08)] px-4 py-3">
             <div className="grid grid-cols-3 divide-x divide-slate-200">
               <MissionPillar icon={Users} label="Awareness" />
               <MissionPillar icon={BookOpen} label="Education" />
@@ -706,7 +706,7 @@ function VideoSection({ videos, content, t }) {
                 {featured.title || 'Amitabh Bachchan Video'}
               </h3>
 
-              <div className="w-20 h-1 rounded-full mb-5" style={{ background: BRAND.deep }} />
+              <div className="w-20 h-1 rounded-full mb-3" style={{ background: BRAND.deep }} />
 
               <p className="text-slate-600 text-[15px] md:text-lg leading-7 md:leading-8">
                 {featured.description ||
@@ -1488,7 +1488,7 @@ function ContactSection({ content, t }) {
           {/* Right — form */}
           <div className="flex-1 w-full">
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 md:p-8">
-              <h3 className="font-display font-semibold text-[17px] mb-5" style={{ color: '#201F5E' }}>{t.contact.send}</h3>
+              <h3 className="font-display font-semibold text-[17px] mb-3" style={{ color: '#201F5E' }}>{t.contact.send}</h3>
               <div className="space-y-4">
                 <div>
                   <Label className="text-[12px] font-semibold text-slate-600 mb-1 block">{t.contact.name} *</Label>
