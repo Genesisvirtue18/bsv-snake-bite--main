@@ -981,20 +981,6 @@ export default function AdminPage() {
                 </Card>
 
 
-                {/* IMPACT STATS */}
-                <Card><CardContent className="p-5">
-                  <h3 className="font-display font-bold text-lg text-bsv-blue mb-3">Impact Statistics (8)</h3>
-                  <div className="grid md:grid-cols-2 gap-3">{content.impactStats.map((s, i) => (
-                    <div key={s.id} className="border rounded p-3 space-y-1">
-                      <Input value={s.label} onChange={e => { const a = [...content.impactStats]; a[i] = { ...a[i], label: e.target.value }; setContent({ ...content, impactStats: a }) }} />
-                      <div className="grid grid-cols-3 gap-2">
-                        <Input type="number" value={s.value} onChange={e => { const a = [...content.impactStats]; a[i] = { ...a[i], value: parseInt(e.target.value) || 0 }; setContent({ ...content, impactStats: a }) }} />
-                        <Input value={s.suffix} placeholder="+" onChange={e => { const a = [...content.impactStats]; a[i] = { ...a[i], suffix: e.target.value }; setContent({ ...content, impactStats: a }) }} />
-                        <Input value={s.icon} placeholder="Icon" onChange={e => { const a = [...content.impactStats]; a[i] = { ...a[i], icon: e.target.value }; setContent({ ...content, impactStats: a }) }} />
-                      </div>
-                    </div>))}</div>
-                </CardContent></Card>
-
                 {/* STATES */}
                 <Card><CardContent className="p-5">
                   <h3 className="font-display font-bold text-lg text-bsv-blue mb-3">7 Target States</h3>
@@ -1018,30 +1004,6 @@ export default function AdminPage() {
                   <div><Label>Burden</Label><Input value={content.about.burden} onChange={e => setContent({ ...content, about: { ...content.about, burden: e.target.value } })} /></div>
                 </CardContent></Card>
 
-                {/* EMERGENCY */}
-                <Card><CardContent className="p-5">
-                  <h3 className="font-display font-bold text-lg text-bsv-blue mb-3">Emergency Guide</h3>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <div className="font-bold mb-2 text-green-700">DO&apos;S</div>
-                      {content.emergencyDos.map((item, i) => (
-                        <div key={i} className="border rounded p-2 mb-2 space-y-1">
-                          <Input value={item.title} onChange={e => { const a = [...content.emergencyDos]; a[i] = { ...a[i], title: e.target.value }; setContent({ ...content, emergencyDos: a }) }} />
-                          <Textarea rows={2} value={item.desc} onChange={e => { const a = [...content.emergencyDos]; a[i] = { ...a[i], desc: e.target.value }; setContent({ ...content, emergencyDos: a }) }} />
-                        </div>))}
-                      <Button size="sm" variant="outline" onClick={() => setContent({ ...content, emergencyDos: [...content.emergencyDos, { title: 'New', desc: '' }] })}><Plus className="w-3 h-3 mr-1" />Add</Button>
-                    </div>
-                    <div>
-                      <div className="font-bold mb-2 text-bsv-red">DON&apos;TS</div>
-                      {content.emergencyDonts.map((item, i) => (
-                        <div key={i} className="border rounded p-2 mb-2 space-y-1">
-                          <Input value={item.title} onChange={e => { const a = [...content.emergencyDonts]; a[i] = { ...a[i], title: e.target.value }; setContent({ ...content, emergencyDonts: a }) }} />
-                          <Textarea rows={2} value={item.desc} onChange={e => { const a = [...content.emergencyDonts]; a[i] = { ...a[i], desc: e.target.value }; setContent({ ...content, emergencyDonts: a }) }} />
-                        </div>))}
-                      <Button size="sm" variant="outline" onClick={() => setContent({ ...content, emergencyDonts: [...content.emergencyDonts, { title: 'New', desc: '' }] })}><Plus className="w-3 h-3 mr-1" />Add</Button>
-                    </div>
-                  </div>
-                </CardContent></Card>
 
                 {/* MYTHS */}
                 <Card><CardContent className="p-5">
