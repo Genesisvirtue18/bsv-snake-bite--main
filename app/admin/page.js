@@ -394,7 +394,7 @@ export default function AdminPage() {
               <p className="text-sm text-muted-foreground">Role-based content management</p>
             </div>
             <div className="space-y-3">
-              <div><Label>Email</Label><Input type="email" value={loginForm.email} onChange={e => setLoginForm({ ...loginForm, email: e.target.value })} placeholder="admin@bsv.com" /></div>
+              <div><Label>Email</Label><Input type="email" value={loginForm.email} onChange={e => setLoginForm({ ...loginForm, email: e.target.value })} /></div>
               <div><Label>Password</Label><Input type="password" value={loginForm.password} onChange={e => setLoginForm({ ...loginForm, password: e.target.value })} onKeyDown={e => e.key === 'Enter' && login()} /></div>
               <Button onClick={login} className="w-full bg-bsv-blue hover:bg-bsv-blue/90">Login</Button>
             </div>
