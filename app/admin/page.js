@@ -493,18 +493,7 @@ export default function AdminPage() {
                   </div>
                 </div>
 
-                {/* SECTION VISIBILITY */}
-                <Card><CardContent className="p-5">
-                  <h3 className="font-display font-bold text-lg text-bsv-blue mb-3">Section Visibility & Order</h3>
-                  <div className="grid md:grid-cols-3 gap-3">
-                    {Object.entries(content.sections || {}).sort((a, b) => a[1].order - b[1].order).map(([key, val]) => (
-                      <div key={key} className="flex items-center justify-between border rounded p-3">
-                        <div><div className="font-medium capitalize">{key}</div><div className="text-xs text-muted-foreground">Order: {val.order}</div></div>
-                        <Switch checked={val.enabled} onCheckedChange={c => setContent({ ...content, sections: { ...content.sections, [key]: { ...val, enabled: c } } })} />
-                      </div>
-                    ))}
-                  </div>
-                </CardContent></Card>
+                
 
                 {/* HERO IMAGE */}
                 <Card>
