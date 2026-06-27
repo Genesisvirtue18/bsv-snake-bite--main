@@ -558,9 +558,9 @@ function MissionSection({ content }) {
       <div className="container mx-auto px-4">
         <div className="relative max-w-6xl mx-auto overflow-hidden rounded-[30px] bg-white border border-[#E7EEF8] shadow-[0_18px_45px_rgba(15,23,42,0.08)] px-6 py-6 md:px-12 md:py-8">
 
-          
-          
-          
+
+
+
           <div className="pointer-events-none absolute right-28 top-32 hidden md:block w-48 h-48 opacity-50 bg-[radial-gradient(circle,#B7D3FF_2px,transparent_2px)] [background-size:12px_12px]" />
 
           <div className="flex items-center justify-center mb-3">
@@ -1153,8 +1153,7 @@ function OutreachSection({ content, t }) {
     name: s.name,
     code: s.code,
     campaigns: s.sessions,
-    beneficiaries: s.lives,
-    workshops: Math.round((s.sessions || 0) / 3),
+    workshops: s.workshops || 0,
     enabled: true,
   }))
   return (

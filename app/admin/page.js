@@ -987,10 +987,28 @@ export default function AdminPage() {
                   <div className="grid md:grid-cols-2 gap-3">{content.states.map((s, i) => (
                     <div key={s.code} className="border rounded p-3">
                       <div className="font-bold mb-2">{s.name}</div>
-                      <div className="grid grid-cols-3 gap-2">
-                        <Input type="number" placeholder="Lives" value={s.lives} onChange={e => { const a = [...content.states]; a[i] = { ...a[i], lives: parseInt(e.target.value) || 0 }; setContent({ ...content, states: a }) }} />
-                        <Input type="number" placeholder="Villages" value={s.villages} onChange={e => { const a = [...content.states]; a[i] = { ...a[i], villages: parseInt(e.target.value) || 0 }; setContent({ ...content, states: a }) }} />
-                        <Input type="number" placeholder="Sessions" value={s.sessions} onChange={e => { const a = [...content.states]; a[i] = { ...a[i], sessions: parseInt(e.target.value) || 0 }; setContent({ ...content, states: a }) }} />
+                      <div className="grid grid-cols-2 gap-2">
+                        <Input
+                          type="number"
+                          placeholder="Activities Conducted"
+                          value={s.sessions}
+                          onChange={e => {
+                            const a = [...content.states]
+                            a[i] = { ...a[i], sessions: parseInt(e.target.value) || 0 }
+                            setContent({ ...content, states: a })
+                          }}
+                        />
+
+                        <Input
+                          type="number"
+                          placeholder="Workshops Held"
+                          value={s.workshops || 0}
+                          onChange={e => {
+                            const a = [...content.states]
+                            a[i] = { ...a[i], workshops: parseInt(e.target.value) || 0 }
+                            setContent({ ...content, states: a })
+                          }}
+                        />
                       </div>
                     </div>))}</div>
                 </CardContent></Card>
