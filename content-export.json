@@ -3096,5 +3096,20 @@
       ],
       "published": true
     }
+  ],
+  "onGroundActivities": [
+    {
+      "id": "on-ground-1782823788294",
+      "category": "Nukkad Natak",
+      "title": "natak",
+      "description": "natak",
+      "date": "",
+      "image": "/api/media/dc1c91d4-88b2-440d-8d95-230a619e1e01",
+      "gallery": [
+        "/api/media/dc1c91d4-88b2-440d-8d95-230a619e1e01",
+        "/api/media/fe93c17e-d885-484e-adc3-e2f7ca122805"
+      ],
+      "published": true
+    }
   ]
 }
