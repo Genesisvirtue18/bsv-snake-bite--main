@@ -3068,5 +3068,20 @@
   },
   "heroImage": "/api/media/1fbc30b2-9676-4893-ba26-bb39cbc3e346",
   "heroImageDesktop": "/api/media/ed6dfd55-83ea-401d-b24e-6850a575db53",
-  "heroImageMobile": "/api/media/1fbc30b2-9676-4893-ba26-bb39cbc3e346"
+  "heroImageMobile": "/api/media/1fbc30b2-9676-4893-ba26-bb39cbc3e346",
+  "massMediaActivities": [
+    {
+      "id": "mass-media-1782819416299",
+      "category": "PR Coverage",
+      "title": "PR",
+      "description": "PR coverage",
+      "date": "",
+      "image": "/api/media/dc1c91d4-88b2-440d-8d95-230a619e1e01",
+      "gallery": [
+        "/api/media/dc1c91d4-88b2-440d-8d95-230a619e1e01",
+        "/api/media/ec445ca9-6749-493a-8925-ad2df87aa297"
+      ],
+      "published": true
+    }
+  ]
 }
