@@ -3066,5 +3066,6 @@
       }
     ]
   },
-  "heroImage": "/api/media/1fbc30b2-9676-4893-ba26-bb39cbc3e346"
+  "heroImage": "/api/media/1fbc30b2-9676-4893-ba26-bb39cbc3e346",
+  "heroImageDesktop": "/api/media/33b3cbd7-eb49-4afa-b9f9-74fee3cfafba"
 }
