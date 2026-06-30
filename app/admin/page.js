@@ -493,7 +493,7 @@ export default function AdminPage() {
                   </div>
                 </div>
 
-                
+
 
                 {/* HERO IMAGE */}
                 <Card>
@@ -504,16 +504,19 @@ export default function AdminPage() {
                       </h3>
                     </div>
 
-                    <MediaPicker
-                      label="Hero Image (1920 × 1080)"
-                      value={content.heroImage || ''}
-                      onChange={v =>
-                        setContent({
-                          ...content,
-                          heroImage: v,
-                        })
-                      }
-                    />
+                    <div className="grid md:grid-cols-2 gap-5">
+                      <MediaPicker
+                        label="Desktop Hero Image (1920 × 1080)"
+                        value={content.heroImageDesktop || ''}
+                        onChange={v => setContent({ ...content, heroImageDesktop: v })}
+                      />
+
+                      <MediaPicker
+                        label="Mobile Hero Image (1080 × 1920)"
+                        value={content.heroImageMobile || ''}
+                        onChange={v => setContent({ ...content, heroImageMobile: v })}
+                      />
+                    </div>
                   </CardContent>
                 </Card>
 
@@ -1285,43 +1288,152 @@ function ImpactStoriesView({ stories, api, reload }) {
 
 function NgosView({ ngos, api, reload }) {
   const [editing, setEditing] = useState(null)
+
   const save = async () => {
     if (!editing) return
+
     const method = editing.id ? 'PATCH' : 'POST'
     const url = editing.id ? `/api/ngos/${editing.id}` : '/api/ngos'
+
     const r = await api(url, method, editing)
-    if (r.ok) { toast.success('Saved'); setEditing(null); reload() }
+
+    if (r.ok) {
+      toast.success('Saved')
+      setEditing(null)
+      reload()
+    } else {
+      toast.error('Save failed')
+    }
   }
-  const del = async (id) => { if (confirm('Delete?')) { await api(`/api/ngos/${id}`, 'DELETE'); reload() } }
+
+  const del = async (id) => {
+    if (confirm('Delete?')) {
+      await api(`/api/ngos/${id}`, 'DELETE')
+      reload()
+    }
+  }
+
   return (
     <div className="space-y-3">
-      <div className="flex justify-between"><h3 className="font-display font-bold text-lg">NGO Network ({ngos.length})</h3><Button onClick={() => setEditing({ name: '', description: '', logo: '', website: '', email: '', phone: '', stateCoverage: [], published: true })} className="bg-bsv-red"><Plus className="w-4 h-4 mr-1" />New NGO</Button></div>
-      <div className="grid md:grid-cols-2 gap-3">{ngos.map(n => (
-        <Card key={n.id}><CardContent className="p-4 flex gap-3">
-          {n.logo && <img src={n.logo} alt="" className="w-16 h-16 object-cover rounded" />}
-          <div className="flex-1">
-            <div className="font-bold">{n.name}</div>
-            <div className="text-xs text-muted-foreground line-clamp-2">{n.description}</div>
-            <div className="text-xs mt-1">{n.website}</div>
-            <div className="flex gap-1 mt-2"><Button size="sm" variant="outline" onClick={() => setEditing(n)}><Edit className="w-3 h-3" /></Button><Button size="sm" variant="ghost" onClick={() => del(n.id)}><Trash2 className="w-3 h-3 text-red-500" /></Button></div>
-          </div>
-        </CardContent></Card>))}</div>
+      <div className="flex justify-between">
+        <h3 className="font-display font-bold text-lg">
+          NGO Collaborations ({ngos.length})
+        </h3>
+
+        <Button
+          onClick={() =>
+            setEditing({
+              name: '',
+              description: '',
+              logo: '',
+              activityImages: [],
+              published: true,
+            })
+          }
+          className="bg-bsv-red"
+        >
+          <Plus className="w-4 h-4 mr-1" />
+          New NGO Activity
+        </Button>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-3">
+        {ngos.map(n => (
+          <Card key={n.id}>
+            <CardContent className="p-4 flex gap-3">
+              {(n.activityImages?.[0] || n.logo) && (
+                <img
+                  src={n.activityImages?.[0] || n.logo}
+                  alt=""
+                  className="w-20 h-20 object-cover rounded"
+                />
+              )}
+
+              <div className="flex-1">
+                <div className="font-bold">{n.name}</div>
+
+                <div className="text-xs text-muted-foreground line-clamp-2">
+                  {n.description}
+                </div>
+
+                <div className="text-xs mt-1 text-muted-foreground">
+                  {n.activityImages?.length || 0} activity images
+                </div>
+
+                <div className="flex gap-1 mt-2">
+                  <Button size="sm" variant="outline" onClick={() => setEditing(n)}>
+                    <Edit className="w-3 h-3" />
+                  </Button>
+
+                  <Button size="sm" variant="ghost" onClick={() => del(n.id)}>
+                    <Trash2 className="w-3 h-3 text-red-500" />
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
       {editing && (
         <Dialog open onOpenChange={() => setEditing(null)}>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader><DialogTitle>{editing.id ? 'Edit' : 'New'} NGO</DialogTitle></DialogHeader>
+            <DialogHeader>
+              <DialogTitle>
+                {editing.id ? 'Edit' : 'New'} NGO Activity
+              </DialogTitle>
+            </DialogHeader>
+
             <div className="space-y-3">
-              <div><Label>Name</Label><Input value={editing.name} onChange={e => setEditing({ ...editing, name: e.target.value })} /></div>
-              <MediaPicker label="Logo" value={editing.logo} onChange={v => setEditing({ ...editing, logo: v })} />
-              <div><Label>Description</Label><Textarea rows={3} value={editing.description} onChange={e => setEditing({ ...editing, description: e.target.value })} /></div>
-              <div className="grid grid-cols-2 gap-2">
-                <div><Label>Website</Label><Input value={editing.website} onChange={e => setEditing({ ...editing, website: e.target.value })} /></div>
-                <div><Label>Email</Label><Input value={editing.email} onChange={e => setEditing({ ...editing, email: e.target.value })} /></div>
-                <div><Label>Phone</Label><Input value={editing.phone} onChange={e => setEditing({ ...editing, phone: e.target.value })} /></div>
-                <div><Label>State Coverage (comma-separated)</Label><Input value={(editing.stateCoverage || []).join(', ')} onChange={e => setEditing({ ...editing, stateCoverage: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })} /></div>
+              <div>
+                <Label>NGO Name</Label>
+                <Input
+                  value={editing.name || ''}
+                  onChange={e =>
+                    setEditing({ ...editing, name: e.target.value })
+                  }
+                />
               </div>
-              <div className="flex items-center gap-2"><Switch checked={editing.published} onCheckedChange={c => setEditing({ ...editing, published: c })} /><Label>Published</Label></div>
-              <Button onClick={save} className="w-full bg-bsv-red">Save</Button>
+
+              <div>
+                <Label>Description</Label>
+                <Textarea
+                  rows={3}
+                  value={editing.description || ''}
+                  onChange={e =>
+                    setEditing({ ...editing, description: e.target.value })
+                  }
+                />
+              </div>
+
+              <MediaPicker
+                label="Cover Image / Logo"
+                value={editing.logo || ''}
+                onChange={v => setEditing({ ...editing, logo: v })}
+              />
+
+              <MultiMediaPicker
+                label="NGO Activity Images"
+                values={editing.activityImages || []}
+                onChange={v =>
+                  setEditing({ ...editing, activityImages: v })
+                }
+                max={30}
+              />
+
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={editing.published}
+                  onCheckedChange={c =>
+                    setEditing({ ...editing, published: c })
+                  }
+                />
+                <Label>Published</Label>
+              </div>
+
+              <Button onClick={save} className="w-full bg-bsv-red">
+                Save
+              </Button>
             </div>
           </DialogContent>
         </Dialog>

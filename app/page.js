@@ -459,27 +459,37 @@ function Header({ lang, setLang, t, settings }) {
 }
 
 function Hero({ content, t }) {
-  const imageUrl =
-    content?.heroImage ||
+  const desktopImage =
+    content?.heroImageDesktop ||
     content?.heroSlides?.[0]?.desktopImage ||
-    content?.heroSlides?.[0]?.mobileImage
+    content?.heroImage
 
-  if (!imageUrl) return null
+  const mobileImage =
+    content?.heroImageMobile ||
+    content?.heroSlides?.[0]?.mobileImage ||
+    desktopImage
+
+  if (!desktopImage && !mobileImage) return null
 
   return (
     <section
       id="home"
       className="relative overflow-hidden pt-14 sm:pt-20 pb-0 sm:pb-6 bg-gradient-to-b from-slate-50 via-white to-slate-50"
     >
-      {/* Mobile: full-bleed, no padding, no radius so image text isn't clipped */}
       <div className="sm:container sm:mx-auto sm:px-4 lg:px-8">
         <div className="relative w-full h-[56vw] min-h-[220px] max-h-[320px] sm:h-[360px] sm:max-h-none lg:h-[520px] overflow-hidden rounded-none sm:rounded-[24px]">
-          <img
-            src={imageUrl}
-            alt="BSV Snakebite Awareness Campaign"
-            className="w-full h-full object-cover object-left md:object-[center_15%] lg:object-[center_20%]"
-            loading="eager"
-          />
+          <picture className="block w-full h-full">
+            {mobileImage && (
+              <source media="(max-width: 767px)" srcSet={mobileImage} />
+            )}
+
+            <img
+              src={desktopImage}
+              alt="BSV Snakebite Awareness Campaign"
+              className="block w-full h-full object-cover object-left md:object-[center_15%] lg:object-[center_20%]"
+              loading="eager"
+            />
+          </picture>
         </div>
       </div>
     </section>
