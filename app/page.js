@@ -720,7 +720,7 @@ function VideoSection({ videos, content, t }) {
                 </Link>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
                 {others.map((v, i) => (
                   <motion.button
                     key={v.id}
@@ -739,14 +739,14 @@ function VideoSection({ videos, content, t }) {
                         </div>
                       </div>
                     </div>
-                    <div className="p-4">
-                      <div className="text-[10px] font-semibold uppercase tracking-wider mb-1.5" style={{ color: BRAND.deep }}>
+                    <div className="p-2.5 sm:p-4">
+                      <div className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider mb-1" style={{ color: BRAND.deep }}>
                         SaanpKaVaarAsptaalMeinHiUpchaar
                       </div>
-                      <div className="font-display font-semibold text-[14px] leading-snug line-clamp-2" style={{ color: BRAND.navy }}>
+                      <div className="font-display font-semibold text-[12px] sm:text-[14px] leading-snug line-clamp-2" style={{ color: BRAND.navy }}>
                         {v.title || ANIMATED_DEFAULTS[i] || ''}
                       </div>
-                      {v.description && <p className="text-[12px] text-slate-500 mt-1.5 line-clamp-2">{v.description}</p>}
+                      {v.description && <p className="hidden sm:block text-[12px] text-slate-500 mt-1.5 line-clamp-2">{v.description}</p>}
                     </div>
                   </motion.button>
                 ))}
