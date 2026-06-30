@@ -3082,6 +3082,19 @@
         "/api/media/ec445ca9-6749-493a-8925-ad2df87aa297"
       ],
       "published": true
+    },
+    {
+      "id": "mass-media-1782819522367",
+      "category": "Radio Coverage",
+      "title": "radio",
+      "description": "Radio coverage",
+      "date": "",
+      "image": "/api/media/dc1c91d4-88b2-440d-8d95-230a619e1e01",
+      "gallery": [
+        "/api/media/dc1c91d4-88b2-440d-8d95-230a619e1e01",
+        "/api/media/ed6dfd55-83ea-401d-b24e-6850a575db53"
+      ],
+      "published": true
     }
   ]
 }
