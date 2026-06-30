@@ -133,8 +133,8 @@ function Header({ lang, setLang, t, settings }) {
         {
           title: 'On-Ground Activations',
           items: [
-            { label: 'Nukkad Natak, Wall Paintings, Bus Branding', href: '/nukkad-natak', desc: 'Community outreach programs' },
-            { label: 'Campaign Moments', href: '/nukkad-natak', desc: 'See campaign in action' },
+            { label: 'Nukkad Natak And School Engagements', href: '/onground', desc: 'Community outreach programs' },
+            { label: 'Campaign Moments', href: '/onground', desc: 'See campaign in action' },
           ]
         },
         {
@@ -385,7 +385,7 @@ function Header({ lang, setLang, t, settings }) {
                     </div>
                     <div className="text-sm text-white/85 leading-relaxed">
                       {megaOpen === 'awareness' ? 'Through education, outreach, and action — turning fear into facts.' :
-                        megaOpen === 'access' ? 'Ensuring snakebite victim gets the right care at the right time.' :
+                        megaOpen === 'access' ? 'Ensuring clinicians in snakebite treatment have the training and resources to save lives.' :
                           'Using every medium to reach every corner of India.'}
                     </div>
                     <button onClick={() => go(`#${megaOpen}`)} className="mt-5 inline-flex items-center gap-2 text-sm font-semibold hover:underline underline-offset-2 transition-all group">
@@ -539,7 +539,7 @@ function HeroStatsSection({ content, t }) {
 function MissionSection({ content }) {
   const missionText =
     content?.about?.mission ||
-    'To eliminate preventable snakebite deaths in India by 2030 through community awareness, healthcare education, and ensuring access to life-saving hospital treatment at every primary health center.'
+    'Driving awareness by dispelling long-term standing myths and educating rural populations on evidence-based snakebite first aid and treatment.'
 
   const MissionPillar = ({ icon: Icon, label }) => (
     <div className="flex flex-col items-center justify-center px-3">
@@ -993,7 +993,7 @@ function AccessSection({ content, t }) {
               {content?.access?.title || t.access.title}
             </h2>
             <p className="text-slate-600 text-[13px] leading-relaxed">
-              {content?.access?.subtitle || t.access.subtitle}
+              Ensuring clinicians in snakebite treatment have the training and resources to save lives.
             </p>
           </div>
           {/* Cards */}

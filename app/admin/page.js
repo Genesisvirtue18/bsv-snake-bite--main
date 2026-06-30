@@ -444,7 +444,8 @@ export default function AdminPage() {
             <TabsTrigger value="media"><ImageIcon className="w-4 h-4 mr-1" />Media</TabsTrigger>
             <TabsTrigger value="stories"><Heart className="w-4 h-4 mr-1" />Stories</TabsTrigger>
             <TabsTrigger value="ngos"><Building2 className="w-4 h-4 mr-1" />NGOs</TabsTrigger>
-            <TabsTrigger value="nukkad"><Drama className="w-4 h-4 mr-1" />Nukkad Natak</TabsTrigger>
+            <TabsTrigger value="onGround"><Drama className="w-4 h-4 mr-1" />On-Ground</TabsTrigger>
+            <TabsTrigger value="massMedia"><Megaphone className="w-4 h-4 mr-1" />Mass Media</TabsTrigger>
             <TabsTrigger value="gallery"><Images className="w-4 h-4 mr-1" />Gallery</TabsTrigger>
             <TabsTrigger value="videos"><Play className="w-4 h-4 mr-1" />Videos</TabsTrigger>
             {/*<TabsTrigger value="leads"><Users className="w-4 h-4 mr-1" />Leads</TabsTrigger>
@@ -1086,8 +1087,16 @@ export default function AdminPage() {
           </TabsContent>
 
           {/* NUKKAD NATAK - ADMIN */}
-          <TabsContent value="nukkad">
-            <NukkadNatakAdminView content={content} setContent={setContent} api={api} />
+          <TabsContent value="onGround">
+            <OnGroundAdminView content={content} setContent={setContent} api={api} />
+          </TabsContent>
+
+          <TabsContent value="massMedia">
+            <MassMediaAdminView
+              content={content}
+              setContent={setContent}
+              api={api}
+            />
           </TabsContent>
 
           {/* REPORTS */}
@@ -1444,97 +1453,50 @@ function NgosView({ ngos, api, reload }) {
 
 // AdminPage ke andar, sab components ke baad yeh component add karein
 
-function NukkadNatakAdminView({ content, setContent, api }) {
-  const nukkadData = content?.nukkadNatak || {
-    heading: 'Nukkad Natak',
-    subheading: 'Engaging communities through powerful street theatre performances to spread awareness about snakebite prevention and life-saving first aid.',
-    states: []
-  }
+function OnGroundAdminView({ content, setContent, api }) {
+  const onGroundData = Array.isArray(content?.onGroundActivities)
+    ? content.onGroundActivities
+    : []
 
-  const addState = () => {
-    const states = [...(nukkadData.states || [])]
-    states.push({
-      state: 'New State',
-      cities: []
-    })
+  const updateOnGround = (items) => {
     setContent({
       ...content,
-      nukkadNatak: {
-        ...nukkadData,
-        states
-      }
+      onGroundActivities: items,
     })
   }
 
-  const updateState = (index, field, value) => {
-    const states = [...(nukkadData.states || [])]
-    states[index][field] = value
-    setContent({
-      ...content,
-      nukkadNatak: {
-        ...nukkadData,
-        states
-      }
-    })
+  const addActivity = () => {
+    updateOnGround([
+      ...onGroundData,
+      {
+        id: `on-ground-${Date.now()}`,
+        category: 'Nukkad Natak',
+        title: '',
+        description: '',
+        image: '',
+        gallery: [],
+        published: true,
+      },
+    ])
   }
 
-  const deleteState = (index) => {
-    if (!confirm('Delete this state and all its cities?')) return
-    const states = (nukkadData.states || []).filter((_, i) => i !== index)
-    setContent({
-      ...content,
-      nukkadNatak: {
-        ...nukkadData,
-        states
-      }
-    })
+  const updateActivity = (index, field, value) => {
+    const items = [...onGroundData]
+    items[index] = {
+      ...items[index],
+      [field]: value,
+    }
+    updateOnGround(items)
   }
 
-  const addCity = (stateIndex) => {
-    const states = [...(nukkadData.states || [])]
-    states[stateIndex].cities.push({
-      name: 'New City',
-      image: '',
-      desc: 'Description here...',
-      gallery: []
-    })
-    setContent({
-      ...content,
-      nukkadNatak: {
-        ...nukkadData,
-        states
-      }
-    })
+  const deleteActivity = (index) => {
+    if (!confirm('Delete this On-Ground activity?')) return
+    updateOnGround(onGroundData.filter((_, i) => i !== index))
   }
 
-  const updateCity = (stateIndex, cityIndex, field, value) => {
-    const states = [...(nukkadData.states || [])]
-    states[stateIndex].cities[cityIndex][field] = value
-    setContent({
-      ...content,
-      nukkadNatak: {
-        ...nukkadData,
-        states
-      }
-    })
-  }
-
-  const deleteCity = (stateIndex, cityIndex) => {
-    if (!confirm('Delete this city?')) return
-    const states = [...(nukkadData.states || [])]
-    states[stateIndex].cities = states[stateIndex].cities.filter((_, i) => i !== cityIndex)
-    setContent({
-      ...content,
-      nukkadNatak: {
-        ...nukkadData,
-        states
-      }
-    })
-  }
-
-  const saveNukkadData = async () => {
+  const saveOnGround = async () => {
     const r = await api('/api/content', 'PUT', content)
-    if (r.ok) toast.success('Nukkad Natak data saved!')
+    if (r.ok) toast.success('On-Ground data saved!')
     else toast.error('Save failed')
   }
 
@@ -1542,174 +1504,297 @@ function NukkadNatakAdminView({ content, setContent, api }) {
     <div className="space-y-4">
       <div className="flex justify-between items-center sticky top-16 bg-slate-50 py-2 z-20">
         <div>
-          <h2 className="font-display font-extrabold text-2xl text-bsv-blue">Nukkad Natak</h2>
-          <p className="text-sm text-muted-foreground">Manage street theatre performances by state and city</p>
+          <h2 className="font-display font-extrabold text-2xl text-bsv-blue">
+            On-Ground Activations
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Manage Nukkad Natak and School Engagement activities.
+          </p>
         </div>
+
         <div className="flex gap-2">
-          <Button onClick={saveNukkadData} className="bg-bsv-red">
+          <Button onClick={addActivity} className="bg-bsv-blue">
+            <Plus className="w-4 h-4 mr-1" />
+            Add Activity
+          </Button>
+
+          <Button onClick={saveOnGround} className="bg-bsv-red">
             <Save className="w-4 h-4 mr-1" />
             Save Changes
           </Button>
         </div>
       </div>
 
-      {/* Heading & Subheading */}
-      <Card>
-        <CardContent className="p-5 space-y-3">
-          <h3 className="font-display font-bold text-lg text-bsv-blue">Page Content</h3>
-          <div className="grid md:grid-cols-2 gap-3">
-            <div>
-              <Label>Heading</Label>
-              <Input
-                value={nukkadData.heading || ''}
-                onChange={e => setContent({
-                  ...content,
-                  nukkadNatak: {
-                    ...nukkadData,
-                    heading: e.target.value
-                  }
-                })}
-                placeholder="Nukkad Natak"
-              />
-            </div>
-            <div>
-              <Label>Subheading</Label>
-              <Input
-                value={nukkadData.subheading || ''}
-                onChange={e => setContent({
-                  ...content,
-                  nukkadNatak: {
-                    ...nukkadData,
-                    subheading: e.target.value
-                  }
-                })}
-                placeholder="Engaging communities through powerful street theatre..."
-              />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* States */}
-      <Card>
-        <CardContent className="p-5 space-y-4">
-          <div className="flex items-center justify-between">
+      {!onGroundData.length && (
+        <Card>
+          <CardContent className="p-10 text-center">
+            <Drama className="w-14 h-14 mx-auto text-slate-300 mb-3" />
             <h3 className="font-display font-bold text-lg text-bsv-blue">
-              States & Cities ({nukkadData.states?.length || 0})
+              No On-Ground Activities Added
             </h3>
-            <Button onClick={addState} className="bg-bsv-red">
-              <Plus className="w-4 h-4 mr-1" />
-              Add State
-            </Button>
-          </div>
+            <p className="text-sm text-muted-foreground">
+              Click Add Activity to add Nukkad Natak or School Engagement content.
+            </p>
+          </CardContent>
+        </Card>
+      )}
 
-          {(nukkadData.states || []).map((state, stateIndex) => (
-            <div key={stateIndex} className="border rounded-xl p-4 bg-white space-y-3">
+      <div className="space-y-4">
+        {onGroundData.map((item, i) => (
+          <Card key={item.id || i}>
+            <CardContent className="p-5 space-y-4">
               <div className="flex items-center justify-between">
-                <div className="font-semibold text-bsv-blue">
-                  {state.state || 'New State'}
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="outline"
-                    onClick={() => addCity(stateIndex)}
-                  >
-                    <Plus className="w-3 h-3 mr-1" />
-                    Add City
-                  </Button>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => deleteState(stateIndex)}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
+                <h3 className="font-display font-bold text-lg text-bsv-blue">
+                  Activity {i + 1}
+                </h3>
+
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  onClick={() => deleteActivity(i)}
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
               </div>
 
-              {/* Sirf State Name - Code hata diya */}
               <div>
-                <Label className="text-xs">State Name</Label>
+                <Label>Category</Label>
+
+                <Select
+                  value={item.category || 'Nukkad Natak'}
+                  onValueChange={v => updateActivity(i, 'category', v)}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+
+                  <SelectContent>
+                    <SelectItem value="Nukkad Natak">
+                      Nukkad Natak
+                    </SelectItem>
+
+                    <SelectItem value="School Engagement">
+                      School Engagement
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label>Title</Label>
                 <Input
-                  value={state.state || ''}
-                  onChange={e => updateState(stateIndex, 'state', e.target.value)}
-                  placeholder="e.g. Andhra Pradesh"
+                  value={item.title || ''}
+                  placeholder="Activity title"
+                  onChange={e => updateActivity(i, 'title', e.target.value)}
                 />
               </div>
 
-              {/* Cities */}
-              <div className="space-y-3 mt-2">
-                <Label className="text-sm font-semibold">Cities</Label>
-                {(state.cities || []).map((city, cityIndex) => (
-                  <div key={cityIndex} className="border rounded-lg p-3 bg-slate-50 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="font-medium text-sm text-bsv-blue">
-                        {city.name || 'New City'}
-                      </div>
-                      <Button
-                        type="button"
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => deleteCity(stateIndex, cityIndex)}
-                      >
-                        <Trash2 className="w-3 h-3 text-red-500" />
-                      </Button>
-                    </div>
-
-                    {/* Sirf City Name - ID hata diya */}
-                    <div>
-                      <Label className="text-xs">City Name</Label>
-                      <Input
-                        value={city.name || ''}
-                        onChange={e => updateCity(stateIndex, cityIndex, 'name', e.target.value)}
-                        placeholder="e.g. Visakhapatnam"
-                      />
-                    </div>
-
-                    <div>
-                      <Label className="text-xs">Description</Label>
-                      <Textarea
-                        rows={2}
-                        value={city.desc || ''}
-                        onChange={e => updateCity(stateIndex, cityIndex, 'desc', e.target.value)}
-                        placeholder="Description of Nukkad Natak in this city..."
-                      />
-                    </div>
-
-                    <MediaPicker
-                      label="City Cover Image"
-                      value={city.image || ''}
-                      onChange={v => updateCity(stateIndex, cityIndex, 'image', v)}
-                    />
-
-                    <MultiMediaPicker
-                      label="City Gallery Images"
-                      values={city.gallery || []}
-                      onChange={v => updateCity(stateIndex, cityIndex, 'gallery', v)}
-                      max={30}
-                    />
-                  </div>
-                ))}
-
-                {(!state.cities || state.cities.length === 0) && (
-                  <div className="text-center py-4 text-muted-foreground text-sm border border-dashed rounded-lg">
-                    No cities added yet. Click "Add City" to get started.
-                  </div>
-                )}
+              <div>
+                <Label>Description</Label>
+                <Textarea
+                  rows={3}
+                  value={item.description || ''}
+                  placeholder="Add activity description here..."
+                  onChange={e => updateActivity(i, 'description', e.target.value)}
+                />
               </div>
-            </div>
-          ))}
 
-          {(!nukkadData.states || nukkadData.states.length === 0) && (
-            <div className="text-center py-8 text-muted-foreground border border-dashed rounded-xl">
-              No states added yet. Click "Add State" to get started.
-            </div>
-          )}
-        </CardContent>
-      </Card>
+              <MediaPicker
+                label="Main Image"
+                value={item.image || ''}
+                onChange={v => updateActivity(i, 'image', v)}
+              />
+
+              <MultiMediaPicker
+                label="Gallery Images"
+                values={item.gallery || []}
+                onChange={v => updateActivity(i, 'gallery', v)}
+                max={30}
+              />
+
+              <div className="flex items-center gap-2 border-t pt-3">
+                <Switch
+                  checked={item.published !== false}
+                  onCheckedChange={v => updateActivity(i, 'published', v)}
+                />
+                <Label>Published</Label>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function MassMediaAdminView({ content, setContent, api }) {
+  const massMediaData = Array.isArray(content?.massMediaActivities)
+    ? content.massMediaActivities
+    : []
+
+  const updateMassMedia = (items) => {
+    setContent({
+      ...content,
+      massMediaActivities: items,
+    })
+  }
+
+  const addActivity = () => {
+    updateMassMedia([
+      ...massMediaData,
+      {
+        id: `mass-media-${Date.now()}`,
+        category: 'PR Coverage',
+        title: '',
+        description: '',
+        image: '',
+        gallery: [],
+        published: true,
+      },
+    ])
+  }
+
+  const updateActivity = (index, field, value) => {
+    const items = [...massMediaData]
+    items[index] = {
+      ...items[index],
+      [field]: value,
+    }
+    updateMassMedia(items)
+  }
+
+  const deleteActivity = (index) => {
+    if (!confirm('Delete this Mass Media activity?')) return
+    updateMassMedia(massMediaData.filter((_, i) => i !== index))
+  }
+
+  const saveMassMedia = async () => {
+    const r = await api('/api/content', 'PUT', content)
+    if (r.ok) toast.success('Mass Media data saved!')
+    else toast.error('Save failed')
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex justify-between items-center sticky top-16 bg-slate-50 py-2 z-20">
+        <div>
+          <h2 className="font-display font-extrabold text-2xl text-bsv-blue">
+            Mass Media
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Manage PR Coverage, Radio Coverage and Influencer activities.
+          </p>
+        </div>
+
+        <div className="flex gap-2">
+          <Button onClick={addActivity} className="bg-bsv-blue">
+            <Plus className="w-4 h-4 mr-1" />
+            Add Activity
+          </Button>
+
+          <Button onClick={saveMassMedia} className="bg-bsv-red">
+            <Save className="w-4 h-4 mr-1" />
+            Save Changes
+          </Button>
+        </div>
+      </div>
+
+      {!massMediaData.length && (
+        <Card>
+          <CardContent className="p-10 text-center">
+            <Megaphone className="w-14 h-14 mx-auto text-slate-300 mb-3" />
+            <h3 className="font-display font-bold text-lg text-bsv-blue">
+              No Mass Media Activities Added
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Click Add Activity to add PR, Radio or Influencer content.
+            </p>
+          </CardContent>
+        </Card>
+      )}
+
+      <div className="space-y-4">
+        {massMediaData.map((item, i) => (
+          <Card key={item.id || i}>
+            <CardContent className="p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="font-display font-bold text-lg text-bsv-blue">
+                  Activity {i + 1}
+                </h3>
+
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  onClick={() => deleteActivity(i)}
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </div>
+
+              <div>
+                <Label>Category</Label>
+
+                <Select
+                  value={item.category || 'PR Coverage'}
+                  onValueChange={v => updateActivity(i, 'category', v)}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+
+                  <SelectContent>
+                    <SelectItem value="PR Coverage">PR Coverage</SelectItem>
+                    <SelectItem value="Radio Coverage">Radio Coverage</SelectItem>
+                    <SelectItem value="Influencers">Influencers</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label>Title</Label>
+                <Input
+                  value={item.title || ''}
+                  placeholder="Activity title"
+                  onChange={e => updateActivity(i, 'title', e.target.value)}
+                />
+              </div>
+
+              <div>
+                <Label>Description</Label>
+                <Textarea
+                  rows={3}
+                  value={item.description || ''}
+                  placeholder="Add activity description here..."
+                  onChange={e =>
+                    updateActivity(i, 'description', e.target.value)
+                  }
+                />
+              </div>
+
+              <MediaPicker
+                label="Main Image"
+                value={item.image || ''}
+                onChange={v => updateActivity(i, 'image', v)}
+              />
+
+              <MultiMediaPicker
+                label="Gallery Images"
+                values={item.gallery || []}
+                onChange={v => updateActivity(i, 'gallery', v)}
+                max={30}
+              />
+
+              <div className="flex items-center gap-2 border-t pt-3">
+                <Switch
+                  checked={item.published !== false}
+                  onCheckedChange={v => updateActivity(i, 'published', v)}
+                />
+                <Label>Published</Label>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   )
 }
