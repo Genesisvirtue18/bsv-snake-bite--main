@@ -603,13 +603,6 @@ function MissionSection({ content }) {
             </div>
           </div>
 
-          <div className="mt-5 md:mt-6 max-w-4xl mx-auto rounded-[24px] bg-white border border-[#E9EEF6] shadow-[0_14px_32px_rgba(15,23,42,0.08)] px-4 py-3">
-            <div className="grid grid-cols-3 divide-x divide-slate-200">
-              <MissionPillar icon={Users} label="Awareness" />
-              <MissionPillar icon={Stethoscope} label="Access" />
-              <MissionPillar icon={Megaphone} label="Brand Advocacy" />
-            </div>
-          </div>
         </div>
       </div>
     </section>
