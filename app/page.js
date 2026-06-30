@@ -911,8 +911,8 @@ function AwarenessSection({ content, t }) {
           </div>
 
           {/* Cards — horizontal scroll on mobile, 3-col grid on desktop */}
-          <div className="flex-1 w-full min-w-0 overflow-x-auto no-scrollbar lg:overflow-visible">
-            <div className="flex gap-4 lg:grid lg:grid-cols-3 lg:gap-4 pb-3 lg:pb-0 w-max lg:w-full">
+          <div className="flex-1 w-full min-w-0">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               {cards.map((card, i) => (
                 <motion.div
                   key={i}
@@ -921,7 +921,7 @@ function AwarenessSection({ content, t }) {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.4 }}
                   onClick={() => go(card.href)}
-                  className="w-60 flex-shrink-0 lg:w-auto lg:flex-shrink bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                  className="bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
                 >
                   {/* Full-visible image */}
                   <div className="relative overflow-hidden" style={{ aspectRatio: '4/3', background: '#0f172a' }}>
@@ -987,8 +987,8 @@ function AccessSection({ content, t }) {
             </p>
           </div>
           {/* Cards */}
-          <div className="flex-1 w-full min-w-0 overflow-x-auto no-scrollbar lg:overflow-visible">
-            <div className="flex gap-4 lg:grid lg:grid-cols-3 lg:gap-4 pb-3 lg:pb-0 w-max lg:w-full">
+          <div className="flex-1 w-full min-w-0">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               {cards.map((card, i) => (
                 <motion.div
                   key={i}
@@ -997,7 +997,7 @@ function AccessSection({ content, t }) {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.4 }}
                   onClick={() => go(card.href)}
-                  className="w-60 flex-shrink-0 lg:w-auto lg:flex-shrink bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                  className="bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
                 >
                   <div className="relative overflow-hidden" style={{ aspectRatio: '4/3', background: '#0f172a' }}>
                     {card.image
@@ -1008,10 +1008,10 @@ function AccessSection({ content, t }) {
                       <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-white/85">{DEFAULT_LABELS[i]}</span>
                     </div>
                   </div>
-                  <div className="p-4">
-                    <h3 className="font-display font-semibold text-[14px] leading-snug mb-1.5 text-[#201F5E]">{card.title}</h3>
-                    <p className="text-slate-500 text-[12px] leading-relaxed line-clamp-2 mb-3">{card.desc}</p>
-                    <div className="flex items-center gap-1 text-[12px] font-semibold" style={{ color: ACCENT }}>
+                  <div className="p-2.5 sm:p-4">
+                    <h3 className="font-display font-semibold text-[12px] sm:text-[14px] leading-snug mb-1 sm:mb-1.5 text-[#201F5E]">{card.title}</h3>
+                    <p className="hidden sm:block text-slate-500 text-[12px] leading-relaxed line-clamp-2 mb-3">{card.desc}</p>
+                    <div className="flex items-center gap-1 text-[11px] sm:text-[12px] font-semibold" style={{ color: ACCENT }}>
                       {t.common.explore} <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
@@ -1053,8 +1053,8 @@ function CommunicationSection({ content, t }) {
             </p>
           </div>
           {/* Cards */}
-          <div className="flex-1 w-full min-w-0 overflow-x-auto no-scrollbar lg:overflow-visible">
-            <div className="flex gap-4 lg:grid lg:grid-cols-3 lg:gap-4 pb-3 lg:pb-0 w-max lg:w-full">
+          <div className="flex-1 w-full min-w-0">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               {cards.map((card, i) => (
                 <motion.div
                   key={i}
@@ -1063,7 +1063,7 @@ function CommunicationSection({ content, t }) {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.4 }}
                   onClick={() => go(card.href)}
-                  className="w-60 flex-shrink-0 lg:w-auto lg:flex-shrink bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                  className="bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
                 >
                   <div className="relative overflow-hidden" style={{ aspectRatio: '4/3', background: '#0f172a' }}>
                     {card.image
@@ -1074,10 +1074,10 @@ function CommunicationSection({ content, t }) {
                       <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-white/85">{DEFAULT_LABELS[i]}</span>
                     </div>
                   </div>
-                  <div className="p-4">
-                    <h3 className="font-display font-semibold text-[14px] leading-snug mb-1.5 text-[#201F5E]">{card.title}</h3>
-                    <p className="text-slate-500 text-[12px] leading-relaxed line-clamp-2 mb-3">{card.desc}</p>
-                    <div className="flex items-center gap-1 text-[12px] font-semibold" style={{ color: ACCENT }}>
+                  <div className="p-2.5 sm:p-4">
+                    <h3 className="font-display font-semibold text-[12px] sm:text-[14px] leading-snug mb-1 sm:mb-1.5 text-[#201F5E]">{card.title}</h3>
+                    <p className="hidden sm:block text-slate-500 text-[12px] leading-relaxed line-clamp-2 mb-3">{card.desc}</p>
+                    <div className="flex items-center gap-1 text-[11px] sm:text-[12px] font-semibold" style={{ color: ACCENT }}>
                       {t.common.explore} <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
