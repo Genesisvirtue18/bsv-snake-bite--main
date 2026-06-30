@@ -538,7 +538,6 @@ function HeroStatsSection({ content, t }) {
 
 function MissionSection({ content }) {
   const missionText =
-    content?.about?.mission ||
     'Driving awareness by dispelling long-term standing myths and educating rural populations on evidence-based snakebite first aid and treatment.'
 
   const MissionPillar = ({ icon: Icon, label }) => (
