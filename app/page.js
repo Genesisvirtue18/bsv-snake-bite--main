@@ -490,22 +490,20 @@ function HeroStatsSection({ content, t }) {
   const stats = DEFAULT_CONTENT.heroStats
   if (!stats.length) return null
 
-  const StatCard = ({ s, i, mobile }) => {
+  const StatCard = ({ s, i }) => {
     const Icon = ICONS[s.icon] || Heart
     return (
       <motion.div
         key={s.id}
-        initial={{ opacity: 0, y: mobile ? 0 : 12, x: mobile ? 16 : 0 }}
-        whileInView={{ opacity: 1, y: 0, x: 0 }}
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ delay: i * 0.07, duration: 0.35 }}
-        className={`stat-pill${mobile ? ' flex-shrink-0 snap-start' : ''}`}
+        className="stat-pill"
       >
-        {/* Icon square */}
         <div className="stat-pill-icon">
           <Icon className="w-5 h-5" style={{ color: '#0D71B8' }} />
         </div>
-        {/* Text */}
         <div className="stat-pill-text">
           <div className="stat-pill-number">
             <AnimatedCounter value={s.value} suffix={s.suffix} />
@@ -519,19 +517,10 @@ function HeroStatsSection({ content, t }) {
   return (
     <section className="stat-section">
       <div className="max-w-6xl mx-auto px-4 py-6 md:py-8">
-
-        {/* Mobile: horizontal scroll */}
-        <div className="md:hidden overflow-x-auto no-scrollbar scroll-snap-x">
-          <div className="flex gap-3 w-max pb-1">
-            {stats.map((s, i) => <StatCard key={s.id} s={s} i={i} mobile />)}
-          </div>
-        </div>
-
-        {/* Desktop: single row */}
-        <div className="hidden md:flex gap-3 flex-wrap justify-between">
+        {/* 2-col on mobile, 5-col on desktop — no sideways scroll */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
           {stats.map((s, i) => <StatCard key={s.id} s={s} i={i} />)}
         </div>
-
       </div>
     </section>
   )
@@ -540,7 +529,7 @@ function HeroStatsSection({ content, t }) {
 function MissionSection({ content }) {
   const missionText =
     content?.about?.mission ||
-    'To eliminate preventable snakebite deaths in India by 2030 through awareness, education, and ensuring access to quality anti-snake venom (ASV) at every primary health center.'
+    'To eliminate preventable snakebite deaths in India by 2030 through community awareness, healthcare education, and ensuring access to life-saving hospital treatment at every primary health center.'
 
   const MissionPillar = ({ icon: Icon, label }) => (
     <div className="flex flex-col items-center justify-center px-3">
@@ -579,7 +568,7 @@ function MissionSection({ content }) {
 
           <div className="text-center mb-5">
             <h2 className="font-display text-[24px] md:text-[34px] font-bold tracking-[0.22em]" style={{ color: BRAND.navy }}>
-              OUR MISSION
+              ABOUT CAMPAIGN
             </h2>
             <div className="mt-3 flex items-center justify-center gap-1">
               <span className="h-[2px] w-14 bg-[#075BD8]" />
@@ -604,11 +593,11 @@ function MissionSection({ content }) {
               </div>
             </div>
 
-            <div className="order-1 md:order-2 flex justify-center">
+            <div className="order-1 md:order-2 flex justify-center items-center">
               <img
-                src="/images/mission-snake-shield.png"
-                alt="Snakebite protection illustration"
-                className="w-[220px] md:w-[320px] h-auto object-contain"
+                src="/images/saanplogo.png"
+                alt="Saap Ka Vaar Aspataal Mein Hi Upchaar"
+                className="w-full max-w-[260px] md:max-w-[380px] h-auto object-contain"
                 draggable={false}
               />
             </div>
@@ -617,8 +606,8 @@ function MissionSection({ content }) {
           <div className="mt-5 md:mt-6 max-w-4xl mx-auto rounded-[24px] bg-white border border-[#E9EEF6] shadow-[0_14px_32px_rgba(15,23,42,0.08)] px-4 py-3">
             <div className="grid grid-cols-3 divide-x divide-slate-200">
               <MissionPillar icon={Users} label="Awareness" />
-              <MissionPillar icon={BookOpen} label="Education" />
-              <MissionPillar icon={Heart} label="Access to ASV" />
+              <MissionPillar icon={Stethoscope} label="Access" />
+              <MissionPillar icon={Megaphone} label="Brand Advocacy" />
             </div>
           </div>
         </div>
@@ -633,7 +622,62 @@ function VideoSection({ videos, content, t }) {
   const featured = published.find(v => v.featured) || published[0]
   const others = published.filter(v => v.id !== featured?.id)
 
-  if (!featured) return null
+  const GANGULY = {
+    id: 'ganguly',
+    youtubeId: 'jkNMN2AWaM0',
+    title: 'Only Hospital Care Fights Snake Bites',
+    description: 'Cricketer Sourav Ganguly joins hand with the BSV campaign to urge every Indian to rush to the nearest hospital in case of a snakebite — because only hospital care fights snake bites.',
+    category: 'SaanpKaVaarAsptaalMeinHiUpchaar',
+    thumbnail: 'https://img.youtube.com/vi/jkNMN2AWaM0/maxresdefault.jpg',
+  }
+
+  const ANIMATED_DEFAULTS = [
+    'Village Nukkad Tea Stall',
+    'A Farmer gets bitten by a snake in a farm',
+    'Snake bites a boy playing outside his house',
+  ]
+
+  const amitabh = {
+    ...(featured || { id: 'amitabh' }),
+    title: 'Only Hospital Care Fights Snake Bites',
+    description: featured?.description || 'Actor Amitabh Bachchan joins hands with BSV to spread awareness about snakebite prevention, debunk common myths, and encourage timely hospital treatment through this nationwide public awareness campaign.',
+    category: 'SaanpKaVaarAsptaalMeinHiUpchaar',
+  }
+
+  const celebVideos = [amitabh, GANGULY]
+
+  const CelebCard = ({ v }) => (
+    <div>
+      <button
+        onClick={() => setActive(v)}
+        className="relative w-full group overflow-hidden rounded-2xl shadow-lg bg-slate-900 text-left block"
+      >
+        <div className="aspect-video">
+          {v.thumbnail && (
+            <img src={v.thumbnail} alt={v.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+          )}
+        </div>
+        <div className="absolute inset-0 bg-black/25" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all" style={{ background: BSV_RED }}>
+            <Play className="w-7 h-7 md:w-9 md:h-9 fill-white text-white ml-1" />
+          </div>
+        </div>
+        <div className="absolute bottom-4 left-4">
+          <span className="inline-flex rounded-full px-3 py-1.5 text-[10px] font-bold text-white" style={{ background: BSV_RED }}>
+            {v.category}
+          </span>
+        </div>
+      </button>
+      <div className="mt-4">
+        <h3 className="font-display text-[18px] md:text-[22px] font-bold mb-2" style={{ color: BRAND.navy }}>
+          {v.title}
+        </h3>
+        <div className="w-16 h-0.5 rounded-full mb-2" style={{ background: BRAND.deep }} />
+        <p className="text-slate-600 text-[14px] leading-6">{v.description}</p>
+      </div>
+    </div>
+  )
 
   return (
     <>
@@ -661,92 +705,26 @@ function VideoSection({ videos, content, t }) {
             </div>
           </div>
 
-          {/* Featured video */}
-          <div className="grid lg:grid-cols-2 gap-7 md:gap-10 items-center mb-10">
-            <button
-              onClick={() => setActive(featured)}
-              className="relative group overflow-hidden rounded-2xl shadow-lg bg-slate-900 text-left"
-            >
-              <div className="aspect-video">
-                {featured.thumbnail && (
-                  <img
-                    src={featured.thumbnail}
-                    alt={featured.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
-                  />
-                )}
-              </div>
-
-              <div className="absolute inset-0 bg-black/25" />
-
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div
-                  className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all"
-                  style={{ background: BSV_RED }}
-                >
-                  <Play className="w-7 h-7 md:w-9 md:h-9 fill-white text-white ml-1" />
-                </div>
-              </div>
-
-              <div className="absolute bottom-4 left-4">
-                <span
-                  className="inline-flex rounded-full px-4 py-2 text-xs md:text-sm font-bold text-white"
-                  style={{ background: BSV_RED }}
-                >
-                  {featured.category || 'Campaign Video'}
-                </span>
-              </div>
-            </button>
-
-            <div>
-              <h3
-                className="font-display text-[22px] md:text-[30px] font-bold mb-3"
-                style={{ color: BRAND.navy }}
-              >
-                {featured.title || 'Amitabh Bachchan Video'}
-              </h3>
-
-              <div className="w-20 h-1 rounded-full mb-3" style={{ background: BRAND.deep }} />
-
-              <p className="text-slate-600 text-[15px] md:text-lg leading-7 md:leading-8">
-                {featured.description ||
-                  'Actor Amitabh Bachchan joins hands with BSV to spread awareness about snakebite prevention, debunk common myths, and encourage timely hospital treatment through this nationwide public awareness campaign.'}
-              </p>
-            </div>
+          {/* Two celebrity videos — parallel on desktop */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 mb-12">
+            {celebVideos.map((v, i) => <CelebCard key={v.id || i} v={v} />)}
           </div>
 
-          {/* More videos */}
+          {/* Animated / other videos */}
           {others.length > 0 && (
-            <div className="mt-10 border-t border-slate-200 pt-8">
+            <div className="border-t border-slate-200 pt-8">
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <span
-                    className="inline-block text-[11px] font-bold uppercase tracking-[0.14em] mb-1"
-                    style={{ color: BRAND.deep }}
-                  >
-                    WATCH
-                  </span>
-
-                  <h3
-                    className="font-display text-[24px] md:text-[28px] font-bold"
-                    style={{ color: BRAND.navy }}
-                  >
-                    More Videos
-                  </h3>
+                  <span className="inline-block text-[11px] font-bold uppercase tracking-[0.14em] mb-1" style={{ color: BRAND.deep }}>WATCH</span>
+                  <h3 className="font-display text-[24px] md:text-[28px] font-bold" style={{ color: BRAND.navy }}>More Videos</h3>
                 </div>
-
-                <a
-                  href="https://www.youtube.com/@bsvindia/videos"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/videos"
                   className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-white transition hover:scale-[1.02]"
-                  style={{
-                    background: `linear-gradient(135deg, ${BRAND.deep}, ${BRAND.navy})`
-                  }}
+                  style={{ background: `linear-gradient(135deg, ${BRAND.deep}, ${BRAND.navy})` }}
                 >
-                  Watch More
-                  <ArrowRight className="w-4 h-4" />
-                </a>
+                  Watch More <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -761,62 +739,34 @@ function VideoSection({ videos, content, t }) {
                     className="group text-left rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 bg-white border border-slate-100"
                   >
                     <div className="relative aspect-video overflow-hidden bg-slate-900">
-                      {v.thumbnail && (
-                        <img
-                          src={v.thumbnail}
-                          alt={v.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                        />
-                      )}
-
+                      {v.thumbnail && <img src={v.thumbnail} alt={v.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />}
                       <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                        <div
-                          className="w-11 h-11 rounded-full flex items-center justify-center group-hover:scale-110 transition-all"
-                          style={{ background: BSV_RED }}
-                        >
+                        <div className="w-11 h-11 rounded-full flex items-center justify-center group-hover:scale-110 transition-all" style={{ background: BSV_RED }}>
                           <Play className="w-5 h-5 fill-white text-white ml-0.5" />
                         </div>
                       </div>
                     </div>
-
                     <div className="p-4">
-                      <div
-                        className="text-[10px] font-semibold uppercase tracking-wider mb-1.5"
-                        style={{ color: BRAND.deep }}
-                      >
-                        {v.category || 'Campaign'}
+                      <div className="text-[10px] font-semibold uppercase tracking-wider mb-1.5" style={{ color: BRAND.deep }}>
+                        SaanpKaVaarAsptaalMeinHiUpchaar
                       </div>
-
-                      <div
-                        className="font-display font-semibold text-[14px] leading-snug line-clamp-2"
-                        style={{ color: BRAND.navy }}
-                      >
-                        {v.title}
+                      <div className="font-display font-semibold text-[14px] leading-snug line-clamp-2" style={{ color: BRAND.navy }}>
+                        {v.title || ANIMATED_DEFAULTS[i] || ''}
                       </div>
-
-                      {v.description && (
-                        <p className="text-[12px] text-slate-500 mt-1.5 line-clamp-2">
-                          {v.description}
-                        </p>
-                      )}
+                      {v.description && <p className="text-[12px] text-slate-500 mt-1.5 line-clamp-2">{v.description}</p>}
                     </div>
                   </motion.button>
                 ))}
               </div>
 
               <div className="md:hidden text-center mt-6">
-                <a
-                  href="https://www.youtube.com/@bsvindia/videos"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/videos"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-white"
-                  style={{
-                    background: `linear-gradient(135deg, ${BRAND.deep}, ${BRAND.navy})`
-                  }}
+                  style={{ background: `linear-gradient(135deg, ${BRAND.deep}, ${BRAND.navy})` }}
                 >
-                  Watch More
-                  <ArrowRight className="w-4 h-4" />
-                </a>
+                  Watch More <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
             </div>
           )}
@@ -1149,21 +1099,8 @@ function CommunicationSection({ content, t }) {
 }
 
 function OutreachSection({ content, t }) {
-  const states = (content?.states || []).map(s => ({
-    name: s.name,
-    code: s.code,
-    campaigns: s.sessions,
-    workshops: s.workshops || 0,
-    enabled: true,
-  }))
-  return (
-    <section id="outreach" className="section-pad" style={{ background: '#FFFBEB' }}>
-      <div className="container mx-auto px-4">
-        <SectionHeader badge={t.badges.outreach} title={t.outreach.title} subtitle={t.outreach.subtitle} />
-        <StatesGrid states={states} t={t} />
-      </div>
-    </section>
-  )
+  // Hidden until campaign data is sizeable — re-enable when ready
+  return null
 }
 
 function StoriesSection({ stories, t }) {
