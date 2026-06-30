@@ -237,18 +237,18 @@ function Header({ lang, setLang, t, settings }) {
       onMouseLeave={() => setMegaOpen(null)}
     >
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-14 sm:h-16">
+        <div className="flex items-center justify-between h-14 sm:h-16 gap-2 overflow-hidden">
 
           {/* Logo — clicking navigates to top */}
           <button
             onClick={() => go('#home')}
-            className="flex items-center gap-3 flex-shrink-0 group"
+            className="flex items-center gap-1.5 sm:gap-3 min-w-0 flex-shrink group overflow-hidden"
           >
             {/* BSV Logo */}
             <img
               src={settings?.branding?.bsvLogo}
               alt="BSV"
-              className="h-10 sm:h-12 w-auto flex-shrink-0"
+              className="h-8 sm:h-12 w-auto flex-shrink-0"
               draggable={false}
             />
 
@@ -256,7 +256,7 @@ function Header({ lang, setLang, t, settings }) {
             <img
               src="/images/saanplogo.png"
               alt="Saap Ka Vaar"
-              className="h-10 sm:h-12 md:h-14 w-auto flex-shrink-0 ml-1 sm:ml-2"
+              className="h-8 sm:h-12 md:h-14 w-auto flex-shrink min-w-0 ml-0 sm:ml-2"
               draggable={false}
             />
           </button>
@@ -292,11 +292,11 @@ function Header({ lang, setLang, t, settings }) {
           </nav>
 
           {/* Right: Mankind logo + Contact + Language — tight and clean */}
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
             <img
               src={settings?.branding?.mankindLogo}
               alt="Mankind"
-              className="h-8 sm:h-10 w-auto flex-shrink-0"
+              className="h-7 sm:h-10 w-auto flex-shrink-0"
               draggable={false}
             />
 
@@ -318,7 +318,7 @@ function Header({ lang, setLang, t, settings }) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="gap-1 transition-all duration-200 rounded-lg px-2 h-8"
+                  className="gap-1 transition-all duration-200 rounded-lg px-1 sm:px-2 h-8"
                   style={{ color: BRAND.blue }}
                 >
                   <Globe className="w-3.5 h-3.5 flex-shrink-0" />
@@ -343,7 +343,7 @@ function Header({ lang, setLang, t, settings }) {
 
             {/* Hamburger — mobile/tablet only */}
             <button
-              className="lg:hidden p-1.5 rounded-lg hover:bg-slate-100 active:bg-slate-200 transition-all duration-200 flex-shrink-0"
+              className="lg:hidden p-1 rounded-lg hover:bg-slate-100 active:bg-slate-200 transition-all duration-200 flex-shrink-0"
               onClick={() => setOpen(!open)}
               aria-label="Open menu"
             >
