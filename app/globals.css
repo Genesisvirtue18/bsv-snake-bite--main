@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -42,13 +42,16 @@
     font-weight: 400;
   }
   h1, h2, h3, h4, h5, h6, .font-display {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 600;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
   }
+  /* Cap all heading weights at semibold (600) */
   .font-display.font-bold,
   .font-display.font-extrabold,
-  .font-display.font-black { font-weight: 700; }
+  .font-display.font-black,
+  h1.font-bold, h2.font-bold, h3.font-bold,
+  h1.font-extrabold, h2.font-extrabold, h3.font-extrabold { font-weight: 600; }
 }
 
 .bsv-navy  { color: #201F5E; }
@@ -159,8 +162,8 @@
   gap: 0.1rem;
 }
 .stat-pill-number {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
   font-size: 1.125rem;
   line-height: 1.2;
   color: #201F5E;
