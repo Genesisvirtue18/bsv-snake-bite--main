@@ -1579,117 +1579,125 @@ function App() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return
+
+    const MIN_LOADER_TIME = 1500 // 1.5 sec loader visible rahega
+
     const saved = localStorage.getItem('bsv_lang')
     let next = null
-    if (saved && LANGUAGES.find(l => l.code === saved)) next = saved
-    else { const browser = navigator.language?.split('-')[0]; if (LANGUAGES.find(l => l.code === browser)) next = browser }
+
+    if (saved && LANGUAGES.find(l => l.code === saved)) {
+      next = saved
+    } else {
+      const browser = navigator.language?.split('-')[0]
+      if (LANGUAGES.find(l => l.code === browser)) next = browser
+    }
+
     if (next) setLang(next)
-    fetch('/api/content').then(r => r.json()).then(d => { setContent(d); setLoading(false) }).catch(() => setLoading(false))
-    fetch('/api/impact-stories').then(r => r.ok ? r.json() : []).then(d => setStories(Array.isArray(d) ? d : [])).catch(() => { })
-    fetch('/api/gallery').then(r => r.ok ? r.json() : []).then(d => setAlbums(Array.isArray(d) ? d : [])).catch(() => { })
-    fetch('/api/videos').then(r => r.ok ? r.json() : []).then(d => setVideos(Array.isArray(d) ? d : [])).catch(() => { })
-    fetch('/api/settings').then(r => r.ok ? r.json() : null).then(d => d && setSettings(d)).catch(() => { })
+
+    const minLoaderPromise = new Promise(resolve =>
+      setTimeout(resolve, MIN_LOADER_TIME)
+    )
+
+    const contentPromise = fetch('/api/content')
+      .then(r => r.json())
+      .then(d => setContent(d))
+      .catch(() => { })
+
+    fetch('/api/impact-stories')
+      .then(r => r.ok ? r.json() : [])
+      .then(d => setStories(Array.isArray(d) ? d : []))
+      .catch(() => { })
+
+    fetch('/api/gallery')
+      .then(r => r.ok ? r.json() : [])
+      .then(d => setAlbums(Array.isArray(d) ? d : []))
+      .catch(() => { })
+
+    fetch('/api/videos')
+      .then(r => r.ok ? r.json() : [])
+      .then(d => setVideos(Array.isArray(d) ? d : []))
+      .catch(() => { })
+
+    fetch('/api/settings')
+      .then(r => r.ok ? r.json() : null)
+      .then(d => d && setSettings(d))
+      .catch(() => { })
+
+    Promise.all([contentPromise, minLoaderPromise])
+      .finally(() => setLoading(false))
   }, [])
 
   useEffect(() => { if (typeof window !== 'undefined') localStorage.setItem('bsv_lang', lang) }, [lang])
 
   if (loading) return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center overflow-hidden"
-      style={{ background: 'linear-gradient(145deg, #201F5E 0%, #0D3B7A 55%, #0D71B8 100%)' }}>
+    <div className="fixed inset-0 z-[99999] flex flex-col items-center justify-center overflow-hidden bg-white">
+      {/* soft glow */}
+      <div
+        className="absolute top-[-140px] left-[-140px] w-[360px] h-[360px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(222,37,39,0.08) 0%, transparent 70%)',
+        }}
+      />
 
-      {/* Decorative blobs */}
-      <div className="absolute top-[-80px] left-[-80px] w-[340px] h-[340px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(222,37,39,0.18) 0%, transparent 70%)' }} />
-      <div className="absolute bottom-[-60px] right-[-60px] w-[300px] h-[300px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(14,175,197,0.15) 0%, transparent 70%)' }} />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 65%)' }} />
+      <div
+        className="absolute bottom-[-140px] right-[-140px] w-[360px] h-[360px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(14,175,197,0.10) 0%, transparent 70%)',
+        }}
+      />
 
-      {/* Main content */}
       <motion.div
-        initial={{ opacity: 0, y: 32 }}
+        className="relative z-10 flex flex-col items-center justify-center px-5 text-center"
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="relative z-10 flex flex-col items-center text-center px-8"
+        transition={{ duration: 0.45, ease: 'easeOut' }}
       >
-        {/* Pulsing ring behind logo */}
-        <div className="relative mb-8">
-          <motion.div
-            className="absolute inset-0 rounded-full"
-            animate={{ scale: [1, 1.35, 1], opacity: [0.4, 0, 0.4] }}
-            transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-            style={{ background: 'rgba(222,37,39,0.25)', borderRadius: '50%', margin: '-18px' }}
-          />
-          <motion.div
-            className="absolute inset-0 rounded-full"
-            animate={{ scale: [1, 1.6, 1], opacity: [0.2, 0, 0.2] }}
-            transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
-            style={{ background: 'rgba(222,37,39,0.12)', borderRadius: '50%', margin: '-18px' }}
-          />
-          <motion.img
-            src={settings?.branding?.headerLogo}
-            alt="BSV × Mankind"
-            className="h-20 md:h-24 w-auto relative z-10 drop-shadow-2xl"
-            animate={{ scale: [1, 1.04, 1] }}
-            transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
-            draggable={false}
-          />
-        </div>
+        <motion.img
+          src="/images/saanplogo.png"
+          alt="Saap Ka Vaar, Aspataal Mein Hi Upchaar"
+          className="w-[min(88vw,680px)] h-auto object-contain"
+          animate={{ scale: [1, 1.025, 1] }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+          draggable={false}
+        />
 
-        {/* Tagline */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-          className="text-white/50 text-[11px] font-semibold uppercase tracking-[0.2em] mb-4"
-        >
-          {t.common.initiative}
-        </motion.p>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.55, duration: 0.5 }}
-          className="font-display font-bold text-[20px] md:text-[24px] text-white leading-tight"
-        >
-          Saap Ka Vaar,
-        </motion.h1>
-        <motion.h1
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.5 }}
-          className="font-display font-bold text-[20px] md:text-[24px] leading-tight mb-8"
-          style={{ color: '#de2527' }}
-        >
-          Aspataal Mein Hi Upchaar
-        </motion.h1>
-
-        {/* Animated loading dots */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.9 }}
-          className="flex items-center gap-2"
-        >
+        <div className="mt-7 flex items-center justify-center gap-2">
           {[0, 1, 2].map(i => (
             <motion.span
               key={i}
-              className="block w-2 h-2 rounded-full"
-              style={{ background: '#de2527' }}
-              animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }}
-              transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.2, ease: 'easeInOut' }}
+              className="w-2.5 h-2.5 rounded-full"
+              style={{ background: BSV_RED }}
+              animate={{
+                opacity: [0.25, 1, 0.25],
+                scale: [0.85, 1.2, 0.85],
+              }}
+              transition={{
+                duration: 1.1,
+                repeat: Infinity,
+                delay: i * 0.18,
+                ease: 'easeInOut',
+              }}
             />
           ))}
+        </div>
+
+        <motion.div
+          className="mt-4 text-[11px] md:text-xs font-semibold uppercase tracking-[0.22em]"
+          style={{ color: '#201F5E' }}
+          animate={{ opacity: [0.45, 1, 0.45] }}
+          transition={{
+            duration: 1.6,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        >
+          INDIA&apos;S NATIONAL SNAKEBITE AWARENESS INITIATIVE
         </motion.div>
       </motion.div>
-
-      {/* Progress bar at bottom */}
-      <div className="fixed bottom-0 left-0 right-0 h-[3px] bg-white/10">
-        <motion.div
-          initial={{ width: '0%' }}
-          animate={{ width: '100%' }}
-          transition={{ duration: 3, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="h-full"
-          style={{ background: 'linear-gradient(90deg, #de2527 0%, #0EAFC5 100%)' }}
-        />
-      </div>
     </div>
   )
 
