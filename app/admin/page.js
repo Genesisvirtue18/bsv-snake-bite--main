@@ -2044,45 +2044,214 @@ function UsersView({ users, api, reload }) {
 function VideosView({ api, token, reload }) {
   const [videos, setVideos] = useState([])
   const [editing, setEditing] = useState(null)
+
+  const VIDEO_BADGE = 'SaanpKaVaarAspataalMeinHiUpchaar'
+
   const load = async () => {
     const r = await fetch('/api/videos')
     if (r.ok) setVideos(await r.json())
   }
+
   useEffect(() => { load() }, [])
+
   const save = async () => {
-    if (!editing.title || !editing.url) { toast.error('Title and YouTube URL required'); return }
+    if (!editing.title || !editing.url) {
+      toast.error('Title and YouTube URL required')
+      return
+    }
+
     const method = editing.id ? 'PATCH' : 'POST'
     const url = editing.id ? `/api/videos/${editing.id}` : '/api/videos'
-    const r = await api(url, method, editing)
-    if (r.ok) { toast.success('Saved'); setEditing(null); load() }
+
+    const payload = {
+      ...editing,
+      category: VIDEO_BADGE,
+    }
+
+    const r = await api(url, method, payload)
+
+    if (r.ok) {
+      toast.success('Saved')
+      setEditing(null)
+      load()
+    } else {
+      toast.error('Save failed')
+    }
   }
-  const del = async (id) => { if (confirm('Delete?')) { await api(`/api/videos/${id}`, 'DELETE'); load() } }
+
+  const del = async (id) => {
+    if (confirm('Delete?')) {
+      await api(`/api/videos/${id}`, 'DELETE')
+      load()
+    }
+  }
+
   return (
     <div className="space-y-3">
-      <div className="flex justify-between"><h3 className="font-display font-bold text-lg">Videos ({videos.length})</h3><Button onClick={() => setEditing({ title: '', url: '', description: '', category: 'Campaign', featured: false, published: true, order: 0 })} className="bg-bsv-red"><Plus className="w-4 h-4 mr-1" />New Video</Button></div>
-      <div className="grid md:grid-cols-3 gap-3">{videos.map(v => (
-        <Card key={v.id}><CardContent className="p-4">
-          {v.thumbnail && <img src={v.thumbnail} alt="" className="w-full h-32 object-cover rounded mb-2" />}
-          <div className="flex gap-1 mb-1"><Badge className="bg-bsv-red">{v.category}</Badge>{v.featured && <Badge className="bg-yellow-500">FEATURED</Badge>}</div>
-          <div className="font-bold text-sm line-clamp-2">{v.title}</div>
-          <div className="text-xs text-muted-foreground line-clamp-2 mt-1">{v.description}</div>
-          <div className="flex gap-1 mt-2"><Button size="sm" variant="outline" onClick={() => setEditing(v)}><Edit className="w-3 h-3" /></Button><Button size="sm" variant="ghost" onClick={() => del(v.id)}><Trash2 className="w-3 h-3 text-red-500" /></Button></div>
-        </CardContent></Card>))}</div>
+      <div className="flex justify-between">
+        <h3 className="font-display font-bold text-lg">
+          Videos ({videos.length})
+        </h3>
+
+        <Button
+          onClick={() =>
+            setEditing({
+              title: '',
+              url: '',
+              description: '',
+              category: VIDEO_BADGE,
+              featured: false,
+              published: true,
+              order: 0,
+            })
+          }
+          className="bg-bsv-red"
+        >
+          <Plus className="w-4 h-4 mr-1" />
+          New Video
+        </Button>
+      </div>
+
+      <div className="grid md:grid-cols-3 gap-3">
+        {videos.map(v => (
+          <Card key={v.id}>
+            <CardContent className="p-4">
+              {v.thumbnail && (
+                <img
+                  src={v.thumbnail}
+                  alt=""
+                  className="w-full h-32 object-cover rounded mb-2"
+                />
+              )}
+
+              <div className="flex gap-1 mb-1 flex-wrap">
+                <Badge className="bg-bsv-red">
+                  {VIDEO_BADGE}
+                </Badge>
+
+                {v.featured && (
+                  <Badge className="bg-yellow-500">
+                    FEATURED
+                  </Badge>
+                )}
+              </div>
+
+              <div className="font-bold text-sm line-clamp-2">
+                {v.title}
+              </div>
+
+              <div className="text-xs text-muted-foreground line-clamp-2 mt-1">
+                {v.description}
+              </div>
+
+              <div className="flex gap-1 mt-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    setEditing({
+                      ...v,
+                      category: VIDEO_BADGE,
+                    })
+                  }
+                >
+                  <Edit className="w-3 h-3" />
+                </Button>
+
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => del(v.id)}
+                >
+                  <Trash2 className="w-3 h-3 text-red-500" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
       {editing && (
         <Dialog open onOpenChange={() => setEditing(null)}>
           <DialogContent>
-            <DialogHeader><DialogTitle>{editing.id ? 'Edit' : 'New'} Video</DialogTitle></DialogHeader>
+            <DialogHeader>
+              <DialogTitle>
+                {editing.id ? 'Edit' : 'New'} Video
+              </DialogTitle>
+            </DialogHeader>
+
             <div className="space-y-3">
-              <div><Label>Title</Label><Input value={editing.title} onChange={e => setEditing({ ...editing, title: e.target.value })} /></div>
-              <div><Label>YouTube URL</Label><Input value={editing.url} onChange={e => setEditing({ ...editing, url: e.target.value })} placeholder="https://www.youtube.com/watch?v=..." /></div>
-              <div><Label>Description</Label><Textarea rows={2} value={editing.description} onChange={e => setEditing({ ...editing, description: e.target.value })} /></div>
-              <div><Label>Category</Label><Select value={editing.category} onValueChange={v => setEditing({ ...editing, category: v })}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent>{['Campaign', 'Vox Pop', 'KOL', 'NGO Activity', 'Influencer', 'Myth Busting', 'Awareness'].map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent></Select></div>
-              <div className="grid grid-cols-2 gap-3">
-                <div><Label>Order</Label><Input type="number" value={editing.order} onChange={e => setEditing({ ...editing, order: parseInt(e.target.value) || 0 })} /></div>
-                <div className="flex items-center gap-2 pt-6"><Switch checked={editing.featured} onCheckedChange={c => setEditing({ ...editing, featured: c })} /><Label>Featured</Label></div>
+              <div>
+                <Label>Title</Label>
+                <Input
+                  value={editing.title}
+                  onChange={e =>
+                    setEditing({ ...editing, title: e.target.value })
+                  }
+                />
               </div>
-              <div className="flex items-center gap-2"><Switch checked={editing.published} onCheckedChange={c => setEditing({ ...editing, published: c })} /><Label>Published</Label></div>
-              <Button onClick={save} className="w-full bg-bsv-red">Save</Button>
+
+              <div>
+                <Label>YouTube URL</Label>
+                <Input
+                  value={editing.url}
+                  onChange={e =>
+                    setEditing({ ...editing, url: e.target.value })
+                  }
+                  placeholder="https://www.youtube.com/watch?v=..."
+                />
+              </div>
+
+              <div>
+                <Label>Description</Label>
+                <Textarea
+                  rows={2}
+                  value={editing.description}
+                  onChange={e =>
+                    setEditing({ ...editing, description: e.target.value })
+                  }
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label>Order</Label>
+                  <Input
+                    type="number"
+                    value={editing.order}
+                    onChange={e =>
+                      setEditing({
+                        ...editing,
+                        order: parseInt(e.target.value) || 0,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="flex items-center gap-2 pt-6">
+                  <Switch
+                    checked={editing.featured}
+                    onCheckedChange={c =>
+                      setEditing({ ...editing, featured: c })
+                    }
+                  />
+                  <Label>Featured</Label>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={editing.published}
+                  onCheckedChange={c =>
+                    setEditing({ ...editing, published: c })
+                  }
+                />
+                <Label>Published</Label>
+              </div>
+
+              <Button onClick={save} className="w-full bg-bsv-red">
+                Save
+              </Button>
             </div>
           </DialogContent>
         </Dialog>

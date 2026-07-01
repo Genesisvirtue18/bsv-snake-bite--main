@@ -620,33 +620,24 @@ function MissionSection({ content }) {
 
 function VideoSection({ videos, content, t }) {
   const [active, setActive] = useState(null)
-  const published = (videos || []).filter(v => v.published !== false)
-  const featured = published.find(v => v.featured) || published[0]
-  const others = published.filter(v => v.id !== featured?.id)
+  const VIDEO_BADGE = 'SaanpKaVaarAspataalMeinHiUpchaar'
 
-  const GANGULY = {
-    id: 'ganguly',
-    youtubeId: 'jkNMN2AWaM0',
-    title: 'Only Hospital Care Fights Snake Bites',
-    description: 'Cricketer Sourav Ganguly joins hand with the BSV campaign to urge every Indian to rush to the nearest hospital in case of a snakebite — because only hospital care fights snake bites.',
-    category: 'SaanpKaVaarAsptaalMeinHiUpchaar',
-    thumbnail: 'https://img.youtube.com/vi/jkNMN2AWaM0/maxresdefault.jpg',
-  }
+  const published = (videos || [])
+    .filter(v => v.published !== false)
+    .sort((a, b) => {
+      const featuredSort = Number(Boolean(b.featured)) - Number(Boolean(a.featured))
+      if (featuredSort !== 0) return featuredSort
 
-  const ANIMATED_DEFAULTS = [
-    'Village Nukkad Tea Stall',
-    'A Farmer gets bitten by a snake in a farm',
-    'Snake bites a boy playing outside his house',
-  ]
+      const aOrder = a.sortOrder ?? a.order ?? 0
+      const bOrder = b.sortOrder ?? b.order ?? 0
+      return aOrder - bOrder
+    })
 
-  const amitabh = {
-    ...(featured || { id: 'amitabh' }),
-    title: 'Only Hospital Care Fights Snake Bites',
-    description: featured?.description || 'Actor Amitabh Bachchan joins hands with BSV to spread awareness about snakebite prevention, debunk common myths, and encourage timely hospital treatment through this nationwide public awareness campaign.',
-    category: 'SaanpKaVaarAsptaalMeinHiUpchaar',
-  }
+  // Top 2 videos admin se aayenge
+  const celebVideos = published.slice(0, 2)
 
-  const celebVideos = [amitabh, GANGULY]
+  // Baaki videos More Videos me jayenge
+  const others = published.slice(2)
 
   const CelebCard = ({ v }) => (
     <div>
@@ -667,7 +658,7 @@ function VideoSection({ videos, content, t }) {
         </div>
         <div className="absolute bottom-4 left-4">
           <span className="inline-flex rounded-full px-3 py-1.5 text-[10px] font-bold text-white" style={{ background: BSV_RED }}>
-            {v.category}
+            {VIDEO_BADGE}
           </span>
         </div>
       </button>
@@ -750,10 +741,10 @@ function VideoSection({ videos, content, t }) {
                     </div>
                     <div className="p-2.5 sm:p-4">
                       <div className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider mb-1" style={{ color: BRAND.deep }}>
-                        SaanpKaVaarAsptaalMeinHiUpchaar
+                        {VIDEO_BADGE}
                       </div>
                       <div className="font-display font-semibold text-[12px] sm:text-[14px] leading-snug line-clamp-2" style={{ color: BRAND.navy }}>
-                        {v.title || ANIMATED_DEFAULTS[i] || ''}
+                        {v.title || ''}
                       </div>
                       {v.description && <p className="hidden sm:block text-[12px] text-slate-500 mt-1.5 line-clamp-2">{v.description}</p>}
                     </div>

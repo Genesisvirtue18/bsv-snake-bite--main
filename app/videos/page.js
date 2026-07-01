@@ -8,15 +8,7 @@ import { motion } from 'framer-motion'
 
 const BSV_RED = '#de2527'
 const BRAND = { navy: '#201F5E', deep: '#0D71B8' }
-
-const GANGULY = {
-  id: 'ganguly',
-  youtubeId: 'jkNMN2AWaM0',
-  title: 'Only Hospital Care Fights Snake Bites',
-  description: 'Cricketer Sourav Ganguly joins hand with the BSV campaign to urge every Indian to rush to the nearest hospital in case of a snakebite.',
-  category: 'SaanpKaVaarAsptaalMeinHiUpchaar',
-  thumbnail: 'https://img.youtube.com/vi/jkNMN2AWaM0/maxresdefault.jpg',
-}
+const VIDEO_BADGE = 'SaanpKaVaarAspataalMeinHiUpchaar'
 
 function VideoCard({ v, onClick, index }) {
   return (
@@ -39,7 +31,7 @@ function VideoCard({ v, onClick, index }) {
           </div>
           <div className="absolute bottom-3 left-3">
             <span className="inline-flex rounded-full px-3 py-1 text-[10px] font-bold text-white" style={{ background: BSV_RED }}>
-              {v.category || 'SaanpKaVaarAsptaalMeinHiUpchaar'}
+              {VIDEO_BADGE}
             </span>
           </div>
         </div>
@@ -64,10 +56,14 @@ export default function VideosPage() {
   }, [])
 
   // Merge CMS videos with the hardcoded Ganguly video (avoid duplicate)
-  const allVideos = [
-    ...videos,
-    ...(videos.find(v => v.youtubeId === 'jkNMN2AWaM0') ? [] : [GANGULY]),
-  ]
+  const allVideos = [...videos].sort((a, b) => {
+    const featuredSort = Number(Boolean(b.featured)) - Number(Boolean(a.featured))
+    if (featuredSort !== 0) return featuredSort
+
+    const aOrder = a.sortOrder ?? a.order ?? 0
+    const bOrder = b.sortOrder ?? b.order ?? 0
+    return aOrder - bOrder
+  })
 
   return (
     <div className="min-h-screen bg-slate-50">
