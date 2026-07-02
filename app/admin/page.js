@@ -1006,14 +1006,7 @@ export default function AdminPage() {
                     </div>))}</div>
                 </CardContent></Card>
 
-                {/* ABOUT */}
-                <Card><CardContent className="p-5 space-y-3">
-                  <h3 className="font-display font-bold text-lg text-bsv-blue">About Campaign</h3>
-                  <div><Label>Story</Label><Textarea rows={4} value={content.about.story} onChange={e => setContent({ ...content, about: { ...content.about, story: e.target.value } })} /></div>
-                  <div><Label>Mission</Label><Textarea rows={2} value={content.about.mission} onChange={e => setContent({ ...content, about: { ...content.about, mission: e.target.value } })} /></div>
-                  <div><Label>Vision</Label><Textarea rows={2} value={content.about.vision} onChange={e => setContent({ ...content, about: { ...content.about, vision: e.target.value } })} /></div>
-                  <div><Label>Burden</Label><Input value={content.about.burden} onChange={e => setContent({ ...content, about: { ...content.about, burden: e.target.value } })} /></div>
-                </CardContent></Card>
+                
 
 
                 {/* MYTHS */}

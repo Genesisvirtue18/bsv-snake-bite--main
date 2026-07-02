@@ -559,7 +559,7 @@ function MissionSection({ content }) {
 
 
 
-          <div className="pointer-events-none absolute right-28 top-32 hidden md:block w-48 h-48 opacity-50 bg-[radial-gradient(circle,#B7D3FF_2px,transparent_2px)] [background-size:12px_12px]" />
+          
 
           <div className="flex items-center justify-center mb-3">
             <div className="relative h-px w-24 md:w-44 bg-gradient-to-r from-[#075BD8] to-[#DE2527]">
