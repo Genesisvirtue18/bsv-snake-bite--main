@@ -13,7 +13,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Badge } from '@/components/ui/badge'
 import { motion } from 'framer-motion'
 import { toast } from 'sonner'
-import { Heart, GraduationCap, MapPin, Users, Megaphone, Building2, Stethoscope, Globe, Menu, X, Phone, Mail, ChevronRight, Lightbulb, Shield, ShieldAlert, Sparkles, Play, ArrowRight, BookOpen, Video, ImageIcon, Search, FileText, Activity, TrendingUp, Award, CheckCircle2 } from 'lucide-react'
+import { Heart, GraduationCap, MapPin, Users, Megaphone, Building2, Stethoscope, Globe, Menu, X, Phone, Mail, ChevronRight, Lightbulb, Shield, ShieldAlert, ShieldCheck, Sparkles, Play, ArrowRight, BookOpen, Video, ImageIcon, Search, FileText, Activity, TrendingUp, Award, CheckCircle2 } from 'lucide-react'
 import { LANGUAGES, getT } from '@/lib/translations'
 import AnimatedCounter from '@/components/AnimatedCounter'
 import MiniIndiaMap from '@/components/MiniIndiaMap'
@@ -497,14 +497,29 @@ function Hero({ content, t }) {
 }
 
 function HeroStatsSection({ content, t }) {
-  const stats = DEFAULT_CONTENT.heroStats
+  const defaultStats = DEFAULT_CONTENT.heroStats || []
+  const savedStats = content?.heroStats || []
+
+  const stats = Array.from({ length: 5 }, (_, i) => ({
+    id: defaultStats[i]?.id || `stat-${i + 1}`,
+    value: 0,
+    suffix: '+',
+    label: '',
+    ...(defaultStats[i] || {}),
+    ...(savedStats[i] || {}),
+  })).filter(s => s.label || Number(s.value) > 0)
+
   if (!stats.length) return null
 
+  const DEFAULT_ICONS = [Heart, MapPin, Stethoscope, Building2, Users]
+
   const StatCard = ({ s, i }) => {
-    const Icon = ICONS[s.icon] || Heart
+    const Icon = DEFAULT_ICONS[i] || Heart
+    const value = Number(String(s.value || 0).replace(/,/g, '')) || 0
+
     return (
       <motion.div
-        key={s.id}
+        key={s.id || i}
         initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -514,11 +529,15 @@ function HeroStatsSection({ content, t }) {
         <div className="stat-pill-icon">
           <Icon className="w-5 h-5" style={{ color: '#0D71B8' }} />
         </div>
+
         <div className="stat-pill-text">
           <div className="stat-pill-number">
-            <AnimatedCounter value={s.value} suffix={s.suffix} />
+            <AnimatedCounter value={value} suffix={s.suffix || '+'} />
           </div>
-          <div className="stat-pill-label">{s.label}</div>
+
+          <div className="stat-pill-label">
+            {s.label}
+          </div>
         </div>
       </motion.div>
     )
@@ -527,9 +546,10 @@ function HeroStatsSection({ content, t }) {
   return (
     <section className="stat-section">
       <div className="max-w-6xl mx-auto px-4 py-6 md:py-8">
-        {/* 2-col on mobile, 5-col on desktop — no sideways scroll */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-          {stats.map((s, i) => <StatCard key={s.id} s={s} i={i} />)}
+          {stats.map((s, i) => (
+            <StatCard key={s.id || i} s={s} i={i} />
+          ))}
         </div>
       </div>
     </section>
@@ -559,7 +579,7 @@ function MissionSection({ content }) {
 
 
 
-          
+
 
           <div className="flex items-center justify-center mb-3">
             <div className="relative h-px w-24 md:w-44 bg-gradient-to-r from-[#075BD8] to-[#DE2527]">
@@ -713,6 +733,11 @@ function VideoSection({ videos, content, t }) {
                 </div>
                 <Link
                   href="/videos"
+                  onClick={() => {
+                    if (typeof window !== 'undefined') {
+                      window.history.replaceState(null, '', window.location.pathname)
+                    }
+                  }}
                   className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-white transition hover:scale-[1.02]"
                   style={{ background: `linear-gradient(135deg, ${BRAND.deep}, ${BRAND.navy})` }}
                 >
@@ -755,7 +780,12 @@ function VideoSection({ videos, content, t }) {
               <div className="md:hidden text-center mt-6">
                 <Link
                   href="/videos"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-white"
+                  onClick={() => {
+                    if (typeof window !== 'undefined') {
+                      window.history.replaceState(null, '', window.location.pathname)
+                    }
+                  }}
+                  className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-white transition hover:scale-[1.02]"
                   style={{ background: `linear-gradient(135deg, ${BRAND.deep}, ${BRAND.navy})` }}
                 >
                   Watch More <ArrowRight className="w-4 h-4" />
@@ -1025,6 +1055,113 @@ function AccessSection({ content, t }) {
   )
 }
 
+function AwardsRecognitionSection({ content }) {
+  const silverImage = content?.awardsRecognition?.silverImage || ''
+  const goldImage = content?.awardsRecognition?.goldImage || ''
+
+  const awards = [
+    {
+      type: 'Silver Award',
+      title: 'BusinessWorld Marketing DigiNext event',
+      desc: 'For Influencer Marketing campaign',
+      highlight: '#SaanpKaVaarAspataalMeinHiUpchaar',
+      image: silverImage,
+      color: 'text-slate-500',
+      iconColor: 'text-slate-400',
+    },
+    {
+      type: 'Gold Award',
+      title: 'Economic Times – Brand Disruption Awards',
+      desc: 'Under the category',
+      highlight: 'Most Disruptive Rural/Regional Marketing Campaign',
+      image: goldImage,
+      color: 'text-amber-600',
+      iconColor: 'text-amber-500',
+    },
+  ]
+
+  return (
+    <section
+      id="awards-recognition"
+      className="py-10 md:py-12"
+      style={{ background: '#F7F3FF' }}
+    >
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-center">
+          <div className="w-full lg:w-64 xl:w-72 flex-shrink-0">
+            <span className="inline-block mb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#7C3AED]">
+              Awards & Recognition
+            </span>
+
+            <h2 className="font-display text-[24px] md:text-[26px] font-bold leading-snug mb-3 text-[#201F5E]">
+              Honouring Impact.
+              <br />
+              Inspiring Change.
+            </h2>
+
+            <p className="text-slate-600 text-[13px] leading-relaxed max-w-xs">
+              Recognized for bold and creative campaigns that are driving awareness
+              and saving lives across India.
+            </p>
+          </div>
+
+          <div className="flex-1 w-full min-w-0">
+            <div className="grid md:grid-cols-2 gap-4">
+              {awards.map((award, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 14 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, duration: 0.35 }}
+                  className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
+                >
+                  <div className="relative h-[175px] md:h-[185px] bg-slate-50 overflow-hidden">
+                    {award.image ? (
+                      <img
+                        src={award.image}
+                        alt={award.type}
+                        className="absolute inset-0 w-full h-full object-contain"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-slate-400 text-sm">
+                        Award Image
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="p-4 md:p-5">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Award className={`w-5 h-5 ${award.iconColor}`} />
+                      <span
+                        className={`text-[10px] font-bold uppercase tracking-[0.12em] ${award.color}`}
+                      >
+                        {award.type}
+                      </span>
+                    </div>
+
+                    <h3 className="font-display font-bold text-[15px] md:text-[16px] leading-snug mb-2 text-[#201F5E]">
+                      {award.title}
+                    </h3>
+
+                    <p className="text-slate-500 text-[12.5px] leading-relaxed mb-2">
+                      {award.desc}
+                    </p>
+
+                    <p className="text-[12.5px] font-bold leading-relaxed text-[#16A34A] break-words">
+                      {award.highlight}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function CommunicationSection({ content, t }) {
   const cards = content?.communication?.items || []
   const fits = ['contain', 'cover', 'contain']
@@ -1281,6 +1418,134 @@ function MythsSection({ content, t }) {
               </div>
             )
           })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function AboutBSVSection() {
+  const pillars = [
+    {
+      title: 'Awareness',
+      icon: Megaphone,
+      color: 'text-[#7C3AED]',
+      bg: 'bg-[#F1EAFF]',
+      border: 'border-[#E3D6FF]',
+    },
+    {
+      title: 'Access',
+      icon: MapPin,
+      color: 'text-[#0D71B8]',
+      bg: 'bg-[#EAF6FF]',
+      border: 'border-[#D6ECFF]',
+    },
+    {
+      title: 'Availability',
+      icon: Activity,
+      color: 'text-[#16A34A]',
+      bg: 'bg-[#EAFBF1]',
+      border: 'border-[#D7F5E3]',
+    },
+    {
+      title: 'Action',
+      icon: ShieldCheck,
+      color: 'text-[#EA580C]',
+      bg: 'bg-[#FFF1E8]',
+      border: 'border-[#FFDCC7]',
+    },
+  ]
+
+  return (
+    <section id="about-bsv" className="py-12 md:py-14 bg-white border-y border-slate-100">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="grid lg:grid-cols-[0.82fr_1.18fr] gap-8 lg:gap-12 items-center">
+          <div>
+            <span className="inline-block mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[#0D71B8]">
+              About BSV
+            </span>
+
+            <div className="w-10 h-[3px] rounded-full bg-[#0D71B8] mb-6" />
+
+            <h2 className="font-display text-[28px] md:text-[36px] font-bold leading-tight mb-6 text-[#201F5E]">
+              Strengthening India&apos;s Fight Against Snakebite
+            </h2>
+
+            <div className="w-10 h-[3px] rounded-full bg-[#2563EB] mb-6" />
+
+            <p className="text-slate-600 text-[15px] md:text-[16px] leading-relaxed max-w-md">
+              BSV, a Mankind Group Company and a trusted leader in high-quality
+              anti-snake venom (ASV) for over two decades, has intensified its
+              efforts with a comprehensive{' '}
+              <span className="font-bold text-[#201F5E]">4A Framework</span> to
+              address snakebite challenges nationwide.
+            </p>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.45 }}
+            className="rounded-2xl border border-[#DDEBFA] bg-[#F7FBFF] shadow-sm p-5 md:p-6 lg:p-7"
+          >
+            <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-3 mb-6">
+              {pillars.map((item, i) => {
+                const Icon = item.icon
+
+                return (
+                  <motion.div
+                    key={item.title}
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.08, duration: 0.35 }}
+                    className={`flex items-center justify-center gap-2 rounded-full bg-white border ${item.border} px-4 py-3 shadow-sm`}
+                  >
+                    <span className={`w-8 h-8 rounded-full ${item.bg} flex items-center justify-center`}>
+                      <Icon className={`w-4 h-4 ${item.color}`} />
+                    </span>
+
+                    <span className={`font-display font-bold text-[14px] ${item.color}`}>
+                      {item.title}
+                    </span>
+                  </motion.div>
+                )
+              })}
+            </div>
+
+            <div className="space-y-4">
+              <p className="text-slate-700 text-[14px] md:text-[15px] leading-relaxed">
+                The framework focuses on four critical pillars: Awareness, Access,
+                Availability, and Action, aimed at improving prevention, timely
+                intervention, and clinical outcomes in snakebite cases.
+              </p>
+
+              <p className="text-slate-700 text-[14px] md:text-[15px] leading-relaxed">
+                BSV&apos;s priority remains driving awareness by dispelling long-standing
+                myths and educating rural populations on evidence-based snakebite first
+                aid and treatment. Ensuring access to the nearest healthcare facility
+                and strengthening the availability of quality-assured ASV across rural
+                and semi-urban regions are vital to effective management.
+              </p>
+
+              <div className="rounded-xl bg-white border border-[#DDEBFA] border-l-4 border-l-[#16A34A] shadow-sm p-4 md:p-5">
+                <div className="flex gap-4 items-start">
+                  <div className="w-12 h-12 rounded-full bg-[#EAFBF1] flex items-center justify-center flex-shrink-0">
+                    <ShieldCheck className="w-6 h-6 text-[#16A34A]" />
+                  </div>
+
+                  <p className="text-slate-700 text-[14px] md:text-[15px] leading-relaxed">
+                    <span className="font-bold text-[#16A34A]">Most importantly, action</span>
+                    {' '}— administering the right treatment at the right time can
+                    significantly reduce mortality and prevent severe complications
+                    such as neurotoxicity (paralysis), coagulopathy, acute kidney
+                    injury, multi-organ dysfunction, and death.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -1711,11 +1976,13 @@ function App() {
         <VideoSection videos={videos} content={resolved} t={t} />
         <AwarenessSection content={resolved} t={t} />
         <AccessSection content={resolved} t={t} />
+        <AwardsRecognitionSection content={resolved} />
         <CommunicationSection content={resolved} t={t} />
         <OutreachSection content={resolved} t={t} />
         {/* <StoriesSection stories={stories} t={t} />
         <GallerySection albums={albums} t={t} /> */}
         <MythsSection content={resolved} t={t} />
+        <AboutBSVSection />
         <QuizSection t={t} lang={lang} />
         {/* <ResourcesSection content={resolved} lang={lang} t={t} /> */}
         <ContactSection content={resolved} t={t} />

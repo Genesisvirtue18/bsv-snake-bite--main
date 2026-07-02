@@ -2,6 +2,7 @@
 /* eslint-disable react-hooks/immutability, react-hooks/preserve-manual-memoization, react-hooks/set-state-in-effect */
 
 import { useEffect, useState, useCallback } from 'react'
+import { DEFAULT_CONTENT } from '@/lib/defaultContent'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -521,6 +522,138 @@ export default function AdminPage() {
                   </CardContent>
                 </Card>
 
+                {/* HERO STATS */}
+                <Card>
+                  <CardContent className="p-5 space-y-4">
+                    <div>
+                      <h3 className="font-display font-bold text-lg text-bsv-blue">
+                        Hero Stats Cards
+                      </h3>
+  
+                    </div>
+
+                    <div className="grid gap-4">
+                      {Array.from({ length: 5 }, (_, i) => {
+                        const defaults = DEFAULT_CONTENT.heroStats || []
+                        const saved = content.heroStats || []
+
+                        const stat = {
+                          id: defaults[i]?.id || `stat-${i + 1}`,
+                          value: 0,
+                          suffix: '+',
+                          label: '',
+                          ...(defaults[i] || {}),
+                          ...(saved[i] || {}),
+                        }
+
+                        return (
+                          <div key={i} className="border rounded-xl p-4 bg-white space-y-3">
+                            <div className="font-semibold text-sm text-bsv-blue">
+                              Card {i + 1}
+                            </div>
+
+                            <div className="grid md:grid-cols-[1fr_0.4fr_1.4fr] gap-3">
+                              <div>
+                                <Label>Number</Label>
+                                <Input
+                                  type="number"
+                                  value={stat.value || ''}
+                                  placeholder="250000"
+                                  onChange={e => {
+                                    const defaults = DEFAULT_CONTENT.heroStats || []
+                                    const saved = content.heroStats || []
+
+                                    const current = Array.from({ length: 5 }, (_, index) => ({
+                                      id: defaults[index]?.id || `stat-${index + 1}`,
+                                      value: 0,
+                                      suffix: '+',
+                                      label: '',
+                                      ...(defaults[index] || {}),
+                                      ...(saved[index] || {}),
+                                    }))
+
+                                    current[i] = {
+                                      ...current[i],
+                                      value: Number(e.target.value || 0),
+                                    }
+
+                                    setContent({
+                                      ...content,
+                                      heroStats: current,
+                                    })
+                                  }}
+                                />
+                              </div>
+
+                              <div>
+                                <Label>Suffix</Label>
+                                <Input
+                                  value={stat.suffix || ''}
+                                  placeholder="+"
+                                  onChange={e => {
+                                    const defaults = DEFAULT_CONTENT.heroStats || []
+                                    const saved = content.heroStats || []
+
+                                    const current = Array.from({ length: 5 }, (_, index) => ({
+                                      id: defaults[index]?.id || `stat-${index + 1}`,
+                                      value: 0,
+                                      suffix: '+',
+                                      label: '',
+                                      ...(defaults[index] || {}),
+                                      ...(saved[index] || {}),
+                                    }))
+
+                                    current[i] = {
+                                      ...current[i],
+                                      suffix: e.target.value,
+                                    }
+
+                                    setContent({
+                                      ...content,
+                                      heroStats: current,
+                                    })
+                                  }}
+                                />
+                              </div>
+
+                              <div>
+                                <Label>Text</Label>
+                                <Input
+                                  value={stat.label || ''}
+                                  placeholder="Victims' Lives Impacted"
+                                  onChange={e => {
+                                    const defaults = DEFAULT_CONTENT.heroStats || []
+                                    const saved = content.heroStats || []
+
+                                    const current = Array.from({ length: 5 }, (_, index) => ({
+                                      id: defaults[index]?.id || `stat-${index + 1}`,
+                                      value: 0,
+                                      suffix: '+',
+                                      label: '',
+                                      ...(defaults[index] || {}),
+                                      ...(saved[index] || {}),
+                                    }))
+
+                                    current[i] = {
+                                      ...current[i],
+                                      label: e.target.value,
+                                    }
+
+                                    setContent({
+                                      ...content,
+                                      heroStats: current,
+                                    })
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </CardContent>
+                </Card>
+
                 {/* AWARENESS */}
                 <Card>
                   <CardContent className="p-5 space-y-4">
@@ -829,6 +962,45 @@ export default function AdminPage() {
                   </CardContent>
                 </Card>
 
+                {/* AWARDS & RECOGNITION */}
+                <Card>
+                  <CardContent className="p-5 space-y-4">
+                    <h3 className="font-display font-bold text-lg text-bsv-blue">
+                      Awards & Recognition Images
+                    </h3>
+
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <MediaPicker
+                        label="Silver Award Image"
+                        value={content.awardsRecognition?.silverImage || ''}
+                        onChange={v =>
+                          setContent({
+                            ...content,
+                            awardsRecognition: {
+                              ...(content.awardsRecognition || {}),
+                              silverImage: v,
+                            },
+                          })
+                        }
+                      />
+
+                      <MediaPicker
+                        label="Gold Award Image"
+                        value={content.awardsRecognition?.goldImage || ''}
+                        onChange={v =>
+                          setContent({
+                            ...content,
+                            awardsRecognition: {
+                              ...(content.awardsRecognition || {}),
+                              goldImage: v,
+                            },
+                          })
+                        }
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+
                 {/* BRAND ADVOCACY */}
                 <Card>
                   <CardContent className="p-5 space-y-4">
@@ -1006,7 +1178,7 @@ export default function AdminPage() {
                     </div>))}</div>
                 </CardContent></Card>
 
-                
+
 
 
                 {/* MYTHS */}
