@@ -15,31 +15,37 @@
   "heroStats": [
     {
       "id": "lives",
-      "label": "Lives Impacted",
-      "value": 250000,
+      "value": 25000,
       "suffix": "+",
+      "label": "Lives Impacted",
       "icon": "Heart"
     },
     {
       "id": "workers",
-      "label": "Workers Trained",
-      "value": 12500,
+      "value": 1250,
       "suffix": "+",
+      "label": "Workers Trained",
       "icon": "GraduationCap"
     },
     {
       "id": "villages",
-      "label": "Villages Reached",
-      "value": 3800,
+      "value": 380,
       "suffix": "+",
+      "label": "Villages Reached",
       "icon": "MapPin"
     },
     {
       "id": "volunteers",
-      "label": "Active Volunteers",
-      "value": 4200,
+      "value": 420,
       "suffix": "+",
+      "label": "Active Volunteers",
       "icon": "Users"
+    },
+    {
+      "id": "field-force",
+      "value": 220,
+      "suffix": "+",
+      "label": "Field Force Active"
     }
   ],
   "logos": {
