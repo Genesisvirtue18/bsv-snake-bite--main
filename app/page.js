@@ -286,7 +286,7 @@ function Header({ lang, setLang, t, settings }) {
               </div>
             ))}
 
-            <button onClick={() => go('#outreach')} className="px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all duration-200 hover:bg-slate-50" style={{ color: BRAND.blue }} onMouseEnter={e => e.currentTarget.style.color = BSV_RED} onMouseLeave={e => e.currentTarget.style.color = BRAND.blue}>
+            <button onClick={() => go('#about-campaign')} className="px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all duration-200 hover:bg-slate-50" style={{ color: BRAND.blue }} onMouseEnter={e => e.currentTarget.style.color = BSV_RED} onMouseLeave={e => e.currentTarget.style.color = BRAND.blue}>
               {t.nav.outreach}
             </button>
           </nav>
@@ -572,7 +572,7 @@ function MissionSection({ content }) {
   )
 
   return (
-    <section className="section-pad bg-[#F7FAFF]">
+    <section id="about-campaign" className="section-pad bg-[#F7FAFF] scroll-mt-24">
       <div className="container mx-auto px-4">
         <div className="relative max-w-6xl mx-auto overflow-hidden rounded-[30px] bg-white border border-[#E7EEF8] shadow-[0_18px_45px_rgba(15,23,42,0.08)] px-6 py-6 md:px-12 md:py-8">
 
@@ -1737,7 +1737,7 @@ function Footer({ content, t, settings }) {
             <ul className="space-y-2 text-sm text-white/80">
               <li><a href="#awareness" className="hover:text-white">{t.nav.awareness}</a></li>
               <li><a href="#access" className="hover:text-white">{t.nav.access}</a></li>
-              <li><a href="#communication" className="hover:text-white">Brand Advocacy</a></li>
+              <li><a href="#communication" className="hover:text-white">{t.nav.communication}</a></li>
               <li><a href="/impact-stories" className="hover:text-white">{t.nav.stories}</a></li>
               <li><a href="/gallery" className="hover:text-white">{t.nav.gallery}</a></li>
               {/*<li><a href="#resources" className="hover:text-white">{t.nav.resources}</a></li>*/}

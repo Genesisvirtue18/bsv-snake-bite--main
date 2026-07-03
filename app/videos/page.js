@@ -70,7 +70,7 @@ export default function VideosPage() {
       {/* Header */}
       <div className="bg-white border-b border-slate-200 sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center gap-4">
-          <Link href="/#video" className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition">
+          <Link href="/" className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition">
             <ArrowLeft className="w-4 h-4" /> Back
           </Link>
           <div className="h-5 w-px bg-slate-200" />
