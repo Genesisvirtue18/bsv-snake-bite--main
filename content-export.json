@@ -3103,5 +3103,64 @@
   "awardsRecognition": {
     "silverImage": "/api/media/7d3b6093-587f-47bf-821e-226f693fe19e",
     "goldImage": "/api/media/7d3b6093-587f-47bf-821e-226f693fe19e"
-  }
+  },
+  "downloadMaterials": [
+    {
+      "id": "animated-videos",
+      "title": "Animated Videos",
+      "type": "videos",
+      "description": "Short awareness videos that educate and spread life-saving information.",
+      "image": "",
+      "buttonText": "Watch Videos",
+      "links": {
+        "en": "",
+        "hi": "https://youtu.be/_OxVTjRESgY?si=R-n8OhTCRWCUQVTs",
+        "mr": "",
+        "ta": "",
+        "te": "",
+        "kn": "",
+        "bn": "",
+        "gu": "",
+        "or": ""
+      }
+    },
+    {
+      "id": "comics",
+      "title": "Comics",
+      "type": "comics",
+      "description": "Informative comics for all age groups to understand snakebite prevention and care.",
+      "image": "",
+      "buttonText": "Download Comics",
+      "links": {
+        "en": "",
+        "hi": "",
+        "mr": "",
+        "ta": "",
+        "te": "",
+        "kn": "",
+        "bn": "",
+        "gu": "",
+        "or": ""
+      }
+    },
+    {
+      "id": "brochure",
+      "title": "Our Brochure",
+      "type": "brochure",
+      "description": "Detailed brochure on snakebite awareness, first-aid and treatment information.",
+      "image": "",
+      "buttonText": "Download Brochure",
+      "links": {
+        "en": "",
+        "hi": "",
+        "mr": "",
+        "ta": "",
+        "te": "",
+        "kn": "",
+        "bn": "",
+        "gu": "",
+        "or": ""
+      }
+    }
+  ]
 }
