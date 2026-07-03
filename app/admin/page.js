@@ -19,6 +19,78 @@ import { Shield, Save, RefreshCw, LogOut, Users, FileText, Award, MessageSquare,
 const LANGS = ['en', 'hi', 'mr', 'kn', 'ta', 'te', 'or', 'pa', 'bn']
 const LANG_NAMES = { en: 'English', hi: 'हिन्दी', mr: 'मराठी', kn: 'ಕನ್ನಡ', ta: 'தமிழ்', te: 'తెలుగు', or: 'ଓଡ଼ିଆ', pa: 'ਪੰਜਾਬੀ', bn: 'বাংলা' }
 
+const DOWNLOAD_LANGUAGES = [
+  { code: 'en', label: 'English' },
+  { code: 'hi', label: 'Hindi' },
+  { code: 'mr', label: 'Marathi' },
+  { code: 'ta', label: 'Tamil' },
+  { code: 'te', label: 'Telugu' },
+  { code: 'kn', label: 'Kannada' },
+  { code: 'bn', label: 'Bengali' },
+  { code: 'gu', label: 'Gujarati' },
+  { code: 'or', label: 'Odia' },
+]
+
+const DEFAULT_DOWNLOAD_MATERIALS = [
+  {
+    id: 'animated-videos',
+    title: 'Animated Videos',
+    type: 'videos',
+    description: 'Short awareness videos that educate and spread life-saving information.',
+    image: '',
+    buttonText: 'Watch Videos',
+    links: {
+      en: '',
+      hi: '',
+      mr: '',
+      ta: '',
+      te: '',
+      kn: '',
+      bn: '',
+      gu: '',
+      or: '',
+    },
+  },
+  {
+    id: 'comics',
+    title: 'Comics',
+    type: 'comics',
+    description: 'Informative comics for all age groups to understand snakebite prevention and care.',
+    image: '',
+    buttonText: 'Download Comics',
+    links: {
+      en: '',
+      hi: '',
+      mr: '',
+      ta: '',
+      te: '',
+      kn: '',
+      bn: '',
+      gu: '',
+      or: '',
+    },
+  },
+  {
+    id: 'brochure',
+    title: 'Our Brochure',
+    type: 'brochure',
+    description: 'Detailed brochure on snakebite awareness, first-aid and treatment information.',
+    image: '',
+    buttonText: 'Download Brochure',
+    links: {
+      en: '',
+      hi: '',
+      mr: '',
+      ta: '',
+      te: '',
+      kn: '',
+      bn: '',
+      gu: '',
+      or: '',
+    },
+  },
+]
+
 function MediaPicker({ value, onChange, label = 'Image' }) {
   const [open, setOpen] = useState(false)
   const [media, setMedia] = useState([])
@@ -448,6 +520,10 @@ export default function AdminPage() {
             <TabsTrigger value="onGround"><Drama className="w-4 h-4 mr-1" />On-Ground</TabsTrigger>
             <TabsTrigger value="massMedia"><Megaphone className="w-4 h-4 mr-1" />Mass Media</TabsTrigger>
             <TabsTrigger value="gallery"><Images className="w-4 h-4 mr-1" />Gallery</TabsTrigger>
+            <TabsTrigger value="library">
+              <BookOpen className="w-4 h-4 mr-1" />
+              Library
+            </TabsTrigger>
             <TabsTrigger value="videos"><Play className="w-4 h-4 mr-1" />Videos</TabsTrigger>
             {/*<TabsTrigger value="leads"><Users className="w-4 h-4 mr-1" />Leads</TabsTrigger>
             <TabsTrigger value="quiz"><Award className="w-4 h-4 mr-1" />Quiz Results</TabsTrigger>
@@ -529,7 +605,7 @@ export default function AdminPage() {
                       <h3 className="font-display font-bold text-lg text-bsv-blue">
                         Hero Stats Cards
                       </h3>
-  
+
                     </div>
 
                     <div className="grid gap-4">
@@ -1201,29 +1277,7 @@ export default function AdminPage() {
                     </div>))}
                 </CardContent></Card>
 
-                {/* RESOURCES */}
-                <Card><CardContent className="p-5">
-                  <div className="flex justify-between mb-3"><h3 className="font-display font-bold text-lg text-bsv-blue">Resources</h3><Button size="sm" variant="outline" onClick={() => setContent({ ...content, resources: [...content.resources, { id: `r${Date.now()}`, title: 'New', category: 'Posters', desc: '', preview: '', file: '#' }] })}><Plus className="w-3 h-3 mr-1" />Add</Button></div>
-                  {content.resources.map((r, i) => (
-                    <div key={r.id} className="border rounded p-3 mb-2 space-y-2">
-                      <div className="grid grid-cols-2 gap-2">
-                        <Input value={r.title} placeholder="Title" onChange={e => { const a = [...content.resources]; a[i] = { ...a[i], title: e.target.value }; setContent({ ...content, resources: a }) }} />
-                        <Input value={r.category} placeholder="Category" onChange={e => { const a = [...content.resources]; a[i] = { ...a[i], category: e.target.value }; setContent({ ...content, resources: a }) }} />
-                      </div>
-                      <MediaPicker label="Preview" value={r.preview} onChange={v => { const a = [...content.resources]; a[i] = { ...a[i], preview: v }; setContent({ ...content, resources: a }) }} />
-                      <MediaPicker
-                        label="Upload File / PDF"
-                        value={r.file}
-                        onChange={v => {
-                          const a = [...content.resources]
-                          a[i] = { ...a[i], file: v }
-                          setContent({ ...content, resources: a })
-                        }}
-                      />
-                      <Textarea rows={2} value={r.desc} placeholder="Description" onChange={e => { const a = [...content.resources]; a[i] = { ...a[i], desc: e.target.value }; setContent({ ...content, resources: a }) }} />
-                      <Button size="sm" variant="ghost" onClick={() => setContent({ ...content, resources: content.resources.filter((_, idx) => idx !== i) })}><Trash2 className="w-3 h-3 text-red-500" />Remove</Button>
-                    </div>))}
-                </CardContent></Card>
+
 
                 {/* CONTACT */}
                 <Card><CardContent className="p-5 space-y-3">
@@ -1272,6 +1326,16 @@ export default function AdminPage() {
           {/* VIDEOS */}
           <TabsContent value="videos">
             <VideosView api={api} token={token} reload={() => loadAll(token)} />
+          </TabsContent>
+
+          <TabsContent value="library">
+            {content && (
+              <LibraryMaterialsView
+                content={content}
+                setContent={setContent}
+                saveContent={saveContent}
+              />
+            )}
           </TabsContent>
 
           {/* GALLERY */}
@@ -2421,6 +2485,141 @@ function VideosView({ api, token, reload }) {
           </DialogContent>
         </Dialog>
       )}
+    </div>
+  )
+}
+
+function LibraryMaterialsView({ content, setContent, saveContent }) {
+  const savedItems = Array.isArray(content.downloadMaterials)
+    ? content.downloadMaterials
+    : DEFAULT_DOWNLOAD_MATERIALS
+
+  const getItems = () =>
+    DEFAULT_DOWNLOAD_MATERIALS.map((base) => {
+      const found = savedItems.find((m) => m.id === base.id)
+
+      return {
+        ...base,
+        ...(found || {}),
+        image: found?.image || base.image || '',
+        links: {
+          ...(base.links || {}),
+          ...(found?.links || {}),
+        },
+      }
+    })
+
+  const updateMaterial = (index, patch) => {
+    const current = getItems()
+
+    current[index] = {
+      ...current[index],
+      ...patch,
+      links: {
+        ...(current[index].links || {}),
+        ...(patch.links || {}),
+      },
+    }
+
+    setContent({
+      ...content,
+      downloadMaterials: current,
+    })
+  }
+
+  const resetMaterials = () => {
+    if (!confirm('Reset library images and links?')) return
+
+    setContent({
+      ...content,
+      downloadMaterials: DEFAULT_DOWNLOAD_MATERIALS,
+    })
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div>
+          <h2 className="font-display font-extrabold text-2xl text-bsv-blue">
+            Library
+          </h2>
+
+          <p className="text-sm text-slate-500">
+            Manage card images and language-wise Drive/YouTube links for Animated Videos, Comics, and Our Brochure.
+          </p>
+        </div>
+
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={resetMaterials}>
+            <RefreshCw className="w-4 h-4 mr-1" />
+            Reset
+          </Button>
+
+          <Button onClick={saveContent} className="bg-bsv-red">
+            <Save className="w-4 h-4 mr-1" />
+            Save Library
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid gap-4">
+        {getItems().map((item, i) => (
+          <Card key={item.id}>
+            <CardContent className="p-5 space-y-4">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <h3 className="font-display font-bold text-lg text-bsv-blue">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-xs text-slate-500">
+                    Frontend fixed card #{i + 1}
+                  </p>
+                </div>
+
+                <Badge variant="outline">
+                  {item.type}
+                </Badge>
+              </div>
+
+              <div className="rounded-xl border bg-white p-4">
+                <MediaPicker
+                  label="Card Image"
+                  value={item.image || ''}
+                  onChange={(v) => updateMaterial(i, { image: v })}
+                />
+              </div>
+
+              <div className="rounded-xl border bg-slate-50 p-4">
+                <div className="font-semibold text-sm text-bsv-blue mb-3">
+                  Language Wise Links
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-3">
+                  {DOWNLOAD_LANGUAGES.map((language) => (
+                    <div key={language.code}>
+                      <Label>{language.label} Link</Label>
+
+                      <Input
+                        value={item.links?.[language.code] || ''}
+                        placeholder="Paste Google Drive link"
+                        onChange={(e) =>
+                          updateMaterial(i, {
+                            links: {
+                              ...(item.links || {}),
+                              [language.code]: e.target.value,
+                            },
+                          })
+                        }
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   )
 }

@@ -147,7 +147,7 @@ function Header({ lang, setLang, t, settings }) {
         {
           title: 'Mass & Digital Media',
           items: [
-            { label: 'Campaign Films & Interviews', href: '#video', desc: 'Watch our videos' },
+            { label: 'Campaign Films & Interviews', href: '/videos', desc: 'Watch our videos' },
             { label: 'Bust the Myths', href: '#myths', desc: 'Myth vs Fact' },
           ]
         },
@@ -192,8 +192,8 @@ function Header({ lang, setLang, t, settings }) {
         {
           title: 'Video Content',
           items: [
-            { label: 'Awareness Videos', href: '#video', desc: 'Vox pops, myth-busting reels' },
-            { label: 'Watch the Campaign', href: '#video', desc: 'Campaign in action' },
+            { label: 'Awareness Videos', href: '/videos', desc: 'Vox pops, myth-busting reels' },
+            { label: 'Watch the Campaign', href: '/videos', desc: 'Campaign in action' },
           ]
         },
         {
@@ -1536,8 +1536,8 @@ function AboutBSVSection() {
                   </div>
 
                   <p className="text-slate-700 text-[14px] md:text-[15px] leading-relaxed">
-                    <span className="font-bold text-[#16A34A]">Most importantly, action</span>
-                    {' '}— administering the right treatment at the right time can
+                    <span className="font-bold text-[#16A34A]">Most importantly, Action</span>
+                    {' '}— Administering the right treatment at the right time can
                     significantly reduce mortality and prevent severe complications
                     such as neurotoxicity (paralysis), coagulopathy, acute kidney
                     injury, multi-organ dysfunction, and death.
