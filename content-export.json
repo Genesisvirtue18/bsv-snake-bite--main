@@ -2805,9 +2805,8 @@
       "title": "Animated Videos",
       "type": "videos",
       "description": "hello",
-      "image": "",
+      "image": "/api/media/7d3b6093-587f-47bf-821e-226f693fe19e",
       "buttonText": "Watch Videos",
-      "translations": {},
       "links": {
         "en": "",
         "hi": "https://youtu.be/_OxVTjRESgY?si=R-n8OhTCRWCUQVTs",
@@ -2818,16 +2817,16 @@
         "bn": "",
         "gu": "",
         "or": ""
-      }
+      },
+      "translations": {}
     },
     {
       "id": "comics",
       "title": "Comics",
       "type": "comics",
       "description": "Informative comics for all age group to understand snakebite prevention and care.",
-      "image": "",
+      "image": "/api/media/7d3b6093-587f-47bf-821e-226f693fe19e",
       "buttonText": "Download Comics",
-      "translations": {},
       "links": {
         "en": "",
         "hi": "",
@@ -2838,15 +2837,27 @@
         "bn": "",
         "gu": "",
         "or": ""
-      }
+      },
+      "translations": {}
     },
     {
       "id": "brochure",
       "title": "Our Brochure",
       "type": "brochure",
       "description": "Detailed brochure on snakebite awareness, first-aid and treatment information.",
-      "image": "",
+      "image": "/api/media/7d3b6093-587f-47bf-821e-226f693fe19e",
       "buttonText": "Download Brochure",
+      "links": {
+        "en": "",
+        "hi": "",
+        "mr": "",
+        "ta": "",
+        "te": "",
+        "kn": "",
+        "bn": "",
+        "gu": "",
+        "or": ""
+      },
       "translations": {
         "hi": {
           "title": "हेडिंग: हमारा ब्रोशर",
@@ -2858,17 +2869,6 @@
           "description": "ସାପ ଦାନ୍ତି ଜାଗୃକତା, ପ୍ରଥମ ସାହାଯ୍ୟ ଏବଂ ଚିକିତ୍ସା ସୂଚନା ଉପରେ ବିସ୍ତୃତ ବ୍ରୋଶ୍ୟୁର।",
           "buttonText": "ବ୍ରୋଶ୍ୟୁର ଡାଉନଲୋଡ୍ କରନ୍ତୁ"
         }
-      },
-      "links": {
-        "en": "",
-        "hi": "",
-        "mr": "",
-        "ta": "",
-        "te": "",
-        "kn": "",
-        "bn": "",
-        "gu": "",
-        "or": ""
       }
     }
   ]
