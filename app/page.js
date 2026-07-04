@@ -1976,12 +1976,12 @@ function App() {
         <VideoSection videos={videos} content={resolved} t={t} />
         <AwarenessSection content={resolved} t={t} />
         <AccessSection content={resolved} t={t} />
-        <AwardsRecognitionSection content={resolved} />
         <CommunicationSection content={resolved} t={t} />
         <OutreachSection content={resolved} t={t} />
         {/* <StoriesSection stories={stories} t={t} />
         <GallerySection albums={albums} t={t} /> */}
         <MythsSection content={resolved} t={t} />
+        <AwardsRecognitionSection content={resolved} />
         <AboutBSVSection />
         <QuizSection t={t} lang={lang} />
         {/* <ResourcesSection content={resolved} lang={lang} t={t} /> */}
