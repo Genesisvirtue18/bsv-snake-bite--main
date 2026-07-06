@@ -1083,74 +1083,76 @@ function AwardsRecognitionSection({ content }) {
   return (
     <section
       id="awards-recognition"
-      className="py-10 md:py-12"
+      className="section-pad"
       style={{ background: '#F7F3FF' }}
     >
       <div className="max-w-6xl mx-auto px-4">
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-center">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-center">
           <div className="w-full lg:w-64 xl:w-72 flex-shrink-0">
-            <span className="inline-block mb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#7C3AED]">
+            <span className="inline-block mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[#7C3AED]">
               Awards & Recognition
             </span>
 
-            <h2 className="font-display text-[24px] md:text-[26px] font-bold leading-snug mb-3 text-[#201F5E]">
+            <h2 className="font-display text-[26px] md:text-[28px] font-bold leading-snug mb-4 text-[#201F5E]">
               Honouring Impact.
               <br />
               Inspiring Change.
             </h2>
 
-            <p className="text-slate-600 text-[13px] leading-relaxed max-w-xs">
+            <p className="text-slate-600 text-[14px] leading-relaxed max-w-xs">
               Recognized for bold and creative campaigns that are driving awareness
               and saving lives across India.
             </p>
           </div>
 
           <div className="flex-1 w-full min-w-0">
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid lg:grid-cols-2 gap-5">
               {awards.map((award, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, y: 14 }}
+                  initial={{ opacity: 0, y: 18 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.1, duration: 0.35 }}
-                  className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
+                  transition={{ delay: i * 0.12, duration: 0.4 }}
+                  className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 h-full"
                 >
-                  <div className="relative h-[175px] md:h-[185px] bg-slate-50 overflow-hidden">
-                    {award.image ? (
-                      <img
-                        src={award.image}
-                        alt={award.type}
-                        className="absolute inset-0 w-full h-full object-contain"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-slate-400 text-sm">
-                        Award Image
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="p-4 md:p-5">
-                    <div className="flex items-center gap-2 mb-3">
-                      <Award className={`w-5 h-5 ${award.iconColor}`} />
-                      <span
-                        className={`text-[10px] font-bold uppercase tracking-[0.12em] ${award.color}`}
-                      >
-                        {award.type}
-                      </span>
+                  <div className="grid md:grid-cols-2 h-full">
+                    <div className="relative h-[245px] md:h-full min-h-[245px] bg-slate-100 overflow-hidden">
+                      {award.image ? (
+                        <img
+                          src={award.image}
+                          alt={award.type}
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-slate-400 text-sm">
+                          Award Image
+                        </div>
+                      )}
                     </div>
 
-                    <h3 className="font-display font-bold text-[15px] md:text-[16px] leading-snug mb-2 text-[#201F5E]">
-                      {award.title}
-                    </h3>
+                    <div className="p-5 md:p-6 flex flex-col justify-center min-h-[245px]">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Award className={`w-6 h-6 ${award.iconColor}`} />
+                        <span
+                          className={`text-[11px] font-bold uppercase tracking-[0.12em] ${award.color}`}
+                        >
+                          {award.type}
+                        </span>
+                      </div>
 
-                    <p className="text-slate-500 text-[12.5px] leading-relaxed mb-2">
-                      {award.desc}
-                    </p>
+                      <h3 className="font-display font-bold text-[16px] md:text-[17px] leading-snug mb-3 text-[#201F5E]">
+                        {award.title}
+                      </h3>
 
-                    <p className="text-[12.5px] font-bold leading-relaxed text-[#16A34A] break-words">
-                      {award.highlight}
-                    </p>
+                      <p className="text-slate-500 text-[13px] leading-relaxed mb-3">
+                        {award.desc}
+                      </p>
+
+                      <p className="text-[13px] font-bold leading-relaxed text-[#16A34A]">
+                        {award.highlight}
+                      </p>
+                    </div>
                   </div>
                 </motion.div>
               ))}
