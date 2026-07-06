@@ -992,66 +992,301 @@ function AwarenessSection({ content, t }) {
 
 function AccessSection({ content, t }) {
   const cards = content?.access?.items || []
+  const [active, setActive] = useState(null)
+
   const ACCENT = '#16A34A'
   const DEFAULT_LABELS = ['Training', 'KOL Program', 'Workshop']
-  const go = (href) => {
-    if (!href) return
-    if (href.startsWith('#')) document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
-    else if (typeof window !== 'undefined') window.location.href = href
+
+  const getYoutubeId = (url = '') => {
+    const value = String(url || '').trim()
+    if (!value) return ''
+
+    try {
+      const u = new URL(value)
+      const host = u.hostname.replace('www.', '')
+      const parts = u.pathname.split('/').filter(Boolean)
+
+      // https://youtu.be/VIDEO_ID
+      if (host.includes('youtu.be')) {
+        return parts[0] || ''
+      }
+
+      if (host.includes('youtube.com')) {
+        // https://youtube.com/live/VIDEO_ID?feature=share
+        if (parts[0] === 'live') {
+          return parts[1] || ''
+        }
+
+        // https://youtube.com/embed/VIDEO_ID
+        if (parts[0] === 'embed') {
+          return parts[1] || ''
+        }
+
+        // https://youtube.com/shorts/VIDEO_ID
+        if (parts[0] === 'shorts') {
+          return parts[1] || ''
+        }
+
+        // https://youtube.com/watch?v=VIDEO_ID
+        return u.searchParams.get('v') || ''
+      }
+
+      return ''
+    } catch {
+      return ''
+    }
   }
+
+  const getYoutubeLinks = (card, cardIndex) => {
+    const value = card.youtubeUrl || card.videoUrl || card.youtubeLink || ''
+
+    const links = String(value || '')
+      .split(/\n|,/)
+      .map(v => v.trim())
+      .filter(Boolean)
+
+    // Sirf 2nd card me multiple videos allowed
+    if (cardIndex === 1) {
+      return links
+    }
+
+    // Baaki cards me sirf first video chalega
+    return links.slice(0, 1)
+  }
+
+  const getYoutubeVideos = (card, cardIndex) => {
+    const links = getYoutubeLinks(card, cardIndex)
+
+    return links
+      .map((link, index) => ({
+        id: getYoutubeId(link),
+        link,
+        title: `Video ${index + 1}`,
+      }))
+      .filter(video => video.id)
+  }
+
+  const openVideo = (card, cardIndex) => {
+    const videos = getYoutubeVideos(card, cardIndex)
+
+    if (!videos.length) {
+      toast.error('Please add YouTube Video Link from admin')
+      return
+    }
+
+    setActive({
+      ...card,
+      cardIndex,
+      videos,
+      selectedVideo: videos[0],
+    })
+  }
+
   if (!cards.length) return null
+
   return (
-    <section id="access" style={{ background: '#F0FDF4' }} className="section-pad">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-center">
-          {/* Left info panel */}
-          <div className="w-full md:w-48 lg:w-60 xl:w-64 flex-shrink-0">
-            <span className="inline-block mb-3 text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: ACCENT }}>
-              {t.badges.access}
-            </span>
-            <h2 className="font-display text-[22px] md:text-[22px] lg:text-[26px] font-bold leading-snug mb-3" style={{ color: '#201F5E' }}>
-              {content?.access?.title || t.access.title}
-            </h2>
-            <p className="text-slate-600 text-[13px] leading-relaxed">
-              Ensuring clinicians in snakebite treatment have the training and resources to save lives.
-            </p>
-          </div>
-          {/* Cards */}
-          <div className="flex-1 w-full min-w-0">
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-              {cards.map((card, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1, duration: 0.4 }}
-                  onClick={() => go(card.href)}
-                  className="bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
-                >
-                  <div className="relative overflow-hidden" style={{ aspectRatio: '4/3', background: '#0f172a' }}>
-                    {card.image
-                      ? <img src={card.image} alt={card.title} className="w-full h-full object-contain group-hover:scale-[1.03] transition-transform duration-500" />
-                      : <div className="w-full h-full flex items-center justify-center"><Sparkles className="w-12 h-12 text-white/20" /></div>
-                    }
-                    <div className="absolute bottom-0 left-0 right-0 px-3 py-2" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)' }}>
-                      <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-white/85">{DEFAULT_LABELS[i]}</span>
-                    </div>
-                  </div>
-                  <div className="p-2.5 sm:p-4">
-                    <h3 className="font-display font-semibold text-[12px] sm:text-[14px] leading-snug mb-1 sm:mb-1.5 text-[#201F5E]">{card.title}</h3>
-                    <p className="hidden sm:block text-slate-500 text-[12px] leading-relaxed line-clamp-2 mb-3">{card.desc}</p>
-                    <div className="flex items-center gap-1 text-[11px] sm:text-[12px] font-semibold" style={{ color: ACCENT }}>
-                      {t.common.explore} <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+    <>
+      <section id="access" style={{ background: '#F0FDF4' }} className="section-pad">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-center">
+            {/* Left info panel */}
+            <div className="w-full md:w-48 lg:w-60 xl:w-64 flex-shrink-0">
+              <span
+                className="inline-block mb-3 text-[11px] font-bold uppercase tracking-[0.18em]"
+                style={{ color: ACCENT }}
+              >
+                {t.badges.access}
+              </span>
+
+              <h2
+                className="font-display text-[22px] md:text-[22px] lg:text-[26px] font-bold leading-snug mb-3"
+                style={{ color: '#201F5E' }}
+              >
+                {content?.access?.title || t.access.title}
+              </h2>
+
+              <p className="text-slate-600 text-[13px] leading-relaxed">
+                Ensuring clinicians in snakebite treatment have the training and resources to save lives.
+              </p>
+            </div>
+
+            {/* Cards */}
+            <div className="flex-1 w-full min-w-0">
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                {cards.map((card, i) => {
+                  const videos = getYoutubeVideos(card, i)
+                  const firstVideoId = videos[0]?.id || ''
+
+                  const thumbnail = firstVideoId
+                    ? `https://img.youtube.com/vi/${firstVideoId}/hqdefault.jpg`
+                    : card.image
+
+                  return (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.1, duration: 0.4 }}
+                      onClick={() => openVideo(card, i)}
+                      className="bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                    >
+                      <div
+                        className="relative overflow-hidden"
+                        style={{ aspectRatio: '4/3', background: '#0f172a' }}
+                      >
+                        {thumbnail ? (
+                          <img
+                            src={thumbnail}
+                            alt={card.title}
+                            className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <Sparkles className="w-12 h-12 text-white/20" />
+                          </div>
+                        )}
+
+                        {/* Sirf 2nd card me multiple video badge */}
+                        {i === 1 && videos.length > 1 && (
+                          <div className="absolute top-2 right-2 z-10 rounded-full bg-[#DE2527] px-2.5 py-1 text-[10px] font-bold text-white shadow-md">
+                            {videos.length} VIDEOS
+                          </div>
+                        )}
+
+                        {/* Play icon */}
+                        <div className="absolute inset-0 bg-black/15 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div
+                            className="w-11 h-11 rounded-full flex items-center justify-center shadow-lg"
+                            style={{ background: '#DE2527' }}
+                          >
+                            <Play className="w-5 h-5 fill-white text-white ml-0.5" />
+                          </div>
+                        </div>
+
+                        <div
+                          className="absolute bottom-0 left-0 right-0 px-3 py-2 pointer-events-none"
+                          style={{
+                            background:
+                              'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)',
+                          }}
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-white/85">
+                              {DEFAULT_LABELS[i] || 'Access'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="p-2.5 sm:p-4">
+                        <h3 className="font-display font-semibold text-[12px] sm:text-[14px] leading-snug mb-1 sm:mb-1.5 text-[#201F5E]">
+                          {card.title}
+                        </h3>
+
+                        <p className="hidden sm:block text-slate-500 text-[12px] leading-relaxed line-clamp-2 mb-3">
+                          {card.desc}
+                        </p>
+
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            openVideo(card, i)
+                          }}
+                          className="flex items-center gap-1 text-[11px] sm:text-[12px] font-semibold"
+                          style={{ color: ACCENT }}
+                        >
+                          {t.common.explore}
+                          <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                        </button>
+                      </div>
+                    </motion.div>
+                  )
+                })}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Access video popup */}
+      {active && (
+        <Dialog open onOpenChange={() => setActive(null)}>
+          <DialogContent className="z-[100000] max-w-4xl w-[94vw] max-h-[78vh] overflow-hidden p-0 bg-white rounded-xl mt-15 [&>button]:hidden">
+            <DialogHeader className="sr-only">
+              <DialogTitle>{active.title}</DialogTitle>
+              <DialogDescription>{active.desc || ''}</DialogDescription>
+            </DialogHeader>
+
+            {/* Top bar: video tabs + custom close button */}
+            <div className="flex items-center justify-between gap-3 bg-white border-b px-3 py-2">
+              <div className="flex-1 min-w-0 overflow-x-auto">
+                {active.cardIndex === 1 && active.videos?.length > 1 && (
+                  <div className="flex gap-2">
+                    {active.videos.map((video, index) => (
+                      <button
+                        key={video.id}
+                        type="button"
+                        onClick={() => {
+                          setActive({
+                            ...active,
+                            selectedVideo: video,
+                          })
+                        }}
+                        className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition whitespace-nowrap ${active.selectedVideo?.id === video.id
+                          ? 'bg-[#DE2527] text-white border-[#DE2527]'
+                          : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                          }`}
+                      >
+                        Video {index + 1}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setActive(null)}
+                className="flex-shrink-0 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition"
+                aria-label="Close video"
+              >
+                <X className="w-5 h-5 text-slate-700" />
+              </button>
+            </div>
+
+            {/* Video player */}
+            <div className="aspect-video w-full bg-black max-h-[52vh]">
+              <iframe
+                key={active.selectedVideo?.id}
+                className="w-full h-full"
+                src={`https://www.youtube.com/embed/${active.selectedVideo?.id}?autoplay=1&rel=0`}
+                title={active.selectedVideo?.title || active.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
+
+            {/* Title */}
+            <div className="p-4 bg-white">
+              <div
+                className="font-display font-semibold text-base sm:text-lg leading-snug"
+                style={{ color: BRAND.blue }}
+              >
+                {active.title}
+              </div>
+
+              {active.desc && (
+                <p className="text-sm text-slate-600 mt-1 line-clamp-2">
+                  {active.desc}
+                </p>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+    </>
   )
 }
 

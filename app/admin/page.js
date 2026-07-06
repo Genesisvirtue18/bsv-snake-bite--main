@@ -917,8 +917,7 @@ export default function AdminPage() {
                                 {
                                   title: '',
                                   desc: '',
-                                  image: '',
-                                  href: '',
+                                  youtubeUrl: '',
                                 },
                               ],
                             },
@@ -962,9 +961,14 @@ export default function AdminPage() {
                           <Label>Title</Label>
                           <Input
                             value={item.title || ''}
+                            placeholder="Training Modules"
                             onChange={e => {
                               const items = [...(content.access?.items || [])]
-                              items[i] = { ...items[i], title: e.target.value }
+
+                              items[i] = {
+                                ...items[i],
+                                title: e.target.value,
+                              }
 
                               setContent({
                                 ...content,
@@ -982,9 +986,14 @@ export default function AdminPage() {
                           <Textarea
                             rows={2}
                             value={item.desc || ''}
+                            placeholder="Medical resources, ASV administration protocols, clinical education."
                             onChange={e => {
                               const items = [...(content.access?.items || [])]
-                              items[i] = { ...items[i], desc: e.target.value }
+
+                              items[i] = {
+                                ...items[i],
+                                desc: e.target.value,
+                              }
 
                               setContent({
                                 ...content,
@@ -998,13 +1007,19 @@ export default function AdminPage() {
                         </div>
 
                         <div>
-                          <Label>Link</Label>
-                          <Input
-                            value={item.href || ''}
-                            placeholder="#stories / #outreach / #resources"
+                          <Label>YouTube Video Links</Label>
+                          <Textarea
+                            rows={3}
+                            value={item.youtubeUrl || item.videoUrl || item.youtubeLink || ''}
+                            placeholder={`https://www.youtube.com/watch?v=VIDEO_ID_1
+https://youtube.com/live/VIDEO_ID_2`}
                             onChange={e => {
                               const items = [...(content.access?.items || [])]
-                              items[i] = { ...items[i], href: e.target.value }
+
+                              items[i] = {
+                                ...items[i],
+                                youtubeUrl: e.target.value,
+                              }
 
                               setContent({
                                 ...content,
@@ -1015,24 +1030,11 @@ export default function AdminPage() {
                               })
                             }}
                           />
+
+                          <p className="text-xs text-slate-500 mt-1">
+                            Ek ya multiple YouTube links add kar sakte hain. Multiple videos ke liye har link new line me paste karein.
+                          </p>
                         </div>
-
-                        <MediaPicker
-                          label="Image"
-                          value={item.image || ''}
-                          onChange={v => {
-                            const items = [...(content.access?.items || [])]
-                            items[i] = { ...items[i], image: v }
-
-                            setContent({
-                              ...content,
-                              access: {
-                                ...(content.access || {}),
-                                items,
-                              },
-                            })
-                          }}
-                        />
                       </div>
                     ))}
                   </CardContent>
