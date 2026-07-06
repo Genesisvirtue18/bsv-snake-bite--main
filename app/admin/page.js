@@ -146,7 +146,12 @@ function MediaPicker({ value, onChange, label = 'Image' }) {
         <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
           <DialogHeader><DialogTitle>Media Library</DialogTitle></DialogHeader>
           <div className="mb-4 flex gap-2">
-            <Input type="file" onChange={e => e.target.files?.[0] && upload(e.target.files[0])} disabled={uploading} accept="image/*,application/pdf,video/*" />
+            <Input
+              type="file"
+              onChange={e => e.target.files?.[0] && upload(e.target.files[0])}
+              disabled={uploading}
+              accept="image/*,application/pdf,video/*,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            />
             <Button onClick={load} variant="outline" size="sm"><RefreshCw className="w-4 h-4" /></Button>
           </div>
           <div className="grid grid-cols-4 gap-3">
@@ -917,7 +922,9 @@ export default function AdminPage() {
                                 {
                                   title: '',
                                   desc: '',
+                                  image: '',
                                   youtubeUrl: '',
+                                  documents: [],
                                 },
                               ],
                             },
@@ -929,96 +936,116 @@ export default function AdminPage() {
                       </Button>
                     </div>
 
-                    {(content.access?.items || []).map((item, i) => (
-                      <div key={i} className="border rounded-xl p-4 bg-white space-y-3">
-                        <div className="flex items-center justify-between">
-                          <div className="font-semibold text-bsv-blue">
-                            Card {i + 1}
+                    {(content.access?.items || []).map((item, i) => {
+                      const isTraining = i === 0
+                      const isKOL = i === 1
+                      const isWorkshop = i === 2
+                      const docs = Array.isArray(item.documents) ? item.documents : []
+
+                      return (
+                        <div key={i} className="border rounded-xl p-4 bg-white space-y-3">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <div className="font-semibold text-bsv-blue">
+                                Card {i + 1}
+                              </div>
+
+                              <div className="text-xs text-muted-foreground">
+                                {isTraining && 'Training card - single YouTube video'}
+                                {isKOL && 'KOL Program card - multiple YouTube videos'}
+                                {isWorkshop && 'Workshop card - documents only'}
+                                {!isTraining && !isKOL && !isWorkshop && 'Access card'}
+                              </div>
+                            </div>
+
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="destructive"
+                              onClick={() => {
+                                const items = [...(content.access?.items || [])]
+                                items.splice(i, 1)
+
+                                setContent({
+                                  ...content,
+                                  access: {
+                                    ...(content.access || {}),
+                                    items,
+                                  },
+                                })
+                              }}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
                           </div>
 
-                          <Button
-                            type="button"
-                            size="sm"
-                            variant="destructive"
-                            onClick={() => {
-                              const items = [...(content.access?.items || [])]
-                              items.splice(i, 1)
-
-                              setContent({
-                                ...content,
-                                access: {
-                                  ...(content.access || {}),
-                                  items,
-                                },
-                              })
-                            }}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-
-                        <div>
-                          <Label>Title</Label>
-                          <Input
-                            value={item.title || ''}
-                            placeholder="Training Modules"
-                            onChange={e => {
-                              const items = [...(content.access?.items || [])]
-
-                              items[i] = {
-                                ...items[i],
-                                title: e.target.value,
+                          <div>
+                            <Label>Title</Label>
+                            <Input
+                              value={item.title || ''}
+                              placeholder={
+                                isWorkshop
+                                  ? 'Meeting with Policy-Makers'
+                                  : isKOL
+                                    ? 'Conferences & Webinars for snakebite training clinicians'
+                                    : 'Training Modules'
                               }
+                              onChange={e => {
+                                const items = [...(content.access?.items || [])]
+                                items[i] = {
+                                  ...items[i],
+                                  title: e.target.value,
+                                }
 
-                              setContent({
-                                ...content,
-                                access: {
-                                  ...(content.access || {}),
-                                  items,
-                                },
-                              })
-                            }}
-                          />
-                        </div>
+                                setContent({
+                                  ...content,
+                                  access: {
+                                    ...(content.access || {}),
+                                    items,
+                                  },
+                                })
+                              }}
+                            />
+                          </div>
 
-                        <div>
-                          <Label>Description</Label>
-                          <Textarea
-                            rows={2}
-                            value={item.desc || ''}
-                            placeholder="Medical resources, ASV administration protocols, clinical education."
-                            onChange={e => {
-                              const items = [...(content.access?.items || [])]
-
-                              items[i] = {
-                                ...items[i],
-                                desc: e.target.value,
+                          <div>
+                            <Label>Description</Label>
+                            <Textarea
+                              rows={2}
+                              value={item.desc || ''}
+                              placeholder={
+                                isWorkshop
+                                  ? 'Hands-on training for clinicians and RMPs.'
+                                  : isKOL
+                                    ? 'Beyond Monsoon, Be Ready for Monsoon'
+                                    : 'Medical resources, ASV administration protocols, clinical education.'
                               }
+                              onChange={e => {
+                                const items = [...(content.access?.items || [])]
+                                items[i] = {
+                                  ...items[i],
+                                  desc: e.target.value,
+                                }
 
-                              setContent({
-                                ...content,
-                                access: {
-                                  ...(content.access || {}),
-                                  items,
-                                },
-                              })
-                            }}
-                          />
-                        </div>
+                                setContent({
+                                  ...content,
+                                  access: {
+                                    ...(content.access || {}),
+                                    items,
+                                  },
+                                })
+                              }}
+                            />
+                          </div>
 
-                        <div>
-                          <Label>YouTube Video Links</Label>
-                          <Textarea
-                            rows={3}
-                            value={item.youtubeUrl || item.videoUrl || item.youtubeLink || ''}
-                            placeholder={`https://www.youtube.com/watch?v=VIDEO_ID_1
-https://youtube.com/live/VIDEO_ID_2`}
-                            onChange={e => {
+                          <MediaPicker
+                            label={isWorkshop ? 'Workshop Cover Image' : 'Card Image / Thumbnail'}
+                            value={item.image || ''}
+                            onChange={v => {
                               const items = [...(content.access?.items || [])]
-
                               items[i] = {
                                 ...items[i],
-                                youtubeUrl: e.target.value,
+                                image: v,
                               }
 
                               setContent({
@@ -1031,12 +1058,225 @@ https://youtube.com/live/VIDEO_ID_2`}
                             }}
                           />
 
-                          <p className="text-xs text-slate-500 mt-1">
-                            Ek ya multiple YouTube links add kar sakte hain. Multiple videos ke liye har link new line me paste karein.
-                          </p>
+                          {/* Card 1: Single YouTube video */}
+                          {isTraining && (
+                            <div>
+                              <Label>YouTube Video Link</Label>
+                              <Input
+                                value={item.youtubeUrl || item.videoUrl || item.youtubeLink || ''}
+                                placeholder="https://www.youtube.com/watch?v=VIDEO_ID"
+                                onChange={e => {
+                                  const items = [...(content.access?.items || [])]
+                                  items[i] = {
+                                    ...items[i],
+                                    youtubeUrl: e.target.value,
+                                  }
+
+                                  setContent({
+                                    ...content,
+                                    access: {
+                                      ...(content.access || {}),
+                                      items,
+                                    },
+                                  })
+                                }}
+                              />
+
+                              
+                            </div>
+                          )}
+
+                          {/* Card 2: Multiple YouTube videos */}
+                          {isKOL && (
+                            <div>
+                              <Label>YouTube Video Links</Label>
+                              <Textarea
+                                rows={3}
+                                value={item.youtubeUrl || item.videoUrl || item.youtubeLink || ''}
+                                placeholder={`https://youtube.com/live/VIDEO_ID_1
+https://www.youtube.com/watch?v=VIDEO_ID_2`}
+                                onChange={e => {
+                                  const items = [...(content.access?.items || [])]
+                                  items[i] = {
+                                    ...items[i],
+                                    youtubeUrl: e.target.value,
+                                  }
+
+                                  setContent({
+                                    ...content,
+                                    access: {
+                                      ...(content.access || {}),
+                                      items,
+                                    },
+                                  })
+                                }}
+                              />
+
+                              
+                            </div>
+                          )}
+
+                          {/* Card 3: Workshop documents */}
+                          {isWorkshop && (
+                            <div className="border-t pt-4 space-y-3">
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <Label>Workshop Documents</Label>
+                                  
+                                </div>
+
+                                <Button
+                                  type="button"
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => {
+                                    const items = [...(content.access?.items || [])]
+                                    const currentDocs = Array.isArray(items[i]?.documents)
+                                      ? items[i].documents
+                                      : []
+
+                                    items[i] = {
+                                      ...items[i],
+                                      documents: [
+                                        ...currentDocs,
+                                        {
+                                          title: '',
+                                          url: '',
+                                          size: '',
+                                        },
+                                      ],
+                                    }
+
+                                    setContent({
+                                      ...content,
+                                      access: {
+                                        ...(content.access || {}),
+                                        items,
+                                      },
+                                    })
+                                  }}
+                                >
+                                  <Plus className="w-4 h-4 mr-1" />
+                                  Add Document
+                                </Button>
+                              </div>
+
+                              {!docs.length && (
+                                <div className="rounded-lg border border-dashed border-slate-300 p-4 text-center text-sm text-slate-500">
+                                  No documents added yet.
+                                </div>
+                              )}
+
+                              {docs.map((doc, docIndex) => (
+                                <div
+                                  key={docIndex}
+                                  className="rounded-xl border bg-slate-50 p-3 space-y-3"
+                                >
+                                  <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2 font-semibold text-sm text-bsv-blue">
+                                      <FileText className="w-4 h-4" />
+                                      Document {docIndex + 1}
+                                    </div>
+
+                                    <Button
+                                      type="button"
+                                      size="sm"
+                                      variant="destructive"
+                                      onClick={() => {
+                                        const items = [...(content.access?.items || [])]
+                                        const currentDocs = Array.isArray(items[i]?.documents)
+                                          ? [...items[i].documents]
+                                          : []
+
+                                        currentDocs.splice(docIndex, 1)
+
+                                        items[i] = {
+                                          ...items[i],
+                                          documents: currentDocs,
+                                        }
+
+                                        setContent({
+                                          ...content,
+                                          access: {
+                                            ...(content.access || {}),
+                                            items,
+                                          },
+                                        })
+                                      }}
+                                    >
+                                      <Trash2 className="w-4 h-4" />
+                                    </Button>
+                                  </div>
+
+                                  <div>
+                                    <Label>Document Title</Label>
+                                    <Input
+                                      value={doc.title || ''}
+                                      placeholder="Workshop Agenda.docx"
+                                      onChange={e => {
+                                        const items = [...(content.access?.items || [])]
+                                        const currentDocs = Array.isArray(items[i]?.documents)
+                                          ? [...items[i].documents]
+                                          : []
+
+                                        currentDocs[docIndex] = {
+                                          ...currentDocs[docIndex],
+                                          title: e.target.value,
+                                        }
+
+                                        items[i] = {
+                                          ...items[i],
+                                          documents: currentDocs,
+                                        }
+
+                                        setContent({
+                                          ...content,
+                                          access: {
+                                            ...(content.access || {}),
+                                            items,
+                                          },
+                                        })
+                                      }}
+                                    />
+                                  </div>
+
+                                  <MediaPicker
+                                    label="Upload / Select DOCX or PDF"
+                                    value={doc.url || ''}
+                                    onChange={v => {
+                                      const items = [...(content.access?.items || [])]
+                                      const currentDocs = Array.isArray(items[i]?.documents)
+                                        ? [...items[i].documents]
+                                        : []
+
+                                      currentDocs[docIndex] = {
+                                        ...currentDocs[docIndex],
+                                        url: v,
+                                      }
+
+                                      items[i] = {
+                                        ...items[i],
+                                        documents: currentDocs,
+                                      }
+
+                                      setContent({
+                                        ...content,
+                                        access: {
+                                          ...(content.access || {}),
+                                          items,
+                                        },
+                                      })
+                                    }}
+                                  />
+
+                                  
+                                </div>
+                              ))}
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    ))}
+                      )
+                    })}
                   </CardContent>
                 </Card>
 

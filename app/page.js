@@ -1006,28 +1006,15 @@ function AccessSection({ content, t }) {
       const host = u.hostname.replace('www.', '')
       const parts = u.pathname.split('/').filter(Boolean)
 
-      // https://youtu.be/VIDEO_ID
       if (host.includes('youtu.be')) {
         return parts[0] || ''
       }
 
       if (host.includes('youtube.com')) {
-        // https://youtube.com/live/VIDEO_ID?feature=share
-        if (parts[0] === 'live') {
-          return parts[1] || ''
-        }
+        if (parts[0] === 'live') return parts[1] || ''
+        if (parts[0] === 'embed') return parts[1] || ''
+        if (parts[0] === 'shorts') return parts[1] || ''
 
-        // https://youtube.com/embed/VIDEO_ID
-        if (parts[0] === 'embed') {
-          return parts[1] || ''
-        }
-
-        // https://youtube.com/shorts/VIDEO_ID
-        if (parts[0] === 'shorts') {
-          return parts[1] || ''
-        }
-
-        // https://youtube.com/watch?v=VIDEO_ID
         return u.searchParams.get('v') || ''
       }
 
@@ -1046,11 +1033,9 @@ function AccessSection({ content, t }) {
       .filter(Boolean)
 
     // Sirf 2nd card me multiple videos allowed
-    if (cardIndex === 1) {
-      return links
-    }
+    if (cardIndex === 1) return links
 
-    // Baaki cards me sirf first video chalega
+    // Baaki video cards me sirf first video
     return links.slice(0, 1)
   }
 
@@ -1061,9 +1046,128 @@ function AccessSection({ content, t }) {
       .map((link, index) => ({
         id: getYoutubeId(link),
         link,
-        title: `Video ${index + 1}`,
+        title:
+          cardIndex === 1
+            ? index === 0
+              ? 'Beyond Monsoon'
+              : 'Be Ready for Monsoon'
+            : card.title || `Video ${index + 1}`,
       }))
       .filter(video => video.id)
+  }
+
+  const getFileNameFromUrl = (url = '') => {
+    try {
+      const clean = String(url).split('?')[0]
+      const name = clean.split('/').pop() || ''
+      return decodeURIComponent(name) || 'Document'
+    } catch {
+      return 'Document'
+    }
+  }
+
+  const getDocuments = (card) => {
+    const rawDocs =
+      card.documents ||
+      card.docs ||
+      card.files ||
+      card.workshopDocs ||
+      []
+
+    // Agar admin me documents array hoga
+    if (Array.isArray(rawDocs)) {
+      return rawDocs
+        .map((doc, index) => {
+          if (typeof doc === 'string') {
+            const parts = doc.split('|').map(v => v.trim())
+            const url = parts[1] || parts[0] || ''
+
+            return {
+              title: parts[1] ? parts[0] : getFileNameFromUrl(url),
+              url,
+            }
+          }
+
+          const url =
+            doc.url ||
+            doc.fileUrl ||
+            doc.documentUrl ||
+            doc.href ||
+            doc.src ||
+            ''
+
+          return {
+            title:
+              doc.title ||
+              doc.name ||
+              getFileNameFromUrl(url) ||
+              `Workshop Document ${index + 1}`,
+            url,
+          }
+        })
+        .filter(doc => doc.url)
+    }
+
+    // Agar admin me textarea/string me multiple document links aaye
+    return String(rawDocs || '')
+      .split('\n')
+      .map(v => v.trim())
+      .filter(Boolean)
+      .map((line) => {
+        const parts = line.split('|').map(v => v.trim())
+        const url = parts[1] || parts[0] || ''
+
+        return {
+          title: parts[1] ? parts[0] : getFileNameFromUrl(url),
+          url,
+        }
+      })
+      .filter(doc => doc.url)
+  }
+
+  const getAbsoluteUrl = (url = '') => {
+    if (!url) return ''
+
+    if (/^https?:\/\//i.test(url)) {
+      return url
+    }
+
+    if (typeof window === 'undefined') {
+      return url
+    }
+
+    return `${window.location.origin}${url.startsWith('/') ? '' : '/'}${url}`
+  }
+
+  const viewDocument = (doc) => {
+    const absoluteUrl = getAbsoluteUrl(doc.url)
+
+    if (!absoluteUrl) {
+      toast.error('Document URL not found')
+      return
+    }
+
+    const isLocal =
+      typeof window !== 'undefined' &&
+      (
+        window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1'
+      )
+
+    if (isLocal) {
+      toast.error('DOCX preview localhost par nahi chalega. Live site par View test karein, ya PDF upload karein.')
+      return
+    }
+
+    const isPdf = absoluteUrl.toLowerCase().split('?')[0].endsWith('.pdf')
+
+    if (isPdf) {
+      window.open(absoluteUrl, '_blank', 'noopener,noreferrer')
+      return
+    }
+
+    const officeViewerUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(absoluteUrl)}`
+    window.open(officeViewerUrl, '_blank', 'noopener,noreferrer')
   }
 
   const openVideo = (card, cardIndex) => {
@@ -1075,11 +1179,38 @@ function AccessSection({ content, t }) {
     }
 
     setActive({
+      type: 'video',
       ...card,
       cardIndex,
       videos,
       selectedVideo: videos[0],
     })
+  }
+
+  const openDocuments = (card, cardIndex) => {
+    const documents = getDocuments(card)
+
+    if (!documents.length) {
+      toast.error('Please add workshop documents from admin')
+      return
+    }
+
+    setActive({
+      type: 'documents',
+      ...card,
+      cardIndex,
+      documents,
+    })
+  }
+
+  const openCard = (card, cardIndex) => {
+    // 3rd card Workshop hai — isme video nahi, documents popup khulega
+    if (cardIndex === 2) {
+      openDocuments(card, cardIndex)
+      return
+    }
+
+    openVideo(card, cardIndex)
   }
 
   if (!cards.length) return null
@@ -1114,12 +1245,15 @@ function AccessSection({ content, t }) {
             <div className="flex-1 w-full min-w-0">
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 {cards.map((card, i) => {
-                  const videos = getYoutubeVideos(card, i)
+                  const isWorkshop = i === 2
+                  const videos = isWorkshop ? [] : getYoutubeVideos(card, i)
+                  const documents = isWorkshop ? getDocuments(card) : []
                   const firstVideoId = videos[0]?.id || ''
 
-                  const thumbnail = firstVideoId
-                    ? `https://img.youtube.com/vi/${firstVideoId}/hqdefault.jpg`
-                    : card.image
+                  const thumbnail =
+                    !isWorkshop && firstVideoId
+                      ? `https://img.youtube.com/vi/${firstVideoId}/hqdefault.jpg`
+                      : card.image
 
                   return (
                     <motion.div
@@ -1128,7 +1262,7 @@ function AccessSection({ content, t }) {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.1, duration: 0.4 }}
-                      onClick={() => openVideo(card, i)}
+                      onClick={() => openCard(card, i)}
                       className="bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
                     >
                       <div
@@ -1143,26 +1277,48 @@ function AccessSection({ content, t }) {
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">
-                            <Sparkles className="w-12 h-12 text-white/20" />
+                            {isWorkshop ? (
+                              <FileText className="w-12 h-12 text-white/25" />
+                            ) : (
+                              <Sparkles className="w-12 h-12 text-white/20" />
+                            )}
                           </div>
                         )}
 
-                        {/* Sirf 2nd card me multiple video badge */}
+                        {/* Card 2 video count */}
                         {i === 1 && videos.length > 1 && (
                           <div className="absolute top-2 right-2 z-10 rounded-full bg-[#DE2527] px-2.5 py-1 text-[10px] font-bold text-white shadow-md">
                             {videos.length} VIDEOS
                           </div>
                         )}
 
-                        {/* Play icon */}
-                        <div className="absolute inset-0 bg-black/15 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                          <div
-                            className="w-11 h-11 rounded-full flex items-center justify-center shadow-lg"
-                            style={{ background: '#DE2527' }}
-                          >
-                            <Play className="w-5 h-5 fill-white text-white ml-0.5" />
+                        {/* Workshop document badge */}
+                        {isWorkshop && (
+                          <div className="absolute top-2 right-2 z-10 rounded-full bg-[#B45309] px-2.5 py-1 text-[10px] font-bold text-white shadow-md">
+                            {documents.length > 0 ? `${documents.length} DOCS` : 'DOCUMENTS'}
                           </div>
-                        </div>
+                        )}
+
+                        {/* Play icon only for video cards */}
+                        {!isWorkshop && (
+                          <div className="absolute inset-0 bg-black/15 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div
+                              className="w-11 h-11 rounded-full flex items-center justify-center shadow-lg"
+                              style={{ background: '#DE2527' }}
+                            >
+                              <Play className="w-5 h-5 fill-white text-white ml-0.5" />
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Document icon hover only for workshop */}
+                        {isWorkshop && (
+                          <div className="absolute inset-0 bg-black/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="w-11 h-11 rounded-full flex items-center justify-center shadow-lg bg-white">
+                              <FileText className="w-5 h-5 text-[#B45309]" />
+                            </div>
+                          </div>
+                        )}
 
                         <div
                           className="absolute bottom-0 left-0 right-0 px-3 py-2 pointer-events-none"
@@ -1192,7 +1348,7 @@ function AccessSection({ content, t }) {
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation()
-                            openVideo(card, i)
+                            openCard(card, i)
                           }}
                           className="flex items-center gap-1 text-[11px] sm:text-[12px] font-semibold"
                           style={{ color: ACCENT }}
@@ -1210,21 +1366,20 @@ function AccessSection({ content, t }) {
         </div>
       </section>
 
-      {/* Access video popup */}
-      {active && (
+      {/* Video popup */}
+      {active?.type === 'video' && (
         <Dialog open onOpenChange={() => setActive(null)}>
-          <DialogContent className="z-[100000] max-w-4xl w-[94vw] max-h-[78vh] overflow-hidden p-0 bg-white rounded-xl mt-15 [&>button]:hidden">
+          <DialogContent className="z-[100000] max-w-4xl w-[94vw] max-h-[78vh] overflow-hidden p-0 bg-white rounded-xl mt-16 [&>button]:hidden">
             <DialogHeader className="sr-only">
               <DialogTitle>{active.title}</DialogTitle>
               <DialogDescription>{active.desc || ''}</DialogDescription>
             </DialogHeader>
 
-            {/* Top bar: video tabs + custom close button */}
             <div className="flex items-center justify-between gap-3 bg-white border-b px-3 py-2">
               <div className="flex-1 min-w-0 overflow-x-auto">
                 {active.cardIndex === 1 && active.videos?.length > 1 && (
                   <div className="flex gap-2">
-                    {active.videos.map((video, index) => (
+                    {active.videos.map((video) => (
                       <button
                         key={video.id}
                         type="button"
@@ -1234,12 +1389,13 @@ function AccessSection({ content, t }) {
                             selectedVideo: video,
                           })
                         }}
-                        className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition whitespace-nowrap ${active.selectedVideo?.id === video.id
-                          ? 'bg-[#DE2527] text-white border-[#DE2527]'
-                          : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
-                          }`}
+                        className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition whitespace-nowrap ${
+                          active.selectedVideo?.id === video.id
+                            ? 'bg-[#DE2527] text-white border-[#DE2527]'
+                            : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                        }`}
                       >
-                        Video {index + 1}
+                        {video.title}
                       </button>
                     ))}
                   </div>
@@ -1256,7 +1412,6 @@ function AccessSection({ content, t }) {
               </button>
             </div>
 
-            {/* Video player */}
             <div className="aspect-video w-full bg-black max-h-[52vh]">
               <iframe
                 key={active.selectedVideo?.id}
@@ -1268,7 +1423,6 @@ function AccessSection({ content, t }) {
               />
             </div>
 
-            {/* Title */}
             <div className="p-4 bg-white">
               <div
                 className="font-display font-semibold text-base sm:text-lg leading-snug"
@@ -1282,6 +1436,87 @@ function AccessSection({ content, t }) {
                   {active.desc}
                 </p>
               )}
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {/* Workshop documents popup */}
+      {active?.type === 'documents' && (
+        <Dialog open onOpenChange={() => setActive(null)}>
+          <DialogContent className="z-[100000] max-w-2xl w-[94vw] max-h-[78vh] overflow-hidden p-0 bg-white rounded-xl mt-16 [&>button]:hidden">
+            <DialogHeader className="sr-only">
+              <DialogTitle>{active.title}</DialogTitle>
+              <DialogDescription>{active.desc || ''}</DialogDescription>
+            </DialogHeader>
+
+            <div className="flex items-center justify-between gap-3 bg-white border-b px-4 py-3">
+              <div>
+                <span className="inline-flex rounded-full bg-[#B45309] px-3 py-1.5 text-xs font-bold text-white">
+                  Workshop Documents
+                </span>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setActive(null)}
+                className="flex-shrink-0 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition"
+                aria-label="Close documents"
+              >
+                <X className="w-5 h-5 text-slate-700" />
+              </button>
+            </div>
+
+            <div className="p-4 sm:p-5 overflow-y-auto max-h-[65vh]">
+              <h3
+                className="font-display font-semibold text-base sm:text-lg leading-snug mb-1"
+                style={{ color: BRAND.blue }}
+              >
+                {active.title}
+              </h3>
+
+              {active.desc && (
+                <p className="text-sm text-slate-600 mb-4">
+                  {active.desc}
+                </p>
+              )}
+
+              <div className="space-y-3">
+                {(active.documents || []).map((doc, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-3"
+                  >
+                    <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                      <FileText className="w-5 h-5 text-[#0D71B8]" />
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <div className="font-semibold text-sm text-[#201F5E] truncate">
+                        {doc.title}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => viewDocument(doc)}
+                        className="rounded-lg border border-[#0D71B8] px-3 py-1.5 text-xs font-semibold text-[#0D71B8] hover:bg-blue-50 transition"
+                      >
+                        View
+                      </button>
+
+                      <a
+                        href={doc.url}
+                        download
+                        className="rounded-lg bg-[#16A34A] px-3 py-1.5 text-xs font-semibold text-white hover:opacity-90 transition"
+                      >
+                        Download
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </DialogContent>
         </Dialog>
