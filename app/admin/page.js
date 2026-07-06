@@ -1038,25 +1038,27 @@ export default function AdminPage() {
                             />
                           </div>
 
-                          <MediaPicker
-                            label={isWorkshop ? 'Workshop Cover Image' : 'Card Image / Thumbnail'}
-                            value={item.image || ''}
-                            onChange={v => {
-                              const items = [...(content.access?.items || [])]
-                              items[i] = {
-                                ...items[i],
-                                image: v,
-                              }
+                          {isWorkshop && (
+                            <MediaPicker
+                              label="Workshop Cover Image"
+                              value={item.image || ''}
+                              onChange={v => {
+                                const items = [...(content.access?.items || [])]
+                                items[i] = {
+                                  ...items[i],
+                                  image: v,
+                                }
 
-                              setContent({
-                                ...content,
-                                access: {
-                                  ...(content.access || {}),
-                                  items,
-                                },
-                              })
-                            }}
-                          />
+                                setContent({
+                                  ...content,
+                                  access: {
+                                    ...(content.access || {}),
+                                    items,
+                                  },
+                                })
+                              }}
+                            />
+                          )}
 
                           {/* Card 1: Single YouTube video */}
                           {isTraining && (
@@ -1082,7 +1084,7 @@ export default function AdminPage() {
                                 }}
                               />
 
-                              
+
                             </div>
                           )}
 
@@ -1112,7 +1114,7 @@ https://www.youtube.com/watch?v=VIDEO_ID_2`}
                                 }}
                               />
 
-                              
+
                             </div>
                           )}
 
@@ -1122,7 +1124,7 @@ https://www.youtube.com/watch?v=VIDEO_ID_2`}
                               <div className="flex items-center justify-between">
                                 <div>
                                   <Label>Workshop Documents</Label>
-                                  
+
                                 </div>
 
                                 <Button
@@ -1269,7 +1271,7 @@ https://www.youtube.com/watch?v=VIDEO_ID_2`}
                                     }}
                                   />
 
-                                  
+
                                 </div>
                               ))}
                             </div>
