@@ -92,7 +92,7 @@ export default function NGONetworkPage() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {ngos.map(n => {
             const activityImages = n.activityImages || []
-            const coverImage = activityImages[0] || n.logo
+            const coverImage = n.logo || activityImages[0]
 
             return (
               <Card key={n.id} className="overflow-hidden hover:shadow-xl transition">

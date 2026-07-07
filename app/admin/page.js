@@ -1823,10 +1823,10 @@ function NgosView({ ngos, api, reload }) {
         {ngos.map(n => (
           <Card key={n.id}>
             <CardContent className="p-4 flex gap-3">
-              {(n.activityImages?.[0] || n.logo) && (
+              {(n.logo || n.activityImages?.[0]) && (
                 <img
-                  src={n.activityImages?.[0] || n.logo}
-                  alt=""
+                  src={n.logo || n.activityImages?.[0]}
+                  alt={n.name || 'NGO cover'}
                   className="w-20 h-20 object-cover rounded"
                 />
               )}
