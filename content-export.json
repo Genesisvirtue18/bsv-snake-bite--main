@@ -2897,6 +2897,17 @@
       "fileUrl": "/api/media/42412ee8-2a71-4253-9116-7eed72269083",
       "order": 1,
       "published": true
+    },
+    {
+      "id": "print-1783417844553",
+      "title": "xyz",
+      "type": "Brochure",
+      "language": "en",
+      "description": "",
+      "image": "/api/media/a3a176e5-de19-414f-ae1c-df7b2516a2c1",
+      "fileUrl": "/api/media/42412ee8-2a71-4253-9116-7eed72269083",
+      "order": 2,
+      "published": true
     }
   ]
 }
