@@ -2885,5 +2885,18 @@
         }
       }
     }
+  ],
+  "printMaterials": [
+    {
+      "id": "print-1783417644656",
+      "title": "xyz",
+      "type": "Brochure",
+      "language": "en",
+      "description": "xyz",
+      "image": "/api/media/7d3b6093-587f-47bf-821e-226f693fe19e",
+      "fileUrl": "/api/media/42412ee8-2a71-4253-9116-7eed72269083",
+      "order": 1,
+      "published": true
+    }
   ]
 }
