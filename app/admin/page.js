@@ -1165,7 +1165,7 @@ export default function AdminPage() {
                                       </div>
 
                                       <div>
-                                        <Label>YouTube / Google Drive Link</Label>
+                                        <Label>YouTube /  Drive Link</Label>
                                         <Input
                                           value={video.url || ''}
                                           placeholder="https://www.youtube.com/watch?v=..."
@@ -1345,7 +1345,7 @@ export default function AdminPage() {
                                   <div>
                                     <Label>{pageConfig.label} Documents</Label>
                                     <p className="text-xs text-slate-500">
-                                      Paste Google Drive link or upload/select PDF, DOC, or DOCX file.
+                                      Paste Drive link or upload/select PDF, DOC, or DOCX file.
                                     </p>
                                   </div>
 
@@ -2539,17 +2539,14 @@ function MassMediaAdminView({ content, setContent, api }) {
                   />
                 ) : (
                   <div>
-                    <Label>Google Drive Link</Label>
+                    <Label>Link</Label>
                     <Input
                       value={item.driveUrl || ''}
                       placeholder="Paste Google Drive folder / file link"
                       onChange={e => updateActivity(i, 'driveUrl', e.target.value)}
                     />
 
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Radio Coverage aur Influencers ke liye multiple photos upload nahi hoga.
-                      Yahan Google Drive folder/file link paste karo.
-                    </p>
+                    
                   </div>
                 )}
 
@@ -3357,7 +3354,7 @@ function LibraryMaterialsView({ content, setContent, saveContent }) {
                     />
 
                     <p className="mt-1 text-xs text-slate-500">
-                      Paste public Google Drive link only. Example: Anyone with the link can view.
+                      Paste public  Drive link only. Example: Anyone with the link can view.
                     </p>
                   </div>
                 </div>
