@@ -244,11 +244,8 @@ export default function KOLProgramPage() {
     const showImages = filter === 'all' || filter === 'images'
     const showDocuments = filter === 'all' || filter === 'documents'
 
-    const title = kolCard.title || 'KOL Program'
-    const description =
-        kolCard.desc ||
-        kolCard.description ||
-        'Conferences & webinars for snakebite training clinicians.'
+    const title = 'KOL Program'
+    const description = 'Conferences & Webinars for snakebite training clinicians'
 
     const activeAlbumImages = activeAlbum
         ? activeAlbum.images?.length
@@ -288,7 +285,7 @@ export default function KOLProgramPage() {
                             {title}
                         </div>
                         <div className="text-xs text-white/70">
-                            Conferences & webinars for snakebite training clinicians.
+                            {description}
                         </div>
                     </div>
                 </div>
