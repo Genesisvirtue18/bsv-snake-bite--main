@@ -2640,7 +2640,10 @@
             "title": "Training Images",
             "description": "",
             "coverImage": "/api/media/af593f1f-8fd5-4048-927d-abff3274ce67",
-            "images": []
+            "images": [
+              "/api/media/262576ad-eb89-48d7-9bb6-50084a381793",
+              "/api/media/7d475ec5-6e21-42e0-9ff3-95dcb030a343"
+            ]
           }
         ],
         "trainingDocuments": [
