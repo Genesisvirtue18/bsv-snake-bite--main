@@ -173,8 +173,8 @@ function Header({ lang, setLang, t, settings }) {
         {
           title: 'Training Modules',
           items: [
-            { label: 'ASV Protocols', href: '/downloads', desc: 'Clinical education materials' },
-            { label: 'Download Library', href: '/downloads', desc: 'All resources in one place' },
+            { label: 'ASV Protocols', href: '/training', desc: 'Clinical education materials' },
+            { label: 'KOL Program', href: '/kol-program', desc: 'Beyond Monsoon, Be Ready for Monsoon' },
           ]
         },
       ]
@@ -185,8 +185,8 @@ function Header({ lang, setLang, t, settings }) {
         {
           title: 'Print Materials',
           items: [
-            { label: 'Posters & Brochures', href: '/downloads', desc: 'Multilingual print materials' },
-            { label: 'All Downloads', href: '/downloads', desc: 'Complete resource library' },
+            { label: 'Posters & Brochures', href: '/brochures', desc: 'Multilingual materials' },
+            { label: 'Animated Videos & Comics', href: 'animated-videos-&-comics', desc: 'Videos and comics' },
           ]
         },
         {
@@ -199,7 +199,7 @@ function Header({ lang, setLang, t, settings }) {
         {
           title: 'Visual Stories',
           items: [
-            { label: 'Comic & Visual Stories', href: '/downloads', desc: 'Engaging visual content' },
+            { label: 'Comic & Visual Stories', href: '/animated-videos-&-comics', desc: 'Engaging visual content' },
             { label: 'Browse Gallery', href: '/gallery', desc: 'Photo gallery' },
           ]
         },
@@ -1032,10 +1032,8 @@ function AccessSection({ content, t }) {
       .map(v => v.trim())
       .filter(Boolean)
 
-    // Sirf 2nd card me multiple videos allowed
     if (cardIndex === 1) return links
 
-    // Baaki video cards me sirf first video
     return links.slice(0, 1)
   }
 
@@ -1074,7 +1072,6 @@ function AccessSection({ content, t }) {
       card.workshopDocs ||
       []
 
-    // Agar admin me documents array hoga
     if (Array.isArray(rawDocs)) {
       return rawDocs
         .map((doc, index) => {
@@ -1108,7 +1105,6 @@ function AccessSection({ content, t }) {
         .filter(doc => doc.url)
     }
 
-    // Agar admin me textarea/string me multiple document links aaye
     return String(rawDocs || '')
       .split('\n')
       .map(v => v.trim())
@@ -1204,7 +1200,19 @@ function AccessSection({ content, t }) {
   }
 
   const openCard = (card, cardIndex) => {
-    // 3rd card Workshop hai — isme video nahi, documents popup khulega
+    // Card 1: Training Modules inside page
+    if (cardIndex === 0) {
+      window.location.href = '/training'
+      return
+    }
+
+    // Card 2: KOL Program inside page
+    if (cardIndex === 1) {
+      window.location.href = '/kol-program'
+      return
+    }
+
+    // Card 3: Workshop documents popup
     if (cardIndex === 2) {
       openDocuments(card, cardIndex)
       return
@@ -1220,7 +1228,6 @@ function AccessSection({ content, t }) {
       <section id="access" style={{ background: '#F0FDF4' }} className="section-pad">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-center">
-            {/* Left info panel */}
             <div className="w-full md:w-48 lg:w-60 xl:w-64 flex-shrink-0">
               <span
                 className="inline-block mb-3 text-[11px] font-bold uppercase tracking-[0.18em]"
@@ -1241,19 +1248,15 @@ function AccessSection({ content, t }) {
               </p>
             </div>
 
-            {/* Cards */}
             <div className="flex-1 w-full min-w-0">
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 {cards.map((card, i) => {
                   const isWorkshop = i === 2
                   const videos = isWorkshop ? [] : getYoutubeVideos(card, i)
                   const documents = isWorkshop ? getDocuments(card) : []
-                  const firstVideoId = videos[0]?.id || ''
 
-                  const thumbnail =
-                    !isWorkshop && firstVideoId
-                      ? `https://img.youtube.com/vi/${firstVideoId}/hqdefault.jpg`
-                      : card.image
+                  // Admin cover image first priority
+                  const thumbnail = card.image || ''
 
                   return (
                     <motion.div
@@ -1285,33 +1288,15 @@ function AccessSection({ content, t }) {
                           </div>
                         )}
 
-                        {/* Card 2 video count */}
-                        {i === 1 && videos.length > 1 && (
-                          <div className="absolute top-2 right-2 z-10 rounded-full bg-[#DE2527] px-2.5 py-1 text-[10px] font-bold text-white shadow-md">
-                            {videos.length} VIDEOS
-                          </div>
-                        )}
 
-                        {/* Workshop document badge */}
                         {isWorkshop && (
                           <div className="absolute top-2 right-2 z-10 rounded-full bg-[#B45309] px-2.5 py-1 text-[10px] font-bold text-white shadow-md">
                             {documents.length > 0 ? `${documents.length} DOCS` : 'DOCUMENTS'}
                           </div>
                         )}
 
-                        {/* Play icon only for video cards */}
-                        {!isWorkshop && (
-                          <div className="absolute inset-0 bg-black/15 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <div
-                              className="w-11 h-11 rounded-full flex items-center justify-center shadow-lg"
-                              style={{ background: '#DE2527' }}
-                            >
-                              <Play className="w-5 h-5 fill-white text-white ml-0.5" />
-                            </div>
-                          </div>
-                        )}
+                        
 
-                        {/* Document icon hover only for workshop */}
                         {isWorkshop && (
                           <div className="absolute inset-0 bg-black/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                             <div className="w-11 h-11 rounded-full flex items-center justify-center shadow-lg bg-white">
@@ -1337,7 +1322,7 @@ function AccessSection({ content, t }) {
 
                       <div className="p-2.5 sm:p-4">
                         <h3 className="font-display font-semibold text-[12px] sm:text-[14px] leading-snug mb-1 sm:mb-1.5 text-[#201F5E]">
-                          {card.title}
+                          {i === 1 ? 'Kol Program' : card.title}
                         </h3>
 
                         <p className="hidden sm:block text-slate-500 text-[12px] leading-relaxed line-clamp-2 mb-3">
@@ -1366,7 +1351,6 @@ function AccessSection({ content, t }) {
         </div>
       </section>
 
-      {/* Video popup */}
       {active?.type === 'video' && (
         <Dialog open onOpenChange={() => setActive(null)}>
           <DialogContent className="z-[100000] max-w-4xl w-[94vw] max-h-[78vh] overflow-hidden p-0 bg-white rounded-xl mt-16 [&>button]:hidden">
@@ -1441,7 +1425,6 @@ function AccessSection({ content, t }) {
         </Dialog>
       )}
 
-      {/* Workshop documents popup */}
       {active?.type === 'documents' && (
         <Dialog open onOpenChange={() => setActive(null)}>
           <DialogContent className="z-[100000] max-w-2xl w-[94vw] max-h-[78vh] overflow-hidden p-0 bg-white rounded-xl mt-16 [&>button]:hidden">

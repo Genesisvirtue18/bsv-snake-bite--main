@@ -70,25 +70,6 @@ const DEFAULT_DOWNLOAD_MATERIALS = [
       or: '',
     },
   },
-  {
-    id: 'brochure',
-    title: 'Our Brochure',
-    type: 'brochure',
-    description: 'Detailed brochure on snakebite awareness, first-aid and treatment information.',
-    image: '',
-    buttonText: 'Download Brochure',
-    links: {
-      en: '',
-      hi: '',
-      mr: '',
-      ta: '',
-      te: '',
-      kn: '',
-      bn: '',
-      gu: '',
-      or: '',
-    },
-  },
 ]
 
 function MediaPicker({ value, onChange, label = 'Image' }) {
@@ -924,6 +905,13 @@ export default function AdminPage() {
                                   desc: '',
                                   image: '',
                                   youtubeUrl: '',
+                                  trainingVideos: '',
+                                  trainingVideoItems: [],
+                                  trainingImageAlbums: [],
+                                  trainingDocuments: [],
+                                  kolVideoItems: [],
+                                  kolImageAlbums: [],
+                                  kolDocuments: [],
                                   documents: [],
                                 },
                               ],
@@ -940,10 +928,81 @@ export default function AdminPage() {
                       const isTraining = i === 0
                       const isKOL = i === 1
                       const isWorkshop = i === 2
+
+                      const pageConfig = isTraining
+                        ? {
+                          label: 'Training',
+                          helper: 'This content will show on /training page. Add videos, image albums and documents.',
+                          videoKey: 'trainingVideoItems',
+                          albumKey: 'trainingImageAlbums',
+                          documentKey: 'trainingDocuments',
+                          defaultVideoTitle: 'Training Video',
+                          defaultAlbumTitle: 'Training Album',
+                          defaultDocumentTitle: 'Training Document',
+                          coverLabel: 'Training Card / Page Cover Image',
+                          titlePlaceholder: 'Training Modules',
+                          descPlaceholder: 'Medical resources, ASV administration protocols, clinical education.',
+                        }
+                        : isKOL
+                          ? {
+                            label: 'KOL Program',
+                            helper: 'This content will show on /kol-program page. Add videos, image albums and documents.',
+                            videoKey: 'kolVideoItems',
+                            albumKey: 'kolImageAlbums',
+                            documentKey: 'kolDocuments',
+                            defaultVideoTitle: 'KOL Video',
+                            defaultAlbumTitle: 'KOL Album',
+                            defaultDocumentTitle: 'KOL Document',
+                            coverLabel: 'KOL Card / Page Cover Image',
+                            titlePlaceholder: 'Conferences & Webinars for snakebite training clinicians',
+                            descPlaceholder: 'Beyond Monsoon, Be Ready for Monsoon',
+                          }
+                          : null
+
                       const docs = Array.isArray(item.documents) ? item.documents : []
 
+                      const getPageArray = key => Array.isArray(item?.[key]) ? item[key] : []
+                      const pageVideos = pageConfig ? getPageArray(pageConfig.videoKey) : []
+                      const pageAlbums = pageConfig ? getPageArray(pageConfig.albumKey) : []
+                      const pageDocuments = pageConfig ? getPageArray(pageConfig.documentKey) : []
+
+                      const updateItem = patch => {
+                        const items = [...(content.access?.items || [])]
+                        items[i] = {
+                          ...items[i],
+                          ...patch,
+                        }
+
+                        setContent({
+                          ...content,
+                          access: {
+                            ...(content.access || {}),
+                            items,
+                          },
+                        })
+                      }
+
+                      const updatePageArray = (key, updater) => {
+                        const items = [...(content.access?.items || [])]
+                        const current = Array.isArray(items[i]?.[key]) ? [...items[i][key]] : []
+                        const next = typeof updater === 'function' ? updater(current) : updater
+
+                        items[i] = {
+                          ...items[i],
+                          [key]: next,
+                        }
+
+                        setContent({
+                          ...content,
+                          access: {
+                            ...(content.access || {}),
+                            items,
+                          },
+                        })
+                      }
+
                       return (
-                        <div key={i} className="border rounded-xl p-4 bg-white space-y-3">
+                        <div key={i} className="border rounded-xl p-4 bg-white space-y-4">
                           <div className="flex items-center justify-between">
                             <div>
                               <div className="font-semibold text-bsv-blue">
@@ -951,8 +1010,8 @@ export default function AdminPage() {
                               </div>
 
                               <div className="text-xs text-muted-foreground">
-                                {isTraining && 'Training card - single YouTube video'}
-                                {isKOL && 'KOL Program card - multiple YouTube videos'}
+                                {isTraining && 'Training card - inside page with videos, image albums and documents'}
+                                {isKOL && 'KOL Program card - inside page with videos, image albums and documents'}
                                 {isWorkshop && 'Workshop card - documents only'}
                                 {!isTraining && !isKOL && !isWorkshop && 'Access card'}
                               </div>
@@ -986,25 +1045,9 @@ export default function AdminPage() {
                               placeholder={
                                 isWorkshop
                                   ? 'Meeting with Policy-Makers'
-                                  : isKOL
-                                    ? 'Conferences & Webinars for snakebite training clinicians'
-                                    : 'Training Modules'
+                                  : pageConfig?.titlePlaceholder || 'Access Card Title'
                               }
-                              onChange={e => {
-                                const items = [...(content.access?.items || [])]
-                                items[i] = {
-                                  ...items[i],
-                                  title: e.target.value,
-                                }
-
-                                setContent({
-                                  ...content,
-                                  access: {
-                                    ...(content.access || {}),
-                                    items,
-                                  },
-                                })
-                              }}
+                              onChange={e => updateItem({ title: e.target.value })}
                             />
                           </div>
 
@@ -1016,115 +1059,400 @@ export default function AdminPage() {
                               placeholder={
                                 isWorkshop
                                   ? 'Hands-on training for clinicians and RMPs.'
-                                  : isKOL
-                                    ? 'Beyond Monsoon, Be Ready for Monsoon'
-                                    : 'Medical resources, ASV administration protocols, clinical education.'
+                                  : pageConfig?.descPlaceholder || 'Access card description'
                               }
-                              onChange={e => {
-                                const items = [...(content.access?.items || [])]
-                                items[i] = {
-                                  ...items[i],
-                                  desc: e.target.value,
-                                }
-
-                                setContent({
-                                  ...content,
-                                  access: {
-                                    ...(content.access || {}),
-                                    items,
-                                  },
-                                })
-                              }}
+                              onChange={e => updateItem({ desc: e.target.value })}
                             />
                           </div>
 
-                          {isWorkshop && (
-                            <MediaPicker
-                              label="Workshop Cover Image"
-                              value={item.image || ''}
-                              onChange={v => {
-                                const items = [...(content.access?.items || [])]
-                                items[i] = {
-                                  ...items[i],
-                                  image: v,
-                                }
+                          {/* Card 1 and Card 2: Inside page settings */}
+                          {pageConfig && (
+                            <div className="border-t pt-4 space-y-5">
+                              <div className="rounded-xl border bg-green-50/60 p-4">
+                                <div className="font-semibold text-bsv-blue mb-1">
+                                  {pageConfig.label} Page Settings
+                                </div>
+                                <p className="text-xs text-slate-500">
+                                  {pageConfig.helper}
+                                </p>
+                              </div>
 
-                                setContent({
-                                  ...content,
-                                  access: {
-                                    ...(content.access || {}),
-                                    items,
-                                  },
-                                })
-                              }}
-                            />
-                          )}
-
-                          {/* Card 1: Single YouTube video */}
-                          {isTraining && (
-                            <div>
-                              <Label>YouTube Video Link</Label>
-                              <Input
-                                value={item.youtubeUrl || item.videoUrl || item.youtubeLink || ''}
-                                placeholder="https://www.youtube.com/watch?v=VIDEO_ID"
-                                onChange={e => {
-                                  const items = [...(content.access?.items || [])]
-                                  items[i] = {
-                                    ...items[i],
-                                    youtubeUrl: e.target.value,
-                                  }
-
-                                  setContent({
-                                    ...content,
-                                    access: {
-                                      ...(content.access || {}),
-                                      items,
-                                    },
-                                  })
-                                }}
+                              <MediaPicker
+                                label={pageConfig.coverLabel}
+                                value={item.image || ''}
+                                onChange={v => updateItem({ image: v })}
                               />
 
+                              <div className="rounded-xl border bg-white p-4 space-y-3">
+                                <div className="flex items-center justify-between gap-3">
+                                  <div>
+                                    <Label>{pageConfig.label} Videos</Label>
+                                    <p className="text-xs text-slate-500">
+                                      Add YouTube or Google Drive video links. Add cover image for Drive videos.
+                                    </p>
+                                  </div>
 
-                            </div>
-                          )}
+                                  <Button
+                                    type="button"
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => {
+                                      updatePageArray(pageConfig.videoKey, current => [
+                                        ...current,
+                                        {
+                                          title: '',
+                                          url: '',
+                                          coverImage: '',
+                                        },
+                                      ])
+                                    }}
+                                  >
+                                    <Plus className="w-4 h-4 mr-1" />
+                                    Add Video
+                                  </Button>
+                                </div>
 
-                          {/* Card 2: Multiple YouTube videos */}
-                          {isKOL && (
-                            <div>
-                              <Label>YouTube Video Links</Label>
-                              <Textarea
-                                rows={3}
-                                value={item.youtubeUrl || item.videoUrl || item.youtubeLink || ''}
-                                placeholder={`https://youtube.com/live/VIDEO_ID_1
-https://www.youtube.com/watch?v=VIDEO_ID_2`}
-                                onChange={e => {
-                                  const items = [...(content.access?.items || [])]
-                                  items[i] = {
-                                    ...items[i],
-                                    youtubeUrl: e.target.value,
-                                  }
+                                {!pageVideos.length && (
+                                  <div className="rounded-lg border border-dashed border-slate-300 p-4 text-center text-sm text-slate-500">
+                                    No {pageConfig.label.toLowerCase()} videos added yet.
+                                  </div>
+                                )}
 
-                                  setContent({
-                                    ...content,
-                                    access: {
-                                      ...(content.access || {}),
-                                      items,
-                                    },
-                                  })
-                                }}
-                              />
+                                {pageVideos.map((video, videoIndex) => (
+                                  <div
+                                    key={videoIndex}
+                                    className="rounded-xl border bg-slate-50 p-3 space-y-3"
+                                  >
+                                    <div className="flex items-center justify-between">
+                                      <div className="flex items-center gap-2 font-semibold text-sm text-bsv-blue">
+                                        <Play className="w-4 h-4" />
+                                        {pageConfig.defaultVideoTitle} {videoIndex + 1}
+                                      </div>
 
+                                      <Button
+                                        type="button"
+                                        size="sm"
+                                        variant="destructive"
+                                        onClick={() => {
+                                          updatePageArray(pageConfig.videoKey, current => {
+                                            const next = [...current]
+                                            next.splice(videoIndex, 1)
+                                            return next
+                                          })
+                                        }}
+                                      >
+                                        <Trash2 className="w-4 h-4" />
+                                      </Button>
+                                    </div>
 
+                                    <div className="grid md:grid-cols-2 gap-3">
+                                      <div>
+                                        <Label>Video Title</Label>
+                                        <Input
+                                          value={video.title || ''}
+                                          placeholder="Snakebite Management Training"
+                                          onChange={e => {
+                                            updatePageArray(pageConfig.videoKey, current => {
+                                              const next = [...current]
+                                              next[videoIndex] = {
+                                                ...next[videoIndex],
+                                                title: e.target.value,
+                                              }
+                                              return next
+                                            })
+                                          }}
+                                        />
+                                      </div>
+
+                                      <div>
+                                        <Label>YouTube / Google Drive Link</Label>
+                                        <Input
+                                          value={video.url || ''}
+                                          placeholder="https://www.youtube.com/watch?v=..."
+                                          onChange={e => {
+                                            updatePageArray(pageConfig.videoKey, current => {
+                                              const next = [...current]
+                                              next[videoIndex] = {
+                                                ...next[videoIndex],
+                                                url: e.target.value,
+                                              }
+                                              return next
+                                            })
+                                          }}
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <MediaPicker
+                                      label="Video Cover Image"
+                                      value={video.coverImage || ''}
+                                      onChange={v => {
+                                        updatePageArray(pageConfig.videoKey, current => {
+                                          const next = [...current]
+                                          next[videoIndex] = {
+                                            ...next[videoIndex],
+                                            coverImage: v,
+                                          }
+                                          return next
+                                        })
+                                      }}
+                                    />
+                                  </div>
+                                ))}
+                              </div>
+
+                              <div className="rounded-xl border bg-white p-4 space-y-4">
+                                <div className="flex items-center justify-between gap-3">
+                                  <div>
+                                    <Label>{pageConfig.label} Image Albums</Label>
+                                    <p className="text-xs text-slate-500">
+                                      Add album cover and multiple images. If album images are empty, cover image will show inside the popup.
+                                    </p>
+                                  </div>
+
+                                  <Button
+                                    type="button"
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => {
+                                      updatePageArray(pageConfig.albumKey, current => [
+                                        ...current,
+                                        {
+                                          id: `${pageConfig.albumKey}-${Date.now()}`,
+                                          title: '',
+                                          description: '',
+                                          coverImage: '',
+                                          images: [],
+                                        },
+                                      ])
+                                    }}
+                                  >
+                                    <Plus className="w-4 h-4 mr-1" />
+                                    Add Album
+                                  </Button>
+                                </div>
+
+                                {!pageAlbums.length && (
+                                  <div className="rounded-lg border border-dashed border-slate-300 p-4 text-center text-sm text-slate-500">
+                                    No {pageConfig.label.toLowerCase()} image albums added yet.
+                                  </div>
+                                )}
+
+                                {pageAlbums.map((album, albumIndex) => {
+                                  const albumImages = Array.isArray(album.images) ? album.images : []
+
+                                  return (
+                                    <div
+                                      key={album.id || albumIndex}
+                                      className="rounded-xl border bg-slate-50 p-4 space-y-4"
+                                    >
+                                      <div className="flex items-center justify-between">
+                                        <div className="font-semibold text-sm text-bsv-blue">
+                                          {pageConfig.defaultAlbumTitle} {albumIndex + 1}
+                                        </div>
+
+                                        <Button
+                                          type="button"
+                                          size="sm"
+                                          variant="destructive"
+                                          onClick={() => {
+                                            updatePageArray(pageConfig.albumKey, current => {
+                                              const next = [...current]
+                                              next.splice(albumIndex, 1)
+                                              return next
+                                            })
+                                          }}
+                                        >
+                                          <Trash2 className="w-4 h-4" />
+                                        </Button>
+                                      </div>
+
+                                      <div className="grid md:grid-cols-2 gap-3">
+                                        <div>
+                                          <Label>Album Title</Label>
+                                          <Input
+                                            value={album.title || ''}
+                                            placeholder="Launch event photos"
+                                            onChange={e => {
+                                              updatePageArray(pageConfig.albumKey, current => {
+                                                const next = [...current]
+                                                next[albumIndex] = {
+                                                  ...next[albumIndex],
+                                                  title: e.target.value,
+                                                }
+                                                return next
+                                              })
+                                            }}
+                                          />
+                                        </div>
+
+                                        <div>
+                                          <Label>Description</Label>
+                                          <Input
+                                            value={album.description || ''}
+                                            placeholder="Event photos / webinar screenshots"
+                                            onChange={e => {
+                                              updatePageArray(pageConfig.albumKey, current => {
+                                                const next = [...current]
+                                                next[albumIndex] = {
+                                                  ...next[albumIndex],
+                                                  description: e.target.value,
+                                                }
+                                                return next
+                                              })
+                                            }}
+                                          />
+                                        </div>
+                                      </div>
+
+                                      <MediaPicker
+                                        label="Album Cover Image"
+                                        value={album.coverImage || ''}
+                                        onChange={v => {
+                                          updatePageArray(pageConfig.albumKey, current => {
+                                            const next = [...current]
+                                            next[albumIndex] = {
+                                              ...next[albumIndex],
+                                              coverImage: v,
+                                            }
+                                            return next
+                                          })
+                                        }}
+                                      />
+
+                                      <MultiMediaPicker
+                                        label="Album Images"
+                                        values={albumImages}
+                                        max={40}
+                                        onChange={values => {
+                                          updatePageArray(pageConfig.albumKey, current => {
+                                            const next = [...current]
+                                            next[albumIndex] = {
+                                              ...next[albumIndex],
+                                              images: values,
+                                            }
+                                            return next
+                                          })
+                                        }}
+                                      />
+                                    </div>
+                                  )
+                                })}
+                              </div>
+
+                              <div className="rounded-xl border bg-white p-4 space-y-3">
+                                <div className="flex items-center justify-between gap-3">
+                                  <div>
+                                    <Label>{pageConfig.label} Documents</Label>
+                                    <p className="text-xs text-slate-500">
+                                      Paste Google Drive link or upload/select PDF, DOC, or DOCX file.
+                                    </p>
+                                  </div>
+
+                                  <Button
+                                    type="button"
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => {
+                                      updatePageArray(pageConfig.documentKey, current => [
+                                        ...current,
+                                        {
+                                          title: '',
+                                          url: '',
+                                        },
+                                      ])
+                                    }}
+                                  >
+                                    <Plus className="w-4 h-4 mr-1" />
+                                    Add Document
+                                  </Button>
+                                </div>
+
+                                {!pageDocuments.length && (
+                                  <div className="rounded-lg border border-dashed border-slate-300 p-4 text-center text-sm text-slate-500">
+                                    No {pageConfig.label.toLowerCase()} documents added yet.
+                                  </div>
+                                )}
+
+                                {pageDocuments.map((doc, docIndex) => (
+                                  <div
+                                    key={docIndex}
+                                    className="rounded-xl border bg-slate-50 p-3 space-y-3"
+                                  >
+                                    <div className="flex items-center justify-between">
+                                      <div className="flex items-center gap-2 font-semibold text-sm text-bsv-blue">
+                                        <FileText className="w-4 h-4" />
+                                        {pageConfig.defaultDocumentTitle} {docIndex + 1}
+                                      </div>
+
+                                      <Button
+                                        type="button"
+                                        size="sm"
+                                        variant="destructive"
+                                        onClick={() => {
+                                          updatePageArray(pageConfig.documentKey, current => {
+                                            const next = [...current]
+                                            next.splice(docIndex, 1)
+                                            return next
+                                          })
+                                        }}
+                                      >
+                                        <Trash2 className="w-4 h-4" />
+                                      </Button>
+                                    </div>
+
+                                    <div className="grid md:grid-cols-2 gap-3">
+                                      <div>
+                                        <Label>Document Title</Label>
+                                        <Input
+                                          value={doc.title || ''}
+                                          placeholder="ASV Administration Guidelines"
+                                          onChange={e => {
+                                            updatePageArray(pageConfig.documentKey, current => {
+                                              const next = [...current]
+                                              next[docIndex] = {
+                                                ...next[docIndex],
+                                                title: e.target.value,
+                                              }
+                                              return next
+                                            })
+                                          }}
+                                        />
+                                      </div>
+
+                                      <MediaPicker
+                                        label="Upload / Select File or Paste Drive Link"
+                                        value={doc.url || ''}
+                                        onChange={v => {
+                                          updatePageArray(pageConfig.documentKey, current => {
+                                            const next = [...current]
+                                            next[docIndex] = {
+                                              ...next[docIndex],
+                                              url: v,
+                                            }
+                                            return next
+                                          })
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
                             </div>
                           )}
 
                           {/* Card 3: Workshop documents */}
                           {isWorkshop && (
                             <div className="border-t pt-4 space-y-3">
+                              <MediaPicker
+                                label="Workshop Cover Image"
+                                value={item.image || ''}
+                                onChange={v => updateItem({ image: v })}
+                              />
+
                               <div className="flex items-center justify-between">
                                 <div>
                                   <Label>Workshop Documents</Label>
-
                                 </div>
 
                                 <Button
@@ -1132,30 +1460,15 @@ https://www.youtube.com/watch?v=VIDEO_ID_2`}
                                   size="sm"
                                   variant="outline"
                                   onClick={() => {
-                                    const items = [...(content.access?.items || [])]
-                                    const currentDocs = Array.isArray(items[i]?.documents)
-                                      ? items[i].documents
-                                      : []
-
-                                    items[i] = {
-                                      ...items[i],
-                                      documents: [
-                                        ...currentDocs,
-                                        {
-                                          title: '',
-                                          url: '',
-                                          size: '',
-                                        },
-                                      ],
-                                    }
-
-                                    setContent({
-                                      ...content,
-                                      access: {
-                                        ...(content.access || {}),
-                                        items,
+                                    const nextDocs = [
+                                      ...docs,
+                                      {
+                                        title: '',
+                                        url: '',
+                                        size: '',
                                       },
-                                    })
+                                    ]
+                                    updateItem({ documents: nextDocs })
                                   }}
                                 >
                                   <Plus className="w-4 h-4 mr-1" />
@@ -1185,25 +1498,9 @@ https://www.youtube.com/watch?v=VIDEO_ID_2`}
                                       size="sm"
                                       variant="destructive"
                                       onClick={() => {
-                                        const items = [...(content.access?.items || [])]
-                                        const currentDocs = Array.isArray(items[i]?.documents)
-                                          ? [...items[i].documents]
-                                          : []
-
-                                        currentDocs.splice(docIndex, 1)
-
-                                        items[i] = {
-                                          ...items[i],
-                                          documents: currentDocs,
-                                        }
-
-                                        setContent({
-                                          ...content,
-                                          access: {
-                                            ...(content.access || {}),
-                                            items,
-                                          },
-                                        })
+                                        const nextDocs = [...docs]
+                                        nextDocs.splice(docIndex, 1)
+                                        updateItem({ documents: nextDocs })
                                       }}
                                     >
                                       <Trash2 className="w-4 h-4" />
@@ -1216,28 +1513,12 @@ https://www.youtube.com/watch?v=VIDEO_ID_2`}
                                       value={doc.title || ''}
                                       placeholder="Workshop Agenda.docx"
                                       onChange={e => {
-                                        const items = [...(content.access?.items || [])]
-                                        const currentDocs = Array.isArray(items[i]?.documents)
-                                          ? [...items[i].documents]
-                                          : []
-
-                                        currentDocs[docIndex] = {
-                                          ...currentDocs[docIndex],
+                                        const nextDocs = [...docs]
+                                        nextDocs[docIndex] = {
+                                          ...nextDocs[docIndex],
                                           title: e.target.value,
                                         }
-
-                                        items[i] = {
-                                          ...items[i],
-                                          documents: currentDocs,
-                                        }
-
-                                        setContent({
-                                          ...content,
-                                          access: {
-                                            ...(content.access || {}),
-                                            items,
-                                          },
-                                        })
+                                        updateItem({ documents: nextDocs })
                                       }}
                                     />
                                   </div>
@@ -1246,32 +1527,14 @@ https://www.youtube.com/watch?v=VIDEO_ID_2`}
                                     label="Upload / Select DOCX or PDF"
                                     value={doc.url || ''}
                                     onChange={v => {
-                                      const items = [...(content.access?.items || [])]
-                                      const currentDocs = Array.isArray(items[i]?.documents)
-                                        ? [...items[i].documents]
-                                        : []
-
-                                      currentDocs[docIndex] = {
-                                        ...currentDocs[docIndex],
+                                      const nextDocs = [...docs]
+                                      nextDocs[docIndex] = {
+                                        ...nextDocs[docIndex],
                                         url: v,
                                       }
-
-                                      items[i] = {
-                                        ...items[i],
-                                        documents: currentDocs,
-                                      }
-
-                                      setContent({
-                                        ...content,
-                                        access: {
-                                          ...(content.access || {}),
-                                          items,
-                                        },
-                                      })
+                                      updateItem({ documents: nextDocs })
                                     }}
                                   />
-
-
                                 </div>
                               ))}
                             </div>
@@ -1281,6 +1544,7 @@ https://www.youtube.com/watch?v=VIDEO_ID_2`}
                     })}
                   </CardContent>
                 </Card>
+
 
                 {/* AWARDS & RECOGNITION */}
                 <Card>
@@ -2122,6 +2386,7 @@ function MassMediaAdminView({ content, setContent, api }) {
         description: '',
         image: '',
         gallery: [],
+        driveUrl: '',
         published: true,
       },
     ])
@@ -2129,10 +2394,12 @@ function MassMediaAdminView({ content, setContent, api }) {
 
   const updateActivity = (index, field, value) => {
     const items = [...massMediaData]
+
     items[index] = {
       ...items[index],
       [field]: value,
     }
+
     updateMassMedia(items)
   }
 
@@ -2154,8 +2421,9 @@ function MassMediaAdminView({ content, setContent, api }) {
           <h2 className="font-display font-extrabold text-2xl text-bsv-blue">
             Mass Media
           </h2>
+
           <p className="text-sm text-muted-foreground">
-            Manage PR Coverage, Radio Coverage and Influencer activities.
+            PR Coverage me gallery rahegi. Radio Coverage aur Influencers me Drive link open hoga.
           </p>
         </div>
 
@@ -2176,9 +2444,11 @@ function MassMediaAdminView({ content, setContent, api }) {
         <Card>
           <CardContent className="p-10 text-center">
             <Megaphone className="w-14 h-14 mx-auto text-slate-300 mb-3" />
+
             <h3 className="font-display font-bold text-lg text-bsv-blue">
               No Mass Media Activities Added
             </h3>
+
             <p className="text-sm text-muted-foreground">
               Click Add Activity to add PR, Radio or Influencer content.
             </p>
@@ -2187,86 +2457,114 @@ function MassMediaAdminView({ content, setContent, api }) {
       )}
 
       <div className="space-y-4">
-        {massMediaData.map((item, i) => (
-          <Card key={item.id || i}>
-            <CardContent className="p-5 space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="font-display font-bold text-lg text-bsv-blue">
-                  Activity {i + 1}
-                </h3>
+        {massMediaData.map((item, i) => {
+          const isPR = item.category === 'PR Coverage'
 
-                <Button
-                  size="sm"
-                  variant="destructive"
-                  onClick={() => deleteActivity(i)}
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </div>
+          return (
+            <Card key={item.id || i}>
+              <CardContent className="p-5 space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-display font-bold text-lg text-bsv-blue">
+                    Activity {i + 1}
+                  </h3>
 
-              <div>
-                <Label>Category</Label>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => deleteActivity(i)}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
 
-                <Select
-                  value={item.category || 'PR Coverage'}
-                  onValueChange={v => updateActivity(i, 'category', v)}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
+                <div>
+                  <Label>Category</Label>
 
-                  <SelectContent>
-                    <SelectItem value="PR Coverage">PR Coverage</SelectItem>
-                    <SelectItem value="Radio Coverage">Radio Coverage</SelectItem>
-                    <SelectItem value="Influencers">Influencers</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+                  <Select
+                    value={item.category || 'PR Coverage'}
+                    onValueChange={v => updateActivity(i, 'category', v)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
 
-              <div>
-                <Label>Title</Label>
-                <Input
-                  value={item.title || ''}
-                  placeholder="Activity title"
-                  onChange={e => updateActivity(i, 'title', e.target.value)}
+                    <SelectContent>
+                      <SelectItem value="PR Coverage">
+                        PR Coverage
+                      </SelectItem>
+
+                      <SelectItem value="Radio Coverage">
+                        Radio Coverage
+                      </SelectItem>
+
+                      <SelectItem value="Influencers">
+                        Influencers
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label>Title</Label>
+                  <Input
+                    value={item.title || ''}
+                    placeholder="Activity title"
+                    onChange={e => updateActivity(i, 'title', e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <Label>Description</Label>
+                  <Textarea
+                    rows={3}
+                    value={item.description || ''}
+                    placeholder="Add activity description here."
+                    onChange={e => updateActivity(i, 'description', e.target.value)}
+                  />
+                </div>
+
+
+                <MediaPicker
+                  label="Main Image / Cover Image"
+                  value={item.image || ''}
+                  onChange={v => updateActivity(i, 'image', v)}
                 />
-              </div>
 
-              <div>
-                <Label>Description</Label>
-                <Textarea
-                  rows={3}
-                  value={item.description || ''}
-                  placeholder="Add activity description here..."
-                  onChange={e =>
-                    updateActivity(i, 'description', e.target.value)
-                  }
-                />
-              </div>
+                {isPR ? (
+                  <MultiMediaPicker
+                    label="Gallery Images"
+                    values={item.gallery || []}
+                    onChange={v => updateActivity(i, 'gallery', v)}
+                    max={30}
+                  />
+                ) : (
+                  <div>
+                    <Label>Google Drive Link</Label>
+                    <Input
+                      value={item.driveUrl || ''}
+                      placeholder="Paste Google Drive folder / file link"
+                      onChange={e => updateActivity(i, 'driveUrl', e.target.value)}
+                    />
 
-              <MediaPicker
-                label="Main Image"
-                value={item.image || ''}
-                onChange={v => updateActivity(i, 'image', v)}
-              />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Radio Coverage aur Influencers ke liye multiple photos upload nahi hoga.
+                      Yahan Google Drive folder/file link paste karo.
+                    </p>
+                  </div>
+                )}
 
-              <MultiMediaPicker
-                label="Gallery Images"
-                values={item.gallery || []}
-                onChange={v => updateActivity(i, 'gallery', v)}
-                max={30}
-              />
+                <div className="flex items-center gap-2 border-t pt-3">
+                  <Switch
+                    checked={item.published !== false}
+                    onCheckedChange={v => updateActivity(i, 'published', v)}
+                  />
 
-              <div className="flex items-center gap-2 border-t pt-3">
-                <Switch
-                  checked={item.published !== false}
-                  onCheckedChange={v => updateActivity(i, 'published', v)}
-                />
-                <Label>Published</Label>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+                  <Label>Published</Label>
+                </div>
+              </CardContent>
+            </Card>
+          )
+        })}
       </div>
     </div>
   )
@@ -2738,6 +3036,10 @@ function LibraryMaterialsView({ content, setContent, saveContent }) {
     ? content.downloadMaterials
     : DEFAULT_DOWNLOAD_MATERIALS
 
+  const printMaterials = Array.isArray(content.printMaterials)
+    ? content.printMaterials
+    : []
+
   const getItems = () =>
     DEFAULT_DOWNLOAD_MATERIALS.map((base) => {
       const found = savedItems.find((m) => m.id === base.id)
@@ -2780,8 +3082,49 @@ function LibraryMaterialsView({ content, setContent, saveContent }) {
     })
   }
 
+  const sortedPrintMaterials = [...printMaterials].sort(
+    (a, b) => (Number(a.order) || 0) - (Number(b.order) || 0)
+  )
+
+  const addPrintMaterial = () => {
+    setContent({
+      ...content,
+      printMaterials: [
+        ...printMaterials,
+        {
+          id: `print-${Date.now()}`,
+          title: '',
+          language: 'en',
+          description: '',
+          image: '',
+          fileUrl: '',
+          order: printMaterials.length + 1,
+          published: true,
+        },
+      ],
+    })
+  }
+
+  const updatePrintMaterial = (id, patch) => {
+    setContent({
+      ...content,
+      printMaterials: printMaterials.map((item) =>
+        item.id === id ? { ...item, ...patch } : item
+      ),
+    })
+  }
+
+  const deletePrintMaterial = (id) => {
+    if (!confirm('Delete this poster/brochure?')) return
+
+    setContent({
+      ...content,
+      printMaterials: printMaterials.filter((item) => item.id !== id),
+    })
+  }
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
           <h2 className="font-display font-extrabold text-2xl text-bsv-blue">
@@ -2789,7 +3132,7 @@ function LibraryMaterialsView({ content, setContent, saveContent }) {
           </h2>
 
           <p className="text-sm text-slate-500">
-            Manage card images and language-wise Drive/YouTube links for Animated Videos, Comics, and Our Brochure.
+            Manage fixed Animated video and  cards and separate Posters & Brochures page items.
           </p>
         </div>
 
@@ -2806,64 +3149,233 @@ function LibraryMaterialsView({ content, setContent, saveContent }) {
         </div>
       </div>
 
-      <div className="grid gap-4">
-        {getItems().map((item, i) => (
-          <Card key={item.id}>
-            <CardContent className="p-5 space-y-4">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <h3 className="font-display font-bold text-lg text-bsv-blue">
-                    {item.title}
-                  </h3>
+      {/* Existing fixed download page cards */}
+      <Card>
+        <CardContent className="p-5 space-y-4">
+          <div>
+            <h3 className="font-display font-bold text-xl text-bsv-blue">
+              Downloads Page Fixed Cards
+            </h3>
 
-                  <p className="text-xs text-slate-500">
-                    Frontend fixed card #{i + 1}
-                  </p>
+            <p className="text-sm text-slate-500">
+              Animated Videos and Comics
+            </p>
+          </div>
+
+          <div className="grid gap-4">
+            {getItems().map((item, i) => (
+              <Card key={item.id}>
+                <CardContent className="p-5 space-y-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <h3 className="font-display font-bold text-lg text-bsv-blue">
+                        {item.title}
+                      </h3>
+
+                      <p className="text-xs text-slate-500">
+                        Frontend fixed card #{i + 1}
+                      </p>
+                    </div>
+
+                    <Badge variant="outline">
+                      {item.type}
+                    </Badge>
+                  </div>
+
+                  <div className="rounded-xl border bg-white p-4">
+                    <MediaPicker
+                      label="Card Image"
+                      value={item.image || ''}
+                      onChange={(v) => updateMaterial(i, { image: v })}
+                    />
+                  </div>
+
+                  <div className="rounded-xl border bg-slate-50 p-4">
+                    <div className="font-semibold text-sm text-bsv-blue mb-3">
+                      Language Wise Links
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-3">
+                      {DOWNLOAD_LANGUAGES.map((language) => (
+                        <div key={language.code}>
+                          <Label>{language.label} Link</Label>
+
+                          <Input
+                            value={item.links?.[language.code] || ''}
+                            placeholder="Paste Drive link"
+                            onChange={(e) =>
+                              updateMaterial(i, {
+                                links: {
+                                  ...(item.links || {}),
+                                  [language.code]: e.target.value,
+                                },
+                              })
+                            }
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Separate Posters & Brochures page items */}
+      <Card>
+        <CardContent className="p-5 space-y-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div>
+              <h3 className="font-display font-bold text-xl text-bsv-blue">
+                Posters & Brochures Page
+              </h3>
+
+              <p className="text-sm text-slate-500">
+                These items will show on /posters-brochures with All and language filters.
+              </p>
+            </div>
+
+            <Button type="button" onClick={addPrintMaterial} className="bg-bsv-red">
+              <Plus className="w-4 h-4 mr-1" />
+              Add Poster / Brochure
+            </Button>
+          </div>
+
+          {!sortedPrintMaterials.length && (
+            <div className="rounded-xl border border-dashed p-8 text-center text-sm text-slate-500">
+              No posters or brochures added yet.
+            </div>
+          )}
+
+          <div className="grid gap-4">
+            {sortedPrintMaterials.map((item, index) => (
+              <div
+                key={item.id}
+                className="rounded-xl border bg-white p-4 space-y-4"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <div className="font-semibold text-bsv-blue">
+                      Material {index + 1}
+                    </div>
+
+                    <div className="text-xs text-slate-500">
+                      Shows on /posters-brochures
+                    </div>
+                  </div>
+
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => deletePrintMaterial(item.id)}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
                 </div>
 
-                <Badge variant="outline">
-                  {item.type}
-                </Badge>
-              </div>
-
-              <div className="rounded-xl border bg-white p-4">
-                <MediaPicker
-                  label="Card Image"
-                  value={item.image || ''}
-                  onChange={(v) => updateMaterial(i, { image: v })}
-                />
-              </div>
-
-              <div className="rounded-xl border bg-slate-50 p-4">
-                <div className="font-semibold text-sm text-bsv-blue mb-3">
-                  Language Wise Links
+                <div>
+                  <Label>Title</Label>
+                  <Input
+                    value={item.title || ''}
+                    placeholder="Snakebite Awareness Brochure"
+                    onChange={(e) =>
+                      updatePrintMaterial(item.id, { title: e.target.value })
+                    }
+                  />
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-3">
-                  {DOWNLOAD_LANGUAGES.map((language) => (
-                    <div key={language.code}>
-                      <Label>{language.label} Link</Label>
+                  <div>
+                    <Label>Language</Label>
+                    <Select
+                      value={item.language || 'en'}
+                      onValueChange={(v) =>
+                        updatePrintMaterial(item.id, { language: v })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select language" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {DOWNLOAD_LANGUAGES.map((language) => (
+                          <SelectItem key={language.code} value={language.code}>
+                            {language.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                      <Input
-                        value={item.links?.[language.code] || ''}
-                        placeholder="Paste Google Drive link"
-                        onChange={(e) =>
-                          updateMaterial(i, {
-                            links: {
-                              ...(item.links || {}),
-                              [language.code]: e.target.value,
-                            },
-                          })
-                        }
-                      />
-                    </div>
-                  ))}
+                  <div>
+                    <Label>Order</Label>
+                    <Input
+                      type="number"
+                      value={item.order || 0}
+                      onChange={(e) =>
+                        updatePrintMaterial(item.id, {
+                          order: parseInt(e.target.value) || 0,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label>Description</Label>
+                  <Textarea
+                    rows={2}
+                    value={item.description || ''}
+                    placeholder="Short description for this material"
+                    onChange={(e) =>
+                      updatePrintMaterial(item.id, {
+                        description: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <MediaPicker
+                    label="Cover Image"
+                    value={item.image || ''}
+                    onChange={(v) =>
+                      updatePrintMaterial(item.id, { image: v })
+                    }
+                  />
+
+                  <div>
+                    <Label>Drive Link</Label>
+                    <Input
+                      value={item.fileUrl || ''}
+                      placeholder="Paste  Drive file link"
+                      onChange={(e) =>
+                        updatePrintMaterial(item.id, { fileUrl: e.target.value })
+                      }
+                    />
+
+                    <p className="mt-1 text-xs text-slate-500">
+                      Paste public Google Drive link only. Example: Anyone with the link can view.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Switch
+                    checked={item.published !== false}
+                    onCheckedChange={(checked) =>
+                      updatePrintMaterial(item.id, { published: checked })
+                    }
+                  />
+                  <Label>Published</Label>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

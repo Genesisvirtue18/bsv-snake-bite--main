@@ -58,34 +58,15 @@ const DEFAULT_DOWNLOAD_MATERIALS = [
             or: '',
         },
     },
-    {
-        id: 'brochure',
-        title: 'Our Brochure',
-        type: 'brochure',
-        description: 'Detailed brochure on snakebite awareness, first-aid and treatment information.',
-        image: '',
-        buttonText: 'Download Brochure',
-        links: {
-            en: '',
-            hi: '',
-            mr: '',
-            ta: '',
-            te: '',
-            kn: '',
-            bn: '',
-            gu: '',
-            or: '',
-        },
-    },
 ]
 
 const PAGE_TEXT = {
     en: {
         home: 'Home',
-        downloads: 'Downloads',
+        downloads: 'Animated Videos & Comics',
         resourceLibrary: 'Resource library',
         title: 'Resource Library',
-        subtitle: 'Download animated videos, comics, and our brochure\nin your preferred language.',
+        subtitle: 'Download animated videos and comics\nin your preferred language.',
         chooseLanguage: 'Choose Language',
         missingLink: 'link not added yet',
     },
@@ -94,7 +75,7 @@ const PAGE_TEXT = {
         downloads: 'डाउनलोड्स',
         resourceLibrary: 'संसाधन लाइब्रेरी',
         title: 'संसाधन लाइब्रेरी',
-        subtitle: 'एनिमेटेड वीडियो, कॉमिक्स और हमारी ब्रॉशर\nअपनी पसंदीदा भाषा में डाउनलोड करें।',
+        subtitle: 'एनिमेटेड वीडियो और कॉमिक्स\nअपनी पसंदीदा भाषा में डाउनलोड करें।',
         chooseLanguage: 'भाषा चुनें',
         missingLink: 'लिंक अभी नहीं जोड़ा गया है',
     },
@@ -103,7 +84,7 @@ const PAGE_TEXT = {
         downloads: 'डाउनलोड्स',
         resourceLibrary: 'संसाधन लायब्ररी',
         title: 'संसाधन लायब्ररी',
-        subtitle: 'अ‍ॅनिमेटेड व्हिडिओ, कॉमिक्स आणि आमचे ब्रोशर\nआपल्या पसंतीच्या भाषेत डाउनलोड करा.',
+        subtitle: 'अ‍ॅनिमेटेड व्हिडिओ आणि कॉमिक्स\nआपल्या पसंतीच्या भाषेत डाउनलोड करा.',
         chooseLanguage: 'भाषा निवडा',
         missingLink: 'लिंक अजून जोडलेली नाही',
     },
@@ -112,7 +93,7 @@ const PAGE_TEXT = {
         downloads: 'பதிவிறக்கங்கள்',
         resourceLibrary: 'வள நூலகம்',
         title: 'வள நூலகம்',
-        subtitle: 'அனிமேஷன் வீடியோக்கள், காமிக்ஸ் மற்றும் எங்கள் புரோஷரை\nஉங்கள் விருப்ப மொழியில் பதிவிறக்குங்கள்.',
+        subtitle: 'அனிமேஷன் வீடியோக்கள் மற்றும் காமிக்ஸை\nஉங்கள் விருப்ப மொழியில் பதிவிறக்குங்கள்.',
         chooseLanguage: 'மொழியைத் தேர்ந்தெடுக்கவும்',
         missingLink: 'இணைப்பு இன்னும் சேர்க்கப்படவில்லை',
     },
@@ -121,7 +102,7 @@ const PAGE_TEXT = {
         downloads: 'డౌన్‌లోడ్స్',
         resourceLibrary: 'వనరుల లైబ్రరీ',
         title: 'వనరుల లైబ్రరీ',
-        subtitle: 'యానిమేటెడ్ వీడియోలు, కామిక్స్ మరియు మా బ్రోచర్‌ను\nమీకు ఇష్టమైన భాషలో డౌన్‌లోడ్ చేసుకోండి.',
+        subtitle: 'యానిమేటెడ్ వీడియోలు మరియు కామిక్స్‌ను\nమీకు ఇష్టమైన భాషలో డౌన్‌లోడ్ చేసుకోండి.',
         chooseLanguage: 'భాషను ఎంచుకోండి',
         missingLink: 'లింక్ ఇంకా జోడించలేదు',
     },
@@ -130,7 +111,7 @@ const PAGE_TEXT = {
         downloads: 'ಡೌನ್‌ಲೋಡ್‌ಗಳು',
         resourceLibrary: 'ಸಂಪನ್ಮೂಲ ಗ್ರಂಥಾಲಯ',
         title: 'ಸಂಪನ್ಮೂಲ ಗ್ರಂಥಾಲಯ',
-        subtitle: 'ಅನಿಮೇಟೆಡ್ ವೀಡಿಯೊಗಳು, ಕಾಮಿಕ್ಸ್ ಮತ್ತು ನಮ್ಮ ಬ್ರೋಶರ್ ಅನ್ನು\nನಿಮ್ಮ ಇಷ್ಟದ ಭಾಷೆಯಲ್ಲಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ.',
+        subtitle: 'ಅನಿಮೇಟೆಡ್ ವೀಡಿಯೊಗಳು ಮತ್ತು ಕಾಮಿಕ್ಸ್ ಅನ್ನು\nನಿಮ್ಮ ಇಷ್ಟದ ಭಾಷೆಯಲ್ಲಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ.',
         chooseLanguage: 'ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ',
         missingLink: 'ಲಿಂಕ್ ಇನ್ನೂ ಸೇರಿಸಲಾಗಿಲ್ಲ',
     },
@@ -139,7 +120,7 @@ const PAGE_TEXT = {
         downloads: 'ডাউনলোডস',
         resourceLibrary: 'রিসোর্স লাইব্রেরি',
         title: 'রিসোর্স লাইব্রেরি',
-        subtitle: 'অ্যানিমেটেড ভিডিও, কমিক্স এবং আমাদের ব্রোশার\nআপনার পছন্দের ভাষায় ডাউনলোড করুন।',
+        subtitle: 'অ্যানিমেটেড ভিডিও এবং কমিক্স\nআপনার পছন্দের ভাষায় ডাউনলোড করুন।',
         chooseLanguage: 'ভাষা নির্বাচন করুন',
         missingLink: 'লিংক এখনও যোগ করা হয়নি',
     },
@@ -148,7 +129,7 @@ const PAGE_TEXT = {
         downloads: 'ડાઉનલોડ્સ',
         resourceLibrary: 'સંસાધન લાઇબ્રેરી',
         title: 'સંસાધન લાઇબ્રેરી',
-        subtitle: 'એનિમેટેડ વિડિઓઝ, કોમિક્સ અને અમારી બ્રોશર\nતમારી પસંદગીની ભાષામાં ડાઉનલોડ કરો.',
+        subtitle: 'એનિમેટેડ વિડિઓઝ અને કોમિક્સ\nતમારી પસંદગીની ભાષામાં ડાઉનલોડ કરો.',
         chooseLanguage: 'ભાષા પસંદ કરો',
         missingLink: 'લિંક હજી ઉમેરાઈ નથી',
     },
@@ -157,7 +138,7 @@ const PAGE_TEXT = {
         downloads: 'ଡାଉନଲୋଡ୍ସ',
         resourceLibrary: 'ସମ୍ବଳ ଲାଇବ୍ରେରୀ',
         title: 'ସମ୍ବଳ ଲାଇବ୍ରେରୀ',
-        subtitle: 'ଆନିମେଟେଡ୍ ଭିଡିଓ, କମିକ୍ସ ଏବଂ ଆମ ବ୍ରୋଶରକୁ\nଆପଣଙ୍କ ପସନ୍ଦର ଭାଷାରେ ଡାଉନଲୋଡ୍ କରନ୍ତୁ।',
+        subtitle: 'ଆନିମେଟେଡ୍ ଭିଡିଓ ଏବଂ କମିକ୍ସକୁ\nଆପଣଙ୍କ ପସନ୍ଦର ଭାଷାରେ ଡାଉନଲୋଡ୍ କରନ୍ତୁ।',
         chooseLanguage: 'ଭାଷା ବାଛନ୍ତୁ',
         missingLink: 'ଲିଙ୍କ ଏପର୍ଯ୍ୟନ୍ତ ଯୋଡାଯାଇନାହିଁ',
     },
@@ -260,53 +241,7 @@ const MATERIAL_TEXT = {
         },
     },
 
-    brochure: {
-        en: {
-            title: 'Our Brochure',
-            description: 'Detailed brochure on snakebite awareness, first-aid and treatment information.',
-            buttonText: 'Download Brochure',
-        },
-        hi: {
-            title: 'हमारी ब्रॉशर',
-            description: 'सांप के काटने की जागरूकता, प्राथमिक उपचार और इलाज की जानकारी वाली ब्रॉशर।',
-            buttonText: 'ब्रॉशर डाउनलोड करें',
-        },
-        mr: {
-            title: 'आमचे ब्रोशर',
-            description: 'सर्पदंश जागरूकता, प्राथमिक उपचार आणि उपचार माहिती असलेले सविस्तर ब्रोशर.',
-            buttonText: 'ब्रोशर डाउनलोड करा',
-        },
-        ta: {
-            title: 'எங்கள் புரோஷர்',
-            description: 'பாம்பு கடி விழிப்புணர்வு, முதலுதவி மற்றும் சிகிச்சை தகவல்கள் கொண்ட விரிவான புரோஷர்.',
-            buttonText: 'புரோஷர் பதிவிறக்கவும்',
-        },
-        te: {
-            title: 'మా బ్రోచర్',
-            description: 'పాము కాటు అవగాహన, ప్రథమ చికిత్స మరియు చికిత్స సమాచారంతో కూడిన బ్రోచర్.',
-            buttonText: 'బ్రోచర్ డౌన్‌లోడ్ చేయండి',
-        },
-        kn: {
-            title: 'ನಮ್ಮ ಬ್ರೋಶರ್',
-            description: 'ಹಾವು ಕಚ್ಚುವಿಕೆ ಜಾಗೃತಿ, ಪ್ರಥಮ ಚಿಕಿತ್ಸೆ ಮತ್ತು ಚಿಕಿತ್ಸೆ ಮಾಹಿತಿಯಿರುವ ವಿವರವಾದ ಬ್ರೋಶರ್.',
-            buttonText: 'ಬ್ರೋಶರ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ',
-        },
-        bn: {
-            title: 'আমাদের ব্রোশার',
-            description: 'সাপের কামড় সম্পর্কে সচেতনতা, প্রাথমিক চিকিৎসা ও চিকিৎসা তথ্যসহ বিস্তারিত ব্রোশার।',
-            buttonText: 'ব্রোশার ডাউনলোড করুন',
-        },
-        gu: {
-            title: 'અમારી બ્રોશર',
-            description: 'સર્પદંશ જાગૃતિ, પ્રાથમિક સારવાર અને સારવારની માહિતી ધરાવતી વિગતવાર બ્રોશર.',
-            buttonText: 'બ્રોશર ડાઉનલોડ કરો',
-        },
-        or: {
-            title: 'ଆମ ବ୍ରୋଶର',
-            description: 'ସାପ କାମୁଡ଼ା ସଚେତନତା, ପ୍ରଥମିକ ଚିକିତ୍ସା ଏବଂ ଚିକିତ୍ସା ସୂଚନା ଥିବା ବିସ୍ତୃତ ବ୍ରୋଶର।',
-            buttonText: 'ବ୍ରୋଶର ଡାଉନଲୋଡ୍ କରନ୍ତୁ',
-        },
-    },
+    
 }
 
 function getIcon(type) {
@@ -423,7 +358,7 @@ export default function DownloadsPage() {
                         </div>
                     </div>
 
-                    <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="mx-auto grid max-w-5xl gap-7 md:grid-cols-2">
                         {materials.map((item) => {
                             const translated = MATERIAL_TEXT[item.id]?.[lang] || MATERIAL_TEXT[item.id]?.en || {}
                             const Icon = getIcon(item.type)

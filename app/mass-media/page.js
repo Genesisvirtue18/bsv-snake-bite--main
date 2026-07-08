@@ -13,7 +13,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Megaphone,
-  CalendarDays,
+  ExternalLink,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -29,6 +29,7 @@ export default function MassMediaPage() {
   const [content, setContent] = useState(null)
   const [activeFilter, setActiveFilter] = useState('all')
   const [viewer, setViewer] = useState(null)
+  const [linkViewer, setLinkViewer] = useState(null)
   const [activeIndex, setActiveIndex] = useState(0)
 
   const BRAND = {
@@ -51,24 +52,121 @@ export default function MassMediaPage() {
       .filter(item => activeFilter === 'all' || item.category === activeFilter)
   }, [content, activeFilter])
 
+  const getActivityLink = (item) => {
+    return item.contentUrl || item.driveUrl || item.driveLink || item.link || item.href || ''
+  }
+
+  const getLinkType = (url = '') => {
+    const value = String(url || '').toLowerCase()
+
+    if (value.includes('drive.google.com')) return 'drive'
+    if (value.includes('youtube.com') || value.includes('youtu.be')) return 'youtube'
+    if (value.includes('facebook.com') || value.includes('fb.watch')) return 'facebook'
+    if (value.includes('instagram.com')) return 'instagram'
+
+    return 'link'
+  }
+
+  const getYoutubeId = (url = '') => {
+    try {
+      const u = new URL(url)
+      const host = u.hostname.replace('www.', '')
+      const parts = u.pathname.split('/').filter(Boolean)
+
+      if (host.includes('youtu.be')) return parts[0] || ''
+
+      if (host.includes('youtube.com')) {
+        if (parts[0] === 'shorts') return parts[1] || ''
+        if (parts[0] === 'embed') return parts[1] || ''
+        if (parts[0] === 'live') return parts[1] || ''
+        return u.searchParams.get('v') || ''
+      }
+
+      return ''
+    } catch {
+      return ''
+    }
+  }
+
+  const getEmbedUrl = (url = '') => {
+    const type = getLinkType(url)
+
+    if (type === 'youtube') {
+      const id = getYoutubeId(url)
+      return id ? `https://www.youtube.com/embed/${id}?rel=0` : ''
+    }
+
+    if (type === 'facebook') {
+      return `https://www.facebook.com/plugins/post.php?href=${encodeURIComponent(url)}&show_text=true&width=700`
+    }
+
+    if (type === 'instagram') {
+      const cleanUrl = String(url || '').split('?')[0].replace(/\/$/, '')
+
+      if (
+        cleanUrl.includes('/p/') ||
+        cleanUrl.includes('/reel/') ||
+        cleanUrl.includes('/tv/')
+      ) {
+        return `${cleanUrl}/embed`
+      }
+
+      return ''
+    }
+
+    return ''
+  }
+
   const openViewer = (item) => {
-    const images = item.gallery?.length
-      ? item.gallery
-      : item.image
-        ? [item.image]
-        : []
+    // PR Coverage: image gallery popup
+    if (item.category === 'PR Coverage') {
+      const images = item.gallery?.length
+        ? item.gallery
+        : item.image
+          ? [item.image]
+          : []
 
-    if (!images.length) return
+      if (!images.length) return
 
-    setViewer({ ...item, images })
-    setActiveIndex(0)
+      setViewer({ ...item, images })
+      setActiveIndex(0)
+      return
+    }
+
+    const activityLink = getActivityLink(item)
+    if (!activityLink) return
+
+    const linkType = getLinkType(activityLink)
+
+    // Radio Coverage: Drive/link direct new tab
+    if (item.category === 'Radio Coverage') {
+      window.open(activityLink, '_blank', 'noopener,noreferrer')
+      return
+    }
+
+    // Influencers: Drive direct redirect, YouTube/Facebook/Instagram same page modal
+    if (item.category === 'Influencers') {
+      if (linkType === 'drive') {
+        window.open(activityLink, '_blank', 'noopener,noreferrer')
+        return
+      }
+
+      setLinkViewer({
+        ...item,
+        link: activityLink,
+        linkType,
+        embedUrl: getEmbedUrl(activityLink),
+      })
+    }
   }
 
   const nextImage = () => {
+    if (!viewer?.images?.length) return
     setActiveIndex(i => (i + 1) % viewer.images.length)
   }
 
   const prevImage = () => {
+    if (!viewer?.images?.length) return
     setActiveIndex(i => (i - 1 + viewer.images.length) % viewer.images.length)
   }
 
@@ -77,6 +175,14 @@ export default function MassMediaPage() {
     if (category === 'Radio Coverage') return '#2563eb'
     if (category === 'Influencers') return '#7c3aed'
     return BRAND.blue
+  }
+
+  const getBadgeText = (linkType) => {
+    if (linkType === 'youtube') return 'YouTube'
+    if (linkType === 'facebook') return 'Facebook'
+    if (linkType === 'instagram') return 'Instagram'
+    if (linkType === 'drive') return 'Drive Link'
+    return 'Link'
   }
 
   return (
@@ -132,11 +238,10 @@ export default function MassMediaPage() {
                   <button
                     key={cat.key}
                     onClick={() => setActiveFilter(cat.key)}
-                    className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full border text-sm font-bold transition-all ${
-                      active
+                    className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full border text-sm font-bold transition-all ${active
                         ? 'text-white shadow-md'
                         : 'bg-white text-bsv-blue border-bsv-blue/30 hover:border-bsv-blue'
-                    }`}
+                      }`}
                     style={active ? { background: BRAND.red, borderColor: BRAND.red } : undefined}
                   >
                     <Icon className="w-4 h-4" />
@@ -170,9 +275,12 @@ export default function MassMediaPage() {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {items.map((item, i) => {
-                const gallery = item.gallery || []
+                const gallery = Array.isArray(item.gallery) ? item.gallery : []
                 const coverImage = item.image || gallery[0]
                 const color = categoryColor(item.category)
+                const isPR = item.category === 'PR Coverage'
+                const activityLink = getActivityLink(item)
+                const linkType = getLinkType(activityLink)
 
                 return (
                   <motion.div
@@ -203,9 +311,15 @@ export default function MassMediaPage() {
                             {item.category}
                           </div>
 
-                          {gallery.length > 0 && (
+                          {isPR && gallery.length > 0 && (
                             <div className="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-3 py-1.5 rounded-full">
                               {gallery.length} Photos
+                            </div>
+                          )}
+
+                          {!isPR && activityLink && (
+                            <div className="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-3 py-1.5 rounded-full">
+                              {getBadgeText(linkType)}
                             </div>
                           )}
                         </div>
@@ -220,22 +334,30 @@ export default function MassMediaPage() {
                           </p>
 
                           <div className="flex items-center justify-between gap-3">
-                            {item.date && (
-                              <div className="flex items-center gap-1 text-xs text-slate-500">
-                                <CalendarDays className="w-3.5 h-3.5" />
-                                {item.date}
-                              </div>
-                            )}
-
                             <Button
                               size="sm"
                               variant="outline"
                               className="ml-auto border-bsv-red text-bsv-red hover:bg-bsv-red hover:text-white"
                               onClick={() => openViewer(item)}
-                              disabled={!coverImage && !gallery.length}
+                              disabled={
+                                isPR
+                                  ? !coverImage && !gallery.length
+                                  : !activityLink
+                              }
                             >
-                              View Photos
-                              <Images className="w-4 h-4 ml-2" />
+                              {isPR
+                                ? 'View Photos'
+                                : item.category === 'Influencers'
+                                  ? linkType === 'drive'
+                                    ? 'Open Drive'
+                                    : 'View'
+                                  : 'Open Drive'}
+
+                              {isPR ? (
+                                <Images className="w-4 h-4 ml-2" />
+                              ) : (
+                                <ExternalLink className="w-4 h-4 ml-2" />
+                              )}
                             </Button>
                           </div>
                         </div>
@@ -297,15 +419,97 @@ export default function MassMediaPage() {
                   <button
                     key={i}
                     onClick={() => setActiveIndex(i)}
-                    className={`w-20 h-16 rounded overflow-hidden border-2 shrink-0 ${
-                      activeIndex === i ? 'border-bsv-red' : 'border-transparent'
-                    }`}
+                    className={`w-20 h-16 rounded overflow-hidden border-2 shrink-0 ${activeIndex === i ? 'border-bsv-red' : 'border-transparent'
+                      }`}
                   >
                     <img src={img} alt="" className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {linkViewer && (
+        <div className="fixed inset-0 z-50 bg-black/85 overflow-y-auto">
+          <div className="min-h-full flex items-center justify-center p-3 sm:p-6">
+            <div
+              className={[
+                'bg-white rounded-xl w-full overflow-hidden relative max-h-[90vh] flex flex-col',
+                linkViewer.linkType === 'instagram'
+                  ? 'max-w-[560px]'
+                  : 'max-w-4xl',
+              ].join(' ')}
+            >
+              <div className="flex items-center justify-between p-4 border-b shrink-0">
+                <div>
+                  <h3 className="font-display font-bold text-bsv-blue">
+                    {linkViewer.title}
+                  </h3>
+
+                  <p className="text-xs text-slate-500">
+                    {getBadgeText(linkViewer.linkType)}
+                  </p>
+                </div>
+
+                <button onClick={() => setLinkViewer(null)}>
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <div className="overflow-y-auto">
+                {linkViewer.linkType === 'youtube' && linkViewer.embedUrl ? (
+                  <div className="aspect-video bg-black">
+                    <iframe
+                      src={linkViewer.embedUrl}
+                      title={linkViewer.title}
+                      className="w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                ) : linkViewer.linkType === 'facebook' && linkViewer.embedUrl ? (
+                  <div className="bg-slate-100 p-3 sm:p-4 flex justify-center">
+                    <iframe
+                      src={linkViewer.embedUrl}
+                      title={linkViewer.title}
+                      className="w-full max-w-[700px] h-[70vh] max-h-[620px] bg-white"
+                      style={{ border: 'none', overflow: 'hidden' }}
+                      scrolling="yes"
+                      allow="encrypted-media; picture-in-picture; web-share"
+                      allowFullScreen
+                    />
+                  </div>
+                ) : linkViewer.linkType === 'instagram' && linkViewer.embedUrl ? (
+                  <div className="bg-slate-100 p-2 sm:p-4 flex justify-center">
+                    <iframe
+                      src={linkViewer.embedUrl}
+                      title={linkViewer.title}
+                      className="w-full max-w-[500px] h-[72vh] max-h-[680px] min-h-[520px] bg-white"
+                      style={{ border: 'none', overflow: 'hidden' }}
+                      scrolling="yes"
+                      allow="encrypted-media; picture-in-picture; web-share"
+                      allowFullScreen
+                    />
+                  </div>
+                ) : (
+                  <div className="p-8 text-center">
+                    <p className="text-slate-600 mb-5">
+                      This link cannot be embedded directly. Open button se link new tab me khulega.
+                    </p>
+
+                    <Button
+                      className="bg-bsv-red"
+                      onClick={() => window.open(linkViewer.link, '_blank', 'noopener,noreferrer')}
+                    >
+                      Open Link
+                      <ExternalLink className="w-4 h-4 ml-2" />
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       )}

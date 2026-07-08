@@ -1,0 +1,409 @@
+'use client'
+
+import { useEffect, useMemo, useState } from 'react'
+import Link from 'next/link'
+import {
+  ArrowLeft,
+  ExternalLink,
+  FileText,
+  Image as ImageIcon,
+  Languages,
+} from 'lucide-react'
+
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+
+const LANGUAGE_OPTIONS = [
+  { code: 'all', label: 'All' },
+  { code: 'en', label: 'English' },
+  { code: 'hi', label: 'हिन्दी' },
+  { code: 'mr', label: 'मराठी' },
+  { code: 'ta', label: 'தமிழ்' },
+  { code: 'te', label: 'తెలుగు' },
+  { code: 'kn', label: 'ಕನ್ನಡ' },
+  { code: 'bn', label: 'বাংলা' },
+  { code: 'gu', label: 'ગુજરાતી' },
+  { code: 'or', label: 'ଓଡ଼ିଆ' },
+]
+
+const LANGUAGE_LABEL_MAP = {
+  en: 'English',
+  hi: 'Hindi',
+  mr: 'Marathi',
+  ta: 'Tamil',
+  te: 'Telugu',
+  kn: 'Kannada',
+  bn: 'Bengali',
+  gu: 'Gujarati',
+  or: 'Odia',
+}
+
+const PAGE_TEXT = {
+  en: {
+    home: 'Home',
+    title: 'Posters & Brochures',
+    subtitle: 'Browse awareness posters and brochures by language.',
+    library: 'Awareness resources in multiple languages',
+    selectLanguage: 'Select Language',
+    noItems: 'No posters or brochures added yet',
+    noItemsDesc: 'Add materials from Admin → Library → Posters & Brochures.',
+    noResult: 'No brochures found',
+    noResultDesc: 'No materials available for the selected language.',
+    defaultDescription: 'Download campaign print material.',
+    viewDownload: 'View / Download',
+    fileNotAdded: 'File Not Added',
+  },
+  hi: {
+    home: 'होम',
+    title: 'पोस्टर और ब्रॉशर',
+    subtitle: 'भाषा के अनुसार जागरूकता पोस्टर और ब्रॉशर देखें।',
+    library: 'कई भाषाओं में जागरूकता सामग्री',
+    selectLanguage: 'भाषा चुनें',
+    noItems: 'अभी कोई पोस्टर या ब्रॉशर नहीं जोड़ा गया है',
+    noItemsDesc: 'Admin → Library → Posters & Brochures से सामग्री जोड़ें।',
+    noResult: 'कोई ब्रॉशर नहीं मिला',
+    noResultDesc: 'चुनी गई भाषा में कोई सामग्री उपलब्ध नहीं है।',
+    defaultDescription: 'अभियान की प्रिंट सामग्री डाउनलोड करें।',
+    viewDownload: 'देखें / डाउनलोड',
+    fileNotAdded: 'फाइल नहीं जोड़ी गई',
+  },
+  mr: {
+    home: 'होम',
+    title: 'पोस्टर्स आणि ब्रोशर्स',
+    subtitle: 'भाषेनुसार जागरूकता पोस्टर्स आणि ब्रोशर्स पहा.',
+    library: 'अनेक भाषांतील जागरूकता सामग्री',
+    selectLanguage: 'भाषा निवडा',
+    noItems: 'अजून कोणतेही पोस्टर किंवा ब्रोशर जोडलेले नाही',
+    noItemsDesc: 'Admin → Library → Posters & Brochures मधून सामग्री जोडा.',
+    noResult: 'ब्रोशर सापडले नाही',
+    noResultDesc: 'निवडलेल्या भाषेत कोणतीही सामग्री उपलब्ध नाही.',
+    defaultDescription: 'कॅम्पेनची प्रिंट सामग्री डाउनलोड करा.',
+    viewDownload: 'पहा / डाउनलोड',
+    fileNotAdded: 'फाइल जोडलेली नाही',
+  },
+  ta: {
+    home: 'முகப்பு',
+    title: 'போஸ்டர்கள் & புரோஷர்கள்',
+    subtitle: 'மொழி அடிப்படையில் விழிப்புணர்வு போஸ்டர்கள் மற்றும் புரோஷர்களைப் பாருங்கள்.',
+    library: 'பல மொழிகளில் விழிப்புணர்வு பொருட்கள்',
+    selectLanguage: 'மொழியைத் தேர்ந்தெடுக்கவும்',
+    noItems: 'போஸ்டர் அல்லது புரோஷர் இன்னும் சேர்க்கப்படவில்லை',
+    noItemsDesc: 'Admin → Library → Posters & Brochures மூலம் பொருட்களைச் சேர்க்கவும்.',
+    noResult: 'புரோஷர்கள் கிடைக்கவில்லை',
+    noResultDesc: 'தேர்ந்தெடுத்த மொழிக்கான பொருட்கள் இல்லை.',
+    defaultDescription: 'பிரச்சார அச்சு பொருளைப் பதிவிறக்கவும்.',
+    viewDownload: 'பார்க்க / பதிவிறக்கு',
+    fileNotAdded: 'கோப்பு சேர்க்கப்படவில்லை',
+  },
+  te: {
+    home: 'హోమ్',
+    title: 'పోస్టర్లు & బ్రోచర్లు',
+    subtitle: 'భాష ఆధారంగా అవగాహన పోస్టర్లు మరియు బ్రోచర్లు చూడండి.',
+    library: 'బహుళ భాషల్లో అవగాహన మెటీరియల్స్',
+    selectLanguage: 'భాషను ఎంచుకోండి',
+    noItems: 'ఇంకా పోస్టర్లు లేదా బ్రోచర్లు జోడించలేదు',
+    noItemsDesc: 'Admin → Library → Posters & Brochures నుండి మెటీరియల్స్ జోడించండి.',
+    noResult: 'బ్రోచర్లు కనబడలేదు',
+    noResultDesc: 'ఎంచుకున్న భాషలో మెటీరియల్స్ అందుబాటులో లేవు.',
+    defaultDescription: 'క్యాంపెయిన్ ప్రింట్ మెటీరియల్‌ను డౌన్‌లోడ్ చేయండి.',
+    viewDownload: 'చూడండి / డౌన్‌లోడ్',
+    fileNotAdded: 'ఫైల్ జోడించలేదు',
+  },
+  kn: {
+    home: 'ಮುಖಪುಟ',
+    title: 'ಪೋಸ್ಟರ್‌ಗಳು & ಬ್ರೋಶರ್‌ಗಳು',
+    subtitle: 'ಭಾಷೆಯ ಪ್ರಕಾರ ಜಾಗೃತಿ ಪೋಸ್ಟರ್‌ಗಳು ಮತ್ತು ಬ್ರೋಶರ್‌ಗಳನ್ನು ನೋಡಿ.',
+    library: 'ಬಹು ಭಾಷೆಗಳಲ್ಲಿ ಜಾಗೃತಿ ಸಾಮಗ್ರಿಗಳು',
+    selectLanguage: 'ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ',
+    noItems: 'ಇನ್ನೂ ಪೋಸ್ಟರ್ ಅಥವಾ ಬ್ರೋಶರ್ ಸೇರಿಸಲಾಗಿಲ್ಲ',
+    noItemsDesc: 'Admin → Library → Posters & Brochures ಮೂಲಕ ಮೆಟೀರಿಯಲ್ ಸೇರಿಸಿ.',
+    noResult: 'ಬ್ರೋಶರ್‌ಗಳು ಕಂಡುಬಂದಿಲ್ಲ',
+    noResultDesc: 'ಆಯ್ಕೆ ಮಾಡಿದ ಭಾಷೆಯಲ್ಲಿ ಯಾವುದೇ ಮೆಟೀರಿಯಲ್ ಲಭ್ಯವಿಲ್ಲ.',
+    defaultDescription: 'ಕ್ಯಾಂಪೇನ್ ಪ್ರಿಂಟ್ ಮೆಟೀರಿಯಲ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ.',
+    viewDownload: 'ನೋಡಿ / ಡೌನ್‌ಲೋಡ್',
+    fileNotAdded: 'ಫೈಲ್ ಸೇರಿಸಲಾಗಿಲ್ಲ',
+  },
+  bn: {
+    home: 'হোম',
+    title: 'পোস্টার ও ব্রোশার',
+    subtitle: 'ভাষা অনুযায়ী সচেতনতা পোস্টার ও ব্রোশার দেখুন।',
+    library: 'বহু ভাষায় সচেতনতামূলক উপকরণ',
+    selectLanguage: 'ভাষা নির্বাচন করুন',
+    noItems: 'এখনও কোনো পোস্টার বা ব্রোশার যোগ করা হয়নি',
+    noItemsDesc: 'Admin → Library → Posters & Brochures থেকে মেটেরিয়াল যোগ করুন।',
+    noResult: 'কোনো ব্রোশার পাওয়া যায়নি',
+    noResultDesc: 'নির্বাচিত ভাষায় কোনো মেটেরিয়াল নেই।',
+    defaultDescription: 'ক্যাম্পেইনের প্রিন্ট মেটেরিয়াল ডাউনলোড করুন।',
+    viewDownload: 'দেখুন / ডাউনলোড',
+    fileNotAdded: 'ফাইল যোগ করা হয়নি',
+  },
+  gu: {
+    home: 'હોમ',
+    title: 'પોસ્ટર્સ અને બ્રોશર્સ',
+    subtitle: 'ભાષા પ્રમાણે જાગૃતિ પોસ્ટર્સ અને બ્રોશર્સ જુઓ.',
+    library: 'બહુ ભાષાઓમાં જાગૃતિ સામગ્રી',
+    selectLanguage: 'ભાષા પસંદ કરો',
+    noItems: 'હજુ કોઈ પોસ્ટર કે બ્રોશર ઉમેરાયું નથી',
+    noItemsDesc: 'Admin → Library → Posters & Brochures માંથી મટિરિયલ ઉમેરો.',
+    noResult: 'કોઈ બ્રોશર મળ્યું નથી',
+    noResultDesc: 'પસંદ કરેલી ભાષામાં કોઈ મટિરિયલ ઉપલબ્ધ નથી.',
+    defaultDescription: 'કેમ્પેઇન પ્રિન્ટ મટિરિયલ ડાઉનલોડ કરો.',
+    viewDownload: 'જુઓ / ડાઉનલોડ',
+    fileNotAdded: 'ફાઇલ ઉમેરાઈ નથી',
+  },
+  or: {
+    home: 'ହୋମ',
+    title: 'ପୋଷ୍ଟର ଏବଂ ବ୍ରୋଶର',
+    subtitle: 'ଭାଷା ଅନୁସାରେ ସଚେତନତା ପୋଷ୍ଟର ଏବଂ ବ୍ରୋଶର ଦେଖନ୍ତୁ।',
+    library: 'ବହୁ ଭାଷାରେ ସଚେତନତା ସାମଗ୍ରୀ',
+    selectLanguage: 'ଭାଷା ବାଛନ୍ତୁ',
+    noItems: 'ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ପୋଷ୍ଟର କିମ୍ବା ବ୍ରୋଶର ଯୋଡାଯାଇନାହିଁ',
+    noItemsDesc: 'Admin → Library → Posters & Brochures ରୁ ସାମଗ୍ରୀ ଯୋଡନ୍ତୁ।',
+    noResult: 'କୌଣସି ବ୍ରୋଶର ମିଳିଲା ନାହିଁ',
+    noResultDesc: 'ବାଛିଥିବା ଭାଷାରେ କୌଣସି ସାମଗ୍ରୀ ଉପଲବ୍ଧ ନାହିଁ।',
+    defaultDescription: 'କ୍ୟାମ୍ପେନ୍ ପ୍ରିଣ୍ଟ ସାମଗ୍ରୀ ଡାଉନଲୋଡ୍ କରନ୍ତୁ।',
+    viewDownload: 'ଦେଖନ୍ତୁ / ଡାଉନଲୋଡ୍',
+    fileNotAdded: 'ଫାଇଲ୍ ଯୋଡାଯାଇନାହିଁ',
+  },
+}
+
+function getLanguageCode(value) {
+  const raw = String(value || '').toLowerCase().trim()
+
+  if (!raw) return ''
+
+  const matched = LANGUAGE_OPTIONS.find((language) => {
+    const code = String(language.code || '').toLowerCase()
+    const label = String(language.label || '').toLowerCase()
+    const englishLabel = String(LANGUAGE_LABEL_MAP[language.code] || '').toLowerCase()
+
+    return raw === code || raw === label || raw === englishLabel
+  })
+
+  return matched?.code || raw
+}
+
+function getLanguageDisplay(value) {
+  const code = getLanguageCode(value)
+
+  if (!code || code === 'all') return ''
+
+  return LANGUAGE_LABEL_MAP[code] || value
+}
+
+export default function BrochuresPage() {
+  const [content, setContent] = useState(null)
+  const [selectedLanguage, setSelectedLanguage] = useState('all')
+
+  useEffect(() => {
+    fetch('/api/content')
+      .then((r) => r.json())
+      .then((d) => setContent(d))
+      .catch(() => setContent(null))
+  }, [])
+
+  const items = useMemo(() => {
+    const saved = Array.isArray(content?.printMaterials)
+      ? content.printMaterials
+      : []
+
+    return saved
+      .filter((item) => item.published !== false)
+      .sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0))
+  }, [content])
+
+  const filteredItems = useMemo(() => {
+    if (selectedLanguage === 'all') return items
+
+    return items.filter((item) => {
+      const languageCode = getLanguageCode(item.language)
+      return languageCode === selectedLanguage
+    })
+  }, [items, selectedLanguage])
+
+  const activeLang = selectedLanguage === 'all' ? 'en' : selectedLanguage
+  const ui = PAGE_TEXT[activeLang] || PAGE_TEXT.en
+
+  const openFile = (item) => {
+    const url = item?.fileUrl
+
+    if (!url || url === '#') return
+
+    window.open(url, '_blank', 'noopener,noreferrer')
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-white via-[#f8f9ff] to-[#eef3ff]">
+      <header className="bg-bsv-blue text-white py-4">
+        <div className="container mx-auto px-4 flex items-center gap-3">
+          <Link href="/">
+            <Button variant="ghost" className="text-white hover:bg-white/10">
+              <ArrowLeft className="w-4 h-4 mr-1" />
+              {ui.home}
+            </Button>
+          </Link>
+
+          <div>
+            <div className="font-display font-extrabold text-xl">
+              {ui.title}
+            </div>
+            <div className="text-xs text-white/70">
+              {ui.library}
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main className="container mx-auto px-4 py-14">
+        <section className="text-center max-w-3xl mx-auto mb-12">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white shadow mb-5">
+            <FileText className="w-8 h-8 text-[#201F5E]" />
+          </div>
+
+          <h1 className="font-display text-[38px] md:text-[58px] font-extrabold leading-tight text-[#09084f]">
+            {ui.title}
+          </h1>
+
+          <div className="mx-auto mt-4 mb-6 flex items-center justify-center gap-2">
+            <span className="h-[3px] w-16 rounded-full bg-[#5b4af2]" />
+            <span className="h-2 w-2 rounded-full bg-[#5b4af2]" />
+            <span className="h-[3px] w-16 rounded-full bg-[#201F5E]" />
+          </div>
+
+          <p className="text-slate-600 text-base md:text-lg leading-relaxed">
+            {ui.subtitle}
+          </p>
+        </section>
+
+        <div className="mb-10">
+          <div className="flex items-center justify-center gap-3 mb-5">
+            <span className="hidden md:block h-px w-20 bg-[#5b4af2]" />
+            <span className="hidden md:block h-2 w-2 rounded-full bg-[#5b4af2]" />
+
+            <div className="flex items-center gap-2 font-display font-bold text-[#09084f] text-lg md:text-xl">
+              <Languages className="w-5 h-5" />
+              {ui.selectLanguage}
+            </div>
+
+            <span className="hidden md:block h-2 w-2 rounded-full bg-[#5b4af2]" />
+            <span className="hidden md:block h-px w-20 bg-[#5b4af2]" />
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-3">
+            {LANGUAGE_OPTIONS.map((language) => (
+              <button
+                key={language.code}
+                type="button"
+                onClick={() => setSelectedLanguage(language.code)}
+                className={[
+                  'min-w-[115px] rounded-xl border px-5 py-3 text-sm md:text-base font-semibold transition-all',
+                  selectedLanguage === language.code
+                    ? 'border-[#201F8F] bg-[#201F8F] text-white shadow-lg shadow-[#201F8F]/20'
+                    : 'border-[#d8def0] bg-white/80 text-[#09084f] hover:border-[#201F8F] hover:bg-white',
+                ].join(' ')}
+              >
+                {language.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {!items.length && (
+          <Card className="max-w-2xl mx-auto border-dashed">
+            <CardContent className="p-12 text-center">
+              <FileText className="w-16 h-16 mx-auto text-slate-300 mb-4" />
+              <h2 className="font-display font-bold text-xl text-[#09084f]">
+                {ui.noItems}
+              </h2>
+              <p className="text-slate-500 mt-2">
+                {ui.noItemsDesc}
+              </p>
+            </CardContent>
+          </Card>
+        )}
+
+        {!!items.length && !filteredItems.length && (
+          <Card className="max-w-2xl mx-auto border-dashed">
+            <CardContent className="p-12 text-center">
+              <FileText className="w-16 h-16 mx-auto text-slate-300 mb-4" />
+              <h2 className="font-display font-bold text-xl text-[#09084f]">
+                {ui.noResult}
+              </h2>
+              <p className="text-slate-500 mt-2">
+                {ui.noResultDesc}
+              </p>
+            </CardContent>
+          </Card>
+        )}
+
+        <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+          {filteredItems.map((item, index) => {
+            const languageDisplay = getLanguageDisplay(item.language)
+            const disabled = !item.fileUrl || item.fileUrl === '#'
+
+            return (
+              <Card
+                key={item.id || index}
+                className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+              >
+                <CardContent className="p-0">
+                  <div className="relative aspect-[16/10] bg-slate-100 overflow-hidden">
+                    {item.image ? (
+                      <img
+                        src={item.image}
+                        alt={item.title || ui.title}
+                        className="w-full h-full object-cover transition duration-700 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-slate-300">
+                        <ImageIcon className="w-16 h-16" />
+                      </div>
+                    )}
+
+                    {!!languageDisplay && (
+                      <div className="absolute left-3 top-3 flex gap-2 flex-wrap">
+                        <Badge className="border-0 bg-[#de2527]">
+                          {languageDisplay}
+                        </Badge>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="p-5">
+                    <h2 className="font-display font-extrabold text-xl text-[#09084f] line-clamp-2">
+                      {item.title || 'Untitled Material'}
+                    </h2>
+
+                    <p className="text-sm text-slate-600 leading-relaxed mt-3 min-h-[64px] line-clamp-3">
+                      {item.description || ui.defaultDescription}
+                    </p>
+
+                    {disabled ? (
+                      <Button
+                        disabled
+                        className="mt-5 w-full h-11 rounded-lg bg-slate-300 text-white font-bold disabled:opacity-70 disabled:cursor-not-allowed"
+                      >
+                        <FileText className="w-4 h-4 mr-2" />
+                        {ui.fileNotAdded}
+                      </Button>
+                    ) : (
+                      <Button
+                        type="button"
+                        onClick={() => openFile(item)}
+                        className="mt-5 w-full h-11 rounded-lg bg-gradient-to-r from-[#de2527] to-[#a81b1d] text-white font-bold"
+                      >
+                        {ui.viewDownload}
+                        <ExternalLink className="w-4 h-4 ml-2" />
+                      </Button>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            )
+          })}
+        </div>
+      </main>
+    </div>
+  )
+}
