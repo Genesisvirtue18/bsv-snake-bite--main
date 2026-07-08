@@ -2845,9 +2845,10 @@
       "category": "Influencers",
       "title": "Influencers",
       "description": "",
-      "image": "/api/media/7d3b6093-587f-47bf-821e-226f693fe19e",
+      "image": "",
       "gallery": [],
-      "published": true
+      "published": true,
+      "driveUrl": "https://www.instagram.com/reel/DaAh8_nMjn8/?igsh=NWN4anl3OHJ3bDNn"
     }
   ],
   "awardsRecognition": {
