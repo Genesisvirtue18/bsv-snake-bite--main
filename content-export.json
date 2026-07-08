@@ -2619,7 +2619,36 @@
         "desc": "Medical resources, ASV administration protocols, clinical education.",
         "image": "/api/media/2161fc6e-df71-4c8c-9643-dd71305454c9",
         "href": "/downloads",
-        "youtubeUrl": "https://youtube.com/live/prBwPEgzCw8?feature=share"
+        "youtubeUrl": "https://youtube.com/live/prBwPEgzCw8?feature=share",
+        "trainingVideoItems": [
+          {
+            "title": "Training Modules",
+            "url": "https://youtube.com/live/prBwPEgzCw8?feature=share"
+          },
+          {
+            "title": "",
+            "url": "https://youtube.com/live/prBwPEgzCw8?feature=share"
+          },
+          {
+            "title": "",
+            "url": "https://youtube.com/live/prBwPEgzCw8?feature=share"
+          }
+        ],
+        "trainingImageAlbums": [
+          {
+            "id": "training-album-1783487378783",
+            "title": "Training Images",
+            "description": "",
+            "coverImage": "/api/media/af593f1f-8fd5-4048-927d-abff3274ce67",
+            "images": []
+          }
+        ],
+        "trainingDocuments": [
+          {
+            "title": "Training Modules",
+            "url": "/api/media/5f0ceff1-31ca-41fe-8a9f-d3112d74bcd1"
+          }
+        ]
       },
       {
         "title": "Conferences & Webinars for snakebite training clinicians",
