@@ -2695,7 +2695,7 @@
         "title": "Posters & Brochures",
         "desc": "Multilingual print materials for clinics and villages.",
         "image": "/api/media/2c2719cb-3198-49a5-8757-e28a71ff2fc6",
-        "href": "/downloads"
+        "href": "/brochures"
       },
       {
         "title": "Awareness Videos",
@@ -2707,7 +2707,7 @@
         "title": "Comic & Visual Stories",
         "desc": "Engaging visual content for schools and rural communities.",
         "image": "/api/media/8b3f5520-3e49-4fbc-9dab-50f42d6d2a57",
-        "href": "/downloads"
+        "href": "/animated-videos-&-comics"
       }
     ]
   },
