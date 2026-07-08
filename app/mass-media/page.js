@@ -185,6 +185,27 @@ export default function MassMediaPage() {
     return 'Link'
   }
 
+  const getCardPreview = (item) => {
+    const gallery = Array.isArray(item.gallery) ? item.gallery : []
+    const activityLink = getActivityLink(item)
+    const linkType = getLinkType(activityLink)
+
+    // Admin cover image first priority
+    const coverImage = item.image || gallery[0] || ''
+
+    if (coverImage) {
+      return coverImage
+    }
+
+    // YouTube thumbnail auto
+    if (linkType === 'youtube') {
+      const id = getYoutubeId(activityLink)
+      return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : ''
+    }
+
+    return ''
+  }
+
   return (
     <div className="min-h-screen bg-slate-50">
       <header className="bg-bsv-blue text-white py-4">
@@ -239,8 +260,8 @@ export default function MassMediaPage() {
                     key={cat.key}
                     onClick={() => setActiveFilter(cat.key)}
                     className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full border text-sm font-bold transition-all ${active
-                        ? 'text-white shadow-md'
-                        : 'bg-white text-bsv-blue border-bsv-blue/30 hover:border-bsv-blue'
+                      ? 'text-white shadow-md'
+                      : 'bg-white text-bsv-blue border-bsv-blue/30 hover:border-bsv-blue'
                       }`}
                     style={active ? { background: BRAND.red, borderColor: BRAND.red } : undefined}
                   >
@@ -276,7 +297,7 @@ export default function MassMediaPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {items.map((item, i) => {
                 const gallery = Array.isArray(item.gallery) ? item.gallery : []
-                const coverImage = item.image || gallery[0]
+                const coverImage = getCardPreview(item)
                 const color = categoryColor(item.category)
                 const isPR = item.category === 'PR Coverage'
                 const activityLink = getActivityLink(item)
