@@ -7,6 +7,7 @@ import { getDb, ROLES, can, signToken, verifyPassword, hashPassword, getUserFrom
 import { exec } from 'node:child_process'
 import { writeFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { createHash } from 'node:crypto'
 
 // Auto-commit and push content changes to git
 async function gitPushContent(content, user) {
@@ -80,6 +81,10 @@ async function handleRoute(request, { params }) {
 
   try {
     const { db, bucket } = await getDb()
+
+    if (route === '/dom-translate' && method === 'POST') {
+      return cors(await handleDomTranslate(request, db))
+    }
 
     if (route === '/' && method === 'GET') {
       return cors(NextResponse.json({ message: 'BSV Snakebite Campaign API', version: '2.0', status: 'live' }))
@@ -167,7 +172,7 @@ async function handleRoute(request, { params }) {
       const body = await request.json()
       await db.collection('site_content').updateOne({ id: 'main' }, { $set: { data: body, updatedAt: new Date() } }, { upsert: true })
       // Auto-push to git in background (non-blocking)
-      gitPushContent(body, auth.user).catch(() => {})
+      gitPushContent(body, auth.user).catch(() => { })
       return cors(NextResponse.json({ success: true }))
     }
     if (route === '/content/reset' && method === 'POST') {
@@ -403,7 +408,7 @@ async function handleRoute(request, { params }) {
     if (route === '/sitemap.xml' && method === 'GET') {
       const settings = (await db.collection('site_settings').findOne({ id: 'main' }))?.data || DEFAULT_SETTINGS
       const base = process.env.NEXT_PUBLIC_BASE_URL || ''
-      const langs = ['en','hi','mr','kn','ta','te','or','pa','bn']
+      const langs = ['en', 'hi', 'mr', 'kn', 'ta', 'te', 'or', 'pa', 'bn']
       const pages = ['/', '/impact-stories', '/reports', '/ngo-network', '/volunteer', '/thank-you']
       const stories = await db.collection('impact_stories').find({ published: true }).toArray()
       const ngos = await db.collection('ngos').find({ published: { $ne: false } }).toArray()
@@ -848,6 +853,183 @@ async function handleRoute(request, { params }) {
   } catch (error) {
     console.error('API Error:', error)
     return cors(NextResponse.json({ error: 'Internal server error', detail: String(error?.message || error) }, { status: 500 }))
+  }
+}
+
+const DOM_LANG_NAMES = {
+  hi: 'Hindi',
+  mr: 'Marathi',
+  kn: 'Kannada',
+  ta: 'Tamil',
+  te: 'Telugu',
+  or: 'Odia',
+  pa: 'Punjabi',
+  bn: 'Bengali',
+}
+
+function cleanDomText(text) {
+  return String(text || '').replace(/\s+/g, ' ').trim()
+}
+
+function domHashKey(lang, text) {
+  return createHash('sha256').update(`${lang}::${text}`).digest('hex')
+}
+
+function safeDomTexts(texts) {
+  return [...new Set(
+    (Array.isArray(texts) ? texts : [])
+      .map(cleanDomText)
+      .filter(Boolean)
+      .filter((t) => t.length >= 2 && t.length <= 450)
+      .filter((t) => !/^https?:\/\//i.test(t))
+      .filter((t) => !/^[\d\s+().,-]+$/.test(t))
+      .filter((t) => !/^[A-Z]{1,4}$/.test(t))
+  )].slice(0, 80)
+}
+
+function parseDomJsonArray(text) {
+  const cleaned = String(text || '')
+    .replace(/^```json\s*/i, '')
+    .replace(/^```\s*/i, '')
+    .replace(/\s*```$/i, '')
+    .trim()
+
+  return JSON.parse(cleaned)
+}
+
+async function translateDomChunk(chunk, targetLang) {
+  const targetName = DOM_LANG_NAMES[targetLang] || targetLang
+
+  const prompt = `
+Translate these website UI texts to ${targetName}.
+
+Rules:
+- Return ONLY a valid JSON array of strings.
+- Return same number of items in same order.
+- Preserve brand names: BSV, Bharat Serums and Vaccines Limited, Mankind Pharma, Saap Ka Vaar, Aspataal Mein Hi Upchaar, ASV, PHC, NGO, KOL.
+- Preserve numbers, emails, URLs, hashtags, and medical abbreviations.
+- Do not add explanation.
+
+Texts:
+${chunk.map((t, i) => `${i + 1}. ${t}`).join('\n')}
+`.trim()
+
+  const response = await fetch('https://integrations.emergentagent.com/llm/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${process.env.EMERGENT_LLM_KEY}`,
+    },
+    body: JSON.stringify({
+      model: 'gpt-4o-mini',
+      max_tokens: 4096,
+      messages: [
+        {
+          role: 'system',
+          content: 'You are an expert Indian public-health website translator. Always return valid JSON only.',
+        },
+        {
+          role: 'user',
+          content: prompt,
+        },
+      ],
+    }),
+  })
+
+  if (!response.ok) {
+    throw new Error(await response.text())
+  }
+
+  const data = await response.json()
+  const raw = data.choices?.[0]?.message?.content || '[]'
+  const arr = parseDomJsonArray(raw)
+
+  return Array.isArray(arr) ? arr : []
+}
+
+async function handleDomTranslate(request, db) {
+  try {
+    const body = await request.json()
+    const targetLang = String(body.targetLang || 'en').toLowerCase()
+
+    if (!targetLang || targetLang === 'en' || !DOM_LANG_NAMES[targetLang]) {
+      return NextResponse.json({ translations: {} })
+    }
+
+    const texts = safeDomTexts(body.texts)
+
+    if (!texts.length) {
+      return NextResponse.json({ translations: {} })
+    }
+
+    const collection = db.collection('dom_translation_cache')
+    const keys = texts.map((text) => domHashKey(targetLang, text))
+
+    const cachedDocs = await collection
+      .find({ key: { $in: keys } })
+      .toArray()
+
+    const translations = {}
+
+    cachedDocs.forEach((doc) => {
+      translations[doc.sourceText] = doc.translatedText
+    })
+
+    const missing = texts.filter((text) => !translations[text])
+
+    if (missing.length && !process.env.EMERGENT_LLM_KEY) {
+      return NextResponse.json(
+        { error: 'EMERGENT_LLM_KEY missing' },
+        { status: 500 }
+      )
+    }
+
+    if (missing.length) {
+      const chunkSize = 25
+
+      for (let i = 0; i < missing.length; i += chunkSize) {
+        const chunk = missing.slice(i, i + chunkSize)
+        const translatedArr = await translateDomChunk(chunk, targetLang)
+
+        const writes = []
+
+        chunk.forEach((sourceText, index) => {
+          const translatedText = cleanDomText(translatedArr[index] || sourceText)
+          translations[sourceText] = translatedText
+
+          writes.push({
+            updateOne: {
+              filter: { key: domHashKey(targetLang, sourceText) },
+              update: {
+                $set: {
+                  key: domHashKey(targetLang, sourceText),
+                  lang: targetLang,
+                  sourceText,
+                  translatedText,
+                  updatedAt: new Date(),
+                },
+                $setOnInsert: {
+                  createdAt: new Date(),
+                },
+              },
+              upsert: true,
+            },
+          })
+        })
+
+        if (writes.length) {
+          await collection.bulkWrite(writes, { ordered: false })
+        }
+      }
+    }
+
+    return NextResponse.json({ translations })
+  } catch (error) {
+    console.error('dom-translate error:', error)
+    return NextResponse.json(
+      { error: 'Translation failed', detail: error.message },
+      { status: 500 }
+    )
   }
 }
 

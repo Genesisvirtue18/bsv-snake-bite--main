@@ -331,7 +331,11 @@ function Header({ lang, setLang, t, settings }) {
                 {LANGUAGES.map(l => (
                   <DropdownMenuItem
                     key={l.code}
-                    onClick={() => setLang(l.code)}
+                    onClick={() => {
+                      setLang(l.code)
+                      localStorage.setItem('bsv_lang', l.code)
+                      window.dispatchEvent(new Event('bsv-language-change'))
+                    }}
                     className={`${lang === l.code ? 'bg-cyan-50 font-semibold text-[#0EAFC5]' : ''} cursor-pointer`}
                   >
                     {l.native}
@@ -1295,7 +1299,7 @@ function AccessSection({ content, t }) {
                           </div>
                         )}
 
-                        
+
 
                         {isWorkshop && (
                           <div className="absolute inset-0 bg-black/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -1373,11 +1377,10 @@ function AccessSection({ content, t }) {
                             selectedVideo: video,
                           })
                         }}
-                        className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition whitespace-nowrap ${
-                          active.selectedVideo?.id === video.id
-                            ? 'bg-[#DE2527] text-white border-[#DE2527]'
-                            : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
-                        }`}
+                        className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition whitespace-nowrap ${active.selectedVideo?.id === video.id
+                          ? 'bg-[#DE2527] text-white border-[#DE2527]'
+                          : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                          }`}
                       >
                         {video.title}
                       </button>
@@ -2347,7 +2350,12 @@ function App() {
       .finally(() => setLoading(false))
   }, [])
 
-  useEffect(() => { if (typeof window !== 'undefined') localStorage.setItem('bsv_lang', lang) }, [lang])
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('bsv_lang', lang)
+      window.dispatchEvent(new Event('bsv-language-change'))
+    }
+  }, [lang])
 
   if (loading) return (
     <div className="fixed inset-0 z-[99999] flex flex-col items-center justify-center overflow-hidden bg-white">
