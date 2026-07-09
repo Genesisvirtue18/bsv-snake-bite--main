@@ -64,10 +64,13 @@ export default function GlobalAutoTranslator() {
   const runningRef = useRef(false)
 
   useEffect(() => {
-    
+
 
     if (typeof window === 'undefined') return
-    if (window.location.pathname.startsWith('/admin')) return
+
+    const pathname = window.location.pathname
+
+    if (pathname !== '/') return
 
     const getLang = () => {
       return String(localStorage.getItem(LANG_KEY) || 'en').toLowerCase()
@@ -117,7 +120,7 @@ export default function GlobalAutoTranslator() {
 
       const nodes = getTextNodes()
 
-      
+
 
       if (lang === 'en') {
         nodes.forEach(({ node, original }) => {
@@ -132,7 +135,7 @@ export default function GlobalAutoTranslator() {
         return !cacheRef.current.has(`${lang}::${text}`)
       })
 
-      
+
 
       if (missingTexts.length) {
         runningRef.current = true
@@ -147,7 +150,7 @@ export default function GlobalAutoTranslator() {
             }),
           })
 
-          
+
 
           const data = await response.json()
           const translations = data.translations || {}
