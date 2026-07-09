@@ -760,6 +760,63 @@ async function handleRoute(request, { params }) {
       return cors(NextResponse.json({ success: true }))
     }
 
+    // ===== BROCHURE LEADS =====
+    if (route === '/brochure-leads' && method === 'POST') {
+      const body = await request.json()
+
+      if (!body.name || !body.phone || !body.email || !body.state || !body.profession) {
+        return cors(
+          NextResponse.json(
+            { error: 'name, phone, email, state and profession required' },
+            { status: 400 }
+          )
+        )
+      }
+
+      const lead = {
+        id: uuidv4(),
+        name: body.name,
+        phone: body.phone,
+        email: body.email,
+        state: body.state,
+        profession: body.profession,
+        brochureId: body.brochureId || '',
+        brochureTitle: body.brochureTitle || '',
+        brochureUrl: body.brochureUrl || '',
+        language: body.language || '',
+        createdAt: new Date(),
+      }
+
+      await db.collection('brochure_leads').insertOne(lead)
+
+      return cors(NextResponse.json({ success: true, id: lead.id }))
+    }
+
+    if (route === '/brochure-leads' && method === 'GET') {
+      const auth = requireAuth(request, 'content.read')
+      if (auth.error) return auth.error
+
+      const items = await db
+        .collection('brochure_leads')
+        .find({})
+        .sort({ createdAt: -1 })
+        .limit(2000)
+        .toArray()
+
+      return cors(NextResponse.json(items.map(({ _id, ...r }) => r)))
+    }
+
+    if (route.startsWith('/brochure-leads/') && method === 'DELETE') {
+      const auth = requireAuth(request, 'content.update')
+      if (auth.error) return auth.error
+
+      const id = route.split('/')[2]
+
+      await db.collection('brochure_leads').deleteOne({ id })
+
+      return cors(NextResponse.json({ success: true }))
+    }
+
     // ===== EXISTING ENDPOINTS =====
     if (route === '/leads' && method === 'POST') {
       const body = await request.json()

@@ -323,6 +323,7 @@ export default function AdminPage() {
   const [quizQuestions, setQuizQuestions] = useState([])
   const [token, setToken] = useState(null)
   const [settingsData, setSettingsData] = useState(null)
+  const [brochureLeads, setBrochureLeads] = useState([])
 
   useEffect(() => {
     const t = localStorage.getItem('bsv_token')
@@ -349,7 +350,7 @@ export default function AdminPage() {
   const loadAll = async (t) => {
     const h = { Authorization: `Bearer ${t}` }
     const fetchOr = async (url, def = []) => { try { const r = await fetch(url, { headers: h }); return r.ok ? await r.json() : def } catch { return def } }
-    const [c, l, q, a, m, s, n, r, v, us, ct, pt, gal, vid, quizQs, setg] = await Promise.all([
+    const [c, l, q, a, m, s, n, r, v, us, ct, pt, gal, vid, quizQs, setg, brochureLeadItems] = await Promise.all([
       fetchOr('/api/content', {}),
       fetchOr('/api/leads'),
       fetchOr('/api/quiz/results'),
@@ -366,9 +367,11 @@ export default function AdminPage() {
       fetchOr('/api/videos'),
       fetchOr('/api/quiz/questions'),
       fetchOr('/api/settings', {}),
+      fetchOr('/api/brochure-leads'),
     ])
     setContent(c); setLeads(l); setQuiz(q); setAnalytics(a); setMedia(m); setStories(s); setNgos(n); setReports(r); setVolunteers(v); setUsers(us); setContacts(ct); setPartnerships(pt); setGallery(Array.isArray(gal) ? gal : []); setVideos(Array.isArray(vid) ? vid : []); setQuizQuestions(Array.isArray(quizQs) ? quizQs : [])
     setSettingsData(setg)
+    setBrochureLeads(Array.isArray(brochureLeadItems) ? brochureLeadItems : [])
   }
 
   const logout = () => { localStorage.removeItem('bsv_token'); localStorage.removeItem('bsv_user'); setUser(null); setToken(null) }
@@ -509,6 +512,10 @@ export default function AdminPage() {
             <TabsTrigger value="library">
               <BookOpen className="w-4 h-4 mr-1" />
               Library
+            </TabsTrigger>
+            <TabsTrigger value="brochureLeads">
+              <Download className="w-4 h-4 mr-1" />
+              Brochure Leads
             </TabsTrigger>
             <TabsTrigger value="videos"><Play className="w-4 h-4 mr-1" />Videos</TabsTrigger>
             {/*<TabsTrigger value="leads"><Users className="w-4 h-4 mr-1" />Leads</TabsTrigger>
@@ -1846,6 +1853,26 @@ export default function AdminPage() {
             )}
           </TabsContent>
 
+
+
+          <TabsContent value="brochureLeads">
+            {content && (
+              <BrochureLeadsView
+                content={content}
+                setContent={setContent}
+                saveContent={saveContent}
+                brochureLeads={brochureLeads}
+                exportCSV={exportCSV}
+                api={api}
+                reload={() => loadAll(token)}
+              />
+            )}
+          </TabsContent>
+
+
+
+
+
           {/* GALLERY */}
           <TabsContent value="gallery">
             <GalleryView items={gallery} api={api} reload={() => loadAll(token)} />
@@ -2546,7 +2573,7 @@ function MassMediaAdminView({ content, setContent, api }) {
                       onChange={e => updateActivity(i, 'driveUrl', e.target.value)}
                     />
 
-                    
+
                   </div>
                 )}
 
@@ -3371,6 +3398,164 @@ function LibraryMaterialsView({ content, setContent, saveContent }) {
               </div>
             ))}
           </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+function BrochureLeadsView({
+  content,
+  setContent,
+  saveContent,
+  brochureLeads = [],
+  exportCSV,
+  api,
+  reload,
+}) {
+  const deleteLead = async (id) => {
+    if (!confirm('Delete this brochure lead?')) return
+
+    const response = await api(`/api/brochure-leads/${id}`, 'DELETE')
+
+    if (response.ok) {
+      toast.success('Lead deleted')
+      reload?.()
+    } else {
+      toast.error('Delete failed')
+    }
+  }
+
+  return (
+    <div className="space-y-5">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div>
+          <h2 className="font-display font-extrabold text-2xl text-bsv-blue">
+            Brochure Leads
+          </h2>
+          <p className="text-sm text-slate-500">
+            Manage brochure download form submissions and enable or disable the form.
+          </p>
+        </div>
+
+        <div className="flex gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => exportCSV(brochureLeads, 'brochure_leads')}
+          >
+            <Download className="w-4 h-4 mr-1" />
+            Export CSV
+          </Button>
+
+          <Button onClick={saveContent} className="bg-bsv-red">
+            <Save className="w-4 h-4 mr-1" />
+            Save Setting
+          </Button>
+        </div>
+      </div>
+
+      <Card>
+        <CardContent className="p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h3 className="font-display font-bold text-lg text-bsv-blue">
+              Brochure Download Form
+            </h3>
+            <p className="text-sm text-slate-500">
+              When enabled, users must fill the popup form before opening the brochure link.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Badge className={content.brochureLeadFormEnabled ? 'bg-green-600' : 'bg-slate-500'}>
+              {content.brochureLeadFormEnabled ? 'Enabled' : 'Disabled'}
+            </Badge>
+
+            <Switch
+              checked={!!content.brochureLeadFormEnabled}
+              onCheckedChange={(checked) =>
+                setContent({
+                  ...content,
+                  brochureLeadFormEnabled: checked,
+                })
+              }
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-5">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h3 className="font-display font-bold text-lg text-bsv-blue">
+                Download Requests
+              </h3>
+              <p className="text-sm text-slate-500">
+                Total submissions: {brochureLeads.length}
+              </p>
+            </div>
+
+            <Button type="button" variant="outline" onClick={reload}>
+              <RefreshCw className="w-4 h-4 mr-1" />
+              Refresh
+            </Button>
+          </div>
+
+          {!brochureLeads.length ? (
+            <div className="rounded-xl border border-dashed p-8 text-center text-sm text-slate-500">
+              No brochure leads yet.
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b bg-slate-50 text-left">
+                    <th className="p-3">Name</th>
+                    <th className="p-3">Phone</th>
+                    <th className="p-3">Email</th>
+                    <th className="p-3">State</th>
+                    <th className="p-3">Profession</th>
+                    <th className="p-3">Brochure</th>
+                    <th className="p-3">Date</th>
+                    <th className="p-3">Action</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {brochureLeads.map((lead) => (
+                    <tr key={lead.id} className="border-b">
+                      <td className="p-3 font-medium">{lead.name}</td>
+                      <td className="p-3">{lead.phone}</td>
+                      <td className="p-3">{lead.email}</td>
+                      <td className="p-3">{lead.state}</td>
+                      <td className="p-3">{lead.profession}</td>
+                      <td className="p-3">
+                        <div className="max-w-[220px] truncate">
+                          {lead.brochureTitle || '-'}
+                        </div>
+                      </td>
+                      <td className="p-3">
+                        {lead.createdAt
+                          ? new Date(lead.createdAt).toLocaleString()
+                          : '-'}
+                      </td>
+                      <td className="p-3">
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => deleteLead(lead.id)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

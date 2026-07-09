@@ -13,7 +13,22 @@ import {
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 const LANGUAGE_OPTIONS = [
   { code: 'all', label: 'All' },
   { code: 'en', label: 'English' },
@@ -38,6 +53,45 @@ const LANGUAGE_LABEL_MAP = {
   gu: 'Gujarati',
   or: 'Odia',
 }
+
+const INDIAN_STATES = [
+  'Andaman and Nicobar Islands',
+  'Andhra Pradesh',
+  'Arunachal Pradesh',
+  'Assam',
+  'Bihar',
+  'Chandigarh',
+  'Chhattisgarh',
+  'Dadra and Nagar Haveli and Daman and Diu',
+  'Delhi',
+  'Goa',
+  'Gujarat',
+  'Haryana',
+  'Himachal Pradesh',
+  'Jammu and Kashmir',
+  'Jharkhand',
+  'Karnataka',
+  'Kerala',
+  'Ladakh',
+  'Lakshadweep',
+  'Madhya Pradesh',
+  'Maharashtra',
+  'Manipur',
+  'Meghalaya',
+  'Mizoram',
+  'Nagaland',
+  'Odisha',
+  'Puducherry',
+  'Punjab',
+  'Rajasthan',
+  'Sikkim',
+  'Tamil Nadu',
+  'Telangana',
+  'Tripura',
+  'Uttar Pradesh',
+  'Uttarakhand',
+  'West Bengal',
+]
 
 const PAGE_TEXT = {
   en: {
@@ -195,6 +249,15 @@ function getLanguageDisplay(value) {
 export default function BrochuresPage() {
   const [content, setContent] = useState(null)
   const [selectedLanguage, setSelectedLanguage] = useState('all')
+  const [selectedMaterial, setSelectedMaterial] = useState(null)
+  const [leadSubmitting, setLeadSubmitting] = useState(false)
+  const [leadForm, setLeadForm] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    state: '',
+    profession: '',
+  })
 
   useEffect(() => {
     fetch('/api/content')
@@ -230,7 +293,63 @@ export default function BrochuresPage() {
 
     if (!url || url === '#') return
 
+    if (content?.brochureLeadFormEnabled) {
+      setSelectedMaterial(item)
+      return
+    }
+
     window.open(url, '_blank', 'noopener,noreferrer')
+  }
+
+  const submitLeadForm = async () => {
+    if (!selectedMaterial?.fileUrl) return
+
+    if (
+      !leadForm.name.trim() ||
+      !leadForm.phone.trim() ||
+      !leadForm.email.trim() ||
+      !leadForm.state.trim() ||
+      !leadForm.profession.trim()
+    ) {
+      alert('Please fill all fields.')
+      return
+    }
+
+    setLeadSubmitting(true)
+
+    try {
+      const response = await fetch('/api/brochure-leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...leadForm,
+          brochureId: selectedMaterial.id || '',
+          brochureTitle: selectedMaterial.title || '',
+          brochureUrl: selectedMaterial.fileUrl || '',
+          language: selectedMaterial.language || '',
+        }),
+      })
+
+      if (!response.ok) {
+        alert('Something went wrong. Please try again.')
+        return
+      }
+
+      window.open(selectedMaterial.fileUrl, '_blank', 'noopener,noreferrer')
+
+      setSelectedMaterial(null)
+      setLeadForm({
+        name: '',
+        phone: '',
+        email: '',
+        state: '',
+        profession: '',
+      })
+    } catch (error) {
+      alert('Something went wrong. Please try again.')
+    } finally {
+      setLeadSubmitting(false)
+    }
   }
 
   return (
@@ -405,6 +524,101 @@ export default function BrochuresPage() {
           })}
         </div>
       </main>
+      <Dialog
+        open={!!selectedMaterial}
+        onOpenChange={(open) => {
+          if (!open) setSelectedMaterial(null)
+        }}
+      >
+        <DialogContent className="max-w-lg rounded-2xl">
+          <DialogHeader>
+            <DialogTitle className="font-display text-2xl text-[#09084f]">
+              Download Brochure
+            </DialogTitle>
+            <DialogDescription>
+              Please fill in your details to access the brochure.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div>
+              <Label>Name</Label>
+              <Input
+                value={leadForm.name}
+                onChange={(e) =>
+                  setLeadForm({ ...leadForm, name: e.target.value })
+                }
+                placeholder="Enter your name"
+              />
+            </div>
+
+            <div>
+              <Label>Phone Number</Label>
+              <Input
+                value={leadForm.phone}
+                onChange={(e) =>
+                  setLeadForm({ ...leadForm, phone: e.target.value })
+                }
+                placeholder="Enter your phone number"
+              />
+            </div>
+
+            <div>
+              <Label>Email</Label>
+              <Input
+                type="email"
+                value={leadForm.email}
+                onChange={(e) =>
+                  setLeadForm({ ...leadForm, email: e.target.value })
+                }
+                placeholder="Enter your email"
+              />
+            </div>
+
+            <div>
+              <Label>State</Label>
+              <Select
+                value={leadForm.state}
+                onValueChange={(value) =>
+                  setLeadForm({ ...leadForm, state: value })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your state" />
+                </SelectTrigger>
+
+                <SelectContent className="max-h-72">
+                  {INDIAN_STATES.map((state) => (
+                    <SelectItem key={state} value={state}>
+                      {state}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label>Profession</Label>
+              <Input
+                value={leadForm.profession}
+                onChange={(e) =>
+                  setLeadForm({ ...leadForm, profession: e.target.value })
+                }
+                placeholder="Enter your profession"
+              />
+            </div>
+
+            <Button
+              type="button"
+              disabled={leadSubmitting}
+              onClick={submitLeadForm}
+              className="w-full h-11 rounded-lg bg-gradient-to-r from-[#de2527] to-[#a81b1d] text-white font-bold"
+            >
+              {leadSubmitting ? 'Submitting...' : 'Submit & Download'}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
