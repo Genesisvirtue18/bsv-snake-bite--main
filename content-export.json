@@ -2570,52 +2570,52 @@
   },
   "translationStatus": {
     "hi": {
-      "status": "pending_review",
-      "generatedBy": "ai",
-      "generatedByUser": "Super Administrator",
-      "generatedAt": "2026-07-09T08:24:54.642Z"
+      "status": "approved",
+      "approvedBy": "Super Administrator",
+      "approvedAt": "2026-07-09T08:25:35.862Z",
+      "userId": "super_admin_default"
     },
     "mr": {
-      "status": "pending_review",
-      "generatedBy": "ai",
-      "generatedByUser": "Super Administrator",
-      "generatedAt": "2026-07-09T08:24:54.714Z"
+      "status": "approved",
+      "approvedBy": "Super Administrator",
+      "approvedAt": "2026-07-09T08:25:19.882Z",
+      "userId": "super_admin_default"
     },
     "kn": {
-      "status": "pending_review",
-      "generatedBy": "ai",
-      "generatedByUser": "Super Administrator",
-      "generatedAt": "2026-07-09T08:24:54.717Z"
+      "status": "approved",
+      "approvedBy": "Super Administrator",
+      "approvedAt": "2026-07-09T08:25:41.878Z",
+      "userId": "super_admin_default"
     },
     "ta": {
-      "status": "pending_review",
-      "generatedBy": "ai",
-      "generatedByUser": "Super Administrator",
-      "generatedAt": "2026-07-09T08:24:54.720Z"
+      "status": "approved",
+      "approvedBy": "Super Administrator",
+      "approvedAt": "2026-07-09T08:25:44.175Z",
+      "userId": "super_admin_default"
     },
     "te": {
-      "status": "pending_review",
-      "generatedBy": "ai",
-      "generatedByUser": "Super Administrator",
-      "generatedAt": "2026-07-09T08:24:54.723Z"
+      "status": "approved",
+      "approvedBy": "Super Administrator",
+      "approvedAt": "2026-07-09T08:25:21.977Z",
+      "userId": "super_admin_default"
     },
     "or": {
-      "status": "pending_review",
-      "generatedBy": "ai",
-      "generatedByUser": "Super Administrator",
-      "generatedAt": "2026-07-09T08:24:54.726Z"
+      "status": "approved",
+      "approvedBy": "Super Administrator",
+      "approvedAt": "2026-07-09T08:25:43.027Z",
+      "userId": "super_admin_default"
     },
     "pa": {
-      "status": "pending_review",
-      "generatedBy": "ai",
-      "generatedByUser": "Super Administrator",
-      "generatedAt": "2026-07-09T08:24:54.730Z"
+      "status": "approved",
+      "approvedBy": "Super Administrator",
+      "approvedAt": "2026-07-09T08:25:24.031Z",
+      "userId": "super_admin_default"
     },
     "bn": {
-      "status": "pending_review",
-      "generatedBy": "ai",
-      "generatedByUser": "Super Administrator",
-      "generatedAt": "2026-07-09T08:24:54.732Z"
+      "status": "approved",
+      "approvedBy": "Super Administrator",
+      "approvedAt": "2026-07-09T08:25:24.461Z",
+      "userId": "super_admin_default"
     }
   },
   "heroSlides": [
@@ -2992,5 +2992,6 @@
       "order": 2,
       "published": true
     }
-  ]
+  ],
+  "brochureLeadFormEnabled": true
 }
