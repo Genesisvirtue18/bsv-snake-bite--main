@@ -131,16 +131,6 @@ export default function MeetingWithPolicyMakersPage() {
                             <BookOpen className="w-8 h-8 text-[#201F5E]" />
                         </div>
 
-                        {heroImage && (
-                            <div className="mb-6">
-                                <img
-                                    src={heroImage}
-                                    alt={title}
-                                    className="w-full max-w-3xl mx-auto rounded-2xl object-cover shadow-lg"
-                                    style={{ maxHeight: '400px' }}
-                                />
-                            </div>
-                        )}
 
                         <h1 className="font-display text-[38px] md:text-[58px] font-extrabold leading-tight text-[#09084f]">
                             {title}
