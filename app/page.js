@@ -1223,7 +1223,7 @@ function AccessSection({ content, t }) {
 
     // Card 3: Meeting with Policy-Makers - OPEN NEW PAGE
     if (cardIndex === 2) {
-      window.location.href = '/meeting-with-policy-makers'
+      window.location.href = '/meetings-with-policy-makers'
       return
     }
 
@@ -1297,21 +1297,21 @@ function AccessSection({ content, t }) {
                           </div>
                         )}
 
-                        {/* Workshop badge - show document count */}
-                        {isWorkshop && (
-                          <div className="absolute top-2 right-2 z-10 rounded-full bg-[#B45309] px-2.5 py-1 text-[10px] font-bold text-white shadow-md">
-                            {documents.length > 0 ? `${documents.length} DOCS` : 'DOCUMENTS'}
-                          </div>
-                        )}
+                        {/* REMOVED: Workshop badge with document count */}
+                        {/* {isWorkshop && (
+                    <div className="absolute top-2 right-2 z-10 rounded-full bg-[#B45309] px-2.5 py-1 text-[10px] font-bold text-white shadow-md">
+                        {documents.length > 0 ? `${documents.length} DOCS` : 'DOCUMENTS'}
+                    </div>
+                )} */}
 
-                        {/* Workshop icon overlay - show on hover */}
-                        {isWorkshop && (
-                          <div className="absolute inset-0 bg-black/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <div className="w-11 h-11 rounded-full flex items-center justify-center shadow-lg bg-white">
-                              <FileText className="w-5 h-5 text-[#B45309]" />
-                            </div>
-                          </div>
-                        )}
+                        {/* REMOVED: Workshop icon overlay on hover */}
+                        {/* {isWorkshop && (
+                    <div className="absolute inset-0 bg-black/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="w-11 h-11 rounded-full flex items-center justify-center shadow-lg bg-white">
+                            <FileText className="w-5 h-5 text-[#B45309]" />
+                        </div>
+                    </div>
+                )} */}
 
                         <div
                           className="absolute bottom-0 left-0 right-0 px-3 py-2 pointer-events-none"
