@@ -481,7 +481,7 @@ function Hero({ content, t }) {
       className="relative overflow-hidden pt-14 sm:pt-20 pb-0 sm:pb-6 bg-gradient-to-b from-slate-50 via-white to-slate-50"
     >
       <div className="sm:container sm:mx-auto sm:px-4 lg:px-8">
-        <div className="relative w-full h-[78vw] min-h-[500px] max-h-[700px] sm:h-[360px] sm:max-h-none lg:h-[520px] overflow-hidden rounded-none sm:rounded-[24px]">
+        <div className="relative w-full aspect-[16/9] overflow-hidden rounded-none sm:rounded-[24px]">
           <picture className="block w-full h-full">
             {mobileImage && (
               <source media="(max-width: 767px)" srcSet={mobileImage} />
@@ -490,7 +490,7 @@ function Hero({ content, t }) {
             <img
               src={desktopImage}
               alt="BSV Snakebite Awareness Campaign"
-              className="block w-full h-full object-cover object-top md:object-[center_15%] lg:object-[center_20%]"
+              className="block w-full h-full object-cover md:object-center lg:object-center"
               loading="eager"
             />
           </picture>
