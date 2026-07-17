@@ -1473,15 +1473,27 @@ export default function AdminPage() {
                           {/* Card 3: Workshop documents */}
                           {isWorkshop && (
                             <div className="border-t pt-4 space-y-3">
+                              <div className="rounded-xl border bg-amber-50/60 p-4">
+                                <div className="font-semibold text-bsv-blue mb-1">
+                                  Meeting with Policy-Makers Page Settings
+                                </div>
+                                <p className="text-xs text-slate-500">
+                                  This content will show on /meeting-with-policy-makers page. Add documents with cover images, titles, descriptions and Drive links.
+                                </p>
+                              </div>
+
                               <MediaPicker
-                                label="Workshop Cover Image"
+                                label="Page Cover Image"
                                 value={item.image || ''}
                                 onChange={v => updateItem({ image: v })}
                               />
 
                               <div className="flex items-center justify-between">
                                 <div>
-                                  <Label>Workshop Documents</Label>
+                                  <Label>Policy Documents</Label>
+                                  <p className="text-xs text-slate-500">
+                                    Add PDF, DOC, or DOCX files with cover images and descriptions.
+                                  </p>
                                 </div>
 
                                 <Button
@@ -1493,8 +1505,9 @@ export default function AdminPage() {
                                       ...docs,
                                       {
                                         title: '',
+                                        description: '',
+                                        coverImage: '',
                                         url: '',
-                                        size: '',
                                       },
                                     ]
                                     updateItem({ documents: nextDocs })
@@ -1507,19 +1520,19 @@ export default function AdminPage() {
 
                               {!docs.length && (
                                 <div className="rounded-lg border border-dashed border-slate-300 p-4 text-center text-sm text-slate-500">
-                                  No documents added yet.
+                                  No policy documents added yet.
                                 </div>
                               )}
 
                               {docs.map((doc, docIndex) => (
                                 <div
                                   key={docIndex}
-                                  className="rounded-xl border bg-slate-50 p-3 space-y-3"
+                                  className="rounded-xl border bg-slate-50 p-4 space-y-4"
                                 >
                                   <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2 font-semibold text-sm text-bsv-blue">
                                       <FileText className="w-4 h-4" />
-                                      Document {docIndex + 1}
+                                      Policy Document {docIndex + 1}
                                     </div>
 
                                     <Button
@@ -1540,7 +1553,7 @@ export default function AdminPage() {
                                     <Label>Document Title</Label>
                                     <Input
                                       value={doc.title || ''}
-                                      placeholder="Workshop Agenda.docx"
+                                      placeholder="National Snakebite Policy Brief"
                                       onChange={e => {
                                         const nextDocs = [...docs]
                                         nextDocs[docIndex] = {
@@ -1552,8 +1565,38 @@ export default function AdminPage() {
                                     />
                                   </div>
 
+                                  <div>
+                                    <Label>Document Description</Label>
+                                    <Textarea
+                                      rows={2}
+                                      value={doc.description || ''}
+                                      placeholder="Brief description of this document..."
+                                      onChange={e => {
+                                        const nextDocs = [...docs]
+                                        nextDocs[docIndex] = {
+                                          ...nextDocs[docIndex],
+                                          description: e.target.value,
+                                        }
+                                        updateItem({ documents: nextDocs })
+                                      }}
+                                    />
+                                  </div>
+
                                   <MediaPicker
-                                    label="Upload / Select DOCX or PDF"
+                                    label="Document Cover Image"
+                                    value={doc.coverImage || ''}
+                                    onChange={v => {
+                                      const nextDocs = [...docs]
+                                      nextDocs[docIndex] = {
+                                        ...nextDocs[docIndex],
+                                        coverImage: v,
+                                      }
+                                      updateItem({ documents: nextDocs })
+                                    }}
+                                  />
+
+                                  <MediaPicker
+                                    label="Upload PDF / DOCX or Paste Drive Link"
                                     value={doc.url || ''}
                                     onChange={v => {
                                       const nextDocs = [...docs]

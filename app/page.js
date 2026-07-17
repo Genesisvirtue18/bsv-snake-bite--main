@@ -1085,6 +1085,8 @@ function AccessSection({ content, t }) {
 
             return {
               title: parts[1] ? parts[0] : getFileNameFromUrl(url),
+              description: '',
+              coverImage: '',
               url,
             }
           }
@@ -1103,6 +1105,8 @@ function AccessSection({ content, t }) {
               doc.name ||
               getFileNameFromUrl(url) ||
               `Workshop Document ${index + 1}`,
+            description: doc.description || '',
+            coverImage: doc.coverImage || '',
             url,
           }
         })
@@ -1119,12 +1123,13 @@ function AccessSection({ content, t }) {
 
         return {
           title: parts[1] ? parts[0] : getFileNameFromUrl(url),
+          description: '',
+          coverImage: '',
           url,
         }
       })
       .filter(doc => doc.url)
   }
-
   const getAbsoluteUrl = (url = '') => {
     if (!url) return ''
 
