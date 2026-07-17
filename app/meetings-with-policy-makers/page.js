@@ -30,6 +30,48 @@ function getDocuments(card) {
         .filter((doc) => doc.url)
 }
 
+// Helper function to get absolute URL
+function getAbsoluteUrl(url = '') {
+    if (!url) return ''
+    if (/^https?:\/\//i.test(url)) {
+        return url
+    }
+    if (typeof window === 'undefined') {
+        return url
+    }
+    return `${window.location.origin}${url.startsWith('/') ? '' : '/'}${url}`
+}
+
+// View document function - opens in new tab
+function viewDocument(doc) {
+    const absoluteUrl = getAbsoluteUrl(doc.url)
+
+    if (!absoluteUrl) {
+        alert('Document URL not found')
+        return
+    }
+
+    // Check if it's a PDF
+    const isPdf = absoluteUrl.toLowerCase().split('?')[0].endsWith('.pdf')
+
+    if (isPdf) {
+        window.open(absoluteUrl, '_blank', 'noopener,noreferrer')
+        return
+    }
+
+    // Check if it's a Google Drive link
+    const isDrive = absoluteUrl.includes('drive.google.com') || absoluteUrl.includes('docs.google.com')
+
+    if (isDrive) {
+        window.open(absoluteUrl, '_blank', 'noopener,noreferrer')
+        return
+    }
+
+    // For DOCX, DOC, PPTX, XLSX - use Office Viewer
+    const officeViewerUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(absoluteUrl)}`
+    window.open(officeViewerUrl, '_blank', 'noopener,noreferrer')
+}
+
 export default function MeetingWithPolicyMakersPage() {
     const [content, setContent] = useState(null)
 
@@ -58,7 +100,7 @@ export default function MeetingWithPolicyMakersPage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-white via-[#f8fff9] to-[#eef3ff]">
-            {/* Header - Same as KOL page */}
+            {/* Header */}
             <header className="bg-[#201F5E] text-white py-4">
                 <div className="container mx-auto px-4 flex items-center gap-3">
                     <Link href="/">
@@ -80,7 +122,7 @@ export default function MeetingWithPolicyMakersPage() {
             </header>
 
             <main className="container mx-auto px-4 pt-5 md:pt-7 pb-12">
-                {/* Hero Section - Same as KOL page */}
+                {/* Hero Section */}
                 <section className="relative overflow-hidden rounded-3xl bg-white border shadow-sm mb-10">
                     <div className="absolute inset-0 bg-gradient-to-br from-green-50 via-white to-indigo-50" />
 
@@ -88,6 +130,17 @@ export default function MeetingWithPolicyMakersPage() {
                         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white shadow mb-5">
                             <BookOpen className="w-8 h-8 text-[#201F5E]" />
                         </div>
+
+                        {heroImage && (
+                            <div className="mb-6">
+                                <img
+                                    src={heroImage}
+                                    alt={title}
+                                    className="w-full max-w-3xl mx-auto rounded-2xl object-cover shadow-lg"
+                                    style={{ maxHeight: '400px' }}
+                                />
+                            </div>
+                        )}
 
                         <h1 className="font-display text-[38px] md:text-[58px] font-extrabold leading-tight text-[#09084f]">
                             {title}
@@ -99,8 +152,8 @@ export default function MeetingWithPolicyMakersPage() {
                     </div>
                 </section>
 
-                {/* Document Cards - Only documents, no filters, no heading */}
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {/* Document Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 max-w-6xl mx-auto">
                     {documents.length === 0 ? (
                         <div className="col-span-full">
                             <div className="rounded-2xl border border-dashed bg-white/70 p-10 text-center">
@@ -112,10 +165,10 @@ export default function MeetingWithPolicyMakersPage() {
                         documents.map((doc) => (
                             <Card
                                 key={doc.id}
-                                className="overflow-hidden rounded-2xl border bg-white shadow-sm hover:shadow-xl transition-all duration-300 group"
+                                className="overflow-hidden rounded-2xl border bg-white shadow-sm hover:shadow-xl transition-all duration-300 group max-w-[400px] mx-auto w-full"
                             >
                                 <CardContent className="p-0">
-                                    {/* Cover Image - Same as KOL video cards */}
+                                    {/* Cover Image */}
                                     <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
                                         {doc.coverImage ? (
                                             <img
@@ -125,42 +178,40 @@ export default function MeetingWithPolicyMakersPage() {
                                             />
                                         ) : (
                                             <div className="w-full h-full bg-gradient-to-br from-[#201F5E] to-[#16A34A] flex items-center justify-center">
-                                                <FileText className="w-16 h-16 text-white/70" />
+                                                <FileText className="w-12 h-12 text-white/70" />
                                             </div>
                                         )}
                                     </div>
 
-                                    {/* Card Content - Same as KOL video cards */}
-                                    <div className="p-5 flex flex-col h-[220px]">
-                                        <h3 className="font-display font-bold text-lg text-[#09084f] line-clamp-2">
+                                    {/* Card Content */}
+                                    <div className="p-4 sm:p-5 flex flex-col">
+                                        <h3 className="font-display font-bold text-base sm:text-lg text-[#09084f] line-clamp-2 min-h-[3.5rem]">
                                             {doc.title}
                                         </h3>
 
                                         {doc.description && (
-                                            <p className="mt-2 text-sm text-slate-600 leading-6 line-clamp-3 flex-1">
+                                            <p className="mt-1.5 text-sm text-slate-600 leading-relaxed line-clamp-2 min-h-[2.5rem]">
                                                 {doc.description}
                                             </p>
                                         )}
 
-                                        <div className="mt-4 flex gap-3">
+                                        <div className="mt-4 flex gap-2">
+                                            {/* View Button - opens in new tab using viewDocument */}
                                             <Button
-                                                asChild
-                                                className="flex-1 bg-[#201F5E] hover:bg-[#17164d]"
+                                                size="sm"
+                                                className="flex-1 bg-[#201F5E] hover:bg-[#17164d] text-xs sm:text-sm"
+                                                onClick={() => viewDocument(doc)}
                                             >
-                                                <a
-                                                    href={doc.url}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    <ExternalLink className="w-4 h-4 mr-2" />
-                                                    View
-                                                </a>
+                                                <ExternalLink className="w-3.5 h-3.5 mr-1.5" />
+                                                View
                                             </Button>
 
+                                            {/* Download Button - downloads the file */}
                                             <Button
                                                 asChild
+                                                size="sm"
                                                 variant="outline"
-                                                className="flex-1"
+                                                className="flex-1 text-xs sm:text-sm"
                                             >
                                                 <a
                                                     href={doc.url}
@@ -168,7 +219,7 @@ export default function MeetingWithPolicyMakersPage() {
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                 >
-                                                    <Download className="w-4 h-4 mr-2" />
+                                                    <Download className="w-3.5 h-3.5 mr-1.5" />
                                                     Download
                                                 </a>
                                             </Button>

@@ -2175,8 +2175,34 @@ function Footer({ content, t, settings }) {
           </div>
         </div>
 
-        <div className="border-t border-white/10 pt-5 flex flex-wrap items-center justify-between gap-4 text-xs text-white/50">
-          <div>{f.copyright || '© 2025 Bharat Serums and Vaccines Ltd. All rights reserved.'}</div>
+        <div className="border-t border-white/10 pt-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-3 text-sm">
+
+            <p className="text-white/60">
+              © 2025 Bharat Serums and Vaccines Ltd. All rights reserved.
+            </p>
+
+            <div className="flex items-center gap-4 text-white/70">
+
+              <Link
+                href="/privacy-policy"
+                className="hover:text-white transition-colors"
+              >
+                Privacy Policy
+              </Link>
+
+              <span className="text-white/30">|</span>
+
+              <Link
+                href="/terms-of-use"
+                className="hover:text-white transition-colors"
+              >
+                Terms of Use
+              </Link>
+
+            </div>
+
+          </div>
         </div>
       </div>
     </footer>
