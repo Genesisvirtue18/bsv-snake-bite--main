@@ -219,6 +219,7 @@ export default function KOLProgramPage() {
                     return {
                         id: `${index}-${url}`,
                         title: video.title || `KOL Video ${index + 1}`,
+                        description: video.description || "",
                         url,
                         type: getVideoType(url),
                         coverImage: video.coverImage || video.thumbnail || video.image || '',
@@ -389,6 +390,12 @@ export default function KOLProgramPage() {
                                                     <h3 className="font-display font-bold text-lg text-[#09084f]">
                                                         {video.title || `KOL Video ${index + 1}`}
                                                     </h3>
+
+                                                    {video.description && (
+                                                        <p className="mt-2 text-sm text-slate-600 leading-6 line-clamp-2">
+                                                            {video.description}
+                                                        </p>
+                                                    )}
 
                                                     <button
                                                         type="button"

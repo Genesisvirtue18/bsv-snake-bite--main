@@ -1108,6 +1108,7 @@ export default function AdminPage() {
                                         ...current,
                                         {
                                           title: '',
+                                          description: '',
                                           url: '',
                                           coverImage: '',
                                         },
@@ -1128,7 +1129,7 @@ export default function AdminPage() {
                                 {pageVideos.map((video, videoIndex) => (
                                   <div
                                     key={videoIndex}
-                                    className="rounded-xl border bg-slate-50 p-3 space-y-3"
+                                    className="rounded-xl border bg-slate-50 p-3 space-y-4"
                                   >
                                     <div className="flex items-center justify-between">
                                       <div className="flex items-center gap-2 font-semibold text-sm text-bsv-blue">
@@ -1156,7 +1157,7 @@ export default function AdminPage() {
                                       <div>
                                         <Label>Video Title</Label>
                                         <Input
-                                          value={video.title || ''}
+                                          value={video.title || ""}
                                           placeholder="Snakebite Management Training"
                                           onChange={e => {
                                             updatePageArray(pageConfig.videoKey, current => {
@@ -1172,9 +1173,9 @@ export default function AdminPage() {
                                       </div>
 
                                       <div>
-                                        <Label>YouTube /  Drive Link</Label>
+                                        <Label>YouTube / Drive Link</Label>
                                         <Input
-                                          value={video.url || ''}
+                                          value={video.url || ""}
                                           placeholder="https://www.youtube.com/watch?v=..."
                                           onChange={e => {
                                             updatePageArray(pageConfig.videoKey, current => {
@@ -1190,9 +1191,30 @@ export default function AdminPage() {
                                       </div>
                                     </div>
 
+                                    {/* NEW DESCRIPTION FIELD */}
+
+                                    <div>
+                                      <Label>Video Description</Label>
+                                      <Textarea
+                                        rows={2}
+                                        value={video.description || ""}
+                                        placeholder="Write a short 1-2 line description about this video..."
+                                        onChange={e => {
+                                          updatePageArray(pageConfig.videoKey, current => {
+                                            const next = [...current]
+                                            next[videoIndex] = {
+                                              ...next[videoIndex],
+                                              description: e.target.value,
+                                            }
+                                            return next
+                                          })
+                                        }}
+                                      />
+                                    </div>
+
                                     <MediaPicker
                                       label="Video Cover Image"
-                                      value={video.coverImage || ''}
+                                      value={video.coverImage || ""}
                                       onChange={v => {
                                         updatePageArray(pageConfig.videoKey, current => {
                                           const next = [...current]
