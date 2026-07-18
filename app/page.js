@@ -481,7 +481,7 @@ function Hero({ content, t }) {
       className="relative overflow-hidden pt-14 sm:pt-20 pb-0 sm:pb-6 bg-gradient-to-b from-slate-50 via-white to-slate-50"
     >
       <div className="sm:container sm:mx-auto sm:px-4 lg:px-8">
-        <div className="relative w-full h-[78vw] min-h-[500px] max-h-[700px] sm:h-[360px] sm:max-h-none lg:h-[520px] overflow-hidden rounded-none sm:rounded-[24px]">
+        <div className="relative w-full h-[82vw] min-h-[560px] max-h-[760px] sm:h-[420px] lg:h-[620px] overflow-hidden rounded-none sm:rounded-[24px]">
           <picture className="block w-full h-full">
             {mobileImage && (
               <source media="(max-width: 767px)" srcSet={mobileImage} />
