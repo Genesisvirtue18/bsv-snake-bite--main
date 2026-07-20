@@ -377,12 +377,41 @@ export default function AdminPage() {
   const logout = () => { localStorage.removeItem('bsv_token'); localStorage.removeItem('bsv_user'); setUser(null); setToken(null) }
 
   const api = async (url, method = 'GET', body) => {
-    const h = { Authorization: `Bearer ${token}` }
-    const opts = { method, headers: h }
-    if (body && !(body instanceof FormData)) { h['Content-Type'] = 'application/json'; opts.body = JSON.stringify(body) }
-    else if (body) opts.body = body
-    return fetch(url, opts)
-  }
+    const currentToken = localStorage.getItem("token") || token;
+
+    const h = {
+      Authorization: `Bearer ${currentToken}`,
+    };
+
+    const opts = {
+      method,
+      headers: h,
+    };
+
+    if (body && !(body instanceof FormData)) {
+      h["Content-Type"] = "application/json";
+      opts.body = JSON.stringify(body);
+    } else if (body) {
+      opts.body = body;
+    }
+
+    const res = await fetch(url, opts);
+
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+
+      toast.error("Session expired. Please login again.");
+
+      setTimeout(() => {
+        window.location.href = "/admin";
+      }, 1000);
+
+      throw new Error("Unauthorized");
+    }
+
+    return res;
+  };
 
   const saveContent = async () => {
     const r = await api('/api/content', 'PUT', content)
