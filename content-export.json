@@ -3497,6 +3497,12 @@
   ],
   "sectionVisibility": {
     "aboutCampaign": true,
-    "campaignVideos": false
+    "campaignVideos": false,
+    "awareness": false,
+    "brandAdvocacy": false,
+    "access": false,
+    "awardsRecognition": false,
+    "aboutBSV": false,
+    "contact": false
   }
 }
