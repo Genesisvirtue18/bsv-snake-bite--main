@@ -3494,5 +3494,8 @@
     "PR Coverage",
     "Radio Coverage",
     "Influencers"
-  ]
+  ],
+  "sectionVisibility": {
+    "aboutCampaign": false
+  }
 }
