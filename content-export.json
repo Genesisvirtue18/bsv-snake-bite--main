@@ -3496,6 +3496,7 @@
     "Influencers"
   ],
   "sectionVisibility": {
-    "aboutCampaign": false
+    "aboutCampaign": true,
+    "campaignVideos": false
   }
 }
