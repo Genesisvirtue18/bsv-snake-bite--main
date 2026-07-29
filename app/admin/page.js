@@ -167,6 +167,13 @@ function AudioPicker({ value, onChange, label = 'Upload Audio File (MP3 or WAV)'
       return
     }
 
+    if (file.size >= 4.5 * 1024 * 1024) {
+      const message = 'File must be smaller than 4.5 MB for deployment uploads. Please compress it or use an MP3.'
+      toast.error(message)
+      setUploadStatus(message)
+      return
+    }
+
     setUploading(true)
     setUploadStatus(`Uploading ${file.name}…`)
     const formData = new FormData()
@@ -192,6 +199,7 @@ function AudioPicker({ value, onChange, label = 'Upload Audio File (MP3 or WAV)'
   return (
     <div>
       <Label>{label}</Label>
+      <p className="mt-1 text-xs text-amber-700">File must be smaller than 4.5 MB. For larger WAV files, convert or compress to MP3 before uploading.</p>
       <div className="mt-1 flex flex-wrap items-center gap-2">
         <Input type="file" accept="audio/mpeg,audio/wav,.mp3,.wav" disabled={uploading} onChange={event => upload(event.target.files?.[0])} className="max-w-md" />
         {uploading && <span className="text-sm text-slate-500">Uploading…</span>}
