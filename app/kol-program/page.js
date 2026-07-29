@@ -245,8 +245,8 @@ export default function KOLProgramPage() {
     const showImages = filter === 'all' || filter === 'images'
     const showDocuments = filter === 'all' || filter === 'documents'
 
-    const title = 'KOL Program'
-    const description = 'Conferences & Webinars for snakebite training clinicians'
+    const title = kolCard.title || ''
+    const description = kolCard.desc || ''
 
     const activeAlbumImages = activeAlbum
         ? activeAlbum.images?.length

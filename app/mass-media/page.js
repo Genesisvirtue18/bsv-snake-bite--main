@@ -14,16 +14,11 @@ import {
   ChevronRight,
   Megaphone,
   ExternalLink,
+  Music2,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 
-const CATEGORIES = [
-  { key: 'all', label: 'All', icon: Megaphone },
-  { key: 'PR Coverage', label: 'PR Coverage', icon: Newspaper },
-  { key: 'Radio Coverage', label: 'Radio Coverage', icon: Radio },
-  { key: 'Influencers', label: 'Influencers', icon: Users },
-]
 
 export default function MassMediaPage() {
   const [content, setContent] = useState(null)
@@ -44,13 +39,28 @@ export default function MassMediaPage() {
       .catch(() => setContent(null))
   }, [])
 
+  const getRadioAudioUrl = (item) => {
+    const explicitAudio = item?.radioAudioUrl || item?.audioUrl || item?.mp3Url || ''
+    if (explicitAudio) return explicitAudio
+
+    const legacyLink = item?.driveUrl || item?.contentUrl || item?.link || ''
+    return /\.(mp3|wav)(?:$|[?#])/i.test(legacyLink) ? legacyLink : ''
+  }
+
+  const normalizeCategory = (value) => String(value || '').trim().toLowerCase()
+
   const items = useMemo(() => {
     const cmsItems = content?.massMediaActivities || []
+    const selectedCategory = normalizeCategory(activeFilter)
 
     return cmsItems
       .filter(item => item.published !== false)
-      .filter(item => activeFilter === 'all' || item.category === activeFilter)
+      .filter(item => selectedCategory === 'all' || normalizeCategory(item.category) === selectedCategory)
+      .filter(item => selectedCategory !== 'radio coverage' || normalizeCategory(item.category) !== 'radio coverage' || Boolean(getRadioAudioUrl(item)))
   }, [content, activeFilter])
+  const CATEGORIES = [{ key: 'all', label: 'All', icon: Megaphone }, ...(content?.massMediaCategories || []).map(label => ({ key: label, label, icon: Megaphone }))]
+  const savedHeader = content?.pageHeaders?.massMedia || {}
+  const header = { title: savedHeader.title || 'Mass Media Coverage', description: savedHeader.description || 'Press coverage, radio outreach and influencer collaborations helping spread the hospital-first snakebite treatment message.' }
 
   const getActivityLink = (item) => {
     return item.contentUrl || item.driveUrl || item.driveLink || item.link || item.href || ''
@@ -239,11 +249,11 @@ export default function MassMediaPage() {
               className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4"
               style={{ color: BRAND.blue }}
             >
-              Mass Media Coverage
+              {header.title}
             </h1>
 
             <p className="text-slate-600 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-              Press coverage, radio outreach and influencer collaborations helping spread the hospital-first snakebite treatment message.
+              {header.description}
             </p>
           </div>
         </section>
@@ -285,10 +295,12 @@ export default function MassMediaPage() {
                 <CardContent className="p-12 text-center">
                   <Images className="w-16 h-16 mx-auto text-slate-300 mb-3" />
                   <h3 className="font-display font-bold text-xl text-bsv-blue">
-                    Mass Media Activities Coming Soon
+                    {activeFilter === 'Radio Coverage' ? 'No Radio Coverage Available' : 'Mass Media Activities Coming Soon'}
                   </h3>
                   <p className="text-muted-foreground">
-                    Activities will be visible here once added from admin.
+                    {activeFilter === 'Radio Coverage'
+                      ? 'Please check back later for radio coverage.'
+                      : 'Activities will be visible here once added from admin.'}
                   </p>
                 </CardContent>
               </Card>
@@ -299,7 +311,8 @@ export default function MassMediaPage() {
                 const gallery = Array.isArray(item.gallery) ? item.gallery : []
                 const coverImage = getCardPreview(item)
                 const color = categoryColor(item.category)
-                const isPR = item.category === 'PR Coverage'
+                const isPR = normalizeCategory(item.category) === 'pr coverage'
+                const isRadio = normalizeCategory(item.category) === 'radio coverage'
                 const activityLink = getActivityLink(item)
                 const linkType = getLinkType(activityLink)
 
@@ -312,6 +325,20 @@ export default function MassMediaPage() {
                   >
                     <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group h-full">
                       <CardContent className="p-0">
+                        {isRadio ? (
+                          <div className="p-5">
+                            <div className="flex items-center gap-3 mb-4">
+                              <div className="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center"><Music2 className="w-6 h-6" /></div>
+                              <div>
+                                <div className="text-xs font-bold text-blue-600 uppercase tracking-wide">Radio Coverage</div>
+                                <h3 className="font-display font-bold text-xl text-bsv-blue">{item.title}</h3>
+                              </div>
+                            </div>
+                            {item.description && <p className="text-sm text-slate-600 mb-4">{item.description}</p>}
+                            <audio className="w-full" controls controlsList="nodownload" preload="metadata" src={getRadioAudioUrl(item)}>Your browser does not support audio playback.</audio>
+                          </div>
+                        ) : (
+                          <>
                         <div className="relative h-56 bg-slate-200 overflow-hidden">
                           {coverImage ? (
                             <img
@@ -382,6 +409,8 @@ export default function MassMediaPage() {
                             </Button>
                           </div>
                         </div>
+                          </>
+                        )}
                       </CardContent>
                     </Card>
                   </motion.div>

@@ -2,225 +2,102 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import {
-    ArrowLeft,
-    BookOpen,
-    ExternalLink,
-    Download,
-    FileText,
-    Image as ImageIcon,
-} from 'lucide-react'
+import { ArrowLeft, BookOpen, Images, X } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 
-function getDocuments(card) {
-    const docs = Array.isArray(card?.documents)
-        ? card.documents
-        : []
+function getImageAlbums(card) {
+    const albums = Array.isArray(card?.policyImageAlbums) ? card.policyImageAlbums : []
 
-    return docs
-        .map((doc, index) => ({
-            id: doc.id || `doc-${index}`,
-            title: doc.title || `Document ${index + 1}`,
-            description: doc.description || '',
-            coverImage: doc.coverImage || '',
-            url: doc.url || doc.fileUrl || '',
-        }))
-        .filter((doc) => doc.url)
-}
+    return albums
+        .map((album, index) => {
+            const images = Array.isArray(album.images) ? album.images.filter(Boolean) : []
+            const coverImage = album.coverImage || images[0] || ''
 
-// Helper function to get absolute URL
-function getAbsoluteUrl(url = '') {
-    if (!url) return ''
-    if (/^https?:\/\//i.test(url)) {
-        return url
-    }
-    if (typeof window === 'undefined') {
-        return url
-    }
-    return `${window.location.origin}${url.startsWith('/') ? '' : '/'}${url}`
-}
-
-// View document function - opens in new tab
-function viewDocument(doc) {
-    const absoluteUrl = getAbsoluteUrl(doc.url)
-
-    if (!absoluteUrl) {
-        alert('Document URL not found')
-        return
-    }
-
-    // Check if it's a PDF
-    const isPdf = absoluteUrl.toLowerCase().split('?')[0].endsWith('.pdf')
-
-    if (isPdf) {
-        window.open(absoluteUrl, '_blank', 'noopener,noreferrer')
-        return
-    }
-
-    // Check if it's a Google Drive link
-    const isDrive = absoluteUrl.includes('drive.google.com') || absoluteUrl.includes('docs.google.com')
-
-    if (isDrive) {
-        window.open(absoluteUrl, '_blank', 'noopener,noreferrer')
-        return
-    }
-
-    // For DOCX, DOC, PPTX, XLSX - use Office Viewer
-    const officeViewerUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(absoluteUrl)}`
-    window.open(officeViewerUrl, '_blank', 'noopener,noreferrer')
+            return {
+                id: album.id || `policy-album-${index}`,
+                title: album.title || `Photo Album ${index + 1}`,
+                description: album.description || '',
+                coverImage,
+                images: images.length ? images : (coverImage ? [coverImage] : []),
+            }
+        })
+        .filter((album) => album.images.length)
 }
 
 export default function MeetingWithPolicyMakersPage() {
     const [content, setContent] = useState(null)
+    const [activeAlbum, setActiveAlbum] = useState(null)
 
     useEffect(() => {
         fetch('/api/content')
             .then((res) => {
-                if (!res.ok) {
-                    throw new Error('Failed to fetch content')
-                }
+                if (!res.ok) throw new Error('Failed to fetch content')
                 return res.json()
             })
-            .then((data) => {
-                setContent(data)
-            })
-            .catch((error) => {
-                console.error('Error fetching content:', error)
-                setContent(null)
-            })
+            .then(setContent)
+            .catch(() => setContent(null))
     }, [])
 
     const policyCard = content?.access?.items?.[2] || {}
-    const documents = useMemo(() => getDocuments(policyCard), [policyCard])
-    const title = policyCard.title || 'Meeting with Policy-Makers'
-    const description = policyCard.description || 'Policy discussions, advocacy initiatives, official meetings and reports.'
-    const heroImage = policyCard.coverImage || policyCard.image || ''
+    const albums = useMemo(() => getImageAlbums(policyCard), [policyCard])
+    const title = policyCard.title || ''
+    const description = policyCard.desc || policyCard.description || ''
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-white via-[#f8fff9] to-[#eef3ff]">
-            {/* Header */}
             <header className="bg-[#201F5E] text-white py-4">
                 <div className="container mx-auto px-4 flex items-center gap-3">
-                    <Link href="/">
-                        <Button variant="ghost" className="text-white hover:bg-white/10">
-                            <ArrowLeft className="w-4 h-4 mr-1" />
-                            Home
-                        </Button>
-                    </Link>
-
-                    <div>
-                        <div className="font-display font-extrabold text-xl">
-                            {title}
-                        </div>
-                        <div className="text-xs text-white/70">
-                            {description}
-                        </div>
-                    </div>
+                    <Link href="/"><Button variant="ghost" className="text-white hover:bg-white/10"><ArrowLeft className="w-4 h-4 mr-1" />Home</Button></Link>
+                    <div><div className="font-display font-extrabold text-xl">{title}</div><div className="text-xs text-white/70">{description}</div></div>
                 </div>
             </header>
 
             <main className="container mx-auto px-4 pt-5 md:pt-7 pb-12">
-                {/* Hero Section */}
                 <section className="relative overflow-hidden rounded-3xl bg-white border shadow-sm mb-10">
                     <div className="absolute inset-0 bg-gradient-to-br from-green-50 via-white to-indigo-50" />
-
                     <div className="relative px-5 md:px-10 py-12 text-center max-w-4xl mx-auto">
-                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white shadow mb-5">
-                            <BookOpen className="w-8 h-8 text-[#201F5E]" />
-                        </div>
-
-
-                        <h1 className="font-display text-[38px] md:text-[58px] font-extrabold leading-tight text-[#09084f]">
-                            {title}
-                        </h1>
-
-                        <p className="text-slate-600 text-base md:text-lg leading-relaxed">
-                            {description}
-                        </p>
+                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white shadow mb-5"><BookOpen className="w-8 h-8 text-[#201F5E]" /></div>
+                        <h1 className="font-display text-[38px] md:text-[58px] font-extrabold leading-tight text-[#09084f]">{title}</h1>
+                        <p className="text-slate-600 text-base md:text-lg leading-relaxed">{description}</p>
                     </div>
                 </section>
 
-                {/* Document Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 max-w-6xl mx-auto">
-                    {documents.length === 0 ? (
-                        <div className="col-span-full">
-                            <div className="rounded-2xl border border-dashed bg-white/70 p-10 text-center">
-                                <FileText className="w-12 h-12 mx-auto text-slate-300 mb-3" />
-                                <p className="text-slate-500">No policy documents added yet.</p>
-                            </div>
-                        </div>
+                <section className="max-w-6xl mx-auto">
+                    <div className="flex items-center gap-3 mb-5"><Images className="w-6 h-6 text-[#201F5E]" /><h2 className="font-display font-bold text-2xl text-[#09084f]">Photo Albums</h2></div>
+                    {!albums.length ? (
+                        <div className="rounded-2xl border border-dashed bg-white/70 p-10 text-center"><Images className="w-12 h-12 mx-auto text-slate-300 mb-3" /><p className="text-slate-500">No photo albums added yet.</p></div>
                     ) : (
-                        documents.map((doc) => (
-                            <Card
-                                key={doc.id}
-                                className="overflow-hidden rounded-2xl border bg-white shadow-sm hover:shadow-xl transition-all duration-300 group max-w-[400px] mx-auto w-full"
-                            >
-                                <CardContent className="p-0">
-                                    {/* Cover Image */}
-                                    <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
-                                        {doc.coverImage ? (
-                                            <img
-                                                src={doc.coverImage}
-                                                alt={doc.title}
-                                                className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                                            />
-                                        ) : (
-                                            <div className="w-full h-full bg-gradient-to-br from-[#201F5E] to-[#16A34A] flex items-center justify-center">
-                                                <FileText className="w-12 h-12 text-white/70" />
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                            {albums.map((album) => (
+                                <button key={album.id} type="button" onClick={() => setActiveAlbum(album)} className="text-left group">
+                                    <Card className="overflow-hidden rounded-2xl border bg-white shadow-sm hover:shadow-xl transition-all duration-300 h-full">
+                                        <CardContent className="p-0">
+                                            <div className="relative aspect-[4/3] bg-slate-100 overflow-hidden">
+                                                <img src={album.coverImage} alt={album.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                                                <span className="absolute left-3 top-3 rounded-full bg-[#201F5E] px-3 py-1 text-xs font-bold text-white">{album.images.length} {album.images.length === 1 ? 'photo' : 'photos'}</span>
                                             </div>
-                                        )}
-                                    </div>
-
-                                    {/* Card Content */}
-                                    <div className="p-4 sm:p-5 flex flex-col">
-                                        <h3 className="font-display font-bold text-base sm:text-lg text-[#09084f] line-clamp-2 min-h-[3.5rem]">
-                                            {doc.title}
-                                        </h3>
-
-                                        {doc.description && (
-                                            <p className="mt-1.5 text-sm text-slate-600 leading-relaxed line-clamp-2 min-h-[2.5rem]">
-                                                {doc.description}
-                                            </p>
-                                        )}
-
-                                        <div className="mt-4 flex gap-2">
-                                            {/* View Button - opens in new tab using viewDocument */}
-                                            <Button
-                                                size="sm"
-                                                className="flex-1 bg-[#201F5E] hover:bg-[#17164d] text-xs sm:text-sm"
-                                                onClick={() => viewDocument(doc)}
-                                            >
-                                                <ExternalLink className="w-3.5 h-3.5 mr-1.5" />
-                                                View
-                                            </Button>
-
-                                            {/* Download Button - downloads the file */}
-                                            <Button
-                                                asChild
-                                                size="sm"
-                                                variant="outline"
-                                                className="flex-1 text-xs sm:text-sm"
-                                            >
-                                                <a
-                                                    href={doc.url}
-                                                    download
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    <Download className="w-3.5 h-3.5 mr-1.5" />
-                                                    Download
-                                                </a>
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ))
+                                            <div className="p-4"><h3 className="font-display font-bold text-lg text-[#09084f]">{album.title}</h3>{album.description && <p className="mt-1 text-sm text-slate-600 line-clamp-2">{album.description}</p>}</div>
+                                        </CardContent>
+                                    </Card>
+                                </button>
+                            ))}
+                        </div>
                     )}
-                </div>
+                </section>
             </main>
+
+            {activeAlbum && (
+                <div className="fixed inset-0 z-50 bg-black/75 p-4 flex items-center justify-center" onClick={() => setActiveAlbum(null)}>
+                    <div className="relative max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-2xl bg-white p-5" onClick={(event) => event.stopPropagation()}>
+                        <button type="button" onClick={() => setActiveAlbum(null)} className="absolute right-4 top-4 rounded-full bg-slate-100 p-2 text-slate-700"><X className="w-5 h-5" /></button>
+                        <h2 className="font-display font-bold text-xl text-[#09084f] pr-12">{activeAlbum.title}</h2>
+                        {activeAlbum.description && <p className="mt-1 text-slate-600">{activeAlbum.description}</p>}
+                        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{activeAlbum.images.map((image, index) => <img key={`${image}-${index}`} src={image} alt={`${activeAlbum.title} ${index + 1}`} className="w-full rounded-xl object-cover" />)}</div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

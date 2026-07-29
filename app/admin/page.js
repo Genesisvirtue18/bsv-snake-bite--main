@@ -153,6 +153,57 @@ function MediaPicker({ value, onChange, label = 'Image' }) {
   )
 }
 
+function AudioPicker({ value, onChange, label = 'Upload Audio File (MP3 or WAV)' }) {
+  const [uploading, setUploading] = useState(false)
+  const [uploadStatus, setUploadStatus] = useState('')
+  const token = typeof window !== 'undefined' ? localStorage.getItem('bsv_token') : null
+
+  const upload = async (file) => {
+    if (!file) return
+    const isSupportedAudio = /\.(mp3|wav)$/i.test(file.name) || ['audio/mpeg', 'audio/wav', 'audio/x-wav', 'audio/wave'].includes(file.type)
+    if (!isSupportedAudio) {
+      toast.error('Please select an MP3 or WAV file.')
+      setUploadStatus('Please select an MP3 or WAV file.')
+      return
+    }
+
+    setUploading(true)
+    setUploadStatus(`Uploading ${file.name}…`)
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('title', file.name)
+    formData.append('category', 'radio-audio')
+
+    try {
+      const response = await fetch('/api/media', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: formData })
+      if (!response.ok) throw new Error('Upload failed')
+      const uploaded = await response.json()
+      onChange(uploaded.url)
+      toast.success('Audio uploaded')
+      setUploadStatus('Upload complete. The audio player below confirms it is ready to save.')
+    } catch {
+      toast.error('Audio upload failed')
+      setUploadStatus('Upload failed. Please choose the file again.')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  return (
+    <div>
+      <Label>{label}</Label>
+      <div className="mt-1 flex flex-wrap items-center gap-2">
+        <Input type="file" accept="audio/mpeg,audio/wav,.mp3,.wav" disabled={uploading} onChange={event => upload(event.target.files?.[0])} className="max-w-md" />
+        {uploading && <span className="text-sm text-slate-500">Uploading…</span>}
+      </div>
+      {uploadStatus && <p className="mt-2 text-xs text-slate-500">{uploadStatus}</p>}
+      {value && (
+        <audio className="mt-2 w-full" controls controlsList="nodownload" src={value}>Your browser does not support audio playback.</audio>
+      )}
+    </div>
+  )
+}
+
 function MultiMediaPicker({ values = [], onChange, label = 'Gallery Images', max = 30 }) {
   const [open, setOpen] = useState(false)
   const [media, setMedia] = useState([])
@@ -540,7 +591,7 @@ export default function AdminPage() {
             <TabsTrigger value="gallery"><Images className="w-4 h-4 mr-1" />Gallery</TabsTrigger>
             <TabsTrigger value="library">
               <BookOpen className="w-4 h-4 mr-1" />
-              Library
+              Brand Advocacy
             </TabsTrigger>
             <TabsTrigger value="brochureLeads">
               <Download className="w-4 h-4 mr-1" />
@@ -570,6 +621,41 @@ export default function AdminPage() {
                 return <Card key={i}><CardContent className="p-4"><div className={`w-10 h-10 rounded ${s.color} flex items-center justify-center mb-2`}><Icon className="w-5 h-5 text-white" /></div><div className="text-2xl font-display font-extrabold text-bsv-blue">{s.value}</div><div className="text-xs text-muted-foreground">{s.label}</div></CardContent></Card>
               })}
             </div>
+            {content && (
+              <Card>
+                <CardContent className="p-5 space-y-4">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <h3 className="font-display font-bold text-lg text-bsv-blue">Section Visibility</h3>
+                      <p className="text-sm text-muted-foreground">Turn off a switch to hide the complete section from the home page. Its content remains saved.</p>
+                    </div>
+                    <Button onClick={saveContent} className="bg-bsv-red"><Save className="w-4 h-4 mr-1" />Save Visibility</Button>
+                  </div>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {[
+                      ['aboutCampaign', 'About Campaign'],
+                      ['campaignVideos', 'Watch the Campaign & More Videos'],
+                      ['awareness', 'Awareness'],
+                      ['access', 'Access'],
+                      ['brandAdvocacy', 'Brand Advocacy'],
+                      ['mythsFacts', 'Myths & Facts'],
+                      ['awardsRecognition', 'Awards & Recognition'],
+                      ['aboutBSV', 'About BSV'],
+                      ['contact', 'Contact Us'],
+                    ].map(([key, label]) => (
+                      <div key={key} className="flex items-center justify-between rounded-lg border bg-white px-3 py-2.5">
+                        <Label htmlFor={`dashboard-section-${key}`}>{label}</Label>
+                        <Switch
+                          id={`dashboard-section-${key}`}
+                          checked={content.sectionVisibility?.[key] !== false}
+                          onCheckedChange={visible => setContent({ ...content, sectionVisibility: { ...(content.sectionVisibility || {}), [key]: visible } })}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
 
           {/* SECTIONS / CONTENT */}
@@ -752,6 +838,33 @@ export default function AdminPage() {
                   </CardContent>
                 </Card>
 
+                <Card>
+                  <CardContent className="p-5 space-y-3">
+                    <div>
+                      <h3 className="font-display font-bold text-lg text-bsv-blue">Numbers Section Source</h3>
+                      <p className="text-sm text-muted-foreground">This smaller grey line appears below the number cards on the home page.</p>
+                    </div>
+                    <div>
+                      <Label>Source text</Label>
+                      <Input value={(content.heroStatsSource ?? DEFAULT_CONTENT.heroStatsSource).replace(/^Source:\s*/i, '')} onChange={e => setContent({ ...content, heroStatsSource: e.target.value })} />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="p-5 space-y-4">
+                    <div>
+                      <h3 className="font-display font-bold text-lg text-bsv-blue">About Campaign</h3>
+                      <p className="text-sm text-muted-foreground">Edit the campaign write-up and the logo shown alongside it on the home page.</p>
+                    </div>
+                    <div>
+                      <Label>Write-up</Label>
+                      <Textarea rows={4} value={content.aboutCampaignText ?? DEFAULT_CONTENT.aboutCampaignText} onChange={e => setContent({ ...content, aboutCampaignText: e.target.value })} />
+                    </div>
+                    <MediaPicker label="About Campaign Logo Image" value={content.aboutCampaignLogo ?? DEFAULT_CONTENT.aboutCampaignLogo} onChange={v => setContent({ ...content, aboutCampaignLogo: v })} />
+                  </CardContent>
+                </Card>
+
                 {/* AWARENESS */}
                 <Card>
                   <CardContent className="p-5 space-y-4">
@@ -787,6 +900,11 @@ export default function AdminPage() {
                         <Plus className="w-4 h-4 mr-1" />
                         Add Card
                       </Button>
+                    </div>
+
+                    <div className="border rounded-xl p-4 bg-white space-y-3">
+                      <div><Label>Main Headline</Label><Input value={content.sectionText?.awareness?.title ?? DEFAULT_CONTENT.sectionText.awareness.title} onChange={e => setContent({ ...content, sectionText: { ...(content.sectionText || {}), awareness: { ...(content.sectionText?.awareness || {}), title: e.target.value } } })} /></div>
+                      <div><Label>Description</Label><Textarea rows={2} value={content.sectionText?.awareness?.subtitle ?? DEFAULT_CONTENT.sectionText.awareness.subtitle} onChange={e => setContent({ ...content, sectionText: { ...(content.sectionText || {}), awareness: { ...(content.sectionText?.awareness || {}), subtitle: e.target.value } } })} /></div>
                     </div>
 
                     {(content.awareness?.items || []).map((item, i) => (
@@ -944,7 +1062,6 @@ export default function AdminPage() {
                                   trainingVideos: '',
                                   trainingVideoItems: [],
                                   trainingImageAlbums: [],
-                                  trainingDocuments: [],
                                   kolVideoItems: [],
                                   kolImageAlbums: [],
                                   kolDocuments: [],
@@ -960,6 +1077,11 @@ export default function AdminPage() {
                       </Button>
                     </div>
 
+                    <div className="border rounded-xl p-4 bg-white space-y-3">
+                      <div><Label>Main Headline</Label><Input value={content.sectionText?.access?.title ?? DEFAULT_CONTENT.sectionText.access.title} onChange={e => setContent({ ...content, sectionText: { ...(content.sectionText || {}), access: { ...(content.sectionText?.access || {}), title: e.target.value } } })} /></div>
+                      <div><Label>Description</Label><Textarea rows={2} value={content.sectionText?.access?.subtitle ?? DEFAULT_CONTENT.sectionText.access.subtitle} onChange={e => setContent({ ...content, sectionText: { ...(content.sectionText || {}), access: { ...(content.sectionText?.access || {}), subtitle: e.target.value } } })} /></div>
+                    </div>
+
                     {(content.access?.items || []).map((item, i) => {
                       const isTraining = i === 0
                       const isKOL = i === 1
@@ -968,13 +1090,11 @@ export default function AdminPage() {
                       const pageConfig = isTraining
                         ? {
                           label: 'Training',
-                          helper: 'This content will show on /training page. Add videos, image albums and documents.',
+                          helper: 'This content will show on /training page. Add videos and image albums.',
                           videoKey: 'trainingVideoItems',
                           albumKey: 'trainingImageAlbums',
-                          documentKey: 'trainingDocuments',
                           defaultVideoTitle: 'Training Video',
                           defaultAlbumTitle: 'Training Album',
-                          defaultDocumentTitle: 'Training Document',
                           coverLabel: 'Training Card / Page Cover Image',
                           titlePlaceholder: 'Training Modules',
                           descPlaceholder: 'Medical resources, ASV administration protocols, clinical education.',
@@ -995,12 +1115,12 @@ export default function AdminPage() {
                           }
                           : null
 
-                      const docs = Array.isArray(item.documents) ? item.documents : []
+                      const policyAlbums = Array.isArray(item.policyImageAlbums) ? item.policyImageAlbums : []
 
                       const getPageArray = key => Array.isArray(item?.[key]) ? item[key] : []
                       const pageVideos = pageConfig ? getPageArray(pageConfig.videoKey) : []
                       const pageAlbums = pageConfig ? getPageArray(pageConfig.albumKey) : []
-                      const pageDocuments = pageConfig ? getPageArray(pageConfig.documentKey) : []
+                      const pageDocuments = pageConfig?.documentKey ? getPageArray(pageConfig.documentKey) : []
 
                       const updateItem = patch => {
                         const items = [...(content.access?.items || [])]
@@ -1046,9 +1166,9 @@ export default function AdminPage() {
                               </div>
 
                               <div className="text-xs text-muted-foreground">
-                                {isTraining && 'Training card - inside page with videos, image albums and documents'}
+                                {isTraining && 'Training card - inside page with videos and image albums'}
                                 {isKOL && 'KOL Program card - inside page with videos, image albums and documents'}
-                                {isWorkshop && 'Workshop card - documents only'}
+                                {isWorkshop && 'Meeting with Policy-Makers card - photo albums'}
                                 {!isTraining && !isKOL && !isWorkshop && 'Access card'}
                               </div>
                             </div>
@@ -1398,7 +1518,8 @@ export default function AdminPage() {
                                 })}
                               </div>
 
-                              <div className="rounded-xl border bg-white p-4 space-y-3">
+                              {!isTraining && (
+                                <div className="rounded-xl border bg-white p-4 space-y-3">
                                 <div className="flex items-center justify-between gap-3">
                                   <div>
                                     <Label>{pageConfig.label} Documents</Label>
@@ -1495,11 +1616,12 @@ export default function AdminPage() {
                                     </div>
                                   </div>
                                 ))}
-                              </div>
+                                </div>
+                              )}
                             </div>
                           )}
 
-                          {/* Card 3: Workshop documents */}
+                          {/* Card 3: Meeting with Policy-Makers photo albums */}
                           {isWorkshop && (
                             <div className="border-t pt-4 space-y-3">
                               <div className="rounded-xl border bg-amber-50/60 p-4">
@@ -1507,7 +1629,7 @@ export default function AdminPage() {
                                   Meeting with Policy-Makers Page Settings
                                 </div>
                                 <p className="text-xs text-slate-500">
-                                  This content will show on /meeting-with-policy-makers page. Add documents with cover images, titles, descriptions and Drive links.
+                                  This content will show on /meeting-with-policy-makers page. Add photo albums and their images.
                                 </p>
                               </div>
 
@@ -1517,11 +1639,12 @@ export default function AdminPage() {
                                 onChange={v => updateItem({ image: v })}
                               />
 
-                              <div className="flex items-center justify-between">
+                              <div className="rounded-xl border bg-white p-4 space-y-4">
+                              <div className="flex items-center justify-between gap-3">
                                 <div>
-                                  <Label>Policy Documents</Label>
+                                  <Label>Policy Maker Photo Albums</Label>
                                   <p className="text-xs text-slate-500">
-                                    Add PDF, DOC, or DOCX files with cover images and descriptions.
+                                    Add an album cover and multiple photos, similar to On-Ground Activations.
                                   </p>
                                 </div>
 
@@ -1530,38 +1653,39 @@ export default function AdminPage() {
                                   size="sm"
                                   variant="outline"
                                   onClick={() => {
-                                    const nextDocs = [
-                                      ...docs,
+                                    const nextAlbums = [
+                                      ...policyAlbums,
                                       {
+                                        id: `policy-album-${Date.now()}`,
                                         title: '',
                                         description: '',
                                         coverImage: '',
-                                        url: '',
+                                        images: [],
                                       },
                                     ]
-                                    updateItem({ documents: nextDocs })
+                                    updateItem({ policyImageAlbums: nextAlbums })
                                   }}
                                 >
                                   <Plus className="w-4 h-4 mr-1" />
-                                  Add Document
+                                  Add Album
                                 </Button>
                               </div>
 
-                              {!docs.length && (
+                              {!policyAlbums.length && (
                                 <div className="rounded-lg border border-dashed border-slate-300 p-4 text-center text-sm text-slate-500">
-                                  No policy documents added yet.
+                                  No photo albums added yet.
                                 </div>
                               )}
 
-                              {docs.map((doc, docIndex) => (
+                              {policyAlbums.map((album, albumIndex) => (
                                 <div
-                                  key={docIndex}
+                                  key={album.id || albumIndex}
                                   className="rounded-xl border bg-slate-50 p-4 space-y-4"
                                 >
                                   <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2 font-semibold text-sm text-bsv-blue">
-                                      <FileText className="w-4 h-4" />
-                                      Policy Document {docIndex + 1}
+                                      <Images className="w-4 h-4" />
+                                      Photo Album {albumIndex + 1}
                                     </div>
 
                                     <Button
@@ -1569,75 +1693,75 @@ export default function AdminPage() {
                                       size="sm"
                                       variant="destructive"
                                       onClick={() => {
-                                        const nextDocs = [...docs]
-                                        nextDocs.splice(docIndex, 1)
-                                        updateItem({ documents: nextDocs })
+                                        const nextAlbums = [...policyAlbums]
+                                        nextAlbums.splice(albumIndex, 1)
+                                        updateItem({ policyImageAlbums: nextAlbums })
                                       }}
                                     >
                                       <Trash2 className="w-4 h-4" />
                                     </Button>
                                   </div>
 
+                                  <div className="grid md:grid-cols-2 gap-3">
                                   <div>
-                                    <Label>Document Title</Label>
+                                    <Label>Album Title</Label>
                                     <Input
-                                      value={doc.title || ''}
-                                      placeholder="National Snakebite Policy Brief"
+                                      value={album.title || ''}
+                                      placeholder="Policy meeting photos"
                                       onChange={e => {
-                                        const nextDocs = [...docs]
-                                        nextDocs[docIndex] = {
-                                          ...nextDocs[docIndex],
+                                        const nextAlbums = [...policyAlbums]
+                                        nextAlbums[albumIndex] = {
+                                          ...nextAlbums[albumIndex],
                                           title: e.target.value,
                                         }
-                                        updateItem({ documents: nextDocs })
+                                        updateItem({ policyImageAlbums: nextAlbums })
                                       }}
                                     />
                                   </div>
 
                                   <div>
-                                    <Label>Document Description</Label>
-                                    <Textarea
-                                      rows={2}
-                                      value={doc.description || ''}
-                                      placeholder="Brief description of this document..."
+                                    <Label>Description</Label>
+                                    <Input
+                                      value={album.description || ''}
+                                      placeholder="Meeting location or event details"
                                       onChange={e => {
-                                        const nextDocs = [...docs]
-                                        nextDocs[docIndex] = {
-                                          ...nextDocs[docIndex],
+                                        const nextAlbums = [...policyAlbums]
+                                        nextAlbums[albumIndex] = {
+                                          ...nextAlbums[albumIndex],
                                           description: e.target.value,
                                         }
-                                        updateItem({ documents: nextDocs })
+                                        updateItem({ policyImageAlbums: nextAlbums })
                                       }}
                                     />
+                                  </div>
                                   </div>
 
                                   <MediaPicker
-                                    label="Document Cover Image"
-                                    value={doc.coverImage || ''}
+                                    label="Album Cover Image"
+                                    value={album.coverImage || ''}
                                     onChange={v => {
-                                      const nextDocs = [...docs]
-                                      nextDocs[docIndex] = {
-                                        ...nextDocs[docIndex],
+                                      const nextAlbums = [...policyAlbums]
+                                      nextAlbums[albumIndex] = {
+                                        ...nextAlbums[albumIndex],
                                         coverImage: v,
                                       }
-                                      updateItem({ documents: nextDocs })
+                                      updateItem({ policyImageAlbums: nextAlbums })
                                     }}
                                   />
 
-                                  <MediaPicker
-                                    label="Upload PDF / DOCX or Paste Drive Link"
-                                    value={doc.url || ''}
-                                    onChange={v => {
-                                      const nextDocs = [...docs]
-                                      nextDocs[docIndex] = {
-                                        ...nextDocs[docIndex],
-                                        url: v,
-                                      }
-                                      updateItem({ documents: nextDocs })
+                                  <MultiMediaPicker
+                                    label="Album Photos"
+                                    values={Array.isArray(album.images) ? album.images : []}
+                                    max={40}
+                                    onChange={values => {
+                                      const nextAlbums = [...policyAlbums]
+                                      nextAlbums[albumIndex] = { ...nextAlbums[albumIndex], images: values }
+                                      updateItem({ policyImageAlbums: nextAlbums })
                                     }}
                                   />
                                 </div>
                               ))}
+                            </div>
                             </div>
                           )}
                         </div>
@@ -1647,47 +1771,8 @@ export default function AdminPage() {
                 </Card>
 
 
-                {/* AWARDS & RECOGNITION */}
-                <Card>
-                  <CardContent className="p-5 space-y-4">
-                    <h3 className="font-display font-bold text-lg text-bsv-blue">
-                      Awards & Recognition Images
-                    </h3>
-
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <MediaPicker
-                        label="Silver Award Image"
-                        value={content.awardsRecognition?.silverImage || ''}
-                        onChange={v =>
-                          setContent({
-                            ...content,
-                            awardsRecognition: {
-                              ...(content.awardsRecognition || {}),
-                              silverImage: v,
-                            },
-                          })
-                        }
-                      />
-
-                      <MediaPicker
-                        label="Gold Award Image"
-                        value={content.awardsRecognition?.goldImage || ''}
-                        onChange={v =>
-                          setContent({
-                            ...content,
-                            awardsRecognition: {
-                              ...(content.awardsRecognition || {}),
-                              goldImage: v,
-                            },
-                          })
-                        }
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-
                 {/* BRAND ADVOCACY */}
-                <Card>
+                {false && <Card>
                   <CardContent className="p-5 space-y-4">
                     <div className="flex items-center justify-between">
                       <h3 className="font-display font-bold text-lg text-bsv-blue">
@@ -1720,6 +1805,11 @@ export default function AdminPage() {
                         <Plus className="w-4 h-4 mr-1" />
                         Add Card
                       </Button>
+                    </div>
+
+                    <div className="border rounded-xl p-4 bg-white space-y-3">
+                      <div><Label>Main Headline</Label><Input value={content.sectionText?.communication?.title ?? DEFAULT_CONTENT.sectionText.communication.title} onChange={e => setContent({ ...content, sectionText: { ...(content.sectionText || {}), communication: { ...(content.sectionText?.communication || {}), title: e.target.value } } })} /></div>
+                      <div><Label>Description</Label><Textarea rows={2} value={content.sectionText?.communication?.subtitle ?? DEFAULT_CONTENT.sectionText.communication.subtitle} onChange={e => setContent({ ...content, sectionText: { ...(content.sectionText || {}), communication: { ...(content.sectionText?.communication || {}), subtitle: e.target.value } } })} /></div>
                     </div>
 
                     {(content.communication?.items || []).map((item, i) => (
@@ -1828,7 +1918,7 @@ export default function AdminPage() {
                       </div>
                     ))}
                   </CardContent>
-                </Card>
+                </Card>}
 
 
                 {/* STATES */}
@@ -1869,6 +1959,10 @@ export default function AdminPage() {
                 {/* MYTHS */}
                 <Card><CardContent className="p-5">
                   <div className="flex justify-between mb-3"><h3 className="font-display font-bold text-lg text-bsv-blue">Myths vs Facts</h3><Button size="sm" variant="outline" onClick={() => setContent({ ...content, myths: [...content.myths, { id: Date.now(), myth: '', fact: '', image: '' }] })}><Plus className="w-3 h-3 mr-1" />Add</Button></div>
+                  <div className="border rounded-xl p-4 bg-white space-y-3 mb-4">
+                    <div><Label>Main Headline</Label><Input value={content.sectionText?.myths?.title ?? DEFAULT_CONTENT.sectionText.myths.title} onChange={e => setContent({ ...content, sectionText: { ...(content.sectionText || {}), myths: { ...(content.sectionText?.myths || {}), title: e.target.value } } })} /></div>
+                    <div><Label>Description</Label><Textarea rows={2} value={content.sectionText?.myths?.subtitle ?? DEFAULT_CONTENT.sectionText.myths.subtitle} onChange={e => setContent({ ...content, sectionText: { ...(content.sectionText || {}), myths: { ...(content.sectionText?.myths || {}), subtitle: e.target.value } } })} /></div>
+                  </div>
                   {content.myths.map((m, i) => (
                     <div key={m.id} className="border rounded p-3 mb-2 space-y-2">
                       <div className="flex justify-between"><Badge className="bg-bsv-red">Myth #{i + 1}</Badge><Button size="sm" variant="ghost" onClick={() => setContent({ ...content, myths: content.myths.filter((_, idx) => idx !== i) })}><Trash2 className="w-3 h-3 text-red-500" /></Button></div>
@@ -1886,7 +1980,27 @@ export default function AdminPage() {
                     </div>))}
                 </CardContent></Card>
 
-
+                {/* AWARDS & RECOGNITION */}
+                <Card>
+                  <CardContent className="p-5 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div><h3 className="font-display font-bold text-lg text-bsv-blue">Awards & Recognition</h3><p className="text-sm text-muted-foreground">Add awards with an image, bold headline, and description.</p></div>
+                      <Button type="button" className="bg-bsv-red" onClick={() => { const awards = content.awardsRecognition?.awards || DEFAULT_CONTENT.awardsRecognition.awards; setContent({ ...content, awardsRecognition: { ...(content.awardsRecognition || {}), awards: [...awards, { title: '', description: '', image: '' }] } }) }}><Plus className="w-4 h-4 mr-1" />Add Award</Button>
+                    </div>
+                    <div className="border rounded-xl p-4 bg-white space-y-3">
+                      <div><Label>Main Headline</Label><Input value={content.awardsRecognition?.title ?? DEFAULT_CONTENT.awardsRecognition.title} onChange={e => setContent({ ...content, awardsRecognition: { ...(content.awardsRecognition || {}), title: e.target.value } })} /></div>
+                      <div><Label>Description</Label><Textarea rows={2} value={content.awardsRecognition?.description ?? DEFAULT_CONTENT.awardsRecognition.description} onChange={e => setContent({ ...content, awardsRecognition: { ...(content.awardsRecognition || {}), description: e.target.value } })} /></div>
+                    </div>
+                    {(content.awardsRecognition?.awards || DEFAULT_CONTENT.awardsRecognition.awards).map((award, i) => (
+                      <div key={i} className="border rounded-xl p-4 bg-white space-y-3">
+                        <div className="flex items-center justify-between"><span className="font-semibold text-bsv-blue">Award {i + 1}</span><Button type="button" size="sm" variant="destructive" onClick={() => { const awards = [...(content.awardsRecognition?.awards || DEFAULT_CONTENT.awardsRecognition.awards)]; awards.splice(i, 1); setContent({ ...content, awardsRecognition: { ...(content.awardsRecognition || {}), awards } }) }}><Trash2 className="w-4 h-4" /></Button></div>
+                        <div><Label>Main Headline</Label><Input value={award.title || ''} onChange={e => { const awards = [...(content.awardsRecognition?.awards || DEFAULT_CONTENT.awardsRecognition.awards)]; awards[i] = { ...award, title: e.target.value }; setContent({ ...content, awardsRecognition: { ...(content.awardsRecognition || {}), awards } }) }} /></div>
+                        <div><Label>Description</Label><Textarea rows={2} value={award.description || ''} onChange={e => { const awards = [...(content.awardsRecognition?.awards || DEFAULT_CONTENT.awardsRecognition.awards)]; awards[i] = { ...award, description: e.target.value }; setContent({ ...content, awardsRecognition: { ...(content.awardsRecognition || {}), awards } }) }} /></div>
+                        <MediaPicker label="Award Image" value={award.image || ''} onChange={v => { const awards = [...(content.awardsRecognition?.awards || DEFAULT_CONTENT.awardsRecognition.awards)]; awards[i] = { ...award, image: v }; setContent({ ...content, awardsRecognition: { ...(content.awardsRecognition || {}), awards } }) }} />
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
 
                 {/* CONTACT */}
                 <Card><CardContent className="p-5 space-y-3">
@@ -1911,7 +2025,7 @@ export default function AdminPage() {
 
           {/* NGOS */}
           <TabsContent value="ngos">
-            <NgosView ngos={ngos} api={api} reload={() => loadAll(token)} />
+            <NgosView ngos={ngos} api={api} reload={() => loadAll(token)} content={content} setContent={setContent} />
           </TabsContent>
 
           {/* NUKKAD NATAK - ADMIN */}
@@ -1939,11 +2053,7 @@ export default function AdminPage() {
 
           <TabsContent value="library">
             {content && (
-              <LibraryMaterialsView
-                content={content}
-                setContent={setContent}
-                saveContent={saveContent}
-              />
+              <div className="space-y-6"><BrandAdvocacyEditor content={content} setContent={setContent} saveContent={saveContent} /><LibraryMaterialsView content={content} setContent={setContent} saveContent={saveContent} api={api} /></div>
             )}
           </TabsContent>
 
@@ -2153,7 +2263,7 @@ function ImpactStoriesView({ stories, api, reload }) {
   )
 }
 
-function NgosView({ ngos, api, reload }) {
+function NgosView({ ngos, api, reload, content, setContent }) {
   const [editing, setEditing] = useState(null)
 
   const save = async () => {
@@ -2203,6 +2313,13 @@ function NgosView({ ngos, api, reload }) {
           New NGO Activity
         </Button>
       </div>
+
+      <Card><CardContent className="p-5 space-y-3">
+        <div><h3 className="font-display font-bold text-lg text-bsv-blue">NGO Network Page Header</h3><p className="text-sm text-muted-foreground">The headline and description shown on the NGO Network page.</p></div>
+        <div><Label>Main Headline</Label><Input value={content?.pageHeaders?.ngoNetwork?.title || 'NGO Collaborations'} onChange={e => setContent({ ...content, pageHeaders: { ...(content?.pageHeaders || {}), ngoNetwork: { ...(content?.pageHeaders?.ngoNetwork || {}), title: e.target.value } } })} /></div>
+        <div><Label>Description</Label><Textarea rows={2} value={content?.pageHeaders?.ngoNetwork?.description || 'Activity images from collaborations with grassroots organizations for snakebite awareness.'} onChange={e => setContent({ ...content, pageHeaders: { ...(content?.pageHeaders || {}), ngoNetwork: { ...(content?.pageHeaders?.ngoNetwork || {}), description: e.target.value } } })} /></div>
+        <Button onClick={async () => { const header = content?.pageHeaders?.ngoNetwork || {}; const next = { ...content, pageHeaders: { ...(content?.pageHeaders || {}), ngoNetwork: { title: header.title || 'NGO Collaborations', description: header.description || 'Activity images from collaborations with grassroots organizations for snakebite awareness.' } } }; setContent(next); const r = await api('/api/content', 'PUT', next); if (r.ok) toast.success('NGO page header saved'); else toast.error('Save failed') }} className="bg-bsv-red">Save Page Header</Button>
+      </CardContent></Card>
 
       <div className="grid md:grid-cols-2 gap-3">
         {ngos.map(n => (
@@ -2315,6 +2432,8 @@ function OnGroundAdminView({ content, setContent, api }) {
   const onGroundData = Array.isArray(content?.onGroundActivities)
     ? content.onGroundActivities
     : []
+  const pageHeader = content?.pageHeaders?.onground || {}
+  const categories = content?.onGroundCategories || ['Nukkad Natak', 'School Engagement']
 
   const updateOnGround = (items) => {
     setContent({
@@ -2360,6 +2479,8 @@ function OnGroundAdminView({ content, setContent, api }) {
 
   return (
     <div className="space-y-4">
+      <Card><CardContent className="p-5 space-y-3"><div className="flex justify-between"><h3 className="font-display font-bold text-lg text-bsv-blue">On-Ground Categories</h3><Button size="sm" onClick={() => setContent({ ...content, onGroundCategories: [...categories, ''] })}><Plus className="w-4 h-4 mr-1" />Add Category</Button></div>{categories.map((category, i) => <div key={i} className="flex gap-2"><Input value={category} placeholder="Category name" onChange={e => setContent({ ...content, onGroundCategories: categories.map((x,n) => n === i ? e.target.value : x) })} /><Button size="sm" variant="destructive" onClick={() => setContent({ ...content, onGroundCategories: categories.filter((_,n) => n !== i) })}><Trash2 className="w-4 h-4" /></Button></div>)}<Button className="bg-bsv-red" onClick={saveOnGround}>Save Categories</Button></CardContent></Card>
+      <Card><CardContent className="p-5 space-y-3"><h3 className="font-display font-bold text-lg text-bsv-blue">On-Ground Page Main Content</h3><div><Label>Main Headline</Label><Input value={pageHeader.title || 'On-Ground Activations'} onChange={e => setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), onground: { ...pageHeader, title: e.target.value } } })} /></div><div><Label>Description</Label><Textarea rows={2} value={pageHeader.description || 'Community outreach through Nukkad Natak and School Engagement activities for snakebite awareness.'} onChange={e => setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), onground: { ...pageHeader, description: e.target.value } } })} /></div></CardContent></Card>
       <div className="flex justify-between items-center sticky top-16 bg-slate-50 py-2 z-20">
         <div>
           <h2 className="font-display font-extrabold text-2xl text-bsv-blue">
@@ -2427,13 +2548,7 @@ function OnGroundAdminView({ content, setContent, api }) {
                   </SelectTrigger>
 
                   <SelectContent>
-                    <SelectItem value="Nukkad Natak">
-                      Nukkad Natak
-                    </SelectItem>
-
-                    <SelectItem value="School Engagement">
-                      School Engagement
-                    </SelectItem>
+                    {categories.filter(Boolean).map(category => <SelectItem key={category} value={category}>{category}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
@@ -2489,6 +2604,8 @@ function MassMediaAdminView({ content, setContent, api }) {
   const massMediaData = Array.isArray(content?.massMediaActivities)
     ? content.massMediaActivities
     : []
+  const pageHeader = content?.pageHeaders?.massMedia || {}
+  const categories = content?.massMediaCategories || ['PR Coverage', 'Radio Coverage', 'Influencers']
 
   const updateMassMedia = (items) => {
     setContent({
@@ -2508,6 +2625,7 @@ function MassMediaAdminView({ content, setContent, api }) {
         image: '',
         gallery: [],
         driveUrl: '',
+        radioAudioUrl: '',
         published: true,
       },
     ])
@@ -2537,6 +2655,8 @@ function MassMediaAdminView({ content, setContent, api }) {
 
   return (
     <div className="space-y-4">
+      <Card><CardContent className="p-5 space-y-3"><div className="flex justify-between"><h3 className="font-display font-bold text-lg text-bsv-blue">Mass Media Categories</h3><Button size="sm" onClick={() => setContent({ ...content, massMediaCategories: [...categories, ''] })}><Plus className="w-4 h-4 mr-1" />Add Category</Button></div>{categories.map((category, i) => <div key={i} className="flex gap-2"><Input value={category} placeholder="Category name" onChange={e => setContent({ ...content, massMediaCategories: categories.map((x,n) => n === i ? e.target.value : x) })} /><Button size="sm" variant="destructive" onClick={() => setContent({ ...content, massMediaCategories: categories.filter((_,n) => n !== i) })}><Trash2 className="w-4 h-4" /></Button></div>)}<Button className="bg-bsv-red" onClick={saveMassMedia}>Save Categories</Button></CardContent></Card>
+      <Card><CardContent className="p-5 space-y-3"><h3 className="font-display font-bold text-lg text-bsv-blue">Mass Media Page Main Content</h3><div><Label>Main Headline</Label><Input value={pageHeader.title || 'Mass Media Coverage'} onChange={e => setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), massMedia: { ...pageHeader, title: e.target.value } } })} /></div><div><Label>Description</Label><Textarea rows={2} value={pageHeader.description || 'Press coverage, radio outreach and influencer collaborations helping spread the hospital-first snakebite treatment message.'} onChange={e => setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), massMedia: { ...pageHeader, description: e.target.value } } })} /></div></CardContent></Card>
       <div className="flex justify-between items-center sticky top-16 bg-slate-50 py-2 z-20">
         <div>
           <h2 className="font-display font-extrabold text-2xl text-bsv-blue">
@@ -2544,7 +2664,7 @@ function MassMediaAdminView({ content, setContent, api }) {
           </h2>
 
           <p className="text-sm text-muted-foreground">
-            PR Coverage me gallery rahegi. Radio Coverage aur Influencers me Drive link open hoga.
+            PR Coverage uses galleries. Radio Coverage uses MP3 audio playback. Influencers use links.
           </p>
         </div>
 
@@ -2580,6 +2700,7 @@ function MassMediaAdminView({ content, setContent, api }) {
       <div className="space-y-4">
         {massMediaData.map((item, i) => {
           const isPR = item.category === 'PR Coverage'
+          const isRadio = item.category === 'Radio Coverage'
 
           return (
             <Card key={item.id || i}>
@@ -2610,17 +2731,7 @@ function MassMediaAdminView({ content, setContent, api }) {
                     </SelectTrigger>
 
                     <SelectContent>
-                      <SelectItem value="PR Coverage">
-                        PR Coverage
-                      </SelectItem>
-
-                      <SelectItem value="Radio Coverage">
-                        Radio Coverage
-                      </SelectItem>
-
-                      <SelectItem value="Influencers">
-                        Influencers
-                      </SelectItem>
+                      {categories.filter(Boolean).map(category => <SelectItem key={category} value={category}>{category}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
@@ -2645,11 +2756,13 @@ function MassMediaAdminView({ content, setContent, api }) {
                 </div>
 
 
-                <MediaPicker
-                  label="Main Image / Cover Image"
-                  value={item.image || ''}
-                  onChange={v => updateActivity(i, 'image', v)}
-                />
+                {!isRadio && (
+                  <MediaPicker
+                    label="Main Image / Cover Image"
+                    value={item.image || ''}
+                    onChange={v => updateActivity(i, 'image', v)}
+                  />
+                )}
 
                 {isPR ? (
                   <MultiMediaPicker
@@ -2657,6 +2770,12 @@ function MassMediaAdminView({ content, setContent, api }) {
                     values={item.gallery || []}
                     onChange={v => updateActivity(i, 'gallery', v)}
                     max={30}
+                  />
+                ) : isRadio ? (
+                  <AudioPicker
+                    label="Radio Coverage Audio (MP3 or WAV)"
+                    value={item.radioAudioUrl || ''}
+                    onChange={v => updateActivity(i, 'radioAudioUrl', v)}
                   />
                 ) : (
                   <div>
@@ -2933,6 +3052,7 @@ function UsersView({ users, api, reload }) {
 function VideosView({ api, token, reload }) {
   const [videos, setVideos] = useState([])
   const [editing, setEditing] = useState(null)
+  const [pageHeader, setPageHeader] = useState({ title: '', description: '' })
 
   const VIDEO_BADGE = 'SaanpKaVaarAspataalMeinHiUpchaar'
 
@@ -2941,7 +3061,13 @@ function VideosView({ api, token, reload }) {
     if (r.ok) setVideos(await r.json())
   }
 
-  useEffect(() => { load() }, [])
+  useEffect(() => {
+    load()
+    api('/api/content').then(r => r.ok ? r.json() : null).then(content => {
+      const saved = content?.pageHeaders?.videos || {}
+      setPageHeader({ title: saved.title || 'Watch the Campaign', description: saved.description || 'Powerful films, expert interviews, and ground-level stories driving snakebite awareness across India.' })
+    })
+  }, [])
 
   const save = async () => {
     if (!editing.title || !editing.url) {
@@ -3000,6 +3126,13 @@ function VideosView({ api, token, reload }) {
           New Video
         </Button>
       </div>
+
+      <Card><CardContent className="p-5 space-y-3">
+        <h3 className="font-display font-bold text-lg text-bsv-blue">Videos Page Main Content</h3>
+        <div><Label>Main Headline</Label><Input value={pageHeader.title} onChange={e => setPageHeader({ ...pageHeader, title: e.target.value })} /></div>
+        <div><Label>Description</Label><Textarea rows={2} value={pageHeader.description} onChange={e => setPageHeader({ ...pageHeader, description: e.target.value })} /></div>
+        <Button className="bg-bsv-red" onClick={async () => { const r = await api('/api/content'); const content = r.ok ? await r.json() : {}; const save = await api('/api/content', 'PUT', { ...content, pageHeaders: { ...(content.pageHeaders || {}), videos: pageHeader } }); if (save.ok) toast.success('Videos page content saved'); else toast.error('Save failed') }}>Save Page Content</Button>
+      </CardContent></Card>
 
       <div className="grid md:grid-cols-3 gap-3">
         {videos.map(v => (
@@ -3149,7 +3282,20 @@ function VideosView({ api, token, reload }) {
   )
 }
 
-function LibraryMaterialsView({ content, setContent, saveContent }) {
+function BrandAdvocacyEditor({ content, setContent, saveContent }) {
+  const section = content.sectionText?.communication || {}
+  const items = content.communication?.items || []
+  const update = (next) => setContent({ ...content, communication: { ...(content.communication || {}), items: next } })
+  return <Card><CardContent className="p-5 space-y-4"><div className="flex justify-between"><h3 className="font-display font-bold text-lg text-bsv-blue">Brand Advocacy Cards</h3><Button className="bg-bsv-red" onClick={() => update([...items, { title: '', desc: '', image: '', href: '' }])}><Plus className="w-4 h-4 mr-1" />Add Card</Button></div><div className="border rounded-xl p-4 space-y-3"><div><Label>Main Headline</Label><Input value={section.title ?? DEFAULT_CONTENT.sectionText.communication.title} onChange={e => setContent({ ...content, sectionText: { ...(content.sectionText || {}), communication: { ...section, title: e.target.value } } })} /></div><div><Label>Description</Label><Textarea rows={2} value={section.subtitle ?? DEFAULT_CONTENT.sectionText.communication.subtitle} onChange={e => setContent({ ...content, sectionText: { ...(content.sectionText || {}), communication: { ...section, subtitle: e.target.value } } })} /></div></div>{items.map((item, i) => <div key={i} className="border rounded-xl p-4 space-y-3"><div className="flex justify-between"><b>Card {i + 1}</b><Button size="sm" variant="destructive" onClick={() => update(items.filter((_, n) => n !== i))}><Trash2 className="w-4 h-4" /></Button></div><Input value={item.title || ''} placeholder="Title" onChange={e => update(items.map((x,n) => n === i ? { ...x, title: e.target.value } : x))} /><Textarea value={item.desc || ''} placeholder="Description" onChange={e => update(items.map((x,n) => n === i ? { ...x, desc: e.target.value } : x))} /><Input value={item.href || ''} placeholder="Link" onChange={e => update(items.map((x,n) => n === i ? { ...x, href: e.target.value } : x))} /><MediaPicker label="Image" value={item.image || ''} onChange={v => update(items.map((x,n) => n === i ? { ...x, image: v } : x))} /></div>)}<Button className="bg-bsv-red" onClick={saveContent}>Save Brand Advocacy</Button></CardContent></Card>
+}
+
+function LibraryMaterialsView({ content, setContent, saveContent, api }) {
+  useEffect(() => {
+    const current = content?.pageHeaders?.animatedVideosComics || {}
+    if (current.title && current.description) return
+    setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), animatedVideosComics: { title: current.title || 'Resource Library', description: current.description || 'Download animated videos and comics in your preferred language.' } } })
+  }, [])
+
   const savedItems = Array.isArray(content.downloadMaterials)
     ? content.downloadMaterials
     : DEFAULT_DOWNLOAD_MATERIALS
@@ -3246,7 +3392,7 @@ function LibraryMaterialsView({ content, setContent, saveContent }) {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
           <h2 className="font-display font-extrabold text-2xl text-bsv-blue">
-            Library
+            Animated Videos & Comics
           </h2>
 
           <p className="text-sm text-slate-500">
@@ -3271,9 +3417,9 @@ function LibraryMaterialsView({ content, setContent, saveContent }) {
       <Card>
         <CardContent className="p-5 space-y-4">
           <div>
-            <h3 className="font-display font-bold text-xl text-bsv-blue">
-              Downloads Page Fixed Cards
-            </h3>
+            
+
+            <div className="border rounded-xl p-4 bg-white space-y-3"><div><Label>Animated Videos & Comics Main Headline</Label><Input value={content.pageHeaders?.animatedVideosComics?.title ?? 'Resource Library'} onChange={e => setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), animatedVideosComics: { ...(content.pageHeaders?.animatedVideosComics || {}), title: e.target.value } } })} /></div><div><Label>Description</Label><Textarea rows={2} value={content.pageHeaders?.animatedVideosComics?.description ?? 'Download animated videos and comics in your preferred language.'} onChange={e => setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), animatedVideosComics: { ...(content.pageHeaders?.animatedVideosComics || {}), description: e.target.value } } })} /></div><Button className="bg-bsv-red" onClick={async () => { const header = content.pageHeaders?.animatedVideosComics || {}; const next = { ...content, pageHeaders: { ...(content.pageHeaders || {}), animatedVideosComics: { title: header.title ?? '', description: header.description ?? '' } } }; setContent(next); const r = await api('/api/content', 'PUT', next); if (r.ok) toast.success('Animated Videos & Comics page content saved'); else toast.error('Save failed') }}>Save Animated Page Content</Button></div>
 
             <p className="text-sm text-slate-500">
               Animated Videos and Comics
@@ -3347,8 +3493,10 @@ function LibraryMaterialsView({ content, setContent, saveContent }) {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
             <div>
               <h3 className="font-display font-bold text-xl text-bsv-blue">
-                Posters & Brochures Page
-              </h3>
+              Posters & Brochures Page
+            </h3>
+
+            <div className="border rounded-xl p-4 bg-white space-y-3"><div><Label>Brochures Main Headline</Label><Input value={content.pageHeaders?.brochures?.title || 'Posters & Brochures'} onChange={e => setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), brochures: { ...(content.pageHeaders?.brochures || {}), title: e.target.value } } })} /></div><div><Label>Description</Label><Textarea rows={2} value={content.pageHeaders?.brochures?.description || 'Browse awareness posters and brochures by language.'} onChange={e => setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), brochures: { ...(content.pageHeaders?.brochures || {}), description: e.target.value } } })} /></div></div>
 
               <p className="text-sm text-slate-500">
                 These items will show on /posters-brochures with All and language filters.
@@ -4209,7 +4357,7 @@ function SettingsView({ api }) {
             <Card><CardContent className="p-5">
               <h3 className="font-display font-bold text-lg text-bsv-blue mb-3">Per-Page SEO</h3>
               <p className="text-sm text-muted-foreground mb-3">Override meta tags for each page individually.</p>
-              {Object.entries(s.perPage || {}).map(([key, page]) => (
+              {Object.entries(s.perPage || {}).filter(([key]) => !['impact_story_detail', 'reports', 'volunteer'].includes(key)).map(([key, page]) => (
                 <details key={key} className="border rounded p-3 mb-2">
                   <summary className="font-medium cursor-pointer capitalize">{key.replace('_', ' ')} <span className="text-xs text-muted-foreground">({page.slug})</span></summary>
                   <div className="space-y-2 mt-3">
@@ -4230,15 +4378,11 @@ function SettingsView({ api }) {
           {section === 'contact' && (
             <Card><CardContent className="p-5 space-y-3">
               <h3 className="font-display font-bold text-lg text-bsv-blue">Contact Information</h3>
-              <p className="text-sm text-muted-foreground">Single source of truth — reflects across header, footer, contact page.</p>
+              <p className="text-sm text-muted-foreground">Used in the website's structured contact information for search engines.</p>
               <div className="grid md:grid-cols-2 gap-3">
                 <div><Label>Email</Label><Input value={s.contact.email} onChange={e => updateContact('email', e.target.value)} /></div>
                 <div><Label>Phone</Label><Input value={s.contact.phone} onChange={e => updateContact('phone', e.target.value)} /></div>
-                <div><Label>WhatsApp Number</Label><Input value={s.contact.whatsappNumber} onChange={e => updateContact('whatsappNumber', e.target.value)} placeholder="+91..." /></div>
-                <div><Label>Helpline Number</Label><Input value={s.contact.helplineNumber} onChange={e => updateContact('helplineNumber', e.target.value)} /></div>
               </div>
-              <div><Label>Office Address</Label><Textarea rows={2} value={s.contact.address} onChange={e => updateContact('address', e.target.value)} /></div>
-              <div><Label>Google Maps URL</Label><Input value={s.contact.googleMapsUrl} onChange={e => updateContact('googleMapsUrl', e.target.value)} /></div>
             </CardContent></Card>
           )}
 

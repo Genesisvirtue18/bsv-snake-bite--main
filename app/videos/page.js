@@ -5,6 +5,7 @@ import { Play, ArrowLeft, X } from 'lucide-react'
 import Link from 'next/link'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { motion } from 'framer-motion'
+import { usePageHeader } from '@/hooks/usePageHeader'
 
 const BSV_RED = '#de2527'
 const BRAND = { navy: '#201F5E', deep: '#0D71B8' }
@@ -47,6 +48,7 @@ function VideoCard({ v, onClick, index }) {
 export default function VideosPage() {
   const [videos, setVideos] = useState([])
   const [active, setActive] = useState(null)
+  const header = usePageHeader('videos')
 
   useEffect(() => {
     fetch('/api/videos')
@@ -84,9 +86,9 @@ export default function VideosPage() {
           <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full text-white shadow-md" style={{ background: BSV_RED }}>
             <Play className="w-5 h-5 fill-current ml-0.5" />
           </div>
-          <h2 className="font-bold text-[28px] md:text-[36px]" style={{ color: BRAND.navy }}>Watch the Campaign</h2>
+          <h2 className="font-bold text-[28px] md:text-[36px]" style={{ color: BRAND.navy }}>{header.title}</h2>
           <p className="text-slate-500 text-sm mt-2 max-w-lg mx-auto">
-            Powerful films, expert interviews, and ground-level stories driving snakebite awareness across India.
+            {header.description}
           </p>
         </div>
 

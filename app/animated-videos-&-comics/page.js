@@ -288,7 +288,9 @@ export default function DownloadsPage() {
     }, [content])
 
     const selectedLanguage = LANGUAGE_OPTIONS.find((l) => l.code === lang)?.label || 'English'
-    const ui = PAGE_TEXT[lang] || PAGE_TEXT.en
+    const baseUi = PAGE_TEXT[lang] || PAGE_TEXT.en
+    const header = content?.pageHeaders?.animatedVideosComics || {}
+    const ui = { ...baseUi, title: header.title || baseUi.title, subtitle: header.description || baseUi.subtitle }
 
     return (
         <>

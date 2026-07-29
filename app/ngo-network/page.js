@@ -6,11 +6,13 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, Handshake, Images, X, ChevronLeft, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
+import { usePageHeader } from '@/hooks/usePageHeader'
 
 export default function NGONetworkPage() {
   const [ngos, setNgos] = useState([])
   const [viewer, setViewer] = useState(null)
   const [activeIndex, setActiveIndex] = useState(0)
+  const header = usePageHeader('ngoNetwork')
 
   useEffect(() => {
     fetch('/api/ngos')
@@ -63,11 +65,11 @@ export default function NGONetworkPage() {
       </div>
 
       <h1 className="font-display text-4xl md:text-6xl font-extrabold text-bsv-blue mb-5">
-        NGO Collaborations
+        {header.title}
       </h1>
 
       <p className="text-slate-600 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-        Activity images from collaborations with grassroots organizations for snakebite awareness.
+        {header.description}
       </p>
     </div>
   </section>

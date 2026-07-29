@@ -6,7 +6,6 @@ import {
     ArrowLeft,
     BookOpen,
     ExternalLink,
-    FileText,
     Grid2X2,
     Image as ImageIcon,
     Images,
@@ -29,7 +28,6 @@ const FILTERS = [
     { id: 'all', label: 'All', icon: Grid2X2 },
     { id: 'videos', label: 'Videos', icon: Play },
     { id: 'images', label: 'Images', icon: Images },
-    { id: 'documents', label: 'Documents', icon: FileText },
 ]
 
 function getYoutubeId(url = '') {
@@ -174,19 +172,6 @@ function getImageAlbums(card) {
     return []
 }
 
-function getDocuments(card) {
-    const docs = Array.isArray(card?.trainingDocuments)
-        ? card.trainingDocuments
-        : []
-
-    return docs
-        .map((doc, index) => ({
-            title: doc.title || `Training Document ${index + 1}`,
-            url: doc.url || doc.fileUrl || doc.href || '',
-        }))
-        .filter(doc => doc.url)
-}
-
 export default function TrainingPage() {
     const [content, setContent] = useState(null)
     const [filter, setFilter] = useState('all')
@@ -234,11 +219,8 @@ export default function TrainingPage() {
     }, [trainingCard])
 
     const imageAlbums = useMemo(() => getImageAlbums(trainingCard), [trainingCard])
-    const documents = useMemo(() => getDocuments(trainingCard), [trainingCard])
-
     const showVideos = filter === 'all' || filter === 'videos'
     const showImages = filter === 'all' || filter === 'images'
-    const showDocuments = filter === 'all' || filter === 'documents'
 
     const title = trainingCard.title || 'Training Modules'
     const description =
@@ -465,42 +447,7 @@ export default function TrainingPage() {
                     </section>
                 )}
 
-                {showDocuments && (
-                    <section>
-                        <SectionTitle icon={FileText} title="Documents" count={documents.length} color="bg-orange-500" />
 
-                        {!documents.length ? (
-                            <EmptyBox text="No training documents added yet." />
-                        ) : (
-                            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                                {documents.map((doc, index) => (
-                                    <Card key={`${doc.url}-${index}`} className="rounded-2xl bg-white shadow-sm hover:shadow-xl transition">
-                                        <CardContent className="p-5 flex items-center gap-4">
-                                            <div className="w-12 h-12 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center flex-shrink-0">
-                                                <FileText className="w-6 h-6" />
-                                            </div>
-
-                                            <div className="min-w-0 flex-1">
-                                                <h3 className="font-display font-bold text-[#09084f] truncate">
-                                                    {doc.title || `Training Document ${index + 1}`}
-                                                </h3>
-
-                                                <button
-                                                    type="button"
-                                                    onClick={() => window.open(doc.url, '_blank', 'noopener,noreferrer')}
-                                                    className="mt-2 inline-flex items-center gap-2 text-sm font-bold text-orange-600 hover:text-orange-700"
-                                                >
-                                                    View / Download
-                                                    <ExternalLink className="w-4 h-4" />
-                                                </button>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                ))}
-                            </div>
-                        )}
-                    </section>
-                )}
             </main>
 
             {activeVideo && (

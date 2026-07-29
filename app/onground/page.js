@@ -17,11 +17,6 @@ import {
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 
-const CATEGORIES = [
-  { key: 'all', label: 'All', icon: Megaphone },
-  { key: 'Nukkad Natak', label: 'Nukkad Natak', icon: Drama },
-  { key: 'School Engagement', label: 'School Engagement', icon: GraduationCap },
-]
 
 export default function OnGroundActivitiesPage() {
   const [content, setContent] = useState(null)
@@ -42,6 +37,9 @@ export default function OnGroundActivitiesPage() {
   }, [])
 
   const allItems = content?.onGroundActivities || []
+  const savedHeader = content?.pageHeaders?.onground || {}
+  const header = { title: savedHeader.title || 'On-Ground Activations', description: savedHeader.description || 'Community outreach through Nukkad Natak and School Engagement activities for snakebite awareness.' }
+  const CATEGORIES = [{ key: 'all', label: 'All', icon: Megaphone }, ...(content?.onGroundCategories || []).map(label => ({ key: label, label, icon: Megaphone }))]
 
   const items = allItems
     .filter(item => item.published !== false)
@@ -86,7 +84,7 @@ export default function OnGroundActivitiesPage() {
 
           <div>
             <div className="font-display font-extrabold text-xl">
-              On-Ground Activations
+              {header.title}
             </div>
             <div className="text-xs text-white/70">
               Nukkad Natak and School Engagement
@@ -110,7 +108,7 @@ export default function OnGroundActivitiesPage() {
             </h1>
 
             <p className="text-slate-600 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-              Community outreach through Nukkad Natak and School Engagement activities for snakebite awareness.
+              {header.description}
             </p>
           </div>
         </section>

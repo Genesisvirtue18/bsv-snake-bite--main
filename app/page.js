@@ -503,6 +503,7 @@ function Hero({ content, t }) {
 function HeroStatsSection({ content, t }) {
   const defaultStats = DEFAULT_CONTENT.heroStats || []
   const savedStats = content?.heroStats || []
+  const source = (content?.heroStatsSource ?? DEFAULT_CONTENT.heroStatsSource).replace(/^Source:\s*/i, '')
 
   const stats = Array.from({ length: 5 }, (_, i) => ({
     id: defaultStats[i]?.id || `stat-${i + 1}`,
@@ -555,14 +556,15 @@ function HeroStatsSection({ content, t }) {
             <StatCard key={s.id || i} s={s} i={i} />
           ))}
         </div>
+        {source && <p className="mt-4 text-center text-xs text-slate-500"><span className="font-semibold">Source:</span> {source}</p>}
       </div>
     </section>
   )
 }
 
 function MissionSection({ content }) {
-  const missionText =
-    'Driving awareness by dispelling long-term standing myths and educating rural populations on evidence-based snakebite first aid and treatment.'
+  const missionText = content?.aboutCampaignText || DEFAULT_CONTENT.aboutCampaignText
+  const campaignLogo = content?.aboutCampaignLogo || DEFAULT_CONTENT.aboutCampaignLogo
 
   const MissionPillar = ({ icon: Icon, label }) => (
     <div className="flex flex-col items-center justify-center px-3">
@@ -628,7 +630,7 @@ function MissionSection({ content }) {
 
             <div className="order-1 md:order-2 flex justify-center items-center">
               <img
-                src="/images/saanplogo.png"
+                src={campaignLogo}
                 alt="Saap Ka Vaar Aspataal Mein Hi Upchaar"
                 className="w-full max-w-[260px] md:max-w-[380px] h-auto object-contain"
                 draggable={false}
@@ -916,6 +918,7 @@ function PictorialCard({ image, label, title, desc, href, badge, accent, objectF
 
 function AwarenessSection({ content, t }) {
   const cards = content?.awareness?.items || []
+  const section = content?.sectionText?.awareness || {}
   const ACCENT = '#de2527'
   const DEFAULT_LABELS = ['7 States', 'Digital Reach', 'NGO Network']
 
@@ -937,10 +940,10 @@ function AwarenessSection({ content, t }) {
               {t.badges.awareness}
             </span>
             <h2 className="font-display text-[22px] md:text-[22px] lg:text-[26px] font-bold leading-snug mb-3" style={{ color: '#201F5E' }}>
-              {t.awareness.title}
+              {section.title || t.awareness.title}
             </h2>
             <p className="text-slate-600 text-[13px] leading-relaxed">
-              {t.awareness.subtitle}
+              {section.subtitle || t.awareness.subtitle}
             </p>
           </div>
 
@@ -996,6 +999,7 @@ function AwarenessSection({ content, t }) {
 
 function AccessSection({ content, t }) {
   const cards = content?.access?.items || []
+  const section = content?.sectionText?.access || {}
   const [active, setActive] = useState(null)
 
   const ACCENT = '#16A34A'
@@ -1249,11 +1253,11 @@ function AccessSection({ content, t }) {
                 className="font-display text-[22px] md:text-[22px] lg:text-[26px] font-bold leading-snug mb-3"
                 style={{ color: '#201F5E' }}
               >
-                {content?.access?.title || t.access.title}
+                {section.title || content?.access?.title || t.access.title}
               </h2>
 
               <p className="text-slate-600 text-[13px] leading-relaxed">
-                Ensuring clinicians in snakebite treatment have the training and resources to save lives.
+                {section.subtitle || t.access.subtitle}
               </p>
             </div>
 
@@ -1458,6 +1462,8 @@ function AccessSection({ content, t }) {
 }
 
 function AwardsRecognitionSection({ content }) {
+  const sectionTitle = content?.awardsRecognition?.title || DEFAULT_CONTENT.awardsRecognition.title
+  const sectionDescription = content?.awardsRecognition?.description || DEFAULT_CONTENT.awardsRecognition.description
   const silverImage = content?.awardsRecognition?.silverImage || ''
   const goldImage = content?.awardsRecognition?.goldImage || ''
 
@@ -1482,6 +1488,14 @@ function AwardsRecognitionSection({ content }) {
     },
   ]
 
+  const savedAwards = content?.awardsRecognition?.awards
+  const editableAwards = Array.isArray(savedAwards) && savedAwards.length
+    ? savedAwards
+    : DEFAULT_CONTENT.awardsRecognition.awards.map((award, index) => ({
+      ...award,
+      image: index === 0 ? content?.awardsRecognition?.silverImage || award.image : content?.awardsRecognition?.goldImage || award.image,
+    }))
+
   return (
     <section
       id="awards-recognition"
@@ -1495,21 +1509,16 @@ function AwardsRecognitionSection({ content }) {
               Awards & Recognition
             </span>
 
-            <h2 className="font-display text-[26px] md:text-[28px] font-bold leading-snug mb-4 text-[#201F5E]">
-              Honouring Impact.
-              <br />
-              Inspiring Change.
-            </h2>
+            <h2 className="font-display text-[26px] md:text-[28px] font-bold leading-snug mb-4 text-[#201F5E]">{sectionTitle}</h2>
 
             <p className="text-slate-600 text-[14px] leading-relaxed max-w-xs">
-              Recognized for bold and creative campaigns that are driving awareness
-              and saving lives across India.
+              {sectionDescription}
             </p>
           </div>
 
           <div className="flex-1 w-full min-w-0">
             <div className="grid lg:grid-cols-2 gap-5">
-              {awards.map((award, i) => (
+              {editableAwards.map((award, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, y: 18 }}
@@ -1523,7 +1532,7 @@ function AwardsRecognitionSection({ content }) {
                       {award.image ? (
                         <img
                           src={award.image}
-                          alt={award.type}
+                          alt={award.title}
                           className="absolute inset-0 w-full h-full object-cover"
                         />
                       ) : (
@@ -1534,25 +1543,12 @@ function AwardsRecognitionSection({ content }) {
                     </div>
 
                     <div className="p-5 md:p-6 flex flex-col justify-center min-h-[245px]">
-                      <div className="flex items-center gap-2 mb-4">
-                        <Award className={`w-6 h-6 ${award.iconColor}`} />
-                        <span
-                          className={`text-[11px] font-bold uppercase tracking-[0.12em] ${award.color}`}
-                        >
-                          {award.type}
-                        </span>
-                      </div>
-
                       <h3 className="font-display font-bold text-[16px] md:text-[17px] leading-snug mb-3 text-[#201F5E]">
                         {award.title}
                       </h3>
 
-                      <p className="text-slate-500 text-[13px] leading-relaxed mb-3">
-                        {award.desc}
-                      </p>
-
-                      <p className="text-[13px] font-bold leading-relaxed text-[#16A34A]">
-                        {award.highlight}
+                      <p className="text-slate-500 text-[13px] leading-relaxed">
+                        {award.description || award.desc}
                       </p>
                     </div>
                   </div>
@@ -1568,6 +1564,7 @@ function AwardsRecognitionSection({ content }) {
 
 function CommunicationSection({ content, t }) {
   const cards = content?.communication?.items || []
+  const section = content?.sectionText?.communication || {}
   const fits = ['contain', 'cover', 'contain']
   const ACCENT = '#7C3AED'
   const DEFAULT_LABELS = ['Print Media', 'Video', 'Visual Stories']
@@ -1587,10 +1584,10 @@ function CommunicationSection({ content, t }) {
               {t.badges.communication}
             </span>
             <h2 className="font-display text-[22px] md:text-[22px] lg:text-[26px] font-bold leading-snug mb-3" style={{ color: '#201F5E' }}>
-              {content?.communication?.title || t.communication.title}
+              {section.title || content?.communication?.title || t.communication.title}
             </h2>
             <p className="text-slate-600 text-[13px] leading-relaxed">
-              {content?.communication?.subtitle || t.communication.subtitle}
+              {section.subtitle || content?.communication?.subtitle || t.communication.subtitle}
             </p>
           </div>
           {/* Cards */}
@@ -1727,6 +1724,7 @@ function GallerySection({ albums, t }) {
 function MythsSection({ content, t }) {
   const [expanded, setExpanded] = useState(null)
   const myths = content?.myths || []
+  const section = content?.sectionText?.myths || {}
 
   const CATEGORIES = [
     {
@@ -1755,7 +1753,7 @@ function MythsSection({ content, t }) {
   return (
     <section id="myths" className="section-pad" style={{ background: '#FFF7ED' }}>
       <div className="container mx-auto px-4">
-        <SectionHeader badge={t.badges.myths} title={t.myths.title} subtitle={t.myths.subtitle} accent={BSV_RED} />
+        <SectionHeader badge={t.badges.myths} title={section.title || t.myths.title} subtitle={section.subtitle || t.myths.subtitle} accent={BSV_RED} />
         <div className="grid md:grid-cols-3 gap-6">
           {CATEGORIES.map((cat) => {
             const CatIcon = cat.icon
@@ -2042,7 +2040,7 @@ function ContactSection({ content, t }) {
     setSubmitting(false)
   }
   const email = content?.contact?.email || CONTACT_EMAIL
-  const address = CONTACT_ADDRESS
+  const address = content?.contact?.address || CONTACT_ADDRESS
   const ACCENT = BRAND.deep
   return (
     <section id="contact" style={{ background: '#F0F6FF' }} className="section-pad">
@@ -2152,7 +2150,7 @@ function Footer({ content, t, settings }) {
             <ul className="space-y-2 text-sm text-white/80">
               <li>{content?.contact?.email}</li>
               <li>{content?.contact?.phone}</li>
-              <li>Mumbai, India</li>
+              <li className="whitespace-pre-line">{content?.contact?.address || CONTACT_ADDRESS}</li>
             </ul>
           </div>
         </div>
@@ -2272,6 +2270,8 @@ function App() {
     communication: { ...rawT.communication, ...(st?.communication || {}) },
   }
 
+  const isSectionVisible = (key) => resolved?.sectionVisibility?.[key] !== false
+
   useEffect(() => {
     if (typeof window === 'undefined') return
 
@@ -2288,6 +2288,9 @@ function App() {
     }
 
     if (next) setLang(next)
+
+    const cachedTagline = localStorage.getItem('bsv_loading_tagline')
+    if (cachedTagline) setSettings({ branding: { tagline: cachedTagline } })
 
     const minLoaderPromise = new Promise(resolve =>
       setTimeout(resolve, MIN_LOADER_TIME)
@@ -2313,12 +2316,18 @@ function App() {
       .then(d => setVideos(Array.isArray(d) ? d : []))
       .catch(() => { })
 
-    fetch('/api/settings')
+    const settingsPromise = fetch('/api/settings')
       .then(r => r.ok ? r.json() : null)
-      .then(d => d && setSettings(d))
+      .then(d => {
+        if (!d) return
+        setSettings(d)
+        const tagline = d.branding?.tagline
+        if (tagline) localStorage.setItem('bsv_loading_tagline', tagline)
+        else localStorage.removeItem('bsv_loading_tagline')
+      })
       .catch(() => { })
 
-    Promise.all([contentPromise, minLoaderPromise])
+    Promise.all(cachedTagline ? [contentPromise, minLoaderPromise] : [contentPromise, settingsPromise, minLoaderPromise])
       .finally(() => setLoading(false))
   }, [])
 
@@ -2395,7 +2404,7 @@ function App() {
             ease: 'easeInOut',
           }}
         >
-          INDIA&apos;S NATIONAL SNAKEBITE AWARENESS INITIATIVE
+          {settings?.branding?.tagline}
         </motion.div>
       </motion.div>
     </div>
@@ -2407,20 +2416,20 @@ function App() {
       <main>
         <Hero content={resolved} t={t} />
         <HeroStatsSection content={resolved} t={t} />
-        <MissionSection content={resolved} />
-        <VideoSection videos={videos} content={resolved} t={t} />
-        <AwarenessSection content={resolved} t={t} />
-        <AccessSection content={resolved} t={t} />
-        <CommunicationSection content={resolved} t={t} />
+        {isSectionVisible('aboutCampaign') && <MissionSection content={resolved} />}
+        {isSectionVisible('campaignVideos') && <VideoSection videos={videos} content={resolved} t={t} />}
+        {isSectionVisible('awareness') && <AwarenessSection content={resolved} t={t} />}
+        {isSectionVisible('access') && <AccessSection content={resolved} t={t} />}
+        {isSectionVisible('brandAdvocacy') && <CommunicationSection content={resolved} t={t} />}
         <OutreachSection content={resolved} t={t} />
         {/* <StoriesSection stories={stories} t={t} />
         <GallerySection albums={albums} t={t} /> */}
-        <MythsSection content={resolved} t={t} />
-        <AwardsRecognitionSection content={resolved} />
-        <AboutBSVSection />
+        {isSectionVisible('mythsFacts') && <MythsSection content={resolved} t={t} />}
+        {isSectionVisible('awardsRecognition') && <AwardsRecognitionSection content={resolved} />}
+        {isSectionVisible('aboutBSV') && <AboutBSVSection />}
         <QuizSection t={t} lang={lang} />
         {/* <ResourcesSection content={resolved} lang={lang} t={t} /> */}
-        <ContactSection content={resolved} t={t} />
+        {isSectionVisible('contact') && <ContactSection content={resolved} t={t} />}
       </main>
       <Footer content={resolved} t={t} settings={settings} />
     </div>

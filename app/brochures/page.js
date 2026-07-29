@@ -286,7 +286,9 @@ export default function BrochuresPage() {
   }, [items, selectedLanguage])
 
   const activeLang = selectedLanguage === 'all' ? 'en' : selectedLanguage
-  const ui = PAGE_TEXT[activeLang] || PAGE_TEXT.en
+  const baseUi = PAGE_TEXT[activeLang] || PAGE_TEXT.en
+  const header = content?.pageHeaders?.brochures || {}
+  const ui = { ...baseUi, title: header.title || baseUi.title, subtitle: header.description || baseUi.subtitle }
 
   const openFile = (item) => {
     const url = item?.fileUrl
