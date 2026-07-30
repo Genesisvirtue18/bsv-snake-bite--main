@@ -2214,8 +2214,6 @@ function Footer({ content, t, settings }) {
 function App() {
   const [lang, setLang] = useState('en')
   const [content, setContent] = useState(null)
-  const [stories, setStories] = useState([])
-  const [albums, setAlbums] = useState([])
   const [videos, setVideos] = useState([])
   const [settings, setSettings] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -2279,8 +2277,6 @@ function App() {
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    const MIN_LOADER_TIME = 1500 // 1.5 sec loader visible rahega
-
     const saved = localStorage.getItem('bsv_lang')
     let next = null
 
@@ -2296,23 +2292,9 @@ function App() {
     const cachedTagline = localStorage.getItem('bsv_loading_tagline')
     if (cachedTagline) setSettings({ branding: { tagline: cachedTagline } })
 
-    const minLoaderPromise = new Promise(resolve =>
-      setTimeout(resolve, MIN_LOADER_TIME)
-    )
-
     const contentPromise = fetch('/api/content')
       .then(r => r.json())
       .then(d => setContent(d))
-      .catch(() => { })
-
-    fetch('/api/impact-stories')
-      .then(r => r.ok ? r.json() : [])
-      .then(d => setStories(Array.isArray(d) ? d : []))
-      .catch(() => { })
-
-    fetch('/api/gallery')
-      .then(r => r.ok ? r.json() : [])
-      .then(d => setAlbums(Array.isArray(d) ? d : []))
       .catch(() => { })
 
     fetch('/api/videos')
@@ -2331,7 +2313,7 @@ function App() {
       })
       .catch(() => { })
 
-    Promise.all(cachedTagline ? [contentPromise, minLoaderPromise] : [contentPromise, settingsPromise, minLoaderPromise])
+    Promise.all(cachedTagline ? [contentPromise] : [contentPromise, settingsPromise])
       .finally(() => setLoading(false))
   }, [])
 
