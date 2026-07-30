@@ -1,10 +1,16 @@
 const nextConfig = {
   output: 'standalone',
   images: {
-    unoptimized: true,
     remotePatterns: [
+      { protocol: 'https', hostname: 'customer-assets.emergentagent.com', pathname: '/**' },
+      { protocol: 'https', hostname: 'images.unsplash.com', pathname: '/**' },
+      { protocol: 'https', hostname: 'i.ytimg.com', pathname: '/**' },
+      { protocol: 'https', hostname: 'img.youtube.com', pathname: '/**' },
       { protocol: 'https', hostname: 'avatars.githubusercontent.com', pathname: '/**' },
+      { protocol: 'https', hostname: '*.fbcdn.net', pathname: '/**' },
+      { protocol: 'https', hostname: '*.cdninstagram.com', pathname: '/**' },
     ],
+    formats: ['image/avif', 'image/webp'],
   },
   experimental: {
     // Remove if not using Server Components

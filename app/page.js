@@ -19,6 +19,7 @@ import AnimatedCounter from '@/components/AnimatedCounter'
 import MiniIndiaMap from '@/components/MiniIndiaMap'
 import QuizSection from '@/components/QuizSection'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const ICONS = { Heart, GraduationCap, MapPin, Users, Megaphone, Building2, Stethoscope }
 const DEFAULT_BRAND = {
@@ -487,11 +488,14 @@ function Hero({ content, t }) {
               <source media="(max-width: 767px)" srcSet={mobileImage} />
             )}
 
-            <img
+            <Image
               src={desktopImage}
               alt="BSV Snakebite Awareness Campaign"
-              className="block w-full h-full object-cover object-top md:object-[center_15%] lg:object-[center_20%]"
-              loading="eager"
+              fill
+              priority
+              sizes="100vw"
+              quality={75}
+              className="object-cover object-top md:object-[center_15%] lg:object-[center_20%]"
             />
           </picture>
         </div>
@@ -671,9 +675,9 @@ function VideoSection({ videos, content, t }) {
         onClick={() => setActive(v)}
         className="relative w-full group overflow-hidden rounded-2xl shadow-lg bg-slate-900 text-left block"
       >
-        <div className="aspect-video">
+        <div className="relative aspect-video">
           {v.thumbnail && (
-            <img src={v.thumbnail} alt={v.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+            <Image src={v.thumbnail} alt={v.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover group-hover:scale-105 transition duration-700" />
           )}
         </div>
         <div className="absolute inset-0 bg-black/25" />
@@ -763,7 +767,7 @@ function VideoSection({ videos, content, t }) {
                     className="group text-left rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 bg-white border border-slate-100"
                   >
                     <div className="relative aspect-video overflow-hidden bg-slate-900">
-                      {v.thumbnail && <img src={v.thumbnail} alt={v.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />}
+                      {v.thumbnail && <Image src={v.thumbnail} alt={v.title} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition duration-500" />}
                       <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                         <div className="w-11 h-11 rounded-full flex items-center justify-center group-hover:scale-110 transition-all" style={{ background: BSV_RED }}>
                           <Play className="w-5 h-5 fill-white text-white ml-0.5" />
@@ -2007,7 +2011,7 @@ function ResourcesSection({ content, lang, t }) {
           {filtered.map(r => (
             <Card key={r.id} className="group overflow-hidden hover:shadow-2xl transition hover:-translate-y-1">
               <div className="aspect-video bg-slate-200 relative overflow-hidden">
-                {r.preview && <img src={r.preview} alt={r.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-700" />}
+                {r.preview && <Image src={r.preview} alt={r.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover group-hover:scale-110 transition duration-700" />}
                 <Badge className="absolute top-3 left-3 border-0" style={{ background: BRAND.red }}>{r.category}</Badge>
               </div>
               <CardContent className="p-5">
