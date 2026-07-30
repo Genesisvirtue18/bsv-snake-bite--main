@@ -246,19 +246,16 @@ function Header({ lang, setLang, t, settings }) {
             className="flex items-center gap-1.5 sm:gap-3 min-w-0 flex-shrink group overflow-hidden"
           >
             {/* BSV Logo */}
-            <img
-              src={settings?.branding?.bsvLogo}
-              alt="BSV"
-              className="h-8 sm:h-12 w-auto flex-shrink-0"
-              draggable={false}
-            />
+            {settings?.branding?.bsvLogo && <Image src={settings.branding.bsvLogo} alt="BSV" width={120} height={48} sizes="120px" className="h-8 sm:h-12 w-auto flex-shrink-0" />}
 
             {/* Campaign Logo */}
-            <img
+            <Image
               src="/images/saanplogo.png"
               alt="Saap Ka Vaar"
+              width={160}
+              height={56}
+              sizes="(max-width: 640px) 100px, 160px"
               className="h-8 sm:h-12 md:h-14 w-auto flex-shrink min-w-0 ml-0 sm:ml-2"
-              draggable={false}
             />
           </button>
 
@@ -294,12 +291,7 @@ function Header({ lang, setLang, t, settings }) {
 
           {/* Right: Mankind logo + Contact + Language — tight and clean */}
           <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
-            <img
-              src={settings?.branding?.mankindLogo}
-              alt="Mankind"
-              className="h-7 sm:h-10 w-auto flex-shrink-0"
-              draggable={false}
-            />
+            {settings?.branding?.mankindLogo && <Image src={settings.branding.mankindLogo} alt="Mankind" width={120} height={40} sizes="120px" className="h-7 sm:h-10 w-auto flex-shrink-0" />}
 
             {/* Divider */}
             <div className="hidden lg:block h-6 w-px bg-slate-200 mx-1" />
@@ -2131,9 +2123,12 @@ function Footer({ content, t, settings }) {
             <div className="font-display font-semibold text-xl mb-2">BSV Campaign</div>
             <div className="text-sm text-white/70 mb-4">{f.tagline || 'Saap Ka Vaar, Aspataal Mein Hi Upchaar'}</div>
             {settings?.branding?.footerLogo && (
-              <img
+              <Image
                 src={settings.branding.footerLogo}
                 alt="BSV Mankind"
+                width={200}
+                height={80}
+                sizes="200px"
                 className="bg-white p-2 rounded-lg max-w-[200px]"
               />
             )}
