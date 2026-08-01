@@ -655,11 +655,10 @@ function VideoSection({ videos, content, t }) {
       return aOrder - bOrder
     })
 
-  // Top 2 videos admin se aayenge
+  // Keep the two campaign films featured, then show only three additional videos on the homepage.
+  // The full catalogue remains available on /videos.
   const celebVideos = published.slice(0, 2)
-
-  // Baaki videos More Videos me jayenge
-  const others = published.slice(2)
+  const others = published.slice(2, 5)
 
   const CelebCard = ({ v }) => (
     <div>
@@ -668,8 +667,8 @@ function VideoSection({ videos, content, t }) {
         className="relative w-full group overflow-hidden rounded-2xl shadow-lg bg-slate-900 text-left block"
       >
         <div className="relative aspect-video">
-          {v.thumbnail && (
-            <Image src={v.thumbnail} alt={v.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover group-hover:scale-105 transition duration-700" />
+          {(v.youtubeId || v.thumbnail) && (
+            <Image src={v.youtubeId ? `https://i.ytimg.com/vi/${v.youtubeId}/hqdefault.jpg` : v.thumbnail} alt={v.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover group-hover:scale-105 transition duration-700" />
           )}
         </div>
         <div className="absolute inset-0 bg-black/25" />
@@ -759,7 +758,7 @@ function VideoSection({ videos, content, t }) {
                     className="group text-left rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 bg-white border border-slate-100"
                   >
                     <div className="relative aspect-video overflow-hidden bg-slate-900">
-                      {v.thumbnail && <Image src={v.thumbnail} alt={v.title} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition duration-500" />}
+                      {(v.youtubeId || v.thumbnail) && <Image src={v.youtubeId ? `https://i.ytimg.com/vi/${v.youtubeId}/hqdefault.jpg` : v.thumbnail} alt={v.title} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition duration-500" />}
                       <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                         <div className="w-11 h-11 rounded-full flex items-center justify-center group-hover:scale-110 transition-all" style={{ background: BSV_RED }}>
                           <Play className="w-5 h-5 fill-white text-white ml-0.5" />
@@ -953,7 +952,7 @@ function AwarenessSection({ content, t }) {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.4 }}
-                  onClick={() => go(card.href)}
+                  onClick={() => go(card.id === 'mankind-agritech-collaboration' || card.title === 'Mankind Agritech Collaboration' ? '/mankind-agritech-collaboration' : card.href)}
                   className="bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
                 >
                   {/* Full-visible image */}
@@ -967,7 +966,7 @@ function AwarenessSection({ content, t }) {
                     {/* Bottom label ribbon — always uses DEFAULT_LABELS, not card title */}
                     <div className="absolute bottom-0 left-0 right-0 px-3 py-2" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)' }}>
                       <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-white/85">
-                        {DEFAULT_LABELS[i]}
+                        {card.label || DEFAULT_LABELS[i] || card.title}
                       </span>
                     </div>
                   </div>

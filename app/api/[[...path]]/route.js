@@ -54,6 +54,21 @@ async function ensureContent(db) {
   const merged = { ...DEFAULT_CONTENT, ...existing.data }
   if (!existing.data.footer) merged.footer = DEFAULT_CONTENT.footer
   if (!existing.data.sections) merged.sections = DEFAULT_CONTENT.sections
+  const defaultAwarenessItems = DEFAULT_CONTENT.awareness?.items || []
+  const existingAwarenessItems = existing.data.awareness?.items || []
+  const missingAwarenessItems = defaultAwarenessItems.filter(defaultItem =>
+    !existingAwarenessItems.some(item => item.title === defaultItem.title)
+  )
+  if (missingAwarenessItems.length) {
+    merged.awareness = {
+      ...(existing.data.awareness || {}),
+      items: [...existingAwarenessItems, ...missingAwarenessItems],
+    }
+    await db.collection('site_content').updateOne(
+      { id: 'main' },
+      { $set: { 'data.awareness': merged.awareness, updatedAt: new Date() } }
+    )
+  }
   return merged
 }
 
@@ -625,7 +640,7 @@ async function handleRoute(request, { params }) {
       // Extract YouTube ID from URL
       const ytMatch = (body.url || '').match(/(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/)
       const youtubeId = body.youtubeId || ytMatch?.[1] || ''
-      const v = { id: uuidv4(), title: body.title, description: body.description || '', url: body.url, youtubeId, thumbnail: body.thumbnail || (youtubeId ? `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg` : ''), category: body.category || 'Campaign', featured: body.featured ?? false, published: body.published ?? true, order: body.order ?? 0, createdAt: new Date(), updatedAt: new Date() }
+      const v = { id: uuidv4(), title: body.title, description: body.description || '', url: body.url, youtubeId, thumbnail: body.thumbnail || (youtubeId ? `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg` : ''), category: body.category || 'Campaign', featured: body.featured ?? false, published: body.published ?? true, order: body.order ?? 0, createdAt: new Date(), updatedAt: new Date() }
       await db.collection('videos').insertOne(v)
       return cors(NextResponse.json(v))
     }
@@ -635,7 +650,7 @@ async function handleRoute(request, { params }) {
       const body = await request.json()
       if (body.url) {
         const ytMatch = body.url.match(/(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/)
-        if (ytMatch?.[1]) { body.youtubeId = ytMatch[1]; if (!body.thumbnail) body.thumbnail = `https://img.youtube.com/vi/${ytMatch[1]}/maxresdefault.jpg` }
+        if (ytMatch?.[1]) { body.youtubeId = ytMatch[1]; if (!body.thumbnail) body.thumbnail = `https://i.ytimg.com/vi/${ytMatch[1]}/hqdefault.jpg` }
       }
       await db.collection('videos').updateOne({ id }, { $set: { ...body, updatedAt: new Date() } })
       return cors(NextResponse.json({ success: true }))

@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog'
 import { Switch } from '@/components/ui/switch'
 import { toast } from 'sonner'
-import { Shield, Save, RefreshCw, LogOut, Users, FileText, Award, MessageSquare, BarChart3, Lock, Eye, Download, Trash2, Plus, Image as ImageIcon, Building2, FileImage, Sparkles, Upload, Edit, Heart, Megaphone, UserPlus, Globe, Settings, Layers, Play, BookOpen, CheckCircle2, Clock, Images, X, HelpCircle, Palette, Drama } from 'lucide-react'
+import { Shield, Save, RefreshCw, LogOut, Users, FileText, Award, MessageSquare, BarChart3, Lock, Eye, Download, Trash2, Plus, Image as ImageIcon, Building2, FileImage, Sparkles, Upload, Edit, Heart, Megaphone, UserPlus, Globe, Settings, Layers, Play, BookOpen, CheckCircle2, Clock, Images, X, HelpCircle, Palette, Drama, Handshake } from 'lucide-react'
 
 const LANGS = ['en', 'hi', 'mr', 'kn', 'ta', 'te', 'or', 'pa', 'bn']
 const LANG_NAMES = { en: 'English', hi: 'हिन्दी', mr: 'मराठी', kn: 'ಕನ್ನಡ', ta: 'தமிழ்', te: 'తెలుగు', or: 'ଓଡ଼ିଆ', pa: 'ਪੰਜਾਬੀ', bn: 'বাংলা' }
@@ -596,6 +596,7 @@ export default function AdminPage() {
             <TabsTrigger value="ngos"><Building2 className="w-4 h-4 mr-1" />NGOs</TabsTrigger>
             <TabsTrigger value="onGround"><Drama className="w-4 h-4 mr-1" />On-Ground</TabsTrigger>
             <TabsTrigger value="massMedia"><Megaphone className="w-4 h-4 mr-1" />Mass Media</TabsTrigger>
+            <TabsTrigger value="mankindAgritech"><Handshake className="w-4 h-4 mr-1" />Mankind Agritech</TabsTrigger>
             <TabsTrigger value="gallery"><Images className="w-4 h-4 mr-1" />Gallery</TabsTrigger>
             <TabsTrigger value="library">
               <BookOpen className="w-4 h-4 mr-1" />
@@ -1004,8 +1005,9 @@ export default function AdminPage() {
                         <div>
                           <Label>Link</Label>
                           <Input
-                            value={item.href || ''}
+                            value={item.id === 'mankind-agritech-collaboration' || item.title === 'Mankind Agritech Collaboration' ? '/mankind-agritech-collaboration' : item.href || ''}
                             placeholder="#gallery / #video / /ngo-network"
+                            disabled={item.id === 'mankind-agritech-collaboration' || item.title === 'Mankind Agritech Collaboration'}
                             onChange={e => {
                               const items = [...(content.awareness?.items || [])]
                               items[i] = { ...items[i], href: e.target.value }
@@ -2049,6 +2051,10 @@ export default function AdminPage() {
             />
           </TabsContent>
 
+          <TabsContent value="mankindAgritech">
+            <OnGroundAdminView content={content} setContent={setContent} api={api} config={{ activityKey: 'mankindAgritechActivities', categoryKey: 'mankindAgritechCategories', headerKey: 'mankindAgritech', title: 'Mankind Agritech Collaboration', description: 'Manage Mankind Agritech collaboration activities.', defaultCategory: 'Collaboration', idPrefix: 'mankind-agritech' }} />
+          </TabsContent>
+
           {/* REPORTS */}
           <TabsContent value="reports">
             <ReportsView reports={reports} api={api} reload={() => loadAll(token)} />
@@ -2436,17 +2442,24 @@ function NgosView({ ngos, api, reload, content, setContent }) {
 
 // AdminPage ke andar, sab components ke baad yeh component add karein
 
-function OnGroundAdminView({ content, setContent, api }) {
-  const onGroundData = Array.isArray(content?.onGroundActivities)
-    ? content.onGroundActivities
+function OnGroundAdminView({ content, setContent, api, config = {} }) {
+  const activityKey = config.activityKey || 'onGroundActivities'
+  const categoryKey = config.categoryKey || 'onGroundCategories'
+  const headerKey = config.headerKey || 'onground'
+  const title = config.title || 'On-Ground Activations'
+  const description = config.description || 'Manage Nukkad Natak and School Engagement activities.'
+  const defaultCategory = config.defaultCategory || 'Nukkad Natak'
+  const idPrefix = config.idPrefix || 'on-ground'
+  const onGroundData = Array.isArray(content?.[activityKey])
+    ? content[activityKey]
     : []
-  const pageHeader = content?.pageHeaders?.onground || {}
-  const categories = content?.onGroundCategories || ['Nukkad Natak', 'School Engagement']
+  const pageHeader = content?.pageHeaders?.[headerKey] || {}
+  const categories = content?.[categoryKey] || (activityKey === 'onGroundActivities' ? ['Nukkad Natak', 'School Engagement'] : [defaultCategory])
 
   const updateOnGround = (items) => {
     setContent({
       ...content,
-      onGroundActivities: items,
+      [activityKey]: items,
     })
   }
 
@@ -2454,8 +2467,8 @@ function OnGroundAdminView({ content, setContent, api }) {
     updateOnGround([
       ...onGroundData,
       {
-        id: `on-ground-${Date.now()}`,
-        category: 'Nukkad Natak',
+        id: `${idPrefix}-${Date.now()}`,
+        category: defaultCategory,
         title: '',
         description: '',
         image: '',
@@ -2475,27 +2488,27 @@ function OnGroundAdminView({ content, setContent, api }) {
   }
 
   const deleteActivity = (index) => {
-    if (!confirm('Delete this On-Ground activity?')) return
+    if (!confirm(`Delete this ${title} activity?`)) return
     updateOnGround(onGroundData.filter((_, i) => i !== index))
   }
 
   const saveOnGround = async () => {
     const r = await api('/api/content', 'PUT', content)
-    if (r.ok) toast.success('On-Ground data saved!')
+    if (r.ok) toast.success(`${title} data saved!`)
     else toast.error('Save failed')
   }
 
   return (
     <div className="space-y-4">
-      <Card><CardContent className="p-5 space-y-3"><div className="flex justify-between"><h3 className="font-display font-bold text-lg text-bsv-blue">On-Ground Categories</h3><Button size="sm" onClick={() => setContent({ ...content, onGroundCategories: [...categories, ''] })}><Plus className="w-4 h-4 mr-1" />Add Category</Button></div>{categories.map((category, i) => <div key={i} className="flex gap-2"><Input value={category} placeholder="Category name" onChange={e => setContent({ ...content, onGroundCategories: categories.map((x,n) => n === i ? e.target.value : x) })} /><Button size="sm" variant="destructive" onClick={() => setContent({ ...content, onGroundCategories: categories.filter((_,n) => n !== i) })}><Trash2 className="w-4 h-4" /></Button></div>)}<Button className="bg-bsv-red" onClick={saveOnGround}>Save Categories</Button></CardContent></Card>
-      <Card><CardContent className="p-5 space-y-3"><h3 className="font-display font-bold text-lg text-bsv-blue">On-Ground Page Main Content</h3><div><Label>Main Headline</Label><Input value={pageHeader.title || 'On-Ground Activations'} onChange={e => setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), onground: { ...pageHeader, title: e.target.value } } })} /></div><div><Label>Description</Label><Textarea rows={2} value={pageHeader.description || 'Community outreach through Nukkad Natak and School Engagement activities for snakebite awareness.'} onChange={e => setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), onground: { ...pageHeader, description: e.target.value } } })} /></div></CardContent></Card>
+      <Card><CardContent className="p-5 space-y-3"><div className="flex justify-between"><h3 className="font-display font-bold text-lg text-bsv-blue">{title} Categories</h3><Button size="sm" onClick={() => setContent({ ...content, [categoryKey]: [...categories, ''] })}><Plus className="w-4 h-4 mr-1" />Add Category</Button></div>{categories.map((category, i) => <div key={i} className="flex gap-2"><Input value={category} placeholder="Category name" onChange={e => setContent({ ...content, [categoryKey]: categories.map((x,n) => n === i ? e.target.value : x) })} /><Button size="sm" variant="destructive" onClick={() => setContent({ ...content, [categoryKey]: categories.filter((_,n) => n !== i) })}><Trash2 className="w-4 h-4" /></Button></div>)}<Button className="bg-bsv-red" onClick={saveOnGround}>Save Categories</Button></CardContent></Card>
+      <Card><CardContent className="p-5 space-y-3"><h3 className="font-display font-bold text-lg text-bsv-blue">{title} Page Main Content</h3><div><Label>Main Headline</Label><Input value={pageHeader.title || title} onChange={e => setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), [headerKey]: { ...pageHeader, title: e.target.value } } })} /></div><div><Label>Description</Label><Textarea rows={2} value={pageHeader.description || description} onChange={e => setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), [headerKey]: { ...pageHeader, description: e.target.value } } })} /></div></CardContent></Card>
       <div className="flex justify-between items-center sticky top-16 bg-slate-50 py-2 z-20">
         <div>
           <h2 className="font-display font-extrabold text-2xl text-bsv-blue">
-            On-Ground Activations
+            {title}
           </h2>
           <p className="text-sm text-muted-foreground">
-            Manage Nukkad Natak and School Engagement activities.
+            {description}
           </p>
         </div>
 
@@ -2517,10 +2530,10 @@ function OnGroundAdminView({ content, setContent, api }) {
           <CardContent className="p-10 text-center">
             <Drama className="w-14 h-14 mx-auto text-slate-300 mb-3" />
             <h3 className="font-display font-bold text-lg text-bsv-blue">
-              No On-Ground Activities Added
+              No {title} Activities Added
             </h3>
             <p className="text-sm text-muted-foreground">
-              Click Add Activity to add Nukkad Natak or School Engagement content.
+              Click Add Activity to add collaboration content.
             </p>
           </CardContent>
         </Card>
@@ -2548,7 +2561,7 @@ function OnGroundAdminView({ content, setContent, api }) {
                 <Label>Category</Label>
 
                 <Select
-                  value={item.category || 'Nukkad Natak'}
+                  value={item.category || defaultCategory}
                   onValueChange={v => updateActivity(i, 'category', v)}
                 >
                   <SelectTrigger>
@@ -3295,6 +3308,27 @@ function BrandAdvocacyEditor({ content, setContent, saveContent }) {
   const items = content.communication?.items || []
   const update = (next) => setContent({ ...content, communication: { ...(content.communication || {}), items: next } })
   return <Card><CardContent className="p-5 space-y-4"><div className="flex justify-between"><h3 className="font-display font-bold text-lg text-bsv-blue">Brand Advocacy Cards</h3><Button className="bg-bsv-red" onClick={() => update([...items, { title: '', desc: '', image: '', href: '' }])}><Plus className="w-4 h-4 mr-1" />Add Card</Button></div><div className="border rounded-xl p-4 space-y-3"><div><Label>Main Headline</Label><Input value={section.title ?? DEFAULT_CONTENT.sectionText.communication.title} onChange={e => setContent({ ...content, sectionText: { ...(content.sectionText || {}), communication: { ...section, title: e.target.value } } })} /></div><div><Label>Description</Label><Textarea rows={2} value={section.subtitle ?? DEFAULT_CONTENT.sectionText.communication.subtitle} onChange={e => setContent({ ...content, sectionText: { ...(content.sectionText || {}), communication: { ...section, subtitle: e.target.value } } })} /></div></div>{items.map((item, i) => <div key={i} className="border rounded-xl p-4 space-y-3"><div className="flex justify-between"><b>Card {i + 1}</b><Button size="sm" variant="destructive" onClick={() => update(items.filter((_, n) => n !== i))}><Trash2 className="w-4 h-4" /></Button></div><Input value={item.title || ''} placeholder="Title" onChange={e => update(items.map((x,n) => n === i ? { ...x, title: e.target.value } : x))} /><Textarea value={item.desc || ''} placeholder="Description" onChange={e => update(items.map((x,n) => n === i ? { ...x, desc: e.target.value } : x))} /><Input value={item.href || ''} placeholder="Link" onChange={e => update(items.map((x,n) => n === i ? { ...x, href: e.target.value } : x))} /><MediaPicker label="Image" value={item.image || ''} onChange={v => update(items.map((x,n) => n === i ? { ...x, image: v } : x))} /></div>)}<Button className="bg-bsv-red" onClick={saveContent}>Save Brand Advocacy</Button></CardContent></Card>
+}
+
+function MankindAgritechEditor({ content, setContent, saveContent }) {
+  const page = { ...DEFAULT_CONTENT.mankindAgritech, ...(content?.mankindAgritech || {}) }
+  const update = (patch) => setContent({ ...content, mankindAgritech: { ...page, ...patch } })
+
+  return (
+    <Card>
+      <CardContent className="p-5 space-y-4">
+        <div>
+          <h3 className="font-display font-bold text-lg text-bsv-blue">Mankind Agritech Collaboration Page</h3>
+          <p className="text-sm text-muted-foreground">Content for the Awareness tile&apos;s dedicated page.</p>
+        </div>
+        <div><Label>Main Headline</Label><Input value={page.title} onChange={e => update({ title: e.target.value })} /></div>
+        <div><Label>Introductory Description</Label><Textarea rows={3} value={page.description} onChange={e => update({ description: e.target.value })} /></div>
+        <div><Label>Page Content</Label><Textarea rows={8} value={page.body} placeholder="Add collaboration details, initiatives, or outcomes." onChange={e => update({ body: e.target.value })} /></div>
+        <MediaPicker label="Page Image" value={page.image} onChange={image => update({ image })} />
+        <Button className="bg-bsv-red" onClick={saveContent}><Save className="w-4 h-4 mr-1" />Save Page Content</Button>
+      </CardContent>
+    </Card>
+  )
 }
 
 function LibraryMaterialsView({ content, setContent, saveContent, api }) {
