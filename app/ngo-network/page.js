@@ -85,7 +85,7 @@ export default function NGONetworkPage() {
                 NGO Activities Coming Soon
               </h3>
               <p className="text-muted-foreground">
-                Activity images will be added here once uploaded from admin.
+                Activity images from our NGO partners will be shared here soon.
               </p>
             </CardContent>
           </Card>

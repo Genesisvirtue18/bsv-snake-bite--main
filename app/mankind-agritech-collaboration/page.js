@@ -73,7 +73,7 @@ export default function MankindAgritechCollaborationPage() {
               {categories.filter(Boolean).map(category => <button key={category} onClick={() => setActiveFilter(category)} className={`px-5 py-2.5 rounded-full border text-sm font-bold ${activeFilter === category ? 'bg-[#de2527] border-[#de2527] text-white' : 'bg-white text-bsv-blue border-bsv-blue/30'}`}>{category}</button>)}
             </div>
 
-            {!visibleActivities.length && <Card><CardContent className="p-12 text-center"><Images className="w-16 h-16 mx-auto text-slate-300 mb-3" /><h2 className="font-display font-bold text-xl text-bsv-blue">Collaboration Activities Coming Soon</h2><p className="text-muted-foreground">Activities will be visible here once added from admin.</p></CardContent></Card>}
+            {!visibleActivities.length && <Card><CardContent className="p-12 text-center"><Handshake className="w-16 h-16 mx-auto text-slate-300 mb-3" /><h2 className="font-display font-bold text-xl text-bsv-blue">Stories of Collaboration Coming Soon</h2><p className="text-muted-foreground">Updates from our collaboration with Mankind Agritech will be shared here.</p></CardContent></Card>}
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {visibleActivities.map((item, index) => {

@@ -1178,7 +1178,7 @@ function AccessSection({ content, t }) {
     const videos = getYoutubeVideos(card, cardIndex)
 
     if (!videos.length) {
-      toast.error('Please add YouTube Video Link from admin')
+      toast.error('This video is currently unavailable.')
       return
     }
 
@@ -1195,7 +1195,7 @@ function AccessSection({ content, t }) {
     const documents = getDocuments(card)
 
     if (!documents.length) {
-      toast.error('Please add workshop documents from admin')
+      toast.error('Workshop materials are currently unavailable.')
       return
     }
 

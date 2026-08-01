@@ -300,7 +300,7 @@ export default function MassMediaPage() {
                   <p className="text-muted-foreground">
                     {activeFilter === 'Radio Coverage'
                       ? 'Please check back later for radio coverage.'
-                      : 'Activities will be visible here once added from admin.'}
+                      : 'Activities will be shared here soon.'}
                   </p>
                 </CardContent>
               </Card>

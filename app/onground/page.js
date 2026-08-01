@@ -146,7 +146,7 @@ export default function OnGroundActivitiesPage() {
                     Activities Coming Soon
                   </h3>
                   <p className="text-muted-foreground">
-                    Activities will be visible here once added from admin.
+                    Activities will be shared here soon.
                   </p>
                 </CardContent>
               </Card>
