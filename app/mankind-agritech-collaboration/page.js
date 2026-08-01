@@ -10,8 +10,6 @@ import { DEFAULT_CONTENT } from '@/lib/defaultContent'
 export default function MankindAgritechCollaborationPage() {
   const [page, setPage] = useState(DEFAULT_CONTENT.mankindAgritech)
   const [activities, setActivities] = useState([])
-  const [categories, setCategories] = useState(['Collaboration'])
-  const [activeFilter, setActiveFilter] = useState('all')
   const [viewer, setViewer] = useState(null)
   const [activeIndex, setActiveIndex] = useState(0)
 
@@ -20,13 +18,12 @@ export default function MankindAgritechCollaborationPage() {
       .then(response => response.ok ? response.json() : null)
       .then(content => {
         setPage({ ...DEFAULT_CONTENT.mankindAgritech, ...(content?.mankindAgritech || {}), ...(content?.pageHeaders?.mankindAgritech || {}) })
-        setActivities(Array.isArray(content?.mankindAgritechActivities) ? content.mankindAgritechActivities : [])
-        setCategories(Array.isArray(content?.mankindAgritechCategories) && content.mankindAgritechCategories.length ? content.mankindAgritechCategories : ['Collaboration'])
       })
       .catch(() => {})
+    fetch('/api/mankind-agritech').then(response => response.ok ? response.json() : []).then(setActivities).catch(() => setActivities([]))
   }, [])
 
-  const visibleActivities = activities.filter(item => item.published !== false && (activeFilter === 'all' || item.category === activeFilter))
+  const visibleActivities = activities.filter(item => item.published !== false)
   const nextImage = () => setActiveIndex(index => (index + 1) % viewer.images.length)
   const prevImage = () => setActiveIndex(index => (index - 1 + viewer.images.length) % viewer.images.length)
 
@@ -41,7 +38,7 @@ export default function MankindAgritechCollaborationPage() {
           </Link>
           <div>
             <div className="font-display font-extrabold text-xl">{page.title}</div>
-            <div className="text-xs text-white/70">{categories.filter(Boolean).join(' and ')} Activities</div>
+            <div className="text-xs text-white/70">Activity Images With Mankind Agritech</div>
           </div>
         </div>
       </header>
@@ -68,18 +65,13 @@ export default function MankindAgritechCollaborationPage() {
 
         <section className="py-10 md:py-14 bg-slate-50">
           <div className="max-w-6xl mx-auto px-4">
-            <div className="flex flex-wrap justify-center gap-3 mb-10">
-              <button onClick={() => setActiveFilter('all')} className={`px-5 py-2.5 rounded-full border text-sm font-bold ${activeFilter === 'all' ? 'bg-[#de2527] border-[#de2527] text-white' : 'bg-white text-bsv-blue border-bsv-blue/30'}`}>All</button>
-              {categories.filter(Boolean).map(category => <button key={category} onClick={() => setActiveFilter(category)} className={`px-5 py-2.5 rounded-full border text-sm font-bold ${activeFilter === category ? 'bg-[#de2527] border-[#de2527] text-white' : 'bg-white text-bsv-blue border-bsv-blue/30'}`}>{category}</button>)}
-            </div>
-
             {!visibleActivities.length && <Card><CardContent className="p-12 text-center"><Handshake className="w-16 h-16 mx-auto text-slate-300 mb-3" /><h2 className="font-display font-bold text-xl text-bsv-blue">Stories of Collaboration Coming Soon</h2><p className="text-muted-foreground">Updates from our collaboration with Mankind Agritech will be shared here.</p></CardContent></Card>}
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {visibleActivities.map((item, index) => {
-                const gallery = item.gallery || []
-                const coverImage = item.image || gallery[0]
-                return <Card key={item.id || index} className="overflow-hidden hover:shadow-xl transition"><CardContent className="p-0"><div className="relative h-56 bg-slate-200 overflow-hidden">{coverImage ? <img src={coverImage} alt={item.title} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center"><Images className="w-14 h-14 text-slate-400" /></div>}<div className="absolute top-3 left-3 bg-[#de2527] text-white text-xs font-bold px-3 py-1.5 rounded-md">{item.category}</div>{gallery.length > 0 && <div className="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-3 py-1.5 rounded-full">{gallery.length} Photos</div>}</div><div className="p-5"><h2 className="font-display font-bold text-xl text-bsv-blue mb-2">{item.title}</h2><p className="text-sm text-slate-600 line-clamp-3 mb-4">{item.description}</p><Button size="sm" variant="outline" className="border-bsv-red text-bsv-red" disabled={!coverImage && !gallery.length} onClick={() => { setViewer({ title: item.title, images: gallery.length ? gallery : [coverImage] }); setActiveIndex(0) }}>View Photos <Images className="w-4 h-4 ml-2" /></Button></div></CardContent></Card>
+                const gallery = item.activityImages || []
+                const coverImage = item.logo || gallery[0]
+                return <Card key={item.id || index} className="overflow-hidden hover:shadow-xl transition"><CardContent className="p-0"><div className="relative h-56 bg-slate-200 overflow-hidden">{coverImage ? <img src={coverImage} alt={item.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center"><Images className="w-14 h-14 text-slate-400" /></div>}{gallery.length > 0 && <div className="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-3 py-1.5 rounded-full">{gallery.length} Photos</div>}</div><div className="p-5"><h2 className="font-display font-bold text-xl text-bsv-blue mb-2">{item.name}</h2><p className="text-sm text-slate-600 line-clamp-3 mb-4">{item.description}</p><Button size="sm" variant="outline" className="border-bsv-red text-bsv-red" disabled={!coverImage && !gallery.length} onClick={() => { setViewer({ title: item.name, images: gallery.length ? gallery : [coverImage] }); setActiveIndex(0) }}>View Photos <Images className="w-4 h-4 ml-2" /></Button></div></CardContent></Card>
               })}
             </div>
           </div>

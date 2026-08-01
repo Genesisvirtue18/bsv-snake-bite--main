@@ -724,6 +724,31 @@ async function handleRoute(request, { params }) {
       return cors(NextResponse.json({ success: true }))
     }
 
+    // ===== MANKIND AGRITECH COLLABORATIONS =====
+    if (route === '/mankind-agritech' && method === 'GET') {
+      const items = await db.collection('mankind_agritech').find({}).sort({ createdAt: -1 }).toArray()
+      return cors(NextResponse.json(items.map(({ _id, ...r }) => r)))
+    }
+    if (route === '/mankind-agritech' && method === 'POST') {
+      const auth = requireAuth(request, 'content.update'); if (auth.error) return auth.error
+      const body = await request.json()
+      const item = { id: uuidv4(), name: body.name, logo: body.logo || '', description: body.description || '', activityImages: body.activityImages || [], published: body.published ?? true, createdAt: new Date(), updatedAt: new Date() }
+      await db.collection('mankind_agritech').insertOne(item)
+      return cors(NextResponse.json(item))
+    }
+    if (route.startsWith('/mankind-agritech/') && method === 'PATCH') {
+      const auth = requireAuth(request, 'content.update'); if (auth.error) return auth.error
+      const id = route.split('/')[2]; const body = await request.json()
+      await db.collection('mankind_agritech').updateOne({ id }, { $set: { ...body, updatedAt: new Date() } })
+      return cors(NextResponse.json({ success: true }))
+    }
+    if (route.startsWith('/mankind-agritech/') && method === 'DELETE') {
+      const auth = requireAuth(request, 'content.update'); if (auth.error) return auth.error
+      const id = route.split('/')[2]
+      await db.collection('mankind_agritech').deleteOne({ id })
+      return cors(NextResponse.json({ success: true }))
+    }
+
     // ===== REPORTS =====
     if (route === '/reports' && method === 'GET') {
       const items = await db.collection('reports').find({}).sort({ createdAt: -1 }).toArray()

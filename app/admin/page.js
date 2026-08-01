@@ -2031,7 +2031,7 @@ export default function AdminPage() {
           </TabsContent>
 
           <TabsContent value="mankindAgritech">
-            <OnGroundAdminView content={content} setContent={setContent} api={api} config={{ activityKey: 'mankindAgritechActivities', categoryKey: 'mankindAgritechCategories', headerKey: 'mankindAgritech', title: 'Mankind Agritech Collaboration', description: 'Manage Mankind Agritech collaboration activities.', defaultCategory: 'Collaboration', idPrefix: 'mankind-agritech' }} />
+            <MankindAgritechAdmin api={api} content={content} setContent={setContent} />
           </TabsContent>
 
           {/* REPORTS */}
@@ -2417,6 +2417,21 @@ function NgosView({ ngos, api, reload, content, setContent }) {
       )}
     </div>
   )
+}
+
+function MankindAgritechAdmin({ api, content, setContent }) {
+  const [items, setItems] = useState([])
+  const [editing, setEditing] = useState(null)
+  const load = () => api('/api/mankind-agritech').then(r => r.ok ? r.json() : []).then(setItems)
+  useEffect(() => { load() }, [])
+  const save = async () => {
+    const r = await api(editing.id ? `/api/mankind-agritech/${editing.id}` : '/api/mankind-agritech', editing.id ? 'PATCH' : 'POST', editing)
+    if (r.ok) { toast.success('Saved'); setEditing(null); load() } else toast.error('Save failed')
+  }
+  const del = async id => { if (confirm('Delete this collaboration activity?')) { await api(`/api/mankind-agritech/${id}`, 'DELETE'); load() } }
+  const header = content?.pageHeaders?.mankindAgritech || {}
+  const saveHeader = async () => { const next = { ...content, pageHeaders: { ...(content?.pageHeaders || {}), mankindAgritech: { title: header.title || 'Mankind Agritech Collaboration', description: header.description || 'Activity images from the Mankind Agritech collaboration.' } } }; setContent(next); const r = await api('/api/content', 'PUT', next); if (r.ok) toast.success('Page header saved'); else toast.error('Save failed') }
+  return <div className="space-y-3"><div className="flex justify-between"><h3 className="font-display font-bold text-lg">Mankind Agritech Collaborations ({items.length})</h3><Button className="bg-bsv-red" onClick={() => setEditing({ name: '', description: '', logo: '', activityImages: [], published: true })}><Plus className="w-4 h-4 mr-1" />New Collaboration Activity</Button></div><Card><CardContent className="p-5 space-y-3"><div><h3 className="font-display font-bold text-lg text-bsv-blue">Mankind Agritech Page Header</h3><p className="text-sm text-muted-foreground">The headline and description shown on the Mankind Agritech page.</p></div><div><Label>Main Headline</Label><Input value={header.title || 'Mankind Agritech Collaboration'} onChange={e => setContent({ ...content, pageHeaders: { ...(content?.pageHeaders || {}), mankindAgritech: { ...header, title: e.target.value } } })} /></div><div><Label>Description</Label><Textarea rows={2} value={header.description || 'Activity images from the Mankind Agritech collaboration.'} onChange={e => setContent({ ...content, pageHeaders: { ...(content?.pageHeaders || {}), mankindAgritech: { ...header, description: e.target.value } } })} /></div><Button onClick={saveHeader} className="bg-bsv-red">Save Page Header</Button></CardContent></Card><div className="grid md:grid-cols-2 gap-3">{items.map(item => <Card key={item.id}><CardContent className="p-4 flex gap-3">{(item.logo || item.activityImages?.[0]) && <img src={item.logo || item.activityImages[0]} alt="" className="w-20 h-20 object-cover rounded" />}<div className="flex-1"><div className="font-bold">{item.name}</div><div className="text-xs text-muted-foreground line-clamp-2">{item.description}</div><div className="text-xs mt-1 text-muted-foreground">{item.activityImages?.length || 0} activity images</div><div className="flex gap-1 mt-2"><Button size="sm" variant="outline" onClick={() => setEditing(item)}><Edit className="w-3 h-3" /></Button><Button size="sm" variant="ghost" onClick={() => del(item.id)}><Trash2 className="w-3 h-3 text-red-500" /></Button></div></div></CardContent></Card>)}</div>{editing && <Dialog open onOpenChange={() => setEditing(null)}><DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto"><DialogHeader><DialogTitle>{editing.id ? 'Edit' : 'New'} Collaboration Activity</DialogTitle></DialogHeader><div className="space-y-3"><div><Label>Activity Name</Label><Input value={editing.name || ''} onChange={e => setEditing({ ...editing, name: e.target.value })} /></div><div><Label>Description</Label><Textarea rows={3} value={editing.description || ''} onChange={e => setEditing({ ...editing, description: e.target.value })} /></div><MediaPicker label="Cover Image / Logo" value={editing.logo || ''} onChange={logo => setEditing({ ...editing, logo })} /><MultiMediaPicker label="Activity Images" values={editing.activityImages || []} onChange={activityImages => setEditing({ ...editing, activityImages })} max={30} /><div className="flex items-center gap-2"><Switch checked={editing.published} onCheckedChange={published => setEditing({ ...editing, published })} /><Label>Published</Label></div><Button onClick={save} className="w-full bg-bsv-red">Save</Button></div></DialogContent></Dialog>}</div>
 }
 
 // AdminPage ke andar, sab components ke baad yeh component add karein
