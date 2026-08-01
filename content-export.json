@@ -500,6 +500,66 @@
     },
     "copyright": "© 2025 Bharat Serums and Vaccines Ltd. All rights reserved."
   },
+  "awareness": {
+    "items": [
+      {
+        "title": "Onground Activations",
+        "desc": "School Engagement, Nukkad Natak, and Community drives across 7 states - meeting people where they live.",
+        "label": "Onground Activations",
+        "image": "/api/media/ed3990e3-92e3-40a4-85dd-aeb1ac958e70",
+        "href": "/onground"
+      },
+      {
+        "title": "Media",
+        "desc": "Radio Campaign, PR, and YouTube Influencer campaign reaching millions across India.",
+        "label": "Media",
+        "image": "/api/media/05a57791-0a91-4af6-b603-685a0a08ecc9",
+        "href": "/mass-media"
+      },
+      {
+        "title": "NGO Collaborations",
+        "desc": "Collaborating with SHE Foundation, HEAL, and Nisarg Foundation to drive grassroots outreach and awareness.",
+        "label": "NGO NETWORK",
+        "image": "/api/media/f2fa77ef-9581-43a0-a5f4-524a545f4c7a",
+        "href": "/ngo-network"
+      },
+      {
+        "title": "Mankind Agritech Collaboration",
+        "desc": "Cross industry collaboration with Mankind Agritech to reach Indian farmers at the grassroot level.",
+        "label": "Collaboration",
+        "image": "",
+        "href": ""
+      }
+    ]
+  },
+  "mankindAgritech": {
+    "title": "Mankind Agritech Collaboration",
+    "description": "Cross industry collaboration with Mankind Agritech to reach Indian farmers at the grassroot level.",
+    "body": "",
+    "image": ""
+  },
+  "mankindAgritechCategories": [
+    "Collaboration"
+  ],
+  "mankindAgritechActivities": [
+    {
+      "id": "mankind-agritech-1785587573388",
+      "category": "Collaboration",
+      "title": "test",
+      "description": "test",
+      "image": "/api/media/3659ac5b-5d4b-43e7-95ea-28e93e6f361f",
+      "gallery": [
+        "/api/media/3659ac5b-5d4b-43e7-95ea-28e93e6f361f",
+        "/api/media/c432edfc-99fb-4e97-8ddb-44efe041d99f",
+        "/api/media/a39683cf-1ef2-42fc-93df-e9ab9c89646e",
+        "/api/media/e9833bee-fef4-44ce-b231-8f7a50133ca9",
+        "/api/media/c65d2c0c-428a-4f92-ae62-ee78959cf871",
+        "/api/media/4038d546-d3ed-48e8-a706-7685c77e3fee",
+        "/api/media/5262243e-34a5-4492-b00a-11c45fcefa75"
+      ],
+      "published": true
+    }
+  ],
   "sections": {
     "hero": {
       "enabled": true,
@@ -2952,31 +3012,6 @@
       "mobileImage": "/api/media/ce0d6679-173c-4a32-9dde-b7309ca2ec0d"
     }
   ],
-  "awareness": {
-    "items": [
-      {
-        "title": "Onground Activations",
-        "desc": "School Engagement, Nukkad Natak, and Community drives across 7 states - meeting people where they live.",
-        "label": "Onground Activations",
-        "image": "/api/media/ed3990e3-92e3-40a4-85dd-aeb1ac958e70",
-        "href": "/onground"
-      },
-      {
-        "title": "Media",
-        "desc": "Radio Campaign, PR, and YouTube Influencer campaign reaching millions across India.",
-        "label": "Media",
-        "image": "/api/media/05a57791-0a91-4af6-b603-685a0a08ecc9",
-        "href": "/mass-media"
-      },
-      {
-        "title": "NGO Collaborations",
-        "desc": "Collaborating with SHE Foundation, HEAL, and Nisarg Foundation to drive grassroots outreach and awareness.",
-        "label": "NGO NETWORK",
-        "image": "/api/media/f2fa77ef-9581-43a0-a5f4-524a545f4c7a",
-        "href": "/ngo-network"
-      }
-    ]
-  },
   "access": {
     "items": [
       {
