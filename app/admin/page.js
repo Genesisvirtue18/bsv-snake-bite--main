@@ -1002,27 +1002,6 @@ export default function AdminPage() {
                           />
                         </div>
 
-                        <div>
-                          <Label>Link</Label>
-                          <Input
-                            value={item.id === 'mankind-agritech-collaboration' || item.title === 'Mankind Agritech Collaboration' ? '/mankind-agritech-collaboration' : item.href || ''}
-                            placeholder="#gallery / #video / /ngo-network"
-                            disabled={item.id === 'mankind-agritech-collaboration' || item.title === 'Mankind Agritech Collaboration'}
-                            onChange={e => {
-                              const items = [...(content.awareness?.items || [])]
-                              items[i] = { ...items[i], href: e.target.value }
-
-                              setContent({
-                                ...content,
-                                awareness: {
-                                  ...(content.awareness || {}),
-                                  items,
-                                },
-                              })
-                            }}
-                          />
-                        </div>
-
                         <MediaPicker
                           label="Image"
                           value={item.image || ''}

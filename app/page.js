@@ -916,6 +916,7 @@ function AwarenessSection({ content, t }) {
   const section = content?.sectionText?.awareness || {}
   const ACCENT = '#de2527'
   const DEFAULT_LABELS = ['7 States', 'Digital Reach', 'NGO Network']
+  const AWARENESS_LINKS = ['/onground', '/mass-media', '/ngo-network', '/mankind-agritech-collaboration']
 
   const go = (href) => {
     if (!href) return
@@ -952,7 +953,7 @@ function AwarenessSection({ content, t }) {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.4 }}
-                  onClick={() => go(card.id === 'mankind-agritech-collaboration' || card.title === 'Mankind Agritech Collaboration' ? '/mankind-agritech-collaboration' : card.href)}
+                  onClick={() => go(AWARENESS_LINKS[i])}
                   className="bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
                 >
                   {/* Full-visible image */}
