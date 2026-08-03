@@ -3179,13 +3179,15 @@
         "title": "Posters & Brochures",
         "desc": "Educational materials in multiple languages to drive awareness.",
         "image": "/api/media/2c2719cb-3198-49a5-8757-e28a71ff2fc6",
-        "href": "/brochures"
+        "href": "/brochures",
+        "order": "2"
       },
       {
         "title": "Awareness Videos",
         "desc": "Vox pops, myth-busting reels, KOL interviews.",
         "image": "/api/media/04e1963a-19e6-4e24-85ea-c92a261cf657",
-        "href": "/videos"
+        "href": "/videos",
+        "order": "1"
       },
       {
         "title": "Comic & Visual Stories",
