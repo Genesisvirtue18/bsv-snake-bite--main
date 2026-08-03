@@ -507,18 +507,18 @@
   "awareness": {
     "items": [
       {
-        "title": "Onground Activations",
-        "desc": "School Engagement, Nukkad Natak, and Community drives across 7 states - meeting people where they live.",
-        "label": "Onground Activations",
-        "image": "/api/media/ed3990e3-92e3-40a4-85dd-aeb1ac958e70",
-        "href": "/onground"
-      },
-      {
         "title": "Media",
         "desc": "Radio Campaign, PR, and YouTube Influencer campaign reaching millions across India.",
         "label": "Media",
         "image": "/api/media/05a57791-0a91-4af6-b603-685a0a08ecc9",
         "href": "/mass-media"
+      },
+      {
+        "title": "Onground Activations",
+        "desc": "School Engagement, Nukkad Natak, and Community drives across 7 states - meeting people where they live.",
+        "label": "Onground Activations",
+        "image": "/api/media/ed3990e3-92e3-40a4-85dd-aeb1ac958e70",
+        "href": "/onground"
       },
       {
         "title": "NGO Collaborations",
