@@ -512,7 +512,7 @@
         "label": "Media",
         "image": "/api/media/05a57791-0a91-4af6-b603-685a0a08ecc9",
         "href": "/mass-media",
-        "order": 2
+        "order": "2"
       },
       {
         "title": "Onground Activations",
@@ -520,7 +520,7 @@
         "label": "Onground Activations",
         "image": "/api/media/ed3990e3-92e3-40a4-85dd-aeb1ac958e70",
         "href": "/onground",
-        "order": 4
+        "order": "1"
       },
       {
         "title": "NGO Collaborations",
@@ -535,7 +535,7 @@
         "label": "Collaboration",
         "image": "",
         "href": "",
-        "order": 1
+        "order": "4"
       }
     ]
   },
