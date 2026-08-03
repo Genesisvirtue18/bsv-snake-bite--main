@@ -3040,7 +3040,8 @@
             "title": "Poster Training Modules",
             "url": "https://bharatserums-my.sharepoint.com/:b:/g/personal/jeevan_gilbile_bsvgroup_com/IQDLhMCv3BvMQKUGT9jghQerAbl-cLD0aNXNki6NCUKUhOU?e=LgpwYS"
           }
-        ]
+        ],
+        "order": "2"
       },
       {
         "title": "Conferences & Webinars for snakebite training clinicians",
@@ -3114,7 +3115,8 @@
               "/api/media/3659ac5b-5d4b-43e7-95ea-28e93e6f361f"
             ]
           }
-        ]
+        ],
+        "order": "1"
       },
       {
         "title": "Meeting with Policy-Makers",
