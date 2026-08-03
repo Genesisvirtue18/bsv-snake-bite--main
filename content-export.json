@@ -3537,7 +3537,7 @@
   "sectionVisibility": {
     "aboutCampaign": true,
     "campaignVideos": true,
-    "awareness": true,
+    "awareness": false,
     "brandAdvocacy": true,
     "access": true,
     "awardsRecognition": true,
