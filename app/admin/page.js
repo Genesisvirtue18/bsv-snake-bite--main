@@ -436,7 +436,7 @@ export default function AdminPage() {
   const logout = () => { localStorage.removeItem('bsv_token'); localStorage.removeItem('bsv_user'); setUser(null); setToken(null) }
 
   const api = async (url, method = 'GET', body) => {
-    const currentToken = localStorage.getItem("token") || token;
+    const currentToken = localStorage.getItem('bsv_token') || token;
 
     const h = {
       Authorization: `Bearer ${currentToken}`,
@@ -457,8 +457,8 @@ export default function AdminPage() {
     const res = await fetch(url, opts);
 
     if (res.status === 401) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
+      localStorage.removeItem('bsv_token');
+      localStorage.removeItem('bsv_user');
 
       toast.error("Session expired. Please login again.");
 
@@ -923,6 +923,8 @@ export default function AdminPage() {
                             Card {i + 1}
                           </div>
 
+                          <div className="flex items-center gap-2"><Label className="text-xs">Display order</Label>
+                          <Input aria-label="Display order" type="number" min="0" value={item.order ?? i + 1} className="w-16 h-9" onChange={e => { const items = [...(content.awareness?.items || [])]; items[i] = { ...items[i], order: e.target.value }; setContent({ ...content, awareness: { ...(content.awareness || {}), items } }) }} />
                           <Button
                             type="button"
                             size="sm"
@@ -942,6 +944,7 @@ export default function AdminPage() {
                           >
                             <Trash2 className="w-4 h-4" />
                           </Button>
+                          </div>
                         </div>
 
                         <div>
@@ -1162,6 +1165,8 @@ export default function AdminPage() {
                               </div>
                             </div>
 
+                            <div className="flex items-center gap-2"><Label className="text-xs">Display order</Label>
+                            <Input aria-label="Display order" type="number" min="0" value={item.order ?? i + 1} className="w-16 h-9" onChange={e => { const items = [...(content.access?.items || [])]; items[i] = { ...items[i], order: e.target.value }; setContent({ ...content, access: { ...(content.access || {}), items } }) }} />
                             <Button
                               type="button"
                               size="sm"
@@ -1181,6 +1186,7 @@ export default function AdminPage() {
                             >
                               <Trash2 className="w-4 h-4" />
                             </Button>
+                            </div>
                           </div>
 
                           <div>
@@ -3301,7 +3307,8 @@ function BrandAdvocacyEditor({ content, setContent, saveContent }) {
   const section = content.sectionText?.communication || {}
   const items = content.communication?.items || []
   const update = (next) => setContent({ ...content, communication: { ...(content.communication || {}), items: next } })
-  return <Card><CardContent className="p-5 space-y-4"><div className="flex justify-between"><h3 className="font-display font-bold text-lg text-bsv-blue">Brand Advocacy Cards</h3><Button className="bg-bsv-red" onClick={() => update([...items, { title: '', desc: '', image: '', href: '' }])}><Plus className="w-4 h-4 mr-1" />Add Card</Button></div><div className="border rounded-xl p-4 space-y-3"><div><Label>Main Headline</Label><Input value={section.title ?? DEFAULT_CONTENT.sectionText.communication.title} onChange={e => setContent({ ...content, sectionText: { ...(content.sectionText || {}), communication: { ...section, title: e.target.value } } })} /></div><div><Label>Description</Label><Textarea rows={2} value={section.subtitle ?? DEFAULT_CONTENT.sectionText.communication.subtitle} onChange={e => setContent({ ...content, sectionText: { ...(content.sectionText || {}), communication: { ...section, subtitle: e.target.value } } })} /></div></div>{items.map((item, i) => <div key={i} className="border rounded-xl p-4 space-y-3"><div className="flex justify-between"><b>Card {i + 1}</b><Button size="sm" variant="destructive" onClick={() => update(items.filter((_, n) => n !== i))}><Trash2 className="w-4 h-4" /></Button></div><Input value={item.title || ''} placeholder="Title" onChange={e => update(items.map((x,n) => n === i ? { ...x, title: e.target.value } : x))} /><Textarea value={item.desc || ''} placeholder="Description" onChange={e => update(items.map((x,n) => n === i ? { ...x, desc: e.target.value } : x))} /><Input value={item.href || ''} placeholder="Link" onChange={e => update(items.map((x,n) => n === i ? { ...x, href: e.target.value } : x))} /><MediaPicker label="Image" value={item.image || ''} onChange={v => update(items.map((x,n) => n === i ? { ...x, image: v } : x))} /></div>)}<Button className="bg-bsv-red" onClick={saveContent}>Save Brand Advocacy</Button></CardContent></Card>
+  const move = (index, value) => update(items.map((item, position) => position === index ? { ...item, order: value } : item))
+  return <Card><CardContent className="p-5 space-y-4"><div className="flex justify-between"><h3 className="font-display font-bold text-lg text-bsv-blue">Brand Advocacy Cards</h3><Button className="bg-bsv-red" onClick={() => update([...items, { title: '', desc: '', image: '', href: '' }])}><Plus className="w-4 h-4 mr-1" />Add Card</Button></div><div className="border rounded-xl p-4 space-y-3"><div><Label>Main Headline</Label><Input value={section.title ?? DEFAULT_CONTENT.sectionText.communication.title} onChange={e => setContent({ ...content, sectionText: { ...(content.sectionText || {}), communication: { ...section, title: e.target.value } } })} /></div><div><Label>Description</Label><Textarea rows={2} value={section.subtitle ?? DEFAULT_CONTENT.sectionText.communication.subtitle} onChange={e => setContent({ ...content, sectionText: { ...(content.sectionText || {}), communication: { ...section, subtitle: e.target.value } } })} /></div></div>{items.map((item, i) => <div key={i} className="border rounded-xl p-4 space-y-3"><div className="flex justify-between"><b>Card {i + 1}</b><div className="flex items-center gap-2"><Label className="text-xs">Display order</Label><Input aria-label="Display order" type="number" min="0" value={item.order ?? i + 1} className="w-16 h-9" onChange={e => move(i, e.target.value)} /><Button size="sm" variant="destructive" onClick={() => update(items.filter((_, n) => n !== i))}><Trash2 className="w-4 h-4" /></Button></div></div><Input value={item.title || ''} placeholder="Title" onChange={e => update(items.map((x,n) => n === i ? { ...x, title: e.target.value } : x))} /><Textarea value={item.desc || ''} placeholder="Description" onChange={e => update(items.map((x,n) => n === i ? { ...x, desc: e.target.value } : x))} /><Input value={item.href || ''} placeholder="Link" onChange={e => update(items.map((x,n) => n === i ? { ...x, href: e.target.value } : x))} /><MediaPicker label="Image" value={item.image || ''} onChange={v => update(items.map((x,n) => n === i ? { ...x, image: v } : x))} /></div>)}<Button className="bg-bsv-red" onClick={saveContent}>Save Brand Advocacy</Button></CardContent></Card>
 }
 
 function MankindAgritechEditor({ content, setContent, saveContent }) {
@@ -3382,9 +3389,7 @@ function LibraryMaterialsView({ content, setContent, saveContent, api }) {
     })
   }
 
-  const sortedPrintMaterials = [...printMaterials].sort(
-    (a, b) => (Number(a.order) || 0) - (Number(b.order) || 0)
-  )
+  const sortedPrintMaterials = printMaterials
 
   const addPrintMaterial = () => {
     setContent({
@@ -3398,7 +3403,6 @@ function LibraryMaterialsView({ content, setContent, saveContent, api }) {
           description: '',
           image: '',
           fileUrl: '',
-          order: printMaterials.length + 1,
           published: true,
         },
       ],
@@ -3611,18 +3615,6 @@ function LibraryMaterialsView({ content, setContent, saveContent, api }) {
                     </Select>
                   </div>
 
-                  <div>
-                    <Label>Order</Label>
-                    <Input
-                      type="number"
-                      value={item.order || 0}
-                      onChange={(e) =>
-                        updatePrintMaterial(item.id, {
-                          order: parseInt(e.target.value) || 0,
-                        })
-                      }
-                    />
-                  </div>
                 </div>
 
                 <div>

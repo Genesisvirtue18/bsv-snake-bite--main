@@ -912,11 +912,15 @@ function PictorialCard({ image, label, title, desc, href, badge, accent, objectF
 }
 
 function AwarenessSection({ content, t }) {
-  const cards = content?.awareness?.items || []
+  const cards = (content?.awareness?.items || []).map((card, index) => ({ card, order: card.order === undefined || card.order === null ? index + 1 : Number(card.order) })).sort((a, b) => a.order - b.order).map(({ card }) => card)
   const section = content?.sectionText?.awareness || {}
   const ACCENT = '#de2527'
-  const DEFAULT_LABELS = ['7 States', 'Digital Reach', 'NGO Network']
-  const AWARENESS_LINKS = ['/onground', '/mass-media', '/ngo-network', '/mankind-agritech-collaboration']
+  const AWARENESS_LINKS = {
+    'Onground Activations': '/onground',
+    'Media': '/mass-media',
+    'NGO Collaborations': '/ngo-network',
+    'Mankind Agritech Collaboration': '/mankind-agritech-collaboration',
+  }
 
   const go = (href) => {
     if (!href) return
@@ -953,7 +957,7 @@ function AwarenessSection({ content, t }) {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.4 }}
-                  onClick={() => go(AWARENESS_LINKS[i])}
+                  onClick={() => go(AWARENESS_LINKS[card.title])}
                   className="bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
                 >
                   {/* Full-visible image */}
@@ -964,12 +968,6 @@ function AwarenessSection({ content, t }) {
                         <Sparkles className="w-12 h-12 text-white/30" />
                       </div>
                     }
-                    {/* Bottom label ribbon — always uses DEFAULT_LABELS, not card title */}
-                    <div className="absolute bottom-0 left-0 right-0 px-3 py-2" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)' }}>
-                      <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-white/85">
-                        {card.label || DEFAULT_LABELS[i] || card.title}
-                      </span>
-                    </div>
                   </div>
 
                   {/* Card body */}
@@ -994,12 +992,17 @@ function AwarenessSection({ content, t }) {
 }
 
 function AccessSection({ content, t }) {
-  const cards = content?.access?.items || []
+  const cards = (content?.access?.items || []).map((card, index) => ({ card, order: card.order === undefined || card.order === null ? index + 1 : Number(card.order) })).sort((a, b) => a.order - b.order).map(({ card }) => card)
   const section = content?.sectionText?.access || {}
   const [active, setActive] = useState(null)
 
   const ACCENT = '#16A34A'
-  const DEFAULT_LABELS = ['Training', 'KOL Program', 'Workshop']
+  const getCardKind = (card) => {
+    if (Array.isArray(card.trainingVideoItems) || Array.isArray(card.trainingDocuments)) return 'training'
+    if (Array.isArray(card.kolVideoItems) || Array.isArray(card.kolImageAlbums)) return 'kol'
+    if (Array.isArray(card.policyImageAlbums) || card.title === 'Meeting with Policy-Makers') return 'policy'
+    return 'access'
+  }
 
   const getYoutubeId = (url = '') => {
     const value = String(url || '').trim()
@@ -1036,7 +1039,7 @@ function AccessSection({ content, t }) {
       .map(v => v.trim())
       .filter(Boolean)
 
-    if (cardIndex === 1) return links
+    if (getCardKind(card) === 'kol') return links
 
     return links.slice(0, 1)
   }
@@ -1049,7 +1052,7 @@ function AccessSection({ content, t }) {
         id: getYoutubeId(link),
         link,
         title:
-          cardIndex === 1
+          getCardKind(card) === 'kol'
             ? index === 0
               ? 'Beyond Monsoon'
               : 'Be Ready for Monsoon'
@@ -1209,20 +1212,18 @@ function AccessSection({ content, t }) {
   }
 
   const openCard = (card, cardIndex) => {
-    // Card 1: Training Modules inside page
-    if (cardIndex === 0) {
+    const kind = getCardKind(card)
+    if (kind === 'training') {
       window.location.href = '/training'
       return
     }
 
-    // Card 2: KOL Program inside page
-    if (cardIndex === 1) {
+    if (kind === 'kol') {
       window.location.href = '/kol-program'
       return
     }
 
-    // Card 3: Meeting with Policy-Makers - OPEN NEW PAGE
-    if (cardIndex === 2) {
+    if (kind === 'policy') {
       window.location.href = '/meetings-with-policy-makers'
       return
     }
@@ -1260,7 +1261,8 @@ function AccessSection({ content, t }) {
             <div className="flex-1 w-full min-w-0">
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 {cards.map((card, i) => {
-                  const isWorkshop = i === 2
+                  const kind = getCardKind(card)
+                  const isWorkshop = kind === 'policy'
                   const videos = isWorkshop ? [] : getYoutubeVideos(card, i)
                   const documents = isWorkshop ? getDocuments(card) : []
 
@@ -1313,24 +1315,11 @@ function AccessSection({ content, t }) {
                     </div>
                 )} */}
 
-                        <div
-                          className="absolute bottom-0 left-0 right-0 px-3 py-2 pointer-events-none"
-                          style={{
-                            background:
-                              'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)',
-                          }}
-                        >
-                          <div className="flex items-center justify-between gap-2">
-                            <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-white/85">
-                              {isWorkshop ? 'WORKSHOP' : DEFAULT_LABELS[i] || 'Access'}
-                            </span>
-                          </div>
-                        </div>
                       </div>
 
                       <div className="p-2.5 sm:p-4">
                         <h3 className="font-display font-semibold text-[12px] sm:text-[14px] leading-snug mb-1 sm:mb-1.5 text-[#201F5E]">
-                          {i === 1 ? 'Kol Program' : card.title}
+                          {card.title}
                         </h3>
 
                         <p className="hidden sm:block text-slate-500 text-[12px] leading-relaxed line-clamp-2 mb-3">
@@ -1559,11 +1548,10 @@ function AwardsRecognitionSection({ content }) {
 }
 
 function CommunicationSection({ content, t }) {
-  const cards = content?.communication?.items || []
+  const cards = (content?.communication?.items || []).map((card, index) => ({ card, order: card.order === undefined || card.order === null ? index + 1 : Number(card.order) })).sort((a, b) => a.order - b.order).map(({ card }) => card)
   const section = content?.sectionText?.communication || {}
   const fits = ['contain', 'cover', 'contain']
   const ACCENT = '#7C3AED'
-  const DEFAULT_LABELS = ['Print Media', 'Video', 'Visual Stories']
   const go = (href) => {
     if (!href) return
     if (href.startsWith('#')) document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
@@ -1604,9 +1592,6 @@ function CommunicationSection({ content, t }) {
                       ? <img src={card.image} alt={card.title} className={`w-full h-full transition-transform duration-500 group-hover:scale-[1.03] ${fits[i] === 'contain' ? 'object-contain' : 'object-cover'}`} />
                       : <div className="w-full h-full flex items-center justify-center"><Sparkles className="w-12 h-12 text-white/20" /></div>
                     }
-                    <div className="absolute bottom-0 left-0 right-0 px-3 py-2" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)' }}>
-                      <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-white/85">{DEFAULT_LABELS[i]}</span>
-                    </div>
                   </div>
                   <div className="p-2.5 sm:p-4">
                     <h3 className="font-display font-semibold text-[12px] sm:text-[14px] leading-snug mb-1 sm:mb-1.5 text-[#201F5E]">{card.title}</h3>

@@ -271,9 +271,7 @@ export default function BrochuresPage() {
       ? content.printMaterials
       : []
 
-    return saved
-      .filter((item) => item.published !== false)
-      .sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0))
+    return saved.filter((item) => item.published !== false)
   }, [content])
 
   const filteredItems = useMemo(() => {
