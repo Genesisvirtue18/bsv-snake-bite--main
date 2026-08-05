@@ -3490,19 +3490,7 @@
       },
       "files": {
         "en": null,
-        "hi": {
-          "id": "17a0b1e4-a7a0-4334-81de-c90a90bb46c7",
-          "title": "BSV  Animated Film - In the Playground.mp4",
-          "module": "communication",
-          "category": "animated-videos",
-          "originalFileName": "BSV  Animated Film - In the Playground.mp4",
-          "storedFileName": "17a0b1e4-a7a0-4334-81de-c90a90bb46c7.mp4",
-          "fileType": "video/mp4",
-          "fileSize": 17564292,
-          "url": "/animated-videos-&-comics/17a0b1e4-a7a0-4334-81de-c90a90bb46c7",
-          "uploadedAt": "2026-08-05T12:01:39.595Z",
-          "updatedAt": "2026-08-05T12:01:39.595Z"
-        }
+        "hi": null
       }
     },
     {
@@ -3535,19 +3523,7 @@
       "fileUrl": "https://bharatserums-my.sharepoint.com/:u:/g/personal/jeevan_gilbile_bsvgroup_com/IQAyd09QYF1oT7orKAagpKJeAWYGglSR9vY6HSF89E-pAoU?e=3KkvFf",
       "order": 1,
       "published": true,
-      "file": {
-        "id": "85e5f754-c77c-4803-8bd7-f878c64f1a81",
-        "title": "ASVS - English Brochure AW 14-05-26-compressed (1).pdf",
-        "module": "brochures",
-        "category": "posters-brochures",
-        "originalFileName": "ASVS - English Brochure AW 14-05-26-compressed (1).pdf",
-        "storedFileName": "85e5f754-c77c-4803-8bd7-f878c64f1a81.pdf",
-        "fileType": "application/pdf",
-        "fileSize": 3277857,
-        "url": "/document/85e5f754-c77c-4803-8bd7-f878c64f1a81",
-        "uploadedAt": "2026-08-05T11:11:26.999Z",
-        "updatedAt": "2026-08-05T11:11:26.999Z"
-      }
+      "file": null
     }
   ],
   "brochureLeadFormEnabled": false,
