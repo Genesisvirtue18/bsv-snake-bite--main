@@ -2119,8 +2119,8 @@ function Footer({ content, t, settings }) {
               <li><a href="#awareness" className="hover:text-white">{t.nav.awareness}</a></li>
               <li><a href="#access" className="hover:text-white">{t.nav.access}</a></li>
               <li><a href="#communication" className="hover:text-white">{t.nav.communication}</a></li>
-              <li><a href="/impact-stories" className="hover:text-white">{t.nav.stories}</a></li>
-              <li><a href="/gallery" className="hover:text-white">{t.nav.gallery}</a></li>
+              {/*<li><a href="/impact-stories" className="hover:text-white">{t.nav.stories}</a></li>
+              <li><a href="/gallery" className="hover:text-white">{t.nav.gallery}</a></li>*/}
               {/*<li><a href="#resources" className="hover:text-white">{t.nav.resources}</a></li>*/}
             </ul>
           </div>
