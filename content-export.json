@@ -3548,16 +3548,6 @@
         "uploadedAt": "2026-08-05T11:11:26.999Z",
         "updatedAt": "2026-08-05T11:11:26.999Z"
       }
-    },
-    {
-      "id": "print-1784878837377",
-      "title": "Brochure",
-      "language": "hi",
-      "description": "",
-      "image": "",
-      "fileUrl": "https://bharatserums-my.sharepoint.com/:u:/r/personal/jeevan_gilbile_bsvgroup_com/Documents/Snakebite%20Website%20Content%20-%20BSV%20ASVS/Brand%20Advocacy/ASVS%20-%20Gen.%20Awareness%20Inputs%20AW%20Part-1.zip?csf=1&web=1&e=cZQpTq",
-      "order": 2,
-      "published": true
     }
   ],
   "brochureLeadFormEnabled": false,
