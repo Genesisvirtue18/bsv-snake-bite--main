@@ -80,8 +80,11 @@ function MediaPicker({ value, onChange, label = 'Image' }) {
   const token = typeof window !== 'undefined' ? localStorage.getItem('bsv_token') : null
 
   const load = async () => {
-    const r = await fetch('/api/media', { headers: { Authorization: `Bearer ${token}` } })
-    if (r.ok) setMedia(await r.json())
+    const headers = { Authorization: `Bearer ${token}` }
+    const [legacy, cloud] = await Promise.all([fetch('/api/media', { headers }), fetch('/api/documents?module=media', { headers })])
+    const legacyItems = legacy.ok ? await legacy.json() : []
+    const cloudItems = cloud.ok ? await cloud.json() : []
+    setMedia([...legacyItems, ...cloudItems.map(file => ({ id: file.id, url: file.url, title: file.title, alt: '', contentType: file.fileType, size: file.fileSize, isCloudinary: true }))])
   }
 
   useEffect(() => { if (open) load() }, [open])
@@ -91,10 +94,10 @@ function MediaPicker({ value, onChange, label = 'Image' }) {
     const fd = new FormData()
     fd.append('file', file)
     fd.append('title', file.name)
-    fd.append('alt', '')
+    fd.append('module', 'media')
     fd.append('category', 'general')
     try {
-      const r = await fetch('/api/media', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: fd })
+      const r = await fetch('/api/documents', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: fd })
       if (r.ok) { const data = await r.json(); onChange(data.url); toast.success('Uploaded'); setOpen(false) }
       else toast.error('Upload failed')
     } catch { toast.error('Error') }
@@ -255,22 +258,16 @@ function AudioPicker({ value, onChange, label = 'Upload Audio File (MP3 or WAV)'
       return
     }
 
-    if (file.size >= 4.5 * 1024 * 1024) {
-      const message = 'File must be smaller than 4.5 MB for deployment uploads. Please compress it or use an MP3.'
-      toast.error(message)
-      setUploadStatus(message)
-      return
-    }
-
     setUploading(true)
     setUploadStatus(`Uploading ${file.name}…`)
     const formData = new FormData()
     formData.append('file', file)
     formData.append('title', file.name)
+    formData.append('module', 'media')
     formData.append('category', 'radio-audio')
 
     try {
-      const response = await fetch('/api/media', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: formData })
+      const response = await fetch('/api/documents', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: formData })
       if (!response.ok) throw new Error('Upload failed')
       const uploaded = await response.json()
       onChange(uploaded.url)
@@ -287,7 +284,7 @@ function AudioPicker({ value, onChange, label = 'Upload Audio File (MP3 or WAV)'
   return (
     <div>
       <Label>{label}</Label>
-      <p className="mt-1 text-xs text-amber-700">File must be smaller than 4.5 MB. For larger WAV files, convert or compress to MP3 before uploading.</p>
+      <p className="mt-1 text-xs text-amber-700">Maximum upload size: 100 MB.</p>
       <div className="mt-1 flex flex-wrap items-center gap-2">
         <Input type="file" accept="audio/mpeg,audio/wav,.mp3,.wav" disabled={uploading} onChange={event => upload(event.target.files?.[0])} className="max-w-md" />
         {uploading && <span className="text-sm text-slate-500">Uploading…</span>}
@@ -308,8 +305,11 @@ function MultiMediaPicker({ values = [], onChange, label = 'Gallery Images', max
   const token = typeof window !== 'undefined' ? localStorage.getItem('bsv_token') : null
 
   const load = async () => {
-    const r = await fetch('/api/media', { headers: { Authorization: `Bearer ${token}` } })
-    if (r.ok) setMedia(await r.json())
+    const headers = { Authorization: `Bearer ${token}` }
+    const [legacy, cloud] = await Promise.all([fetch('/api/media', { headers }), fetch('/api/documents?module=media', { headers })])
+    const legacyItems = legacy.ok ? await legacy.json() : []
+    const cloudItems = cloud.ok ? await cloud.json() : []
+    setMedia([...legacyItems, ...cloudItems.map(file => ({ id: file.id, url: file.url, title: file.title, alt: '', contentType: file.fileType, size: file.fileSize, isCloudinary: true }))])
   }
   useEffect(() => { if (open) load() }, [open])
 
@@ -323,10 +323,10 @@ function MultiMediaPicker({ values = [], onChange, label = 'Gallery Images', max
       const fd = new FormData()
       fd.append('file', file)
       fd.append('title', file.name)
-      fd.append('alt', '')
+      fd.append('module', 'media')
       fd.append('category', 'story-gallery')
       try {
-        const r = await fetch('/api/media', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: fd })
+        const r = await fetch('/api/documents', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: fd })
         if (r.ok) {
           const data = await r.json()
           newUrls.push(data.url)
@@ -497,12 +497,13 @@ export default function AdminPage() {
   const loadAll = async (t) => {
     const h = { Authorization: `Bearer ${t}` }
     const fetchOr = async (url, def = []) => { try { const r = await fetch(url, { headers: h }); return r.ok ? await r.json() : def } catch { return def } }
-    const [c, l, q, a, m, s, n, r, v, us, ct, pt, gal, vid, quizQs, setg, brochureLeadItems] = await Promise.all([
+    const [c, l, q, a, m, cloudMedia, s, n, r, v, us, ct, pt, gal, vid, quizQs, setg, brochureLeadItems] = await Promise.all([
       fetchOr('/api/content', {}),
       fetchOr('/api/leads'),
       fetchOr('/api/quiz/results'),
       fetchOr('/api/analytics', {}),
       fetchOr('/api/media'),
+      fetchOr('/api/documents?module=media'),
       fetchOr('/api/impact-stories?all=true'),
       fetchOr('/api/ngos'),
       fetchOr('/api/reports'),
@@ -516,7 +517,8 @@ export default function AdminPage() {
       fetchOr('/api/settings', {}),
       fetchOr('/api/brochure-leads'),
     ])
-    setContent(c); setLeads(l); setQuiz(q); setAnalytics(a); setMedia(m); setStories(s); setNgos(n); setReports(r); setVolunteers(v); setUsers(us); setContacts(ct); setPartnerships(pt); setGallery(Array.isArray(gal) ? gal : []); setVideos(Array.isArray(vid) ? vid : []); setQuizQuestions(Array.isArray(quizQs) ? quizQs : [])
+    const cloudMediaItems = (Array.isArray(cloudMedia) ? cloudMedia : []).map(file => ({ id: file.id, url: file.url, title: file.title, alt: '', contentType: file.fileType, size: file.fileSize, isCloudinary: true }))
+    setContent(c); setLeads(l); setQuiz(q); setAnalytics(a); setMedia([...(Array.isArray(m) ? m : []), ...cloudMediaItems]); setStories(s); setNgos(n); setReports(r); setVolunteers(v); setUsers(us); setContacts(ct); setPartnerships(pt); setGallery(Array.isArray(gal) ? gal : []); setVideos(Array.isArray(vid) ? vid : []); setQuizQuestions(Array.isArray(quizQs) ? quizQs : [])
     setSettingsData(setg)
     setBrochureLeads(Array.isArray(brochureLeadItems) ? brochureLeadItems : [])
   }
@@ -2268,14 +2270,15 @@ function MediaLibraryView({ media, token, reload }) {
   const upload = async (file) => {
     setUploading(true)
     const fd = new FormData()
-    fd.append('file', file); fd.append('title', file.name); fd.append('category', 'general')
-    const r = await fetch('/api/media', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: fd })
+    fd.append('file', file); fd.append('title', file.name); fd.append('module', 'media'); fd.append('category', 'general')
+    const r = await fetch('/api/documents', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: fd })
     if (r.ok) { toast.success('Uploaded'); reload() } else toast.error('Upload failed')
     setUploading(false)
   }
   const del = async (id) => {
     if (!confirm('Delete?')) return
-    await fetch(`/api/media/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } })
+    const item = media.find(m => m.id === id)
+    await fetch(item?.isCloudinary ? `/api/documents/${id}` : `/api/media/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } })
     reload()
   }
   return (

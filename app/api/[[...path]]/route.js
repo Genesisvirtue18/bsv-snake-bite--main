@@ -240,6 +240,14 @@ async function handleRoute(request, { params }) {
       return cors(NextResponse.json(safe))
     }
 
+    if (route === '/documents' && method === 'GET') {
+      const auth = requireAuth(request, 'content.read'); if (auth.error) return auth.error
+      const module = new URL(request.url).searchParams.get('module')
+      const query = module ? { module } : {}
+      const documents = await db.collection('file_metadata').find(query).sort({ uploadedAt: -1 }).limit(500).toArray()
+      return cors(NextResponse.json(documents.map(({ _id, cloudinaryUrl, cloudinaryPublicId, cloudinaryResourceType, uploadedBy, ...safe }) => safe)))
+    }
+
     if (route.startsWith('/documents/') && method === 'GET') {
       const auth = requireAuth(request, 'content.read'); if (auth.error) return auth.error
       const id = route.split('/')[2]
