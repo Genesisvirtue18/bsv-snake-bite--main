@@ -24,6 +24,7 @@ import {
     DialogTitle,
     DialogDescription,
 } from '@/components/ui/dialog'
+import { getDocumentPath } from '@/lib/documentPaths'
 
 const FILTERS = [
     { id: 'all', label: 'All', icon: Grid2X2 },
@@ -186,7 +187,7 @@ function getDocuments(card) {
     return docs
         .map((doc, index) => ({
             title: doc.title || `KOL Document ${index + 1}`,
-            url: doc.url || doc.fileUrl || doc.href || '',
+            url: doc.file?.id ? getDocumentPath('kol', doc.file.id) : '',
         }))
         .filter(doc => doc.url)
 }
@@ -498,7 +499,7 @@ export default function KOLProgramPage() {
                                                     onClick={() => window.open(doc.url, '_blank', 'noopener,noreferrer')}
                                                     className="mt-2 inline-flex items-center gap-2 text-sm font-bold text-orange-600 hover:text-orange-700"
                                                 >
-                                                    View / Download
+                                                    View Document
                                                     <ExternalLink className="w-4 h-4" />
                                                 </button>
                                             </div>

@@ -29,6 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { getDocumentPath } from '@/lib/documentPaths'
 const LANGUAGE_OPTIONS = [
   { code: 'all', label: 'All' },
   { code: 'en', label: 'English' },
@@ -288,8 +289,12 @@ export default function BrochuresPage() {
   const header = content?.pageHeaders?.brochures || {}
   const ui = { ...baseUi, title: header.title || baseUi.title, subtitle: header.description || baseUi.subtitle }
 
+  const getFileUrl = (item) => item?.file?.id
+    ? getDocumentPath('brochures', item.file.id)
+    : ''
+
   const openFile = (item) => {
-    const url = item?.fileUrl
+    const url = getFileUrl(item)
 
     if (!url || url === '#') return
 
@@ -302,7 +307,7 @@ export default function BrochuresPage() {
   }
 
   const submitLeadForm = async () => {
-    if (!selectedMaterial?.fileUrl) return
+    if (!getFileUrl(selectedMaterial)) return
 
     if (
       !leadForm.name.trim() ||
@@ -325,7 +330,7 @@ export default function BrochuresPage() {
           ...leadForm,
           brochureId: selectedMaterial.id || '',
           brochureTitle: selectedMaterial.title || '',
-          brochureUrl: selectedMaterial.fileUrl || '',
+          brochureUrl: getFileUrl(selectedMaterial),
           language: selectedMaterial.language || '',
         }),
       })
@@ -335,8 +340,7 @@ export default function BrochuresPage() {
         return
       }
 
-      window.open(selectedMaterial.fileUrl, '_blank', 'noopener,noreferrer')
-
+      window.open(getFileUrl(selectedMaterial), '_blank', 'noopener,noreferrer')
       setSelectedMaterial(null)
       setLeadForm({
         name: '',
@@ -459,7 +463,7 @@ export default function BrochuresPage() {
         <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
           {filteredItems.map((item, index) => {
             const languageDisplay = getLanguageDisplay(item.language)
-            const disabled = !item.fileUrl || item.fileUrl === '#'
+            const disabled = !getFileUrl(item) || getFileUrl(item) === '#'
 
             return (
               <Card

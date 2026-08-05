@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { ArrowLeft, BookOpen, Download, ExternalLink, FileText, Languages, Play } from 'lucide-react'
 import Link from 'next/link'
+import { getDocumentPath } from '@/lib/documentPaths'
 
 const LANGUAGE_OPTIONS = [
     { code: 'en', label: 'English' },
@@ -45,7 +46,7 @@ const DEFAULT_DOWNLOAD_MATERIALS = [
         type: 'comics',
         description: 'Informative comics for all age groups to understand snakebite prevention and care.',
         image: '',
-        buttonText: 'Download Comics',
+        buttonText: 'View Comics',
         links: {
             en: '',
             hi: '',
@@ -68,7 +69,7 @@ const PAGE_TEXT = {
         title: 'Resource Library',
         subtitle: 'Download animated videos and comics\nin your preferred language.',
         chooseLanguage: 'Choose Language',
-        missingLink: 'link not added yet',
+        missingLink: 'Available Soon',
     },
     hi: {
         home: 'होम',
@@ -77,7 +78,7 @@ const PAGE_TEXT = {
         title: 'संसाधन लाइब्रेरी',
         subtitle: 'एनिमेटेड वीडियो और कॉमिक्स\nअपनी पसंदीदा भाषा में डाउनलोड करें।',
         chooseLanguage: 'भाषा चुनें',
-        missingLink: 'लिंक अभी नहीं जोड़ा गया है',
+        missingLink: 'जल्द उपलब्ध होगा',
     },
     mr: {
         home: 'होम',
@@ -86,7 +87,7 @@ const PAGE_TEXT = {
         title: 'संसाधन लायब्ररी',
         subtitle: 'अ‍ॅनिमेटेड व्हिडिओ आणि कॉमिक्स\nआपल्या पसंतीच्या भाषेत डाउनलोड करा.',
         chooseLanguage: 'भाषा निवडा',
-        missingLink: 'लिंक अजून जोडलेली नाही',
+        missingLink: 'लवकरच उपलब्ध',
     },
     ta: {
         home: 'முகப்பு',
@@ -95,7 +96,7 @@ const PAGE_TEXT = {
         title: 'வள நூலகம்',
         subtitle: 'அனிமேஷன் வீடியோக்கள் மற்றும் காமிக்ஸை\nஉங்கள் விருப்ப மொழியில் பதிவிறக்குங்கள்.',
         chooseLanguage: 'மொழியைத் தேர்ந்தெடுக்கவும்',
-        missingLink: 'இணைப்பு இன்னும் சேர்க்கப்படவில்லை',
+        missingLink: 'விரைவில் கிடைக்கும்',
     },
     te: {
         home: 'హోమ్',
@@ -104,7 +105,7 @@ const PAGE_TEXT = {
         title: 'వనరుల లైబ్రరీ',
         subtitle: 'యానిమేటెడ్ వీడియోలు మరియు కామిక్స్‌ను\nమీకు ఇష్టమైన భాషలో డౌన్‌లోడ్ చేసుకోండి.',
         chooseLanguage: 'భాషను ఎంచుకోండి',
-        missingLink: 'లింక్ ఇంకా జోడించలేదు',
+        missingLink: 'త్వరలో అందుబాటులో ఉంటుంది',
     },
     kn: {
         home: 'ಮುಖಪುಟ',
@@ -113,7 +114,7 @@ const PAGE_TEXT = {
         title: 'ಸಂಪನ್ಮೂಲ ಗ್ರಂಥಾಲಯ',
         subtitle: 'ಅನಿಮೇಟೆಡ್ ವೀಡಿಯೊಗಳು ಮತ್ತು ಕಾಮಿಕ್ಸ್ ಅನ್ನು\nನಿಮ್ಮ ಇಷ್ಟದ ಭಾಷೆಯಲ್ಲಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ.',
         chooseLanguage: 'ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ',
-        missingLink: 'ಲಿಂಕ್ ಇನ್ನೂ ಸೇರಿಸಲಾಗಿಲ್ಲ',
+        missingLink: 'ಶೀಘ್ರದಲ್ಲೇ ಲಭ್ಯವಿದೆ',
     },
     bn: {
         home: 'হোম',
@@ -122,7 +123,7 @@ const PAGE_TEXT = {
         title: 'রিসোর্স লাইব্রেরি',
         subtitle: 'অ্যানিমেটেড ভিডিও এবং কমিক্স\nআপনার পছন্দের ভাষায় ডাউনলোড করুন।',
         chooseLanguage: 'ভাষা নির্বাচন করুন',
-        missingLink: 'লিংক এখনও যোগ করা হয়নি',
+        missingLink: 'শীঘ্রই উপলব্ধ',
     },
     gu: {
         home: 'હોમ',
@@ -131,7 +132,7 @@ const PAGE_TEXT = {
         title: 'સંસાધન લાઇબ્રેરી',
         subtitle: 'એનિમેટેડ વિડિઓઝ અને કોમિક્સ\nતમારી પસંદગીની ભાષામાં ડાઉનલોડ કરો.',
         chooseLanguage: 'ભાષા પસંદ કરો',
-        missingLink: 'લિંક હજી ઉમેરાઈ નથી',
+        missingLink: 'ટૂંક સમયમાં ઉપલબ્ધ',
     },
     or: {
         home: 'ହୋମ',
@@ -140,7 +141,7 @@ const PAGE_TEXT = {
         title: 'ସମ୍ବଳ ଲାଇବ୍ରେରୀ',
         subtitle: 'ଆନିମେଟେଡ୍ ଭିଡିଓ ଏବଂ କମିକ୍ସକୁ\nଆପଣଙ୍କ ପସନ୍ଦର ଭାଷାରେ ଡାଉନଲୋଡ୍ କରନ୍ତୁ।',
         chooseLanguage: 'ଭାଷା ବାଛନ୍ତୁ',
-        missingLink: 'ଲିଙ୍କ ଏପର୍ଯ୍ୟନ୍ତ ଯୋଡାଯାଇନାହିଁ',
+        missingLink: 'ଶୀଘ୍ର ଉପଲବ୍ଧ',
     },
 }
 
@@ -197,47 +198,47 @@ const MATERIAL_TEXT = {
         en: {
             title: 'Comics',
             description: 'Informative comics for all age groups to understand snakebite prevention and care.',
-            buttonText: 'Download Comics',
+            buttonText: 'View Comics',
         },
         hi: {
             title: 'कॉमिक्स',
             description: 'सांप के काटने से बचाव और देखभाल समझाने वाली आसान कॉमिक्स।',
-            buttonText: 'कॉमिक्स डाउनलोड करें',
+            buttonText: 'कॉमिक्स देखें',
         },
         mr: {
             title: 'कॉमिक्स',
             description: 'सर्पदंश प्रतिबंध आणि काळजी समजण्यासाठी सर्व वयोगटांसाठी माहितीपूर्ण कॉमिक्स.',
-            buttonText: 'कॉमिक्स डाउनलोड करा',
+            buttonText: 'कॉमिक्स पहा',
         },
         ta: {
             title: 'காமிக்ஸ்',
             description: 'பாம்பு கடி தடுப்பு மற்றும் பராமரிப்பை எளிதாக விளக்கும் தகவல் காமிக்ஸ்.',
-            buttonText: 'காமிக்ஸ் பதிவிறக்கவும்',
+            buttonText: 'காமிக்ஸைப் பார்க்கவும்',
         },
         te: {
             title: 'కామిక్స్',
             description: 'పాము కాటు నివారణ మరియు సంరక్షణను అర్థం చేసుకునేందుకు సమాచారాత్మక కామిక్స్.',
-            buttonText: 'కామిక్స్ డౌన్‌లోడ్ చేయండి',
+            buttonText: 'కామిక్స్ చూడండి',
         },
         kn: {
             title: 'ಕಾಮಿಕ್ಸ್',
             description: 'ಹಾವು ಕಚ್ಚುವಿಕೆ ತಡೆಗಟ್ಟುವಿಕೆ ಮತ್ತು ಆರೈಕೆಯನ್ನು ತಿಳಿಸುವ ಮಾಹಿತಿ ಕಾಮಿಕ್ಸ್.',
-            buttonText: 'ಕಾಮಿಕ್ಸ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ',
+            buttonText: 'ಕಾಮಿಕ್ಸ್ ನೋಡಿ',
         },
         bn: {
             title: 'কমিক্স',
             description: 'সাপের কামড় প্রতিরোধ ও যত্ন বোঝাতে সব বয়সের জন্য তথ্যপূর্ণ কমিক্স।',
-            buttonText: 'কমিক্স ডাউনলোড করুন',
+            buttonText: 'কমিক্স দেখুন',
         },
         gu: {
             title: 'કોમિક્સ',
             description: 'સર્પદંશથી બચાવ અને કાળજી સમજવા માટે માહિતીપ્રદ કોમિક્સ.',
-            buttonText: 'કોમિક્સ ડાઉનલોડ કરો',
+            buttonText: 'કોમિક્સ જુઓ',
         },
         or: {
             title: 'କମିକ୍ସ',
             description: 'ସାପ କାମୁଡ଼ା ପ୍ରତିରୋଧ ଏବଂ ଯତ୍ନ ବୁଝାଇବା ପାଇଁ ସୂଚନାମୂଳକ କମିକ୍ସ।',
-            buttonText: 'କମିକ୍ସ ଡାଉନଲୋଡ୍ କରନ୍ତୁ',
+            buttonText: 'କମିକ୍ସ ଦେଖନ୍ତୁ',
         },
     },
 
@@ -280,6 +281,10 @@ export default function DownloadsPage() {
                         ...(item.links || {}),
                         ...(found?.links || {}),
                     },
+                    files: {
+                        ...(item.files || {}),
+                        ...(found?.files || {}),
+                    },
                 }
             })
         }
@@ -291,6 +296,10 @@ export default function DownloadsPage() {
     const baseUi = PAGE_TEXT[lang] || PAGE_TEXT.en
     const header = content?.pageHeaders?.animatedVideosComics || {}
     const ui = { ...baseUi, title: header.title || baseUi.title, subtitle: header.description || baseUi.subtitle }
+    const openResource = (uploadedUrl) => {
+        if (uploadedUrl) window.open(uploadedUrl, '_blank', 'noopener,noreferrer')
+        else alert('This file is currently unavailable. Please ask an administrator to replace it.')
+    }
 
     return (
         <>
@@ -364,7 +373,8 @@ export default function DownloadsPage() {
                         {materials.map((item) => {
                             const translated = MATERIAL_TEXT[item.id]?.[lang] || MATERIAL_TEXT[item.id]?.en || {}
                             const Icon = getIcon(item.type)
-                            const link = item.links?.[lang] || ''
+                            const uploadedUrl = item.files?.[lang]?.id ? getDocumentPath('communication', item.files[lang].id) : ''
+                            const link = uploadedUrl
                             const accent = getAccent(item.type)
                             const disabled = !link || link === '#'
 
@@ -417,7 +427,9 @@ export default function DownloadsPage() {
                                             <Button
                                                 disabled={disabled}
                                                 onClick={() => {
-                                                    if (!disabled) window.open(link, '_blank', 'noopener,noreferrer')
+                                                    if (!disabled) {
+                                                        openResource(uploadedUrl)
+                                                    }
                                                 }}
                                                 className={`mt-5 w-full rounded-lg bg-gradient-to-r ${accent} text-white h-12 text-base font-bold disabled:cursor-not-allowed disabled:opacity-50`}
                                             >
@@ -427,7 +439,7 @@ export default function DownloadsPage() {
 
                                             {disabled && (
                                                 <p className="mt-3 text-xs text-slate-400">
-                                                    Available Soon
+                                                    {ui.missingLink}
                                                 </p>
                                             )}
                                         </div>
@@ -438,6 +450,7 @@ export default function DownloadsPage() {
                     </div>
                 </section>
             </main>
+
         </>
     )
 }

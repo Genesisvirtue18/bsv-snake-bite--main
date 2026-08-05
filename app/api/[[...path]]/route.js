@@ -8,6 +8,8 @@ import { exec } from 'node:child_process'
 import { writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { createHash } from 'node:crypto'
+import { deleteCloudinaryFile, getFolder, safeDownloadName, uploadFile, validateFile, VIDEO_EXTENSIONS } from '@/lib/cloudinaryFiles'
+import { getDocumentPath } from '@/lib/documentPaths'
 
 // Auto-commit and push content changes to git
 async function gitPushContent(content, user) {
@@ -194,6 +196,103 @@ async function handleRoute(request, { params }) {
       const auth = requireAuth(request, 'content.update'); if (auth.error) return auth.error
       await db.collection('site_content').updateOne({ id: 'main' }, { $set: { data: DEFAULT_CONTENT, updatedAt: new Date() } }, { upsert: true })
       return cors(NextResponse.json({ success: true, data: DEFAULT_CONTENT }))
+    }
+
+    // ===== CLOUDINARY DOCUMENTS =====
+    if (route === '/documents' && method === 'POST') {
+      const auth = requireAuth(request, 'content.update'); if (auth.error) return auth.error
+      const formData = await request.formData()
+      const file = formData.get('file')
+      const module = String(formData.get('module') || '')
+      const title = String(formData.get('title') || file?.name || '')
+      const category = String(formData.get('category') || module)
+      const buffer = file ? Buffer.from(await file.arrayBuffer()) : null
+      const { extension, fileType } = validateFile(file, buffer)
+      if (category === 'animated-videos' && !VIDEO_EXTENSIONS.has(extension)) {
+        return cors(NextResponse.json({ error: 'Animated Videos accepts video files only.' }, { status: 400 }))
+      }
+      const id = uuidv4()
+      const upload = await uploadFile({ buffer, originalFileName: file.name, folder: getFolder(module), publicId: id })
+      const document = {
+        id,
+        title,
+        module,
+        category,
+        originalFileName: safeDownloadName(file.name),
+        storedFileName: `${id}.${extension}`,
+        fileType,
+        fileSize: buffer.length,
+        cloudinaryPublicId: upload.public_id,
+        cloudinaryUrl: upload.secure_url,
+        cloudinaryResourceType: upload.resource_type || 'raw',
+        url: getDocumentPath(module, id),
+        uploadedBy: auth.user.id,
+        uploadedAt: new Date(),
+        updatedAt: new Date(),
+      }
+      try {
+        await db.collection('file_metadata').insertOne(document)
+      } catch (error) {
+        await deleteCloudinaryFile(document.cloudinaryPublicId, document.cloudinaryResourceType).catch(() => {})
+        throw error
+      }
+      const { _id, cloudinaryUrl, cloudinaryPublicId, cloudinaryResourceType, uploadedBy, ...safe } = document
+      return cors(NextResponse.json(safe))
+    }
+
+    if (route.startsWith('/documents/') && method === 'GET') {
+      const auth = requireAuth(request, 'content.read'); if (auth.error) return auth.error
+      const id = route.split('/')[2]
+      const document = await db.collection('file_metadata').findOne({ id })
+      if (!document) return cors(NextResponse.json({ error: 'File not found' }, { status: 404 }))
+      const { _id, cloudinaryUrl, cloudinaryPublicId, cloudinaryResourceType, uploadedBy, ...safe } = document
+      return cors(NextResponse.json(safe))
+    }
+
+    if (route.startsWith('/documents/') && route.endsWith('/replace') && method === 'POST') {
+      const auth = requireAuth(request, 'content.update'); if (auth.error) return auth.error
+      const id = route.split('/')[2]
+      const existing = await db.collection('file_metadata').findOne({ id })
+      if (!existing) return cors(NextResponse.json({ error: 'File not found' }, { status: 404 }))
+      const formData = await request.formData()
+      const file = formData.get('file')
+      const buffer = file ? Buffer.from(await file.arrayBuffer()) : null
+      const { extension, fileType } = validateFile(file, buffer)
+      if (existing.category === 'animated-videos' && !VIDEO_EXTENSIONS.has(extension)) {
+        return cors(NextResponse.json({ error: 'Animated Videos accepts video files only.' }, { status: 400 }))
+      }
+      const upload = await uploadFile({ buffer, originalFileName: file.name, folder: getFolder(existing.module), publicId: uuidv4() })
+      const replacement = {
+        originalFileName: safeDownloadName(file.name),
+        storedFileName: `${id}.${extension}`,
+        fileType,
+        fileSize: buffer.length,
+        cloudinaryPublicId: upload.public_id,
+        cloudinaryUrl: upload.secure_url,
+        cloudinaryResourceType: upload.resource_type || 'raw',
+        updatedAt: new Date(),
+      }
+      try {
+        await deleteCloudinaryFile(existing.cloudinaryPublicId, existing.cloudinaryResourceType)
+        await db.collection('file_metadata').updateOne({ id }, { $set: replacement })
+      } catch (error) {
+        await deleteCloudinaryFile(replacement.cloudinaryPublicId, replacement.cloudinaryResourceType).catch(() => {})
+        throw error
+      }
+      const updated = { ...existing, ...replacement }
+      updated.url = getDocumentPath(existing.module, id)
+      const { _id, cloudinaryUrl, cloudinaryPublicId, cloudinaryResourceType, uploadedBy, ...safe } = updated
+      return cors(NextResponse.json(safe))
+    }
+
+    if (route.startsWith('/documents/') && method === 'DELETE') {
+      const auth = requireAuth(request, 'content.update'); if (auth.error) return auth.error
+      const id = route.split('/')[2]
+      const existing = await db.collection('file_metadata').findOne({ id })
+      if (!existing) return cors(NextResponse.json({ error: 'File not found' }, { status: 404 }))
+      await deleteCloudinaryFile(existing.cloudinaryPublicId, existing.cloudinaryResourceType)
+      await db.collection('file_metadata').deleteOne({ id })
+      return cors(NextResponse.json({ success: true }))
     }
 
     // ===== MEDIA (GridFS) =====

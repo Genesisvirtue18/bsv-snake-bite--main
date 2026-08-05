@@ -55,21 +55,18 @@ export default function SiteHeader({ lang, setLang, t, settings }) {
           title: 'On-Ground Activations',
           items: [
             { label: 'Nukkad Natak, Wall Paintings, Bus Branding', href: '/#awareness', desc: 'Community outreach programs' },
-            { label: 'Campaign Moments', href: '/#gallery', desc: 'See campaign in action' },
           ],
         },
         {
           title: 'NGO Collaborations',
           items: [
             { label: 'Partner Network Across India', href: '/ngo-network', desc: 'Our NGO partners' },
-            { label: 'Real-life Impact Stories', href: '/#stories', desc: 'Stories from the field' },
           ],
         },
         {
           title: 'Mass & Digital Media',
           items: [
             { label: 'Campaign Films & Interviews', href: '/#video', desc: 'Watch our videos' },
-            { label: 'Bust the Myths', href: '/#myths', desc: 'Myth vs Fact' },
           ],
         },
       ],
@@ -82,20 +79,20 @@ export default function SiteHeader({ lang, setLang, t, settings }) {
           title: 'Workshops & Training',
           items: [
             { label: 'Clinician Training Programs', href: '/#access', desc: 'Hands-on training for clinicians' },
-            { label: 'State-wise Campaign Reach', href: '/#outreach', desc: 'Our outreach across India' },
+            // { label: 'State-wise Campaign Reach', href: '/#outreach', desc: 'Our outreach across India' },
           ],
         },
         {
           title: 'Clinician Engagement',
           items: [
             { label: 'Beyond Monsoons Program', href: '/#access', desc: 'Venom to Vial initiative' },
-            { label: 'Field Stories', href: '/#stories', desc: 'Stories from clinicians' },
+            // { label: 'Field Stories', href: '/#stories', desc: 'Stories from clinicians' },
           ],
         },
         {
           title: 'Training Modules',
           items: [
-            { label: 'ASV Protocols', href: '/downloads', desc: 'Clinical education materials' },
+            // { label: 'ASV Protocols', href: '/downloads', desc: 'Clinical education materials' },
             { label: 'Download Library', href: '/downloads', desc: 'All resources in one place' },
           ],
         },
@@ -116,14 +113,12 @@ export default function SiteHeader({ lang, setLang, t, settings }) {
           title: 'Video Content',
           items: [
             { label: 'Awareness Videos', href: '/#video', desc: 'Vox pops, myth-busting reels' },
-            { label: 'Watch the Campaign', href: '/#video', desc: 'Campaign in action' },
           ],
         },
         {
           title: 'Visual Stories',
           items: [
             { label: 'Comic & Visual Stories', href: '/#gallery', desc: 'Engaging visual content' },
-            { label: 'Browse Gallery', href: '/#gallery', desc: 'Photo gallery' },
           ],
         },
       ],
@@ -269,14 +264,18 @@ export default function SiteHeader({ lang, setLang, t, settings }) {
 
                   <div className="font-display font-bold text-2xl mb-3 leading-tight">
                     {megaOpen === 'awareness'
-                      ? 'Creating Informed Communities'
+                      ? 'Building Informed Communities'
                       : megaOpen === 'access'
-                        ? 'Bridging the Gap'
-                        : 'Spreading the Message'}
+                        ? 'Empowering Healthcare Workers'
+                        : 'Amplifying Impact Across India'}
                   </div>
 
                   <div className="text-sm text-white/85 leading-relaxed">
-                    Snakebite awareness and treatment education across India.
+                    {megaOpen === 'awareness'
+                      ? 'Through education, outreach, and action - replacing myths with facts.'
+                      : megaOpen === 'access'
+                        ? 'Enhancing the capabilities of frontline healthcare workers with training and resources for effective snakebite management.'
+                        : "Engaging communities across India's high snakebite-burden regions through sustained awareness initiatives."}
                   </div>
                 </div>
 

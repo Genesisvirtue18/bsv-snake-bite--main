@@ -135,21 +135,18 @@ function Header({ lang, setLang, t, settings }) {
           title: 'On-Ground Activations',
           items: [
             { label: 'Nukkad Natak And School Engagements', href: '/onground', desc: 'Community outreach programs' },
-            { label: 'Campaign Moments', href: '/onground', desc: 'See campaign in action' },
           ]
         },
         {
           title: 'NGO Collaborations',
           items: [
             { label: 'Partner Network Across India', href: '/ngo-network', desc: 'Our NGO partners' },
-            { label: 'Real-life Impact Stories', href: '/impact-stories', desc: 'Stories from the field' },
           ]
         },
         {
           title: 'Mass & Digital Media',
           items: [
             { label: 'Campaign Films & Interviews', href: '/videos', desc: 'Watch our videos' },
-            { label: 'Bust the Myths', href: '#myths', desc: 'Myth vs Fact' },
           ]
         },
       ]
@@ -161,20 +158,20 @@ function Header({ lang, setLang, t, settings }) {
           title: 'Workshops & Training',
           items: [
             { label: 'Clinician Training Programs', href: '#access', desc: 'Hands-on training for clinicians, RMPs, ASHAs' },
-            { label: 'State-wise Campaign Reach', href: '#outreach', desc: 'Our outreach across India' },
+            // { label: 'State-wise Campaign Reach', href: '#outreach', desc: 'Our outreach across India' },
           ]
         },
         {
           title: 'Clinician Engagement',
           items: [
             { label: 'Beyond Monsoons Program', href: '#access', desc: 'Venom to Vial initiative' },
-            { label: 'Field Stories', href: '/impact-stories', desc: 'Stories from clinicians' },
+            // { label: 'Field Stories', href: '/impact-stories', desc: 'Stories from clinicians' },
           ]
         },
         {
           title: 'Training Modules',
           items: [
-            { label: 'ASV Protocols', href: '/training', desc: 'Clinical education materials' },
+            // { label: 'ASV Protocols', href: '/training', desc: 'Clinical education materials' },
             { label: 'KOL Program', href: '/kol-program', desc: 'Beyond Monsoon, Be Ready for Monsoon' },
           ]
         },
@@ -194,14 +191,12 @@ function Header({ lang, setLang, t, settings }) {
           title: 'Video Content',
           items: [
             { label: 'Awareness Videos', href: '/videos', desc: 'Vox pops, myth-busting reels' },
-            { label: 'Watch the Campaign', href: '/videos', desc: 'Campaign in action' },
           ]
         },
         {
           title: 'Visual Stories',
           items: [
             { label: 'Comic & Visual Stories', href: '/animated-videos-&-comics', desc: 'Engaging visual content' },
-            { label: 'Browse Gallery', href: '/gallery', desc: 'Photo gallery' },
           ]
         },
       ]
@@ -376,14 +371,14 @@ function Header({ lang, setLang, t, settings }) {
                       {t.badges?.[megaOpen] || megaMenus[megaOpen].label}
                     </div>
                     <div className="font-display font-bold text-2xl mb-3 leading-tight">
-                      {megaOpen === 'awareness' ? 'Creating Informed Communities' :
-                        megaOpen === 'access' ? 'Bridging the Gap' :
-                          'Spreading the Message'}
+                      {megaOpen === 'awareness' ? 'Building Informed Communities' :
+                        megaOpen === 'access' ? 'Empowering Healthcare Workers' :
+                          'Amplifying Impact Across India'}
                     </div>
                     <div className="text-sm text-white/85 leading-relaxed">
-                      {megaOpen === 'awareness' ? 'Through education, outreach, and action — turning fear into facts.' :
-                        megaOpen === 'access' ? 'Ensuring clinicians in snakebite treatment have the training and resources to save lives.' :
-                          'Using every medium to reach every corner of India.'}
+                      {megaOpen === 'awareness' ? 'Through education, outreach, and action - replacing myths with facts.' :
+                        megaOpen === 'access' ? 'Enhancing the capabilities of frontline healthcare workers with training and resources for effective snakebite management.' :
+                          "Engaging communities across India's high snakebite-burden regions through sustained awareness initiatives."}
                     </div>
                     <button onClick={() => go(`#${megaOpen}`)} className="mt-5 inline-flex items-center gap-2 text-sm font-semibold hover:underline underline-offset-2 transition-all group">
                       Learn More

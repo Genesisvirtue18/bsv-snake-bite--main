@@ -14,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog'
 import { Switch } from '@/components/ui/switch'
 import { toast } from 'sonner'
+import { getDocumentPath } from '@/lib/documentPaths'
 import { Shield, Save, RefreshCw, LogOut, Users, FileText, Award, MessageSquare, BarChart3, Lock, Eye, Download, Trash2, Plus, Image as ImageIcon, Building2, FileImage, Sparkles, Upload, Edit, Heart, Megaphone, UserPlus, Globe, Settings, Layers, Play, BookOpen, CheckCircle2, Clock, Images, X, HelpCircle, Palette, Drama, Handshake } from 'lucide-react'
 
 const LANGS = ['en', 'hi', 'mr', 'kn', 'ta', 'te', 'or', 'pa', 'bn']
@@ -149,6 +150,93 @@ function MediaPicker({ value, onChange, label = 'Image' }) {
           </div>
         </DialogContent>
       </Dialog>
+    </div>
+  )
+}
+
+const CLOUDINARY_FILE_ACCEPT = '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.rtf,.jpg,.jpeg,.png,.webp,.gif,.svg,.bmp,.tiff,.avif,.mp4,.mov,.avi,.mkv,.webm,.mpeg,.m4v,.mp3,.wav,.aac,.m4a,.ogg,.flac,.zip,.rar,.7z,.tar,.gz,.json,.xml'
+const VIDEO_FILE_ACCEPT = 'video/*,.mp4,.mov,.avi,.mkv,.webm,.mpeg,.m4v'
+
+function formatFileSize(bytes = 0) {
+  if (!bytes) return 'Unknown size'
+  const units = ['B', 'KB', 'MB', 'GB']
+  const index = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1)
+  return `${(bytes / (1024 ** index)).toFixed(index ? 1 : 0)} ${units[index]}`
+}
+
+function CloudinaryFilePicker({ value, onChange, module, category, label = 'File', accept = CLOUDINARY_FILE_ACCEPT, videoOnly = false }) {
+  const [uploading, setUploading] = useState(false)
+  const token = typeof window !== 'undefined' ? localStorage.getItem('bsv_token') : null
+  const previewUrl = value?.id ? getDocumentPath(module, value.id) : value?.url
+
+  const send = async (file, replace = false) => {
+    if (!file) return
+    if (file.size === 0) return toast.error('The selected file is empty.')
+    if (file.size > 100 * 1024 * 1024) return toast.error('File exceeds the 100 MB upload limit.')
+    setUploading(true)
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('module', module)
+    formData.append('category', category || module)
+    formData.append('title', file.name)
+    try {
+      const endpoint = replace && value?.id ? `/api/documents/${value.id}/replace` : '/api/documents'
+      let response = await fetch(endpoint, { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: formData })
+      if (replace && response.status === 404) {
+        response = await fetch('/api/documents', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: formData })
+      }
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error || 'Upload failed')
+      onChange(data)
+      toast.success(replace ? 'File replaced' : 'File uploaded')
+    } catch (error) {
+      toast.error(error.message || 'File upload failed')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  const remove = async () => {
+    if (!value?.id || !confirm('Delete this uploaded file? This cannot be undone.')) return
+    setUploading(true)
+    try {
+      const response = await fetch(`/api/documents/${value.id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } })
+      const data = await response.json()
+      if (response.status === 404) {
+        onChange(null)
+        toast.success('Removed the unavailable file reference')
+        return
+      }
+      if (!response.ok) throw new Error(data.error || 'Delete failed')
+      onChange(null)
+      toast.success('File deleted')
+    } catch (error) {
+      toast.error(error.message || 'Could not delete the file')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  return (
+    <div className="rounded-xl border bg-slate-50 p-3 space-y-3">
+      <div>
+        <Label>{label}</Label>
+      </div>
+      {value?.id ? (
+        <div className="rounded-lg border bg-white p-3">
+          <div className="font-medium text-sm break-all">{value.originalFileName || value.title || 'Uploaded file'}</div>
+          <div className="mt-1 text-xs text-slate-500">{value.fileType || 'Unknown type'} · {formatFileSize(value.fileSize)} · Uploaded {value.uploadedAt ? new Date(value.uploadedAt).toLocaleDateString() : 'recently'}</div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Button type="button" size="sm" variant="outline" onClick={() => window.open(previewUrl, '_blank', 'noopener,noreferrer')}><Eye className="w-4 h-4 mr-1" />Preview</Button>
+            <Button type="button" size="sm" variant="outline" disabled={uploading} onClick={() => document.getElementById(`replace-${value.id}`)?.click()}><Upload className="w-4 h-4 mr-1" />Replace File</Button>
+            <Button type="button" size="sm" variant="destructive" disabled={uploading} onClick={remove}><Trash2 className="w-4 h-4 mr-1" />Delete File</Button>
+            <Input id={`replace-${value.id}`} className="hidden" type="file" accept={accept} onChange={event => send(event.target.files?.[0], true)} />
+          </div>
+        </div>
+      ) : (
+        <Input type="file" accept={accept} disabled={uploading} onChange={event => send(event.target.files?.[0])} />
+      )}
+      {uploading && <p className="text-sm text-slate-500">Uploading file…</p>}
     </div>
   )
 }
@@ -600,7 +688,7 @@ export default function AdminPage() {
             <TabsTrigger value="gallery"><Images className="w-4 h-4 mr-1" />Gallery</TabsTrigger>
             <TabsTrigger value="library">
               <BookOpen className="w-4 h-4 mr-1" />
-              Brand Advocacy
+              Communication
             </TabsTrigger>
             <TabsTrigger value="brochureLeads">
               <Download className="w-4 h-4 mr-1" />
@@ -646,7 +734,7 @@ export default function AdminPage() {
                       ['campaignVideos', 'Watch the Campaign & More Videos'],
                       ['awareness', 'Awareness'],
                       ['access', 'Access'],
-                      ['brandAdvocacy', 'Brand Advocacy'],
+                      ['brandAdvocacy', 'Communication'],
                       ['mythsFacts', 'Myths & Facts'],
                       ['awardsRecognition', 'Awards & Recognition'],
                       ['aboutBSV', 'About BSV'],
@@ -1594,15 +1682,17 @@ export default function AdminPage() {
                                         />
                                       </div>
 
-                                      <MediaPicker
-                                        label="Upload / Select File or Paste Drive Link"
-                                        value={doc.url || ''}
-                                        onChange={v => {
+                                      <CloudinaryFilePicker
+                                        label="Document File"
+                                        module="kol"
+                                        category="kol-program"
+                                        value={doc.file || null}
+                                        onChange={file => {
                                           updatePageArray(pageConfig.documentKey, current => {
                                             const next = [...current]
                                             next[docIndex] = {
                                               ...next[docIndex],
-                                              url: v,
+                                              file,
                                             }
                                             return next
                                           })
@@ -1766,12 +1856,12 @@ export default function AdminPage() {
                 </Card>
 
 
-                {/* BRAND ADVOCACY */}
+                {/* COMMUNICATION */}
                 {false && <Card>
                   <CardContent className="p-5 space-y-4">
                     <div className="flex items-center justify-between">
                       <h3 className="font-display font-bold text-lg text-bsv-blue">
-                        Brand Advocacy Cards
+                        Communication Cards
                       </h3>
 
                       <Button
@@ -2801,13 +2891,7 @@ function MassMediaAdminView({ content, setContent, api }) {
                 ) : (
                   <div>
                     <Label>Link</Label>
-                    <Input
-                      value={item.driveUrl || ''}
-                      placeholder="Paste Google Drive folder / file link"
-                      onChange={e => updateActivity(i, 'driveUrl', e.target.value)}
-                    />
-
-
+                    <Input value={item.driveUrl || ''} placeholder="Paste Facebook, Instagram, YouTube, or Google Drive link" onChange={e => updateActivity(i, 'driveUrl', e.target.value)} />
                   </div>
                 )}
 
@@ -3308,7 +3392,7 @@ function BrandAdvocacyEditor({ content, setContent, saveContent }) {
   const items = content.communication?.items || []
   const update = (next) => setContent({ ...content, communication: { ...(content.communication || {}), items: next } })
   const move = (index, value) => update(items.map((item, position) => position === index ? { ...item, order: value } : item))
-  return <Card><CardContent className="p-5 space-y-4"><div className="flex justify-between"><h3 className="font-display font-bold text-lg text-bsv-blue">Brand Advocacy Cards</h3><Button className="bg-bsv-red" onClick={() => update([...items, { title: '', desc: '', image: '', href: '' }])}><Plus className="w-4 h-4 mr-1" />Add Card</Button></div><div className="border rounded-xl p-4 space-y-3"><div><Label>Main Headline</Label><Input value={section.title ?? DEFAULT_CONTENT.sectionText.communication.title} onChange={e => setContent({ ...content, sectionText: { ...(content.sectionText || {}), communication: { ...section, title: e.target.value } } })} /></div><div><Label>Description</Label><Textarea rows={2} value={section.subtitle ?? DEFAULT_CONTENT.sectionText.communication.subtitle} onChange={e => setContent({ ...content, sectionText: { ...(content.sectionText || {}), communication: { ...section, subtitle: e.target.value } } })} /></div></div>{items.map((item, i) => <div key={i} className="border rounded-xl p-4 space-y-3"><div className="flex justify-between"><b>Card {i + 1}</b><div className="flex items-center gap-2"><Label className="text-xs">Display order</Label><Input aria-label="Display order" type="number" min="0" value={item.order ?? i + 1} className="w-16 h-9" onChange={e => move(i, e.target.value)} /><Button size="sm" variant="destructive" onClick={() => update(items.filter((_, n) => n !== i))}><Trash2 className="w-4 h-4" /></Button></div></div><Input value={item.title || ''} placeholder="Title" onChange={e => update(items.map((x,n) => n === i ? { ...x, title: e.target.value } : x))} /><Textarea value={item.desc || ''} placeholder="Description" onChange={e => update(items.map((x,n) => n === i ? { ...x, desc: e.target.value } : x))} /><Input value={item.href || ''} placeholder="Link" onChange={e => update(items.map((x,n) => n === i ? { ...x, href: e.target.value } : x))} /><MediaPicker label="Image" value={item.image || ''} onChange={v => update(items.map((x,n) => n === i ? { ...x, image: v } : x))} /></div>)}<Button className="bg-bsv-red" onClick={saveContent}>Save Brand Advocacy</Button></CardContent></Card>
+  return <Card><CardContent className="p-5 space-y-4"><div className="flex justify-between"><h3 className="font-display font-bold text-lg text-bsv-blue">Communication Cards</h3><Button className="bg-bsv-red" onClick={() => update([...items, { title: '', desc: '', image: '', href: '' }])}><Plus className="w-4 h-4 mr-1" />Add Card</Button></div><div className="border rounded-xl p-4 space-y-3"><div><Label>Main Headline</Label><Input value={section.title ?? DEFAULT_CONTENT.sectionText.communication.title} onChange={e => setContent({ ...content, sectionText: { ...(content.sectionText || {}), communication: { ...section, title: e.target.value } } })} /></div><div><Label>Description</Label><Textarea rows={2} value={section.subtitle ?? DEFAULT_CONTENT.sectionText.communication.subtitle} onChange={e => setContent({ ...content, sectionText: { ...(content.sectionText || {}), communication: { ...section, subtitle: e.target.value } } })} /></div></div>{items.map((item, i) => <div key={i} className="border rounded-xl p-4 space-y-3"><div className="flex justify-between"><b>Card {i + 1}</b><div className="flex items-center gap-2"><Label className="text-xs">Display order</Label><Input aria-label="Display order" type="number" min="0" value={item.order ?? i + 1} className="w-16 h-9" onChange={e => move(i, e.target.value)} /><Button size="sm" variant="destructive" onClick={() => update(items.filter((_, n) => n !== i))}><Trash2 className="w-4 h-4" /></Button></div></div><Input value={item.title || ''} placeholder="Title" onChange={e => update(items.map((x,n) => n === i ? { ...x, title: e.target.value } : x))} /><Textarea value={item.desc || ''} placeholder="Description" onChange={e => update(items.map((x,n) => n === i ? { ...x, desc: e.target.value } : x))} /><Input value={item.href || ''} placeholder="Link" onChange={e => update(items.map((x,n) => n === i ? { ...x, href: e.target.value } : x))} /><MediaPicker label="Image" value={item.image || ''} onChange={v => update(items.map((x,n) => n === i ? { ...x, image: v } : x))} /></div>)}<Button className="bg-bsv-red" onClick={saveContent}>Save Communication</Button></CardContent></Card>
 }
 
 function MankindAgritechEditor({ content, setContent, saveContent }) {
@@ -3432,7 +3516,7 @@ function LibraryMaterialsView({ content, setContent, saveContent, api }) {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
           <h2 className="font-display font-extrabold text-2xl text-bsv-blue">
-            Animated Videos & Comics
+            Animated Videos, Comics & Brochures
           </h2>
 
           <p className="text-sm text-slate-500">
@@ -3502,16 +3586,18 @@ function LibraryMaterialsView({ content, setContent, saveContent, api }) {
                     <div className="grid md:grid-cols-2 gap-3">
                       {DOWNLOAD_LANGUAGES.map((language) => (
                         <div key={language.code}>
-                          <Label>{language.label} Link</Label>
-
-                          <Input
-                            value={item.links?.[language.code] || ''}
-                            placeholder="Paste Drive link"
-                            onChange={(e) =>
+                          <CloudinaryFilePicker
+                            label={`${language.label} File`}
+                            module="communication"
+                            category={item.type === 'videos' ? 'animated-videos' : 'comics'}
+                            accept={item.type === 'videos' ? VIDEO_FILE_ACCEPT : CLOUDINARY_FILE_ACCEPT}
+                            videoOnly={item.type === 'videos'}
+                            value={item.files?.[language.code] || null}
+                            onChange={(file) =>
                               updateMaterial(i, {
-                                links: {
-                                  ...(item.links || {}),
-                                  [language.code]: e.target.value,
+                                files: {
+                                  ...(item.files || {}),
+                                  [language.code]: file,
                                 },
                               })
                             }
@@ -3640,20 +3726,13 @@ function LibraryMaterialsView({ content, setContent, saveContent, api }) {
                     }
                   />
 
-                  <div>
-                    <Label>Drive Link</Label>
-                    <Input
-                      value={item.fileUrl || ''}
-                      placeholder="Paste  Drive file link"
-                      onChange={(e) =>
-                        updatePrintMaterial(item.id, { fileUrl: e.target.value })
-                      }
-                    />
-
-                    <p className="mt-1 text-xs text-slate-500">
-                      Paste public  Drive link only. Example: Anyone with the link can view.
-                    </p>
-                  </div>
+                  <CloudinaryFilePicker
+                    label="Poster / Brochure File"
+                    module="brochures"
+                    category="posters-brochures"
+                    value={item.file || null}
+                    onChange={(file) => updatePrintMaterial(item.id, { file })}
+                  />
                 </div>
 
                 <div className="flex items-center gap-2">
