@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { DEFAULT_CONTENT } from '@/lib/defaultContent'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { ArrowLeft, BookOpen, Download, ExternalLink, FileText, Languages, Play } from 'lucide-react'
 import Link from 'next/link'
 import { getDocumentPath } from '@/lib/documentPaths'
@@ -257,9 +258,45 @@ function getAccent(type) {
     return 'from-[#ff6b22] to-[#e84b12]'
 }
 
+function getYoutubeId(url = '') {
+    try {
+        const parsed = new URL(url.startsWith('http') ? url : `https://${url}`)
+        const host = parsed.hostname.toLowerCase()
+        const pathname = parsed.pathname.replace(/\/$/, '')
+
+        if (host.includes('youtu.be')) {
+            return pathname.slice(1)
+        }
+
+        if (host.includes('youtube.com')) {
+            const params = parsed.searchParams
+            if (params.has('v')) return params.get('v') || ''
+            if (pathname.startsWith('/embed/') || pathname.startsWith('/v/') || pathname.startsWith('/e/')) {
+                return pathname.split('/')[2] || ''
+            }
+            if (pathname.startsWith('/shorts/') || pathname.startsWith('/live/')) {
+                return pathname.split('/')[2] || ''
+            }
+        }
+    } catch (error) {
+        // ignore invalid URLs
+    }
+    return ''
+}
+
+function getYoutubeEmbedUrl(url = '') {
+    const id = getYoutubeId(url)
+    return id ? `https://www.youtube.com/embed/${id}?autoplay=1&rel=0` : ''
+}
+
+function isYoutubeUrl(url = '') {
+    return /(?:youtube\.com|youtu\.be)/i.test(String(url))
+}
+
 export default function DownloadsPage() {
     const [lang, setLang] = useState('en')
     const [content, setContent] = useState(null)
+    const [activeVideo, setActiveVideo] = useState(null)
 
     useEffect(() => {
         fetch('/api/content')
@@ -296,9 +333,21 @@ export default function DownloadsPage() {
     const baseUi = PAGE_TEXT[lang] || PAGE_TEXT.en
     const header = content?.pageHeaders?.animatedVideosComics || {}
     const ui = { ...baseUi, title: header.title || baseUi.title, subtitle: header.description || baseUi.subtitle }
-    const openResource = (uploadedUrl) => {
-        if (uploadedUrl) window.open(uploadedUrl, '_blank', 'noopener,noreferrer')
-        else alert('This file is currently unavailable. Please ask an administrator to replace it.')
+    const openResource = (item, uploadedUrl, title) => {
+        if (!uploadedUrl) {
+            alert('This file is currently unavailable. Please ask an administrator to replace it.')
+            return
+        }
+
+        if (item.type === 'videos' && isYoutubeUrl(uploadedUrl)) {
+            const embedUrl = getYoutubeEmbedUrl(uploadedUrl)
+            if (embedUrl) {
+                setActiveVideo({ title: title || item.title, url: embedUrl })
+                return
+            }
+        }
+
+        window.open(uploadedUrl, '_blank', 'noopener,noreferrer')
     }
 
     return (
@@ -373,7 +422,14 @@ export default function DownloadsPage() {
                         {materials.map((item) => {
                             const translated = MATERIAL_TEXT[item.id]?.[lang] || MATERIAL_TEXT[item.id]?.en || {}
                             const Icon = getIcon(item.type)
-                            const uploadedUrl = item.files?.[lang]?.id ? getDocumentPath('communication', item.files[lang].id) : ''
+                            const fileValue = item.files?.[lang]
+                            const uploadedUrl = fileValue
+                              ? typeof fileValue === 'string'
+                                ? fileValue
+                                : fileValue.id
+                                  ? getDocumentPath('communication', fileValue.id)
+                                  : fileValue.url || ''
+                              : ''
                             const link = uploadedUrl
                             const accent = getAccent(item.type)
                             const disabled = !link || link === '#'
@@ -428,7 +484,7 @@ export default function DownloadsPage() {
                                                 disabled={disabled}
                                                 onClick={() => {
                                                     if (!disabled) {
-                                                        openResource(uploadedUrl)
+                                                        openResource(item, uploadedUrl, translated.title || item.title)
                                                     }
                                                 }}
                                                 className={`mt-5 w-full rounded-lg bg-gradient-to-r ${accent} text-white h-12 text-base font-bold disabled:cursor-not-allowed disabled:opacity-50`}
@@ -451,6 +507,25 @@ export default function DownloadsPage() {
                 </section>
             </main>
 
+            {activeVideo && (
+                <Dialog open onOpenChange={() => setActiveVideo(null)}>
+                    <DialogContent className="max-w-4xl w-[92vw] max-h-[82vh] overflow-hidden p-0 bg-black mt-10">
+                        <DialogHeader className="sr-only">
+                            <DialogTitle>{activeVideo.title}</DialogTitle>
+                            <DialogDescription>{activeVideo.url}</DialogDescription>
+                        </DialogHeader>
+                        <div className="aspect-video w-full bg-black">
+                            <iframe
+                                src={activeVideo.url}
+                                className="w-full h-full"
+                                title={activeVideo.title}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                            />
+                        </div>
+                    </DialogContent>
+                </Dialog>
+            )}
         </>
     )
 }

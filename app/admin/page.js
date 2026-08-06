@@ -3467,6 +3467,20 @@ function LibraryMaterialsView({ content, setContent, saveContent, api }) {
     })
   }
 
+  const updateMaterialFileUrl = (index, languageCode, url) => {
+    const current = getItems()
+    const item = current[index]
+    const nextFiles = { ...(item.files || {}) }
+
+    if (url) {
+      nextFiles[languageCode] = { url }
+    } else {
+      delete nextFiles[languageCode]
+    }
+
+    updateMaterial(index, { files: nextFiles })
+  }
+
   const resetMaterials = () => {
     if (!confirm('Reset library images and links?')) return
 
@@ -3589,22 +3603,38 @@ function LibraryMaterialsView({ content, setContent, saveContent, api }) {
                     <div className="grid md:grid-cols-2 gap-3">
                       {DOWNLOAD_LANGUAGES.map((language) => (
                         <div key={language.code}>
-                          <CloudinaryFilePicker
-                            label={`${language.label} File`}
-                            module="communication"
-                            category={item.type === 'videos' ? 'animated-videos' : 'comics'}
-                            accept={item.type === 'videos' ? VIDEO_FILE_ACCEPT : CLOUDINARY_FILE_ACCEPT}
-                            videoOnly={item.type === 'videos'}
-                            value={item.files?.[language.code] || null}
-                            onChange={(file) =>
-                              updateMaterial(i, {
-                                files: {
-                                  ...(item.files || {}),
-                                  [language.code]: file,
-                                },
-                              })
-                            }
-                          />
+                          {item.type !== 'videos' ? (
+                            <CloudinaryFilePicker
+                              label={`${language.label} File`}
+                              module="communication"
+                              category="comics"
+                              accept={CLOUDINARY_FILE_ACCEPT}
+                              value={item.files?.[language.code] || null}
+                              onChange={(file) =>
+                                updateMaterial(i, {
+                                  files: {
+                                    ...(item.files || {}),
+                                    [language.code]: file,
+                                  },
+                                })
+                              }
+                            />
+                          ) : null}
+
+                          {item.type === 'videos' ? (
+                            <div className="mt-3">
+                              <Label>YouTube URL</Label>
+                              <Input
+                                value={
+                                  typeof item.files?.[language.code] === 'string'
+                                    ? item.files[language.code]
+                                    : item.files?.[language.code]?.url || ''
+                                }
+                                onChange={(e) => updateMaterialFileUrl(i, language.code, e.target.value)}
+                                placeholder="https://www.youtube.com/watch?v=..."
+                              />
+                            </div>
+                          ) : null}
                         </div>
                       ))}
                     </div>
