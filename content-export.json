@@ -3511,19 +3511,7 @@
         "or": "https://bharatserums-my.sharepoint.com/:u:/g/personal/jeevan_gilbile_bsvgroup_com/IQDXL6ukhxpIR72NhnStjG36AVQ1TwpP_TlLBvaDpB0I4q8?e=A4MK1T"
       },
       "files": {
-        "en": {
-          "id": "37064f92-b16f-43d1-8c0a-bb9dede306bc",
-          "title": "ASVS - English Brochure AW 14-05-26-compressed (1).pdf",
-          "module": "communication",
-          "category": "comics",
-          "originalFileName": "ASVS - English Brochure AW 14-05-26-compressed (1).pdf",
-          "storedFileName": "37064f92-b16f-43d1-8c0a-bb9dede306bc.pdf",
-          "fileType": "application/pdf",
-          "fileSize": 3277857,
-          "url": "/animated-videos-&-comics/37064f92-b16f-43d1-8c0a-bb9dede306bc",
-          "uploadedAt": "2026-08-06T13:16:56.535Z",
-          "updatedAt": "2026-08-06T13:16:56.535Z"
-        }
+        "en": null
       }
     }
   ],
