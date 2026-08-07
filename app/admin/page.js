@@ -3702,9 +3702,7 @@ function LibraryMaterialsView({ content, setContent, saveContent, api }) {
                 </Button>
               </div>
 
-              <p className="text-sm text-slate-500">
-                These items will show on /animated-videos-and-comics with All and language filters.
-              </p>
+              
             </div>
 
             <Button type="button" onClick={addComic} className="bg-bsv-red">
