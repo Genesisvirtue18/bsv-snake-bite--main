@@ -1,531 +1,600 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import { DEFAULT_CONTENT } from '@/lib/defaultContent'
+import Link from 'next/link'
+import {
+  ArrowLeft,
+  ExternalLink,
+  FileText,
+  Image as ImageIcon,
+  Languages,
+} from 'lucide-react'
+
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
-import { ArrowLeft, BookOpen, Download, ExternalLink, FileText, Languages, Play } from 'lucide-react'
-import Link from 'next/link'
+import { Badge } from '@/components/ui/badge'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { getDocumentPath } from '@/lib/documentPaths'
 
 const LANGUAGE_OPTIONS = [
-    { code: 'en', label: 'English' },
-    { code: 'hi', label: 'हिन्दी' },
-    { code: 'mr', label: 'मराठी' },
-    { code: 'ta', label: 'தமிழ்' },
-    { code: 'te', label: 'తెలుగు' },
-    { code: 'kn', label: 'ಕನ್ನಡ' },
-    { code: 'bn', label: 'বাংলা' },
-    { code: 'gu', label: 'ગુજરાતી' },
-    { code: 'or', label: 'ଓଡ଼ିଆ' },
+  { code: 'all', label: 'All' },
+  { code: 'en', label: 'English' },
+  { code: 'hi', label: 'हिन्दी' },
+  { code: 'mr', label: 'मराठी' },
+  { code: 'ta', label: 'தமிழ்' },
+  { code: 'te', label: 'తెలుగు' },
+  { code: 'kn', label: 'ಕನ್ನಡ' },
+  { code: 'bn', label: 'বাংলা' },
+  { code: 'gu', label: 'ગુજરાતી' },
+  { code: 'or', label: 'ଓଡ଼ିଆ' },
 ]
 
-const DEFAULT_DOWNLOAD_MATERIALS = [
-    {
-        id: 'animated-videos',
-        title: 'Animated Videos',
-        type: 'videos',
-        description: 'Short awareness videos that educate and spread life-saving information.',
-        image: '',
-        buttonText: 'Watch Videos',
-        links: {
-            en: '',
-            hi: '',
-            mr: '',
-            ta: '',
-            te: '',
-            kn: '',
-            bn: '',
-            gu: '',
-            or: '',
-        },
-    },
-    {
-        id: 'comics',
-        title: 'Comics',
-        type: 'comics',
-        description: 'Informative comics for all age groups to understand snakebite prevention and care.',
-        image: '',
-        buttonText: 'View Comics',
-        links: {
-            en: '',
-            hi: '',
-            mr: '',
-            ta: '',
-            te: '',
-            kn: '',
-            bn: '',
-            gu: '',
-            or: '',
-        },
-    },
+const LANGUAGE_LABEL_MAP = {
+  en: 'English',
+  hi: 'Hindi',
+  mr: 'Marathi',
+  ta: 'Tamil',
+  te: 'Telugu',
+  kn: 'Kannada',
+  bn: 'Bengali',
+  gu: 'Gujarati',
+  or: 'Odia',
+}
+
+const INDIAN_STATES = [
+  'Andaman and Nicobar Islands',
+  'Andhra Pradesh',
+  'Arunachal Pradesh',
+  'Assam',
+  'Bihar',
+  'Chandigarh',
+  'Chhattisgarh',
+  'Dadra and Nagar Haveli and Daman and Diu',
+  'Delhi',
+  'Goa',
+  'Gujarat',
+  'Haryana',
+  'Himachal Pradesh',
+  'Jammu and Kashmir',
+  'Jharkhand',
+  'Karnataka',
+  'Kerala',
+  'Ladakh',
+  'Lakshadweep',
+  'Madhya Pradesh',
+  'Maharashtra',
+  'Manipur',
+  'Meghalaya',
+  'Mizoram',
+  'Nagaland',
+  'Odisha',
+  'Puducherry',
+  'Punjab',
+  'Rajasthan',
+  'Sikkim',
+  'Tamil Nadu',
+  'Telangana',
+  'Tripura',
+  'Uttar Pradesh',
+  'Uttarakhand',
+  'West Bengal',
 ]
 
 const PAGE_TEXT = {
-    en: {
-        home: 'Home',
-        downloads: 'Animated Videos & Comics',
-        resourceLibrary: 'Resource library',
-        title: 'Resource Library',
-        subtitle: 'Download animated videos and comics\nin your preferred language.',
-        chooseLanguage: 'Choose Language',
-        missingLink: 'Available Soon',
-    },
-    hi: {
-        home: 'होम',
-        downloads: 'डाउनलोड्स',
-        resourceLibrary: 'संसाधन लाइब्रेरी',
-        title: 'संसाधन लाइब्रेरी',
-        subtitle: 'एनिमेटेड वीडियो और कॉमिक्स\nअपनी पसंदीदा भाषा में डाउनलोड करें।',
-        chooseLanguage: 'भाषा चुनें',
-        missingLink: 'जल्द उपलब्ध होगा',
-    },
-    mr: {
-        home: 'होम',
-        downloads: 'डाउनलोड्स',
-        resourceLibrary: 'संसाधन लायब्ररी',
-        title: 'संसाधन लायब्ररी',
-        subtitle: 'अ‍ॅनिमेटेड व्हिडिओ आणि कॉमिक्स\nआपल्या पसंतीच्या भाषेत डाउनलोड करा.',
-        chooseLanguage: 'भाषा निवडा',
-        missingLink: 'लवकरच उपलब्ध',
-    },
-    ta: {
-        home: 'முகப்பு',
-        downloads: 'பதிவிறக்கங்கள்',
-        resourceLibrary: 'வள நூலகம்',
-        title: 'வள நூலகம்',
-        subtitle: 'அனிமேஷன் வீடியோக்கள் மற்றும் காமிக்ஸை\nஉங்கள் விருப்ப மொழியில் பதிவிறக்குங்கள்.',
-        chooseLanguage: 'மொழியைத் தேர்ந்தெடுக்கவும்',
-        missingLink: 'விரைவில் கிடைக்கும்',
-    },
-    te: {
-        home: 'హోమ్',
-        downloads: 'డౌన్‌లోడ్స్',
-        resourceLibrary: 'వనరుల లైబ్రరీ',
-        title: 'వనరుల లైబ్రరీ',
-        subtitle: 'యానిమేటెడ్ వీడియోలు మరియు కామిక్స్‌ను\nమీకు ఇష్టమైన భాషలో డౌన్‌లోడ్ చేసుకోండి.',
-        chooseLanguage: 'భాషను ఎంచుకోండి',
-        missingLink: 'త్వరలో అందుబాటులో ఉంటుంది',
-    },
-    kn: {
-        home: 'ಮುಖಪುಟ',
-        downloads: 'ಡೌನ್‌ಲೋಡ್‌ಗಳು',
-        resourceLibrary: 'ಸಂಪನ್ಮೂಲ ಗ್ರಂಥಾಲಯ',
-        title: 'ಸಂಪನ್ಮೂಲ ಗ್ರಂಥಾಲಯ',
-        subtitle: 'ಅನಿಮೇಟೆಡ್ ವೀಡಿಯೊಗಳು ಮತ್ತು ಕಾಮಿಕ್ಸ್ ಅನ್ನು\nನಿಮ್ಮ ಇಷ್ಟದ ಭಾಷೆಯಲ್ಲಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ.',
-        chooseLanguage: 'ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ',
-        missingLink: 'ಶೀಘ್ರದಲ್ಲೇ ಲಭ್ಯವಿದೆ',
-    },
-    bn: {
-        home: 'হোম',
-        downloads: 'ডাউনলোডস',
-        resourceLibrary: 'রিসোর্স লাইব্রেরি',
-        title: 'রিসোর্স লাইব্রেরি',
-        subtitle: 'অ্যানিমেটেড ভিডিও এবং কমিক্স\nআপনার পছন্দের ভাষায় ডাউনলোড করুন।',
-        chooseLanguage: 'ভাষা নির্বাচন করুন',
-        missingLink: 'শীঘ্রই উপলব্ধ',
-    },
-    gu: {
-        home: 'હોમ',
-        downloads: 'ડાઉનલોડ્સ',
-        resourceLibrary: 'સંસાધન લાઇબ્રેરી',
-        title: 'સંસાધન લાઇબ્રેરી',
-        subtitle: 'એનિમેટેડ વિડિઓઝ અને કોમિક્સ\nતમારી પસંદગીની ભાષામાં ડાઉનલોડ કરો.',
-        chooseLanguage: 'ભાષા પસંદ કરો',
-        missingLink: 'ટૂંક સમયમાં ઉપલબ્ધ',
-    },
-    or: {
-        home: 'ହୋମ',
-        downloads: 'ଡାଉନଲୋଡ୍ସ',
-        resourceLibrary: 'ସମ୍ବଳ ଲାଇବ୍ରେରୀ',
-        title: 'ସମ୍ବଳ ଲାଇବ୍ରେରୀ',
-        subtitle: 'ଆନିମେଟେଡ୍ ଭିଡିଓ ଏବଂ କମିକ୍ସକୁ\nଆପଣଙ୍କ ପସନ୍ଦର ଭାଷାରେ ଡାଉନଲୋଡ୍ କରନ୍ତୁ।',
-        chooseLanguage: 'ଭାଷା ବାଛନ୍ତୁ',
-        missingLink: 'ଶୀଘ୍ର ଉପଲବ୍ଧ',
-    },
+  en: {
+    home: 'Home',
+    title: 'Animated Videos & Comics',
+    subtitle: 'Browse comics by language.',
+    library: 'Comics in multiple languages',
+    selectLanguage: 'Select Language',
+    noItems: 'Comics will be available soon',
+    noItemsDesc: 'Please check back later for comics.',
+    noResult: 'No comics are available in this language yet',
+    noResultDesc: 'Please choose another language or check back later.',
+    defaultDescription: 'Read this comic.',
+    viewDownload: 'View / Read',
+    fileNotAdded: 'File Not Added',
+  },
+  hi: {
+    home: 'होम',
+    title: 'एनिमेटेड वीडियो और कॉमिक्स',
+    subtitle: 'भाषा के अनुसार कॉमिक्स देखें।',
+    library: 'कई भाषाओं में कॉमिक्स',
+    selectLanguage: 'भाषा चुनें',
+    noItems: 'कॉमिक्स जल्द उपलब्ध होंगी',
+    noItemsDesc: 'कृपया बाद में फिर देखें।',
+    noResult: 'इस भाषा में अभी कोई कॉमिक्स उपलब्ध नहीं है',
+    noResultDesc: 'कृपया दूसरी भाषा चुनें या बाद में फिर देखें।',
+    defaultDescription: 'यह कॉमिक पढ़ें।',
+    viewDownload: 'देखें / पढ़ें',
+    fileNotAdded: 'फाइल नहीं जोड़ी गई',
+  },
+  mr: {
+    home: 'होम',
+    title: 'अ‍ॅनिमेटेड व्हिडिओ आणि कॉमिक्स',
+    subtitle: 'भाषेनुसार कॉमिक्स पहा.',
+    library: 'अनेक भाषांतील कॉमिक्स',
+    selectLanguage: 'भाषा निवडा',
+    noItems: 'कॉमिक्स लवकरच उपलब्ध होणार',
+    noItemsDesc: 'कृपया नंतर पुन्हा पहा.',
+    noResult: 'या भाषेत अजून कॉमिक्स उपलब्ध नाहीत',
+    noResultDesc: 'कृपया दुसरी भाषा निवडा किंवा नंतर पुन्हा पहा.',
+    defaultDescription: 'ही कॉमिक वाचा.',
+    viewDownload: 'पहा / वाचा',
+    fileNotAdded: 'फाइल जोडलेली नाही',
+  },
+  ta: {
+    home: 'முகப்பு',
+    title: 'அனிமேஷன் வீடியோக்கள் மற்றும் காமிக்ஸ்',
+    subtitle: 'மொழி அடிப்படையில் காமிக்ஸைப் பாருங்கள்.',
+    library: 'பல மொழிகளில் காமிக்ஸ்',
+    selectLanguage: 'மொழியைத் தேர்ந்தெடுக்கவும்',
+    noItems: 'காமிக்ஸ் விரைவில் கிடைக்கும்',
+    noItemsDesc: 'பின்னர் மீண்டும் பார்க்கவும்.',
+    noResult: 'இந்த மொழியில் இன்னும் காமிக்ஸ் இல்லை',
+    noResultDesc: 'வேறு மொழியைத் தேர்ந்தெடுக்கவும் அல்லது பின்னர் மீண்டும் பார்க்கவும்.',
+    defaultDescription: 'இந்த காமிக்ஸைப் படிக்கவும்.',
+    viewDownload: 'பார்க்க / படிக்க',
+    fileNotAdded: 'கோப்பு சேர்க்கப்படவில்லை',
+  },
+  te: {
+    home: 'హోమ్',
+    title: 'యానిమేటెడ్ వీడియోలు మరియు కామిక్స్',
+    subtitle: 'భాష ఆధారంగా కామిక్స్ చూడండి.',
+    library: 'బహుళ భాషల్లో కామిక్స్',
+    selectLanguage: 'భాషను ఎంచుకోండి',
+    noItems: 'కామిక్స్ త్వరలో అందుబాటులో ఉంటాయి',
+    noItemsDesc: 'దయచేసి తర్వాత మళ్లీ చూడండి.',
+    noResult: 'ఈ భాషలో ఇంకా కామిక్స్ అందుబాటులో లేవు',
+    noResultDesc: 'దయచేసి మరో భాషను ఎంచుకోండి లేదా తర్వాత మళ్లీ చూడండి.',
+    defaultDescription: 'ఈ కామిక్స్‌ను చదవండి.',
+    viewDownload: 'చూడండి / చదవండి',
+    fileNotAdded: 'ఫైల్ జోడించలేదు',
+  },
+  kn: {
+    home: 'ಮುಖಪುಟ',
+    title: 'ಅನಿಮೇಟೆಡ್ ವೀಡಿಯೊಗಳು ಮತ್ತು ಕಾಮಿಕ್ಸ್',
+    subtitle: 'ಭಾಷೆಯ ಪ್ರಕಾರ ಕಾಮಿಕ್ಸ್‌ಗಳನ್ನು ನೋಡಿ.',
+    library: 'ಬಹು ಭಾಷೆಗಳಲ್ಲಿ ಕಾಮಿಕ್ಸ್‌ಗಳು',
+    selectLanguage: 'ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ',
+    noItems: 'ಕಾಮಿಕ್ಸ್‌ಗಳು ಶೀಘ್ರದಲ್ಲೇ ಲಭ್ಯವಾಗುತ್ತವೆ',
+    noItemsDesc: 'ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪರಿಶೀಲಿಸಿ.',
+    noResult: 'ಈ ಭಾಷೆಯಲ್ಲಿ ಇನ್ನೂ ಕಾಮಿಕ್ಸ್‌ಗಳು ಲಭ್ಯವಿಲ್ಲ',
+    noResultDesc: 'ದಯವಿಟ್ಟು ಬೇರೆ ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ ಅಥವಾ ನಂತರ ಮತ್ತೆ ಪರಿಶೀಲಿಸಿ.',
+    defaultDescription: 'ಈ ಕಾಮಿಕ್ಸ್‌ ಓದಿರಿ.',
+    viewDownload: 'ನೋಡಿ / ಓದಿ',
+    fileNotAdded: 'ಫೈಲ್ ಸೇರಿಸಲಾಗಿಲ್ಲ',
+  },
+  bn: {
+    home: 'হোম',
+    title: 'অ্যানিমেটেড ভিডিও এবং কমিক্স',
+    subtitle: 'ভাষা অনুযায়ী কমিক্স দেখুন।',
+    library: 'বহু ভাষায় কমিক্স',
+    selectLanguage: 'ভাষা নির্বাচন করুন',
+    noItems: 'কমিক্স শীঘ্রই উপলব্ধ হবে',
+    noItemsDesc: 'অনুগ্রহ করে পরে আবার দেখুন।',
+    noResult: 'এই ভাষায় এখনও কোনো কমিক্স উপলব্ধ নেই',
+    noResultDesc: 'অনুগ্রহ করে অন্য ভাষা নির্বাচন করুন বা পরে আবার দেখুন।',
+    defaultDescription: 'এই কমিক্সটি পড়ুন।',
+    viewDownload: 'দেখুন / পড়ুন',
+    fileNotAdded: 'ফাইল যোগ করা হয়নি',
+  },
+  gu: {
+    home: 'હોમ',
+    title: 'એનિમેટેડ વિડિઓઝ અને કોમિક્સ',
+    subtitle: 'ભાષા પ્રમાણે કોમિક્સ જુઓ.',
+    library: 'બહુ ભાષાઓમાં કોમિક્સ',
+    selectLanguage: 'ભાષા પસંદ કરો',
+    noItems: 'કોમિક્સ ટૂંક સમયમાં ઉપલબ્ધ થશે',
+    noItemsDesc: 'કૃપા કરીને પછી ફરી તપાસો.',
+    noResult: 'આ ભાષામાં હજી કોમિક્સ ઉપલબ્ધ નથી',
+    noResultDesc: 'કૃપા કરીને બીજી ભાષા પસંદ કરો અથવા પછી ફરી તપાસો.',
+    defaultDescription: 'આ કોमिक વાંચો.',
+    viewDownload: 'જુઓ / વાંચો',
+    fileNotAdded: 'ફાઇલ ઉમેરાઈ નથી',
+  },
+  or: {
+    home: 'ହୋମ',
+    title: 'ଆନିମେଟେଡ୍ ଭିଡିଓ ଏବଂ କମିକ୍ସ',
+    subtitle: 'ଭାଷା ଅନୁସାରେ କମିକ୍ସ ଦେଖନ୍ତୁ।',
+    library: 'ବହୁ ଭାଷାରେ କମିକ୍ସ',
+    selectLanguage: 'ଭାଷା ବାଛନ୍ତୁ',
+    noItems: 'କମିକ୍ସ ଶୀଘ୍ର ଉପଲବ୍ଧ ହେବ',
+    noItemsDesc: 'ଦୟାକରି ପରେ ପୁଣି ଦେଖନ୍ତୁ।',
+    noResult: 'ଏହି ଭାଷାରେ ଏପର୍ଯ୍ୟନ୍ତ କମିକ୍ସ ଉପଲବ୍ଧ ନାହିଁ',
+    noResultDesc: 'ଦୟାକରି ଅନ୍ୟ ଭାଷା ବାଛନ୍ତୁ କିମ୍ବା ପରେ ପୁଣି ଦେଖନ୍ତୁ।',
+    defaultDescription: 'ଏହି କମିକ୍ସ ପଢ଼ନ୍ତୁ।',
+    viewDownload: 'ଦେଖନ୍ତୁ / ପଢ଼ନ୍ତୁ',
+    fileNotAdded: 'ଫାଇଲ୍ ଯୋଡାଯାଇନାହିଁ',
+  },
 }
 
-const MATERIAL_TEXT = {
-    'animated-videos': {
-        en: {
-            title: 'Animated Videos',
-            description: 'Short awareness videos that educate and spread life-saving information.',
-            buttonText: 'Watch Videos',
-        },
-        hi: {
-            title: 'एनिमेटेड वीडियो',
-            description: 'जागरूकता बढ़ाने वाले छोटे वीडियो जो जीवन बचाने वाली जानकारी देते हैं।',
-            buttonText: 'वीडियो देखें',
-        },
-        mr: {
-            title: 'अ‍ॅनिमेटेड व्हिडिओ',
-            description: 'जागरूकता वाढवणारे छोटे व्हिडिओ जे जीवनरक्षक माहिती देतात.',
-            buttonText: 'व्हिडिओ पहा',
-        },
-        ta: {
-            title: 'அனிமேஷன் வீடியோக்கள்',
-            description: 'உயிர் காக்கும் தகவலை எளிதாக விளக்கும் குறும் விழிப்புணர்வு வீடியோக்கள்.',
-            buttonText: 'வீடியோக்களைப் பார்க்கவும்',
-        },
-        te: {
-            title: 'యానిమేటెడ్ వీడియోలు',
-            description: 'ప్రాణాలను కాపాడే సమాచారాన్ని అందించే చిన్న అవగాహన వీడియోలు.',
-            buttonText: 'వీడియోలు చూడండి',
-        },
-        kn: {
-            title: 'ಅನಿಮೇಟೆಡ್ ವೀಡಿಯೊಗಳು',
-            description: 'ಜೀವ ಉಳಿಸುವ ಮಾಹಿತಿಯನ್ನು ತಿಳಿಸುವ ಚಿಕ್ಕ ಜಾಗೃತಿ ವೀಡಿಯೊಗಳು.',
-            buttonText: 'ವೀಡಿಯೊಗಳನ್ನು ನೋಡಿ',
-        },
-        bn: {
-            title: 'অ্যানিমেটেড ভিডিও',
-            description: 'জীবনরক্ষাকারী তথ্য ছড়িয়ে দেওয়ার জন্য ছোট সচেতনতামূলক ভিডিও।',
-            buttonText: 'ভিডিও দেখুন',
-        },
-        gu: {
-            title: 'એનિમેટેડ વિડિઓઝ',
-            description: 'જીવન બચાવતી માહિતી આપતા ટૂંકા જાગૃતિ વિડિઓઝ.',
-            buttonText: 'વિડિઓ જુઓ',
-        },
-        or: {
-            title: 'ଆନିମେଟେଡ୍ ଭିଡିଓ',
-            description: 'ଜୀବନ ରକ୍ଷାକାରୀ ସୂଚନା ଦେଉଥିବା ଛୋଟ ସଚେତନତା ଭିଡିଓ।',
-            buttonText: 'ଭିଡିଓ ଦେଖନ୍ତୁ',
-        },
-    },
+function getLanguageCode(value) {
+  const raw = String(value || '').toLowerCase().trim()
 
-    comics: {
-        en: {
-            title: 'Comics',
-            description: 'Informative comics for all age groups to understand snakebite prevention and care.',
-            buttonText: 'View Comics',
-        },
-        hi: {
-            title: 'कॉमिक्स',
-            description: 'सांप के काटने से बचाव और देखभाल समझाने वाली आसान कॉमिक्स।',
-            buttonText: 'कॉमिक्स देखें',
-        },
-        mr: {
-            title: 'कॉमिक्स',
-            description: 'सर्पदंश प्रतिबंध आणि काळजी समजण्यासाठी सर्व वयोगटांसाठी माहितीपूर्ण कॉमिक्स.',
-            buttonText: 'कॉमिक्स पहा',
-        },
-        ta: {
-            title: 'காமிக்ஸ்',
-            description: 'பாம்பு கடி தடுப்பு மற்றும் பராமரிப்பை எளிதாக விளக்கும் தகவல் காமிக்ஸ்.',
-            buttonText: 'காமிக்ஸைப் பார்க்கவும்',
-        },
-        te: {
-            title: 'కామిక్స్',
-            description: 'పాము కాటు నివారణ మరియు సంరక్షణను అర్థం చేసుకునేందుకు సమాచారాత్మక కామిక్స్.',
-            buttonText: 'కామిక్స్ చూడండి',
-        },
-        kn: {
-            title: 'ಕಾಮಿಕ್ಸ್',
-            description: 'ಹಾವು ಕಚ್ಚುವಿಕೆ ತಡೆಗಟ್ಟುವಿಕೆ ಮತ್ತು ಆರೈಕೆಯನ್ನು ತಿಳಿಸುವ ಮಾಹಿತಿ ಕಾಮಿಕ್ಸ್.',
-            buttonText: 'ಕಾಮಿಕ್ಸ್ ನೋಡಿ',
-        },
-        bn: {
-            title: 'কমিক্স',
-            description: 'সাপের কামড় প্রতিরোধ ও যত্ন বোঝাতে সব বয়সের জন্য তথ্যপূর্ণ কমিক্স।',
-            buttonText: 'কমিক্স দেখুন',
-        },
-        gu: {
-            title: 'કોમિક્સ',
-            description: 'સર્પદંશથી બચાવ અને કાળજી સમજવા માટે માહિતીપ્રદ કોમિક્સ.',
-            buttonText: 'કોમિક્સ જુઓ',
-        },
-        or: {
-            title: 'କମିକ୍ସ',
-            description: 'ସାପ କାମୁଡ଼ା ପ୍ରତିରୋଧ ଏବଂ ଯତ୍ନ ବୁଝାଇବା ପାଇଁ ସୂଚନାମୂଳକ କମିକ୍ସ।',
-            buttonText: 'କମିକ୍ସ ଦେଖନ୍ତୁ',
-        },
-    },
+  if (!raw) return ''
 
-    
+  const matched = LANGUAGE_OPTIONS.find((language) => {
+    const code = String(language.code || '').toLowerCase()
+    const label = String(language.label || '').toLowerCase()
+    const englishLabel = String(LANGUAGE_LABEL_MAP[language.code] || '').toLowerCase()
+
+    return raw === code || raw === label || raw === englishLabel
+  })
+
+  return matched?.code || raw
 }
 
-function getIcon(type) {
-    if (type === 'videos') return Play
-    if (type === 'comics') return BookOpen
-    return FileText
+function getLanguageDisplay(value) {
+  const code = getLanguageCode(value)
+
+  if (!code || code === 'all') return ''
+
+  return LANGUAGE_LABEL_MAP[code] || value
 }
 
-function getAccent(type) {
-    if (type === 'videos') return 'from-[#3f37c9] to-[#201F5E]'
-    if (type === 'comics') return 'from-[#2f8f2f] to-[#217221]'
-    return 'from-[#ff6b22] to-[#e84b12]'
-}
+export default function ComicsPage() {
+  const [content, setContent] = useState(null)
+  const [selectedLanguage, setSelectedLanguage] = useState('all')
+  const [selectedMaterial, setSelectedMaterial] = useState(null)
+  const [leadSubmitting, setLeadSubmitting] = useState(false)
+  const [leadForm, setLeadForm] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    state: '',
+    profession: '',
+  })
 
-function getYoutubeId(url = '') {
+  useEffect(() => {
+    fetch('/api/content')
+      .then((response) => response.json())
+      .then((data) => setContent(data))
+      .catch(() => setContent(null))
+  }, [])
+
+  const items = useMemo(() => {
+    const saved = Array.isArray(content?.comics) ? content.comics : []
+    return saved.filter((item) => item.published !== false)
+  }, [content])
+
+  const filteredItems = useMemo(() => {
+    if (selectedLanguage === 'all') return items
+
+    return items.filter((item) => {
+      const languageCode = getLanguageCode(item.language)
+      return languageCode === selectedLanguage
+    })
+  }, [items, selectedLanguage])
+
+  const activeLang = selectedLanguage === 'all' ? 'en' : selectedLanguage
+  const baseUi = PAGE_TEXT[activeLang] || PAGE_TEXT.en
+  const header = content?.pageHeaders?.animatedVideosComics || {}
+  const ui = {
+    ...baseUi,
+    title: header.title || baseUi.title,
+    subtitle: header.description || baseUi.subtitle,
+  }
+
+  const getFileUrl = (item) => (item?.file?.id ? getDocumentPath('communication', item.file.id) : '')
+
+  const openFile = (item) => {
+    const url = getFileUrl(item)
+
+    if (!url || url === '#') return
+
+    if (content?.brochureLeadFormEnabled) {
+      setSelectedMaterial(item)
+      return
+    }
+
+    window.open(url, '_blank', 'noopener,noreferrer')
+  }
+
+  const submitLeadForm = async () => {
+    const fileUrl = getFileUrl(selectedMaterial)
+
+    if (!fileUrl) return
+
+    if (
+      !leadForm.name.trim() ||
+      !leadForm.phone.trim() ||
+      !leadForm.email.trim() ||
+      !leadForm.state.trim() ||
+      !leadForm.profession.trim()
+    ) {
+      alert('Please fill all fields.')
+      return
+    }
+
+    setLeadSubmitting(true)
+
     try {
-        const parsed = new URL(url.startsWith('http') ? url : `https://${url}`)
-        const host = parsed.hostname.toLowerCase()
-        const pathname = parsed.pathname.replace(/\/$/, '')
+      const response = await fetch('/api/brochure-leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...leadForm,
+          brochureId: selectedMaterial.id || '',
+          brochureTitle: selectedMaterial.title || '',
+          brochureUrl: fileUrl,
+          language: selectedMaterial.language || '',
+        }),
+      })
 
-        if (host.includes('youtu.be')) {
-            return pathname.slice(1)
-        }
+      if (!response.ok) {
+        alert('Something went wrong. Please try again.')
+        return
+      }
 
-        if (host.includes('youtube.com')) {
-            const params = parsed.searchParams
-            if (params.has('v')) return params.get('v') || ''
-            if (pathname.startsWith('/embed/') || pathname.startsWith('/v/') || pathname.startsWith('/e/')) {
-                return pathname.split('/')[2] || ''
-            }
-            if (pathname.startsWith('/shorts/') || pathname.startsWith('/live/')) {
-                return pathname.split('/')[2] || ''
-            }
-        }
+      window.open(fileUrl, '_blank', 'noopener,noreferrer')
+      setSelectedMaterial(null)
+      setLeadForm({
+        name: '',
+        phone: '',
+        email: '',
+        state: '',
+        profession: '',
+      })
     } catch (error) {
-        // ignore invalid URLs
+      alert('Something went wrong. Please try again.')
+    } finally {
+      setLeadSubmitting(false)
     }
-    return ''
-}
+  }
 
-function getYoutubeEmbedUrl(url = '') {
-    const id = getYoutubeId(url)
-    return id ? `https://www.youtube.com/embed/${id}?autoplay=1&rel=0` : ''
-}
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-white via-[#f8f9ff] to-[#eef3ff]">
+      <header className="bg-bsv-blue text-white py-4">
+        <div className="container mx-auto px-4 flex items-center gap-3">
+          <Link href="/">
+            <Button variant="ghost" className="text-white hover:bg-white/10">
+              <ArrowLeft className="w-4 h-4 mr-1" />
+              {ui.home}
+            </Button>
+          </Link>
 
-function isYoutubeUrl(url = '') {
-    return /(?:youtube\.com|youtu\.be)/i.test(String(url))
-}
+          <div>
+            <div className="font-display font-extrabold text-xl">{ui.title}</div>
+            <div className="text-xs text-white/70">{ui.library}</div>
+          </div>
+        </div>
+      </header>
 
-export default function DownloadsPage() {
-    const [lang, setLang] = useState('en')
-    const [content, setContent] = useState(null)
-    const [activeVideo, setActiveVideo] = useState(null)
+      <main className="container mx-auto px-4 py-14">
+        <section className="text-center max-w-3xl mx-auto mb-12">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white shadow mb-5">
+            <FileText className="w-8 h-8 text-[#201F5E]" />
+          </div>
 
-    useEffect(() => {
-        fetch('/api/content')
-            .then((r) => r.json())
-            .then((d) => setContent(d))
-            .catch(console.error)
-    }, [])
+          <h1 className="font-display text-[38px] md:text-[58px] font-extrabold leading-tight text-[#09084f]">
+            {ui.title}
+          </h1>
 
-    const materials = useMemo(() => {
-        const saved = content?.downloadMaterials
+          <div className="mx-auto mt-4 mb-6 flex items-center justify-center gap-2">
+            <span className="h-[3px] w-16 rounded-full bg-[#5b4af2]" />
+            <span className="h-2 w-2 rounded-full bg-[#5b4af2]" />
+            <span className="h-[3px] w-16 rounded-full bg-[#201F5E]" />
+          </div>
 
-        if (Array.isArray(saved) && saved.length) {
-            return DEFAULT_DOWNLOAD_MATERIALS.map((item) => {
-                const found = saved.find((m) => m.id === item.id)
-                return {
-                    ...item,
-                    ...(found || {}),
-                    links: {
-                        ...(item.links || {}),
-                        ...(found?.links || {}),
-                    },
-                    files: {
-                        ...(item.files || {}),
-                        ...(found?.files || {}),
-                    },
-                }
-            })
-        }
+          <p className="text-slate-600 text-base md:text-lg leading-relaxed">{ui.subtitle}</p>
+        </section>
 
-        return DEFAULT_DOWNLOAD_MATERIALS
-    }, [content])
+        <div className="mb-10">
+          <div className="flex items-center justify-center gap-3 mb-5">
+            <span className="hidden md:block h-px w-20 bg-[#5b4af2]" />
+            <span className="hidden md:block h-2 w-2 rounded-full bg-[#5b4af2]" />
 
-    const selectedLanguage = LANGUAGE_OPTIONS.find((l) => l.code === lang)?.label || 'English'
-    const baseUi = PAGE_TEXT[lang] || PAGE_TEXT.en
-    const header = content?.pageHeaders?.animatedVideosComics || {}
-    const ui = { ...baseUi, title: header.title || baseUi.title, subtitle: header.description || baseUi.subtitle }
-    const openResource = (item, uploadedUrl, title) => {
-        if (!uploadedUrl) {
-            alert('This file is currently unavailable. Please ask an administrator to replace it.')
-            return
-        }
+            <div className="flex items-center gap-2 font-display font-bold text-[#09084f] text-lg md:text-xl">
+              <Languages className="w-5 h-5" />
+              {ui.selectLanguage}
+            </div>
 
-        if (item.type === 'videos' && isYoutubeUrl(uploadedUrl)) {
-            const embedUrl = getYoutubeEmbedUrl(uploadedUrl)
-            if (embedUrl) {
-                setActiveVideo({ title: title || item.title, url: embedUrl })
-                return
-            }
-        }
+            <span className="hidden md:block h-2 w-2 rounded-full bg-[#5b4af2]" />
+            <span className="hidden md:block h-px w-20 bg-[#5b4af2]" />
+          </div>
 
-        window.open(uploadedUrl, '_blank', 'noopener,noreferrer')
-    }
+          <div className="flex flex-wrap justify-center gap-3">
+            {LANGUAGE_OPTIONS.map((language) => (
+              <button
+                key={language.code}
+                type="button"
+                onClick={() => setSelectedLanguage(language.code)}
+                className={[
+                  'min-w-[115px] rounded-xl border px-5 py-3 text-sm md:text-base font-semibold transition-all',
+                  selectedLanguage === language.code
+                    ? 'border-[#201F8F] bg-[#201F8F] text-white shadow-lg shadow-[#201F8F]/20'
+                    : 'border-[#d8def0] bg-white/80 text-[#09084f] hover:border-[#201F8F] hover:bg-white',
+                ].join(' ')}
+              >
+                {language.label}
+              </button>
+            ))}
+          </div>
+        </div>
 
-    return (
-        <>
-            <header className="bg-bsv-blue text-white py-4">
-                <div className="container mx-auto px-4 flex items-center gap-3">
-                    <Link href="/">
-                        <Button variant="ghost" className="text-white hover:bg-white/10">
-                            <ArrowLeft className="w-4 h-4 mr-1" />
-                            {ui.home}
-                        </Button>
-                    </Link>
+        {!items.length && (
+          <Card className="max-w-2xl mx-auto border-dashed">
+            <CardContent className="p-12 text-center">
+              <FileText className="w-16 h-16 mx-auto text-slate-300 mb-4" />
+              <h2 className="font-display font-bold text-xl text-[#09084f]">{ui.noItems}</h2>
+              <p className="text-slate-500 mt-2">{ui.noItemsDesc}</p>
+            </CardContent>
+          </Card>
+        )}
 
-                    <div>
-                        <div className="font-display font-extrabold text-xl">{ui.downloads}</div>
-                        <div className="text-xs text-white/70">{ui.resourceLibrary}</div>
-                    </div>
-                </div>
-            </header>
+        {!!items.length && !filteredItems.length && (
+          <Card className="max-w-2xl mx-auto border-dashed">
+            <CardContent className="p-12 text-center">
+              <FileText className="w-16 h-16 mx-auto text-slate-300 mb-4" />
+              <h2 className="font-display font-bold text-xl text-[#09084f]">{ui.noResult}</h2>
+              <p className="text-slate-500 mt-2">{ui.noResultDesc}</p>
+            </CardContent>
+          </Card>
+        )}
 
-            <main className="min-h-screen overflow-hidden bg-gradient-to-br from-white via-[#f8f9ff] to-[#eef3ff] pt-16 pb-20">
-                <section className="container mx-auto px-4">
-                    <div className="text-center max-w-3xl mx-auto mb-12">
-                        <h1 className="font-display text-[42px] md:text-[58px] font-extrabold leading-tight text-[#09084f]">
-                            {ui.title}
-                        </h1>
+        <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+          {filteredItems.map((item, index) => {
+            const languageDisplay = getLanguageDisplay(item.language)
+            const disabled = !getFileUrl(item) || getFileUrl(item) === '#'
 
-                        <div className="mx-auto mt-4 mb-6 flex items-center justify-center gap-2">
-                            <span className="h-[3px] w-16 rounded-full bg-[#5b4af2]" />
-                            <span className="h-2 w-2 rounded-full bg-[#5b4af2]" />
-                        </div>
+            return (
+              <Card
+                key={item.id || index}
+                className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+              >
+                <CardContent className="p-0">
+                  <div className="relative aspect-[16/10] bg-slate-100 overflow-hidden">
+                    {item.image ? (
+                      <img
+                        src={item.image}
+                        alt={item.title || ui.title}
+                        className="w-full h-full object-cover transition duration-700 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-slate-300">
+                        <ImageIcon className="w-16 h-16" />
+                      </div>
+                    )}
 
-                        <p className="text-slate-600 text-base md:text-xl leading-relaxed whitespace-pre-line">
-                            {ui.subtitle}
-                        </p>
-                    </div>
+                    {!!languageDisplay && (
+                      <div className="absolute left-3 top-3 flex gap-2 flex-wrap">
+                        <Badge className="border-0 bg-[#de2527]">{languageDisplay}</Badge>
+                      </div>
+                    )}
+                  </div>
 
-                    <div className="mb-9">
-                        <div className="flex items-center justify-center gap-3 mb-5">
-                            <span className="hidden md:block h-px w-20 bg-[#5b4af2]" />
-                            <span className="hidden md:block h-2 w-2 rounded-full bg-[#5b4af2]" />
+                  <div className="p-5">
+                    <h2 className="font-display font-extrabold text-xl text-[#09084f] line-clamp-2">
+                      {item.title || 'Untitled Comic'}
+                    </h2>
 
-                            <div className="flex items-center gap-2 font-display font-bold text-[#09084f] text-lg md:text-xl">
-                                <Languages className="w-5 h-5" />
-                                {ui.chooseLanguage}
-                            </div>
+                    <p className="text-sm text-slate-600 leading-relaxed mt-3 min-h-[64px] line-clamp-3">
+                      {item.description || ui.defaultDescription}
+                    </p>
 
-                            <span className="hidden md:block h-2 w-2 rounded-full bg-[#5b4af2]" />
-                            <span className="hidden md:block h-px w-20 bg-[#5b4af2]" />
-                        </div>
+                    {disabled ? (
+                      <Button
+                        disabled
+                        className="mt-5 w-full h-11 rounded-lg bg-slate-300 text-white font-bold disabled:opacity-70 disabled:cursor-not-allowed"
+                      >
+                        <FileText className="w-4 h-4 mr-2" />
+                        {ui.fileNotAdded}
+                      </Button>
+                    ) : (
+                      <Button
+                        type="button"
+                        onClick={() => openFile(item)}
+                        className="mt-5 w-full h-11 rounded-lg bg-gradient-to-r from-[#de2527] to-[#a81b1d] text-white font-bold"
+                      >
+                        {ui.viewDownload}
+                        <ExternalLink className="w-4 h-4 ml-2" />
+                      </Button>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            )
+          })}
+        </div>
+      </main>
 
-                        <div className="flex flex-wrap justify-center gap-3">
-                            {LANGUAGE_OPTIONS.map((language) => (
-                                <button
-                                    key={language.code}
-                                    type="button"
-                                    onClick={() => setLang(language.code)}
-                                    className={[
-                                        'min-w-[115px] rounded-xl border px-5 py-3 text-sm md:text-base font-semibold transition-all',
-                                        lang === language.code
-                                            ? 'border-[#201F8F] bg-[#201F8F] text-white shadow-lg shadow-[#201F8F]/20'
-                                            : 'border-[#d8def0] bg-white/80 text-[#09084f] hover:border-[#201F8F] hover:bg-white',
-                                    ].join(' ')}
-                                >
-                                    {language.label}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+      <Dialog
+        open={!!selectedMaterial}
+        onOpenChange={(open) => {
+          if (!open) setSelectedMaterial(null)
+        }}
+      >
+        <DialogContent className="max-w-lg rounded-2xl">
+          <DialogHeader>
+            <DialogTitle className="font-display text-2xl text-[#09084f]">Download Comic</DialogTitle>
+            <DialogDescription>Please fill in your details to access the comic.</DialogDescription>
+          </DialogHeader>
 
-                    <div className="mx-auto grid max-w-5xl gap-7 md:grid-cols-2">
-                        {materials.map((item) => {
-                            const translated = MATERIAL_TEXT[item.id]?.[lang] || MATERIAL_TEXT[item.id]?.en || {}
-                            const Icon = getIcon(item.type)
-                            const fileValue = item.files?.[lang]
-                            const uploadedUrl = fileValue
-                              ? typeof fileValue === 'string'
-                                ? fileValue
-                                : fileValue.id
-                                  ? getDocumentPath('communication', fileValue.id)
-                                  : fileValue.url || ''
-                              : ''
-                            const link = uploadedUrl
-                            const accent = getAccent(item.type)
-                            const disabled = !link || link === '#'
+          <div className="space-y-4">
+            <div>
+              <Label>Name</Label>
+              <Input
+                value={leadForm.name}
+                onChange={(event) => setLeadForm({ ...leadForm, name: event.target.value })}
+                placeholder="Enter your name"
+              />
+            </div>
 
-                            return (
-                                <Card
-                                    key={item.id}
-                                    className="group overflow-visible rounded-2xl border border-slate-200 bg-white/95 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
-                                >
-                                    <CardContent className="p-4 md:p-5">
-                                        <div className="relative">
-                                            <div className="aspect-[16/10] overflow-hidden rounded-xl bg-slate-100">
-                                                {item.image ? (
-                                                    <img
-                                                        src={item.image}
-                                                        alt={translated.title || item.title}
-                                                        className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                                                    />
-                                                ) : (
-                                                    <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 text-slate-400">
-                                                        <Icon className="w-14 h-14" />
-                                                    </div>
-                                                )}
-                                            </div>
+            <div>
+              <Label>Phone Number</Label>
+              <Input
+                value={leadForm.phone}
+                onChange={(event) => setLeadForm({ ...leadForm, phone: event.target.value })}
+                placeholder="Enter your phone number"
+              />
+            </div>
 
-                                            <div className={`absolute -top-7 left-1/2 -translate-x-1/2 h-16 w-16 rounded-full bg-gradient-to-br ${accent} border-4 border-white shadow-xl flex items-center justify-center`}>
-                                                <Icon className="w-8 h-8 text-white" />
-                                            </div>
-                                        </div>
+            <div>
+              <Label>Email</Label>
+              <Input
+                type="email"
+                value={leadForm.email}
+                onChange={(event) => setLeadForm({ ...leadForm, email: event.target.value })}
+                placeholder="Enter your email"
+              />
+            </div>
 
-                                        <div className="pt-7 text-center">
-                                            <h2 className="font-display text-2xl font-extrabold text-[#09084f]">
-                                                {translated.title || item.title}
-                                            </h2>
+            <div>
+              <Label>State</Label>
+              <Select
+                value={leadForm.state}
+                onValueChange={(value) => setLeadForm({ ...leadForm, state: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your state" />
+                </SelectTrigger>
 
-                                            <div
-                                                className={[
-                                                    'mx-auto mt-3 mb-4 h-[3px] w-10 rounded-full',
-                                                    item.type === 'videos'
-                                                        ? 'bg-[#5b4af2]'
-                                                        : item.type === 'comics'
-                                                            ? 'bg-[#359b36]'
-                                                            : 'bg-[#ff6b22]',
-                                                ].join(' ')}
-                                            />
+                <SelectContent className="max-h-72">
+                  {INDIAN_STATES.map((state) => (
+                    <SelectItem key={state} value={state}>
+                      {state}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-                                            <p className="mx-auto min-h-[72px] max-w-sm text-sm md:text-base leading-relaxed text-slate-600">
-                                                {translated.description || item.description}
-                                            </p>
+            <div>
+              <Label>Profession</Label>
+              <Input
+                value={leadForm.profession}
+                onChange={(event) => setLeadForm({ ...leadForm, profession: event.target.value })}
+                placeholder="Enter your profession"
+              />
+            </div>
 
-                                            <Button
-                                                disabled={disabled}
-                                                onClick={() => {
-                                                    if (!disabled) {
-                                                        openResource(item, uploadedUrl, translated.title || item.title)
-                                                    }
-                                                }}
-                                                className={`mt-5 w-full rounded-lg bg-gradient-to-r ${accent} text-white h-12 text-base font-bold disabled:cursor-not-allowed disabled:opacity-50`}
-                                            >
-                                                <ExternalLink className="w-5 h-5 mr-2" />
-                                                {translated.buttonText || item.buttonText}
-                                            </Button>
-
-                                            {disabled && (
-                                                <p className="mt-3 text-xs text-slate-400">
-                                                    {ui.missingLink}
-                                                </p>
-                                            )}
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            )
-                        })}
-                    </div>
-                </section>
-            </main>
-
-            {activeVideo && (
-                <Dialog open onOpenChange={() => setActiveVideo(null)}>
-                    <DialogContent className="max-w-4xl w-[92vw] max-h-[82vh] overflow-hidden p-0 bg-black mt-10">
-                        <DialogHeader className="sr-only">
-                            <DialogTitle>{activeVideo.title}</DialogTitle>
-                            <DialogDescription>{activeVideo.url}</DialogDescription>
-                        </DialogHeader>
-                        <div className="aspect-video w-full bg-black">
-                            <iframe
-                                src={activeVideo.url}
-                                className="w-full h-full"
-                                title={activeVideo.title}
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                            />
-                        </div>
-                    </DialogContent>
-                </Dialog>
-            )}
-        </>
-    )
+            <Button
+              type="button"
+              disabled={leadSubmitting}
+              onClick={submitLeadForm}
+              className="w-full h-11 rounded-lg bg-gradient-to-r from-[#de2527] to-[#a81b1d] text-white font-bold"
+            >
+              {leadSubmitting ? 'Submitting...' : 'Submit & Read'}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
+  )
 }

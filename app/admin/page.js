@@ -32,47 +32,6 @@ const DOWNLOAD_LANGUAGES = [
   { code: 'or', label: 'Odia' },
 ]
 
-const DEFAULT_DOWNLOAD_MATERIALS = [
-  {
-    id: 'animated-videos',
-    title: 'Animated Videos',
-    type: 'videos',
-    description: 'Short awareness videos that educate and spread life-saving information.',
-    image: '',
-    buttonText: 'Watch Videos',
-    links: {
-      en: '',
-      hi: '',
-      mr: '',
-      ta: '',
-      te: '',
-      kn: '',
-      bn: '',
-      gu: '',
-      or: '',
-    },
-  },
-  {
-    id: 'comics',
-    title: 'Comics',
-    type: 'comics',
-    description: 'Informative comics for all age groups to understand snakebite prevention and care.',
-    image: '',
-    buttonText: 'Download Comics',
-    links: {
-      en: '',
-      hi: '',
-      mr: '',
-      ta: '',
-      te: '',
-      kn: '',
-      bn: '',
-      gu: '',
-      or: '',
-    },
-  },
-]
-
 function MediaPicker({ value, onChange, label = 'Image' }) {
   const [open, setOpen] = useState(false)
   const [media, setMedia] = useState([])
@@ -2144,11 +2103,13 @@ export default function AdminPage() {
 
           <TabsContent value="library">
             {content && (
-              <div className="space-y-6"><BrandAdvocacyEditor content={content} setContent={setContent} saveContent={saveContent} /><LibraryMaterialsView content={content} setContent={setContent} saveContent={saveContent} api={api} /></div>
+              <div className="space-y-6">
+                <BrandAdvocacyEditor content={content} setContent={setContent} saveContent={saveContent} />
+                <LibraryMaterialsView content={content} setContent={setContent} saveContent={saveContent} api={api} />
+                <BrochuresManagerView content={content} setContent={setContent} saveContent={saveContent} api={api} />
+              </div>
             )}
           </TabsContent>
-
-
 
           <TabsContent value="brochureLeads">
             {content && (
@@ -3419,112 +3380,57 @@ function MankindAgritechEditor({ content, setContent, saveContent }) {
   )
 }
 
-function LibraryMaterialsView({ content, setContent, saveContent, api }) {
+function BrochuresManagerView({ content, setContent, saveContent, api }) {
   useEffect(() => {
-    const current = content?.pageHeaders?.animatedVideosComics || {}
+    const current = content?.pageHeaders?.brochures || {}
     if (current.title && current.description) return
-    setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), animatedVideosComics: { title: current.title || 'Resource Library', description: current.description || 'Download animated videos and comics in your preferred language.' } } })
+    setContent({
+      ...content,
+      pageHeaders: {
+        ...(content.pageHeaders || {}),
+        brochures: {
+          title: current.title || 'Posters & Brochures',
+          description: current.description || 'Browse awareness posters and brochures by language.',
+        },
+      },
+    })
   }, [])
 
-  const savedItems = Array.isArray(content.downloadMaterials)
-    ? content.downloadMaterials
-    : DEFAULT_DOWNLOAD_MATERIALS
+  const brochures = Array.isArray(content?.printMaterials) ? content.printMaterials : []
 
-  const printMaterials = Array.isArray(content.printMaterials)
-    ? content.printMaterials
-    : []
-
-  const getItems = () =>
-    DEFAULT_DOWNLOAD_MATERIALS.map((base) => {
-      const found = savedItems.find((m) => m.id === base.id)
-
-      return {
-        ...base,
-        ...(found || {}),
-        image: found?.image || base.image || '',
-        links: {
-          ...(base.links || {}),
-          ...(found?.links || {}),
-        },
-      }
-    })
-
-  const updateMaterial = (index, patch) => {
-    const current = getItems()
-
-    current[index] = {
-      ...current[index],
-      ...patch,
-      links: {
-        ...(current[index].links || {}),
-        ...(patch.links || {}),
-      },
-    }
-
-    setContent({
-      ...content,
-      downloadMaterials: current,
-    })
-  }
-
-  const updateMaterialFileUrl = (index, languageCode, url) => {
-    const current = getItems()
-    const item = current[index]
-    const nextFiles = { ...(item.files || {}) }
-
-    if (url) {
-      nextFiles[languageCode] = { url }
-    } else {
-      delete nextFiles[languageCode]
-    }
-
-    updateMaterial(index, { files: nextFiles })
-  }
-
-  const resetMaterials = () => {
-    if (!confirm('Reset library images and links?')) return
-
-    setContent({
-      ...content,
-      downloadMaterials: DEFAULT_DOWNLOAD_MATERIALS,
-    })
-  }
-
-  const sortedPrintMaterials = printMaterials
-
-  const addPrintMaterial = () => {
+  const addBrochure = () => {
     setContent({
       ...content,
       printMaterials: [
-        ...printMaterials,
+        ...brochures,
         {
-          id: `print-${Date.now()}`,
+          id: `brochure-${Date.now()}`,
           title: '',
           language: 'en',
           description: '',
           image: '',
-          fileUrl: '',
+          file: null,
           published: true,
         },
       ],
     })
   }
 
-  const updatePrintMaterial = (id, patch) => {
+  const updateBrochure = (id, patch) => {
     setContent({
       ...content,
-      printMaterials: printMaterials.map((item) =>
+      printMaterials: brochures.map((item) =>
         item.id === id ? { ...item, ...patch } : item
       ),
     })
   }
 
-  const deletePrintMaterial = (id) => {
-    if (!confirm('Delete this poster/brochure?')) return
+  const deleteBrochure = (id) => {
+    if (!confirm('Delete this brochure?')) return
 
     setContent({
       ...content,
-      printMaterials: printMaterials.filter((item) => item.id !== id),
+      printMaterials: brochures.filter((item) => item.id !== id),
     })
   }
 
@@ -3533,170 +3439,91 @@ function LibraryMaterialsView({ content, setContent, saveContent, api }) {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
           <h2 className="font-display font-extrabold text-2xl text-bsv-blue">
-            Animated Videos, Comics & Brochures
+            Brochures
           </h2>
-
           <p className="text-sm text-slate-500">
-            Manage fixed Animated video and  cards and separate Posters & Brochures page items.
+            Manage brochures for the posters and brochures page.
           </p>
         </div>
 
         <div className="flex gap-2">
-          <Button variant="outline" onClick={resetMaterials}>
-            <RefreshCw className="w-4 h-4 mr-1" />
-            Reset
-          </Button>
-
           <Button onClick={saveContent} className="bg-bsv-red">
             <Save className="w-4 h-4 mr-1" />
-            Save Library
+            Save Brochures
           </Button>
         </div>
       </div>
 
-      {/* Existing fixed download page cards */}
-      <Card>
-        <CardContent className="p-5 space-y-4">
-          <div>
-            
-
-            <div className="border rounded-xl p-4 bg-white space-y-3"><div><Label>Animated Videos & Comics Main Headline</Label><Input value={content.pageHeaders?.animatedVideosComics?.title ?? 'Resource Library'} onChange={e => setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), animatedVideosComics: { ...(content.pageHeaders?.animatedVideosComics || {}), title: e.target.value } } })} /></div><div><Label>Description</Label><Textarea rows={2} value={content.pageHeaders?.animatedVideosComics?.description ?? 'Download animated videos and comics in your preferred language.'} onChange={e => setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), animatedVideosComics: { ...(content.pageHeaders?.animatedVideosComics || {}), description: e.target.value } } })} /></div><Button className="bg-bsv-red" onClick={async () => { const header = content.pageHeaders?.animatedVideosComics || {}; const next = { ...content, pageHeaders: { ...(content.pageHeaders || {}), animatedVideosComics: { title: header.title ?? '', description: header.description ?? '' } } }; setContent(next); const r = await api('/api/content', 'PUT', next); if (r.ok) toast.success('Animated Videos & Comics page content saved'); else toast.error('Save failed') }}>Save Animated Page Content</Button></div>
-
-            <p className="text-sm text-slate-500">
-              Animated Videos and Comics
-            </p>
-          </div>
-
-          <div className="grid gap-4">
-            {getItems().map((item, i) => (
-              <Card key={item.id}>
-                <CardContent className="p-5 space-y-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <div>
-                      <h3 className="font-display font-bold text-lg text-bsv-blue">
-                        {item.title}
-                      </h3>
-
-                      <p className="text-xs text-slate-500">
-                        Frontend fixed card #{i + 1}
-                      </p>
-                    </div>
-
-                    <Badge variant="outline">
-                      {item.type}
-                    </Badge>
-                  </div>
-
-                  <div className="rounded-xl border bg-white p-4">
-                    <MediaPicker
-                      label="Card Image"
-                      value={item.image || ''}
-                      onChange={(v) => updateMaterial(i, { image: v })}
-                    />
-                  </div>
-
-                  <div className="rounded-xl border bg-slate-50 p-4">
-                    <div className="font-semibold text-sm text-bsv-blue mb-3">
-                      Language Wise Links
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-3">
-                      {DOWNLOAD_LANGUAGES.map((language) => (
-                        <div key={language.code}>
-                          {item.type !== 'videos' ? (
-                            <CloudinaryFilePicker
-                              label={`${language.label} File`}
-                              module="communication"
-                              category="comics"
-                              accept={CLOUDINARY_FILE_ACCEPT}
-                              value={item.files?.[language.code] || null}
-                              onChange={(file) =>
-                                updateMaterial(i, {
-                                  files: {
-                                    ...(item.files || {}),
-                                    [language.code]: file,
-                                  },
-                                })
-                              }
-                            />
-                          ) : null}
-
-                          {item.type === 'videos' ? (
-                            <div className="mt-3">
-                              <Label>YouTube URL</Label>
-                              <Input
-                                value={
-                                  typeof item.files?.[language.code] === 'string'
-                                    ? item.files[language.code]
-                                    : item.files?.[language.code]?.url || ''
-                                }
-                                onChange={(e) => updateMaterialFileUrl(i, language.code, e.target.value)}
-                                placeholder="https://www.youtube.com/watch?v=..."
-                              />
-                            </div>
-                          ) : null}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Separate Posters & Brochures page items */}
       <Card>
         <CardContent className="p-5 space-y-4">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
             <div>
               <h3 className="font-display font-bold text-xl text-bsv-blue">
-              Posters & Brochures Page
-            </h3>
+                Brochures Page
+              </h3>
 
-            <div className="border rounded-xl p-4 bg-white space-y-3"><div><Label>Brochures Main Headline</Label><Input value={content.pageHeaders?.brochures?.title || 'Posters & Brochures'} onChange={e => setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), brochures: { ...(content.pageHeaders?.brochures || {}), title: e.target.value } } })} /></div><div><Label>Description</Label><Textarea rows={2} value={content.pageHeaders?.brochures?.description || 'Browse awareness posters and brochures by language.'} onChange={e => setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), brochures: { ...(content.pageHeaders?.brochures || {}), description: e.target.value } } })} /></div></div>
+              <div className="border rounded-xl p-4 bg-white space-y-3">
+                <div>
+                  <Label>Posters & Brochures Main Headline</Label>
+                  <Input
+                    value={content.pageHeaders?.brochures?.title ?? 'Posters & Brochures'}
+                    onChange={(e) => setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), brochures: { ...(content.pageHeaders?.brochures || {}), title: e.target.value } } })}
+                  />
+                </div>
+                <div>
+                  <Label>Description</Label>
+                  <Textarea
+                    rows={2}
+                    value={content.pageHeaders?.brochures?.description ?? 'Browse awareness posters and brochures by language.'}
+                    onChange={(e) => setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), brochures: { ...(content.pageHeaders?.brochures || {}), description: e.target.value } } })}
+                  />
+                </div>
+                <Button
+                  className="bg-bsv-red"
+                  onClick={async () => {
+                    const header = content.pageHeaders?.brochures || {}
+                    const next = { ...content, pageHeaders: { ...(content.pageHeaders || {}), brochures: { title: header.title ?? '', description: header.description ?? '' } } }
+                    setContent(next)
+                    const r = await api('/api/content', 'PUT', next)
+                    if (r.ok) toast.success('Brochures page content saved')
+                    else toast.error('Save failed')
+                  }}
+                >
+                  Save Brochures Page Content
+                </Button>
+              </div>
 
               <p className="text-sm text-slate-500">
-                These items will show on /posters-brochures with All and language filters.
+                These items will show on /brochures with All and language filters.
               </p>
             </div>
 
-            <Button type="button" onClick={addPrintMaterial} className="bg-bsv-red">
+            <Button type="button" onClick={addBrochure} className="bg-bsv-red">
               <Plus className="w-4 h-4 mr-1" />
-              Add Poster / Brochure
+              Add Brochure
             </Button>
           </div>
 
-          {!sortedPrintMaterials.length && (
+          {!brochures.length && (
             <div className="rounded-xl border border-dashed p-8 text-center text-sm text-slate-500">
-              No posters or brochures added yet.
+              No brochures added yet.
             </div>
           )}
 
           <div className="grid gap-4">
-            {sortedPrintMaterials.map((item, index) => (
-              <div
-                key={item.id}
-                className="rounded-xl border bg-white p-4 space-y-4"
-              >
+            {brochures.map((item, index) => (
+              <div key={item.id} className="rounded-xl border bg-white p-4 space-y-4">
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <div className="font-semibold text-bsv-blue">
-                      Material {index + 1}
+                      Brochure {index + 1}
                     </div>
-
                     <div className="text-xs text-slate-500">
-                      Shows on /posters-brochures
+                      Shows on /brochures
                     </div>
                   </div>
 
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => deletePrintMaterial(item.id)}
-                  >
+                  <Button type="button" size="sm" variant="destructive" onClick={() => deleteBrochure(item.id)}>
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>
@@ -3706,9 +3533,225 @@ function LibraryMaterialsView({ content, setContent, saveContent, api }) {
                   <Input
                     value={item.title || ''}
                     placeholder="Snakebite Awareness Brochure"
-                    onChange={(e) =>
-                      updatePrintMaterial(item.id, { title: e.target.value })
-                    }
+                    onChange={(e) => updateBrochure(item.id, { title: e.target.value })}
+                  />
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-3">
+                  <div>
+                    <Label>Language</Label>
+                    <Select value={item.language || 'en'} onValueChange={(v) => updateBrochure(item.id, { language: v })}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select language" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {DOWNLOAD_LANGUAGES.map((language) => (
+                          <SelectItem key={language.code} value={language.code}>
+                            {language.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div>
+                  <Label>Description</Label>
+                  <Textarea
+                    rows={2}
+                    value={item.description || ''}
+                    placeholder="Short description for this brochure"
+                    onChange={(e) => updateBrochure(item.id, { description: e.target.value })}
+                  />
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <MediaPicker
+                    label="Cover Image"
+                    value={item.image || ''}
+                    onChange={(v) => updateBrochure(item.id, { image: v })}
+                  />
+
+                  <CloudinaryFilePicker
+                    label="Brochure File"
+                    module="brochures"
+                    category="brochures"
+                    value={item.file || null}
+                    onChange={(file) => updateBrochure(item.id, { file })}
+                  />
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Switch
+                    checked={item.published !== false}
+                    onCheckedChange={(checked) => updateBrochure(item.id, { published: checked })}
+                  />
+                  <Label>Published</Label>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+function LibraryMaterialsView({ content, setContent, saveContent, api }) {
+  useEffect(() => {
+    const current = content?.pageHeaders?.animatedVideosComics || {}
+    if (current.title && current.description) return
+    setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), animatedVideosComics: { title: current.title || 'Resource Library', description: current.description || 'Download animated videos and comics in your preferred language.' } } })
+  }, [])
+
+  const comics = Array.isArray(content?.comics) ? content.comics : []
+
+  const addComic = () => {
+    setContent({
+      ...content,
+      comics: [
+        ...comics,
+        {
+          id: `comic-${Date.now()}`,
+          title: '',
+          language: 'en',
+          description: '',
+          image: '',
+          file: null,
+          published: true,
+        },
+      ],
+    })
+  }
+
+  const updateComic = (id, patch) => {
+    setContent({
+      ...content,
+      comics: comics.map((item) =>
+        item.id === id ? { ...item, ...patch } : item
+      ),
+    })
+  }
+
+  const deleteComic = (id) => {
+    if (!confirm('Delete this comic?')) return
+
+    setContent({
+      ...content,
+      comics: comics.filter((item) => item.id !== id),
+    })
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div>
+          <h2 className="font-display font-extrabold text-2xl text-bsv-blue">
+            Comics
+          </h2>
+
+          <p className="text-sm text-slate-500">
+            Manage comics for the animated videos and comics page.
+          </p>
+        </div>
+
+        <div className="flex gap-2">
+          <Button onClick={saveContent} className="bg-bsv-red">
+            <Save className="w-4 h-4 mr-1" />
+            Save Library
+          </Button>
+        </div>
+      </div>
+
+      <Card>
+        <CardContent className="p-5 space-y-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div>
+              <h3 className="font-display font-bold text-xl text-bsv-blue">
+                Comics Page
+              </h3>
+
+              <div className="border rounded-xl p-4 bg-white space-y-3">
+                <div>
+                  <Label>Animated Videos & Comics Main Headline</Label>
+                  <Input
+                    value={content.pageHeaders?.animatedVideosComics?.title ?? 'Resource Library'}
+                    onChange={(e) => setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), animatedVideosComics: { ...(content.pageHeaders?.animatedVideosComics || {}), title: e.target.value } } })}
+                  />
+                </div>
+                <div>
+                  <Label>Description</Label>
+                  <Textarea
+                    rows={2}
+                    value={content.pageHeaders?.animatedVideosComics?.description ?? 'Download animated videos and comics in your preferred language.'}
+                    onChange={(e) => setContent({ ...content, pageHeaders: { ...(content.pageHeaders || {}), animatedVideosComics: { ...(content.pageHeaders?.animatedVideosComics || {}), description: e.target.value } } })}
+                  />
+                </div>
+                <Button
+                  className="bg-bsv-red"
+                  onClick={async () => {
+                    const header = content.pageHeaders?.animatedVideosComics || {}
+                    const next = { ...content, pageHeaders: { ...(content.pageHeaders || {}), animatedVideosComics: { title: header.title ?? '', description: header.description ?? '' } } }
+                    setContent(next)
+                    const r = await api('/api/content', 'PUT', next)
+                    if (r.ok) toast.success('Comics page content saved')
+                    else toast.error('Save failed')
+                  }}
+                >
+                  Save Animated Page Content
+                </Button>
+              </div>
+
+              <p className="text-sm text-slate-500">
+                These items will show on /animated-videos-and-comics with All and language filters.
+              </p>
+            </div>
+
+            <Button type="button" onClick={addComic} className="bg-bsv-red">
+              <Plus className="w-4 h-4 mr-1" />
+              Add Comic
+            </Button>
+          </div>
+
+          {!comics.length && (
+            <div className="rounded-xl border border-dashed p-8 text-center text-sm text-slate-500">
+              No comics added yet.
+            </div>
+          )}
+
+          <div className="grid gap-4">
+            {comics.map((item, index) => (
+              <div
+                key={item.id}
+                className="rounded-xl border bg-white p-4 space-y-4"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <div className="font-semibold text-bsv-blue">
+                      Comic {index + 1}
+                    </div>
+
+                    <div className="text-xs text-slate-500">
+                      Shows on /animated-videos-and-comics
+                    </div>
+                  </div>
+
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => deleteComic(item.id)}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+
+                <div>
+                  <Label>Title</Label>
+                  <Input
+                    value={item.title || ''}
+                    placeholder="Snakebite Awareness Comic"
+                    onChange={(e) => updateComic(item.id, { title: e.target.value })}
                   />
                 </div>
 
@@ -3717,9 +3760,7 @@ function LibraryMaterialsView({ content, setContent, saveContent, api }) {
                     <Label>Language</Label>
                     <Select
                       value={item.language || 'en'}
-                      onValueChange={(v) =>
-                        updatePrintMaterial(item.id, { language: v })
-                      }
+                      onValueChange={(v) => updateComic(item.id, { language: v })}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select language" />
@@ -3733,7 +3774,6 @@ function LibraryMaterialsView({ content, setContent, saveContent, api }) {
                       </SelectContent>
                     </Select>
                   </div>
-
                 </div>
 
                 <div>
@@ -3741,12 +3781,8 @@ function LibraryMaterialsView({ content, setContent, saveContent, api }) {
                   <Textarea
                     rows={2}
                     value={item.description || ''}
-                    placeholder="Short description for this material"
-                    onChange={(e) =>
-                      updatePrintMaterial(item.id, {
-                        description: e.target.value,
-                      })
-                    }
+                    placeholder="Short description for this comic"
+                    onChange={(e) => updateComic(item.id, { description: e.target.value })}
                   />
                 </div>
 
@@ -3754,26 +3790,22 @@ function LibraryMaterialsView({ content, setContent, saveContent, api }) {
                   <MediaPicker
                     label="Cover Image"
                     value={item.image || ''}
-                    onChange={(v) =>
-                      updatePrintMaterial(item.id, { image: v })
-                    }
+                    onChange={(v) => updateComic(item.id, { image: v })}
                   />
 
                   <CloudinaryFilePicker
-                    label="Poster / Brochure File"
-                    module="brochures"
-                    category="posters-brochures"
+                    label="Comic File"
+                    module="communication"
+                    category="comics"
                     value={item.file || null}
-                    onChange={(file) => updatePrintMaterial(item.id, { file })}
+                    onChange={(file) => updateComic(item.id, { file })}
                   />
                 </div>
 
                 <div className="flex items-center gap-2">
                   <Switch
                     checked={item.published !== false}
-                    onCheckedChange={(checked) =>
-                      updatePrintMaterial(item.id, { published: checked })
-                    }
+                    onCheckedChange={(checked) => updateComic(item.id, { published: checked })}
                   />
                   <Label>Published</Label>
                 </div>
