@@ -115,6 +115,12 @@ export default function SiteHeader({ lang, setLang, t, settings }) {
             { label: 'Awareness Videos', href: '/#video', desc: 'Vox pops, myth-busting reels' },
           ],
         },
+        {
+          title: 'Visual Stories',
+          items: [
+            { label: 'Comic & Visual Stories', href: '/#gallery', desc: 'Engaging visual content' },
+          ],
+        },
       ],
     },
   }

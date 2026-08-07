@@ -184,6 +184,7 @@ function Header({ lang, setLang, t, settings }) {
           title: 'Print Materials',
           items: [
             { label: 'Posters & Brochures', href: '/brochures', desc: 'Multilingual materials' },
+            { label: 'Comic-&-Visual-Stories', href: '/Comic-&-Visual-Stories', desc: 'Comics' },
           ]
         },
         {
@@ -195,7 +196,7 @@ function Header({ lang, setLang, t, settings }) {
         {
           title: 'Visual Stories',
           items: [
-            { label: 'Comic & Visual Stories', href: '/animated-videos-&-comics', desc: 'Engaging visual content' },
+            { label: 'Comic & Visual Stories', href: '/Comic-&-Visual-Stories', desc: 'Engaging visual content' },
           ]
         },
       ]
