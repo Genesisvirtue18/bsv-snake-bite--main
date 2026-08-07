@@ -112,6 +112,29 @@
   "logos": {
     "partners": "https://customer-assets.emergentagent.com/job_15106444-6c2b-464f-9e93-4c1b70dc4182/artifacts/ou3picpg_image.png"
   },
+  "comics": [
+    {
+      "id": "comic-1786101018457",
+      "title": "test",
+      "language": "en",
+      "description": "test",
+      "image": "/api/media/fb2340a5-4b47-4b42-b6e9-4d144615d94d",
+      "file": {
+        "id": "3a34d7a7-92a9-4984-90f4-466171f11bc6",
+        "title": "ASVS - English Brochure AW 14-05-26-compressed (1).pdf",
+        "module": "communication",
+        "category": "comics",
+        "originalFileName": "ASVS - English Brochure AW 14-05-26-compressed (1).pdf",
+        "storedFileName": "3a34d7a7-92a9-4984-90f4-466171f11bc6.pdf",
+        "fileType": "application/pdf",
+        "fileSize": 3277857,
+        "url": "/animated-videos-&-comics/3a34d7a7-92a9-4984-90f4-466171f11bc6",
+        "uploadedAt": "2026-08-07T11:11:18.762Z",
+        "updatedAt": "2026-08-07T11:11:18.763Z"
+      },
+      "published": true
+    }
+  ],
   "impactStats": [
     {
       "id": "lives",
