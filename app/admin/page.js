@@ -3647,7 +3647,7 @@ function LibraryMaterialsView({ content, setContent, saveContent, api }) {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
           <h2 className="font-display font-extrabold text-2xl text-bsv-blue">
-            Comics
+            Comics & Visual Stories
           </h2>
 
          
