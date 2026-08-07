@@ -3650,9 +3650,7 @@ function LibraryMaterialsView({ content, setContent, saveContent, api }) {
             Comics
           </h2>
 
-          <p className="text-sm text-slate-500">
-            Manage comics for the animated videos and comics page.
-          </p>
+         
         </div>
 
         <div className="flex gap-2">
