@@ -133,6 +133,15 @@
         "updatedAt": "2026-08-07T11:11:18.763Z"
       },
       "published": true
+    },
+    {
+      "id": "comic-1786103416742",
+      "title": "Test",
+      "language": "en",
+      "description": "Test",
+      "image": "/api/media/fb2340a5-4b47-4b42-b6e9-4d144615d94d",
+      "file": null,
+      "published": true
     }
   ],
   "printMaterials": [
