@@ -254,11 +254,11 @@ function CloudinaryFilePicker({ value, onChange, module, category, label = 'File
             <Button type="button" size="sm" variant="outline" onClick={() => window.open(previewUrl, '_blank', 'noopener,noreferrer')}><Eye className="w-4 h-4 mr-1" />Preview</Button>
             <Button type="button" size="sm" variant="outline" disabled={uploading} onClick={() => document.getElementById(`replace-${value.id}`)?.click()}><Upload className="w-4 h-4 mr-1" />Replace File</Button>
             <Button type="button" size="sm" variant="destructive" disabled={uploading} onClick={remove}><Trash2 className="w-4 h-4 mr-1" />Delete File</Button>
-            <Input id={`replace-${value.id}`} className="hidden" type="file" accept={accept} onChange={event => send(event.target.files?.[0], true)} />
+            <Input id={`replace-${value.id}`} className="hidden" type="file" accept={accept} onChange={async event => { await send(event.target.files?.[0], true); event.target.value = '' }} />
           </div>
         </div>
       ) : (
-        <Input type="file" accept={accept} disabled={uploading} onChange={event => send(event.target.files?.[0])} />
+        <Input type="file" accept={accept} disabled={uploading} onChange={async event => { await send(event.target.files?.[0]); event.target.value = '' }} />
       )}
       <p className="text-xs text-amber-700">PDF upload limit: {PDF_UPLOAD_LIMIT_MB} MB.</p>
       {uploading && <p className="text-sm text-slate-500">Uploading file…</p>}

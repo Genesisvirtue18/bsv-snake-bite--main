@@ -106,6 +106,11 @@ function validateDirectUploadMetadata({ originalFileName, fileSize, category }) 
   return extension
 }
 
+function expectedCloudinaryPublicIds(module, id, extension) {
+  const folder = getFolder(module)
+  return [`${folder}/${id}`, `${folder}/${id}.${extension}`]
+}
+
 async function handleRoute(request, { params }) {
   const { path = [] } = params
   const route = `/${path.join('/')}`
@@ -225,7 +230,9 @@ async function handleRoute(request, { params }) {
         category,
       })
       const id = uuidv4()
-      const signature = createDirectUploadSignature({ folder: getFolder(module), publicId: id, resourceType: getUploadResourceType(extension) })
+      const resourceType = getUploadResourceType(extension)
+      const publicId = resourceType === 'raw' ? `${id}.${extension}` : id
+      const signature = createDirectUploadSignature({ folder: getFolder(module), publicId, resourceType })
       return cors(NextResponse.json({ id, ...signature }))
     }
 
@@ -244,7 +251,7 @@ async function handleRoute(request, { params }) {
       if (!id || !body.cloudinaryPublicId || !body.cloudinaryUrl) {
         return cors(NextResponse.json({ error: 'Upload metadata is incomplete.' }, { status: 400 }))
       }
-      if (String(body.cloudinaryPublicId) !== `${getFolder(module)}/${id}`) {
+      if (!expectedCloudinaryPublicIds(module, id, extension).includes(String(body.cloudinaryPublicId))) {
         return cors(NextResponse.json({ error: 'Upload metadata does not match the signed upload.' }, { status: 400 }))
       }
       const document = {
@@ -285,7 +292,7 @@ async function handleRoute(request, { params }) {
         return cors(NextResponse.json({ error: 'Upload metadata is incomplete.' }, { status: 400 }))
       }
       const directUploadId = String(body.id || '').trim()
-      if (!directUploadId || String(body.cloudinaryPublicId) !== `${getFolder(existing.module)}/${directUploadId}`) {
+      if (!directUploadId || !expectedCloudinaryPublicIds(existing.module, directUploadId, extension).includes(String(body.cloudinaryPublicId))) {
         return cors(NextResponse.json({ error: 'Upload metadata does not match the signed upload.' }, { status: 400 }))
       }
       const replacement = {
