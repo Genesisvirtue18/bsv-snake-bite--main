@@ -8,7 +8,7 @@ import { exec } from 'node:child_process'
 import { writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { createHash } from 'node:crypto'
-import { ALLOWED_EXTENSIONS, MAX_FILE_SIZE_BYTES, MAX_FILE_SIZE_MB, createDirectUploadSignature, deleteCloudinaryFile, getFolder, safeDownloadName, uploadFile, validateFile, VIDEO_EXTENSIONS } from '@/lib/cloudinaryFiles'
+import { ALLOWED_EXTENSIONS, MAX_FILE_SIZE_BYTES, MAX_FILE_SIZE_MB, createDirectUploadSignature, deleteCloudinaryFile, getFolder, getUploadResourceType, safeDownloadName, uploadFile, validateFile, VIDEO_EXTENSIONS } from '@/lib/cloudinaryFiles'
 import { getDocumentPath } from '@/lib/documentPaths'
 
 // Auto-commit and push content changes to git
@@ -218,13 +218,13 @@ async function handleRoute(request, { params }) {
       const body = await request.json()
       const module = String(body.module || '')
       const category = String(body.category || module)
-      validateDirectUploadMetadata({
+      const extension = validateDirectUploadMetadata({
         originalFileName: body.originalFileName,
         fileSize: Number(body.fileSize || 0),
         category,
       })
       const id = uuidv4()
-      const signature = createDirectUploadSignature({ folder: getFolder(module), publicId: id })
+      const signature = createDirectUploadSignature({ folder: getFolder(module), publicId: id, resourceType: getUploadResourceType(extension) })
       return cors(NextResponse.json({ id, ...signature }))
     }
 

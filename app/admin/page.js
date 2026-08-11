@@ -163,7 +163,7 @@ async function uploadDocumentDirect(file, { token, module, category, replaceId }
   cloudFormData.append('folder', signature.folder)
   cloudFormData.append('public_id', signature.publicId)
 
-  const cloudResponse = await fetch(`https://api.cloudinary.com/v1_1/${signature.cloudName}/auto/upload`, {
+  const cloudResponse = await fetch(`https://api.cloudinary.com/v1_1/${signature.cloudName}/${signature.resourceType || 'raw'}/upload`, {
     method: 'POST',
     body: cloudFormData,
   })
