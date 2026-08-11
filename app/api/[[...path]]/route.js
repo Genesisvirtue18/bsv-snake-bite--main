@@ -8,7 +8,7 @@ import { exec } from 'node:child_process'
 import { writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { createHash } from 'node:crypto'
-import { deleteCloudinaryFile, getFolder, safeDownloadName, uploadFile, validateFile, VIDEO_EXTENSIONS } from '@/lib/cloudinaryFiles'
+import { ALLOWED_EXTENSIONS, MAX_FILE_SIZE_BYTES, MAX_FILE_SIZE_MB, createDirectUploadSignature, deleteCloudinaryFile, getFolder, safeDownloadName, uploadFile, validateFile, VIDEO_EXTENSIONS } from '@/lib/cloudinaryFiles'
 import { getDocumentPath } from '@/lib/documentPaths'
 
 // Auto-commit and push content changes to git
@@ -89,6 +89,20 @@ function calculateLeadScore(b) {
   if (b.state) s += 10
   if (['Healthcare Professional', 'NGO', 'Government', 'Distributor'].includes(b.purpose)) s += 30
   return s
+}
+
+function extensionOf(name = '') {
+  return String(name).split('.').pop().toLowerCase()
+}
+
+function validateDirectUploadMetadata({ originalFileName, fileSize, category }) {
+  const extension = extensionOf(originalFileName)
+  if (!ALLOWED_EXTENSIONS.has(extension)) throw new Error(`.${extension || 'unknown'} files are not supported.`)
+  if (!fileSize || Number(fileSize) > MAX_FILE_SIZE_BYTES) throw new Error(`File exceeds the ${MAX_FILE_SIZE_MB} MB upload limit.`)
+  if (category === 'animated-videos' && !VIDEO_EXTENSIONS.has(extension)) {
+    throw new Error('Animated Videos accepts video files only.')
+  }
+  return extension
 }
 
 async function handleRoute(request, { params }) {
@@ -199,6 +213,102 @@ async function handleRoute(request, { params }) {
     }
 
     // ===== CLOUDINARY DOCUMENTS =====
+    if (route === '/documents/sign-upload' && method === 'POST') {
+      const auth = requireAuth(request, 'content.update'); if (auth.error) return auth.error
+      const body = await request.json()
+      const module = String(body.module || '')
+      const category = String(body.category || module)
+      validateDirectUploadMetadata({
+        originalFileName: body.originalFileName,
+        fileSize: Number(body.fileSize || 0),
+        category,
+      })
+      const id = uuidv4()
+      const signature = createDirectUploadSignature({ folder: getFolder(module), publicId: id })
+      return cors(NextResponse.json({ id, ...signature }))
+    }
+
+    if (route === '/documents/complete-upload' && method === 'POST') {
+      const auth = requireAuth(request, 'content.update'); if (auth.error) return auth.error
+      const body = await request.json()
+      const id = String(body.id || '')
+      const module = String(body.module || '')
+      const category = String(body.category || module)
+      const originalFileName = String(body.originalFileName || '')
+      const extension = validateDirectUploadMetadata({
+        originalFileName,
+        fileSize: Number(body.fileSize || 0),
+        category,
+      })
+      if (!id || !body.cloudinaryPublicId || !body.cloudinaryUrl) {
+        return cors(NextResponse.json({ error: 'Upload metadata is incomplete.' }, { status: 400 }))
+      }
+      if (String(body.cloudinaryPublicId) !== `${getFolder(module)}/${id}`) {
+        return cors(NextResponse.json({ error: 'Upload metadata does not match the signed upload.' }, { status: 400 }))
+      }
+      const document = {
+        id,
+        title: String(body.title || originalFileName),
+        module,
+        category,
+        originalFileName: safeDownloadName(originalFileName),
+        storedFileName: `${id}.${extension}`,
+        fileType: String(body.fileType || 'application/octet-stream'),
+        fileSize: Number(body.fileSize || 0),
+        cloudinaryPublicId: String(body.cloudinaryPublicId),
+        cloudinaryUrl: String(body.cloudinaryUrl),
+        cloudinaryResourceType: String(body.cloudinaryResourceType || 'raw'),
+        url: getDocumentPath(module, id),
+        uploadedBy: auth.user.id,
+        uploadedAt: new Date(),
+        updatedAt: new Date(),
+      }
+      await db.collection('file_metadata').insertOne(document)
+      const { _id, cloudinaryUrl, cloudinaryPublicId, cloudinaryResourceType, uploadedBy, ...safe } = document
+      return cors(NextResponse.json(safe))
+    }
+
+    if (route.startsWith('/documents/') && route.endsWith('/complete-replace') && method === 'POST') {
+      const auth = requireAuth(request, 'content.update'); if (auth.error) return auth.error
+      const id = route.split('/')[2]
+      const existing = await db.collection('file_metadata').findOne({ id })
+      if (!existing) return cors(NextResponse.json({ error: 'File not found' }, { status: 404 }))
+      const body = await request.json()
+      const originalFileName = String(body.originalFileName || '')
+      const extension = validateDirectUploadMetadata({
+        originalFileName,
+        fileSize: Number(body.fileSize || 0),
+        category: existing.category,
+      })
+      if (!body.cloudinaryPublicId || !body.cloudinaryUrl) {
+        return cors(NextResponse.json({ error: 'Upload metadata is incomplete.' }, { status: 400 }))
+      }
+      const directUploadId = String(body.id || '').trim()
+      if (!directUploadId || String(body.cloudinaryPublicId) !== `${getFolder(existing.module)}/${directUploadId}`) {
+        return cors(NextResponse.json({ error: 'Upload metadata does not match the signed upload.' }, { status: 400 }))
+      }
+      const replacement = {
+        originalFileName: safeDownloadName(originalFileName),
+        storedFileName: `${id}.${extension}`,
+        fileType: String(body.fileType || 'application/octet-stream'),
+        fileSize: Number(body.fileSize || 0),
+        cloudinaryPublicId: String(body.cloudinaryPublicId),
+        cloudinaryUrl: String(body.cloudinaryUrl),
+        cloudinaryResourceType: String(body.cloudinaryResourceType || 'raw'),
+        updatedAt: new Date(),
+      }
+      try {
+        await db.collection('file_metadata').updateOne({ id }, { $set: replacement })
+        await deleteCloudinaryFile(existing.cloudinaryPublicId, existing.cloudinaryResourceType).catch(() => {})
+      } catch (error) {
+        await deleteCloudinaryFile(replacement.cloudinaryPublicId, replacement.cloudinaryResourceType).catch(() => {})
+        throw error
+      }
+      const updated = { ...existing, ...replacement, url: getDocumentPath(existing.module, id) }
+      const { _id, cloudinaryUrl, cloudinaryPublicId, cloudinaryResourceType, uploadedBy, ...safe } = updated
+      return cors(NextResponse.json(safe))
+    }
+
     if (route === '/documents' && method === 'POST') {
       const auth = requireAuth(request, 'content.update'); if (auth.error) return auth.error
       const formData = await request.formData()

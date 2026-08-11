@@ -50,16 +50,12 @@ function MediaPicker({ value, onChange, label = 'Image' }) {
 
   const upload = async (file) => {
     setUploading(true)
-    const fd = new FormData()
-    fd.append('file', file)
-    fd.append('title', file.name)
-    fd.append('module', 'media')
-    fd.append('category', 'general')
     try {
-      const r = await fetch('/api/documents', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: fd })
-      if (r.ok) { const data = await r.json(); onChange(data.url); toast.success('Uploaded'); setOpen(false) }
-      else toast.error('Upload failed')
-    } catch { toast.error('Error') }
+      const data = await uploadDocumentDirect(file, { token, module: 'media', category: 'general' })
+      onChange(data.url)
+      toast.success('Uploaded')
+      setOpen(false)
+    } catch (error) { toast.error(error.message || 'Error') }
     setUploading(false)
   }
 
@@ -126,6 +122,79 @@ function formatFileSize(bytes = 0) {
   return `${(bytes / (1024 ** index)).toFixed(index ? 1 : 0)} ${units[index]}`
 }
 
+async function readUploadResponse(response) {
+  const text = await response.text()
+  if (!text) return {}
+  try {
+    return JSON.parse(text)
+  } catch {
+    const clean = text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+    return { error: clean || `Upload failed with status ${response.status}` }
+  }
+}
+
+async function uploadDocumentDirect(file, { token, module, category, replaceId }) {
+  if (!file) return null
+  if (file.size === 0) throw new Error('The selected file is empty.')
+  if (file.size > 100 * 1024 * 1024) throw new Error('File exceeds the 100 MB upload limit.')
+
+  const uploadDetails = {
+    module,
+    category: category || module,
+    title: file.name,
+    originalFileName: file.name,
+    fileType: file.type || 'application/octet-stream',
+    fileSize: file.size,
+  }
+
+  const signatureResponse = await fetch('/api/documents/sign-upload', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify(uploadDetails),
+  })
+  const signature = await readUploadResponse(signatureResponse)
+  if (!signatureResponse.ok) throw new Error(signature.error || 'Could not prepare upload')
+
+  const cloudFormData = new FormData()
+  cloudFormData.append('file', file)
+  cloudFormData.append('api_key', signature.apiKey)
+  cloudFormData.append('timestamp', signature.timestamp)
+  cloudFormData.append('signature', signature.signature)
+  cloudFormData.append('folder', signature.folder)
+  cloudFormData.append('public_id', signature.publicId)
+
+  const cloudResponse = await fetch(`https://api.cloudinary.com/v1_1/${signature.cloudName}/auto/upload`, {
+    method: 'POST',
+    body: cloudFormData,
+  })
+  const cloudUpload = await readUploadResponse(cloudResponse)
+  if (!cloudResponse.ok) throw new Error(cloudUpload.error?.message || cloudUpload.error || 'Cloudinary upload failed')
+
+  const completePayload = {
+    ...uploadDetails,
+    id: signature.id,
+    cloudinaryPublicId: cloudUpload.public_id,
+    cloudinaryUrl: cloudUpload.secure_url,
+    cloudinaryResourceType: cloudUpload.resource_type || 'raw',
+  }
+  const endpoint = replaceId ? `/api/documents/${replaceId}/complete-replace` : '/api/documents/complete-upload'
+  let completeResponse = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify(completePayload),
+  })
+  if (replaceId && completeResponse.status === 404) {
+    completeResponse = await fetch('/api/documents/complete-upload', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(completePayload),
+    })
+  }
+  const data = await readUploadResponse(completeResponse)
+  if (!completeResponse.ok) throw new Error(data.error || 'Upload failed')
+  return data
+}
+
 function CloudinaryFilePicker({ value, onChange, module, category, label = 'File', accept = CLOUDINARY_FILE_ACCEPT, videoOnly = false }) {
   const [uploading, setUploading] = useState(false)
   const token = typeof window !== 'undefined' ? localStorage.getItem('bsv_token') : null
@@ -136,19 +205,8 @@ function CloudinaryFilePicker({ value, onChange, module, category, label = 'File
     if (file.size === 0) return toast.error('The selected file is empty.')
     if (file.size > 100 * 1024 * 1024) return toast.error('File exceeds the 100 MB upload limit.')
     setUploading(true)
-    const formData = new FormData()
-    formData.append('file', file)
-    formData.append('module', module)
-    formData.append('category', category || module)
-    formData.append('title', file.name)
     try {
-      const endpoint = replace && value?.id ? `/api/documents/${value.id}/replace` : '/api/documents'
-      let response = await fetch(endpoint, { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: formData })
-      if (replace && response.status === 404) {
-        response = await fetch('/api/documents', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: formData })
-      }
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.error || 'Upload failed')
+      const data = await uploadDocumentDirect(file, { token, module, category: category || module, replaceId: replace && value?.id ? value.id : null })
       onChange(data)
       toast.success(replace ? 'File replaced' : 'File uploaded')
     } catch (error) {
@@ -163,7 +221,7 @@ function CloudinaryFilePicker({ value, onChange, module, category, label = 'File
     setUploading(true)
     try {
       const response = await fetch(`/api/documents/${value.id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } })
-      const data = await response.json()
+      const data = await readUploadResponse(response)
       if (response.status === 404) {
         onChange(null)
         toast.success('Removed the unavailable file reference')
@@ -219,22 +277,14 @@ function AudioPicker({ value, onChange, label = 'Upload Audio File (MP3 or WAV)'
 
     setUploading(true)
     setUploadStatus(`Uploading ${file.name}…`)
-    const formData = new FormData()
-    formData.append('file', file)
-    formData.append('title', file.name)
-    formData.append('module', 'media')
-    formData.append('category', 'radio-audio')
-
     try {
-      const response = await fetch('/api/documents', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: formData })
-      if (!response.ok) throw new Error('Upload failed')
-      const uploaded = await response.json()
+      const uploaded = await uploadDocumentDirect(file, { token, module: 'media', category: 'radio-audio' })
       onChange(uploaded.url)
       toast.success('Audio uploaded')
       setUploadStatus('Upload complete. The audio player below confirms it is ready to save.')
-    } catch {
-      toast.error('Audio upload failed')
-      setUploadStatus('Upload failed. Please choose the file again.')
+    } catch (error) {
+      toast.error(error.message || 'Audio upload failed')
+      setUploadStatus(error.message || 'Upload failed. Please choose the file again.')
     } finally {
       setUploading(false)
     }
@@ -279,17 +329,9 @@ function MultiMediaPicker({ values = [], onChange, label = 'Gallery Images', max
     const newUrls = []
     for (let i = 0; i < files.length; i++) {
       const file = files[i]
-      const fd = new FormData()
-      fd.append('file', file)
-      fd.append('title', file.name)
-      fd.append('module', 'media')
-      fd.append('category', 'story-gallery')
       try {
-        const r = await fetch('/api/documents', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: fd })
-        if (r.ok) {
-          const data = await r.json()
-          newUrls.push(data.url)
-        }
+        const data = await uploadDocumentDirect(file, { token, module: 'media', category: 'story-gallery' })
+        newUrls.push(data.url)
       } catch (e) { /* ignore single error */ }
       setUploadProgress(Math.round(((i + 1) / files.length) * 100))
     }
@@ -2230,10 +2272,13 @@ function MediaLibraryView({ media, token, reload }) {
   const [uploading, setUploading] = useState(false)
   const upload = async (file) => {
     setUploading(true)
-    const fd = new FormData()
-    fd.append('file', file); fd.append('title', file.name); fd.append('module', 'media'); fd.append('category', 'general')
-    const r = await fetch('/api/documents', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: fd })
-    if (r.ok) { toast.success('Uploaded'); reload() } else toast.error('Upload failed')
+    try {
+      await uploadDocumentDirect(file, { token, module: 'media', category: 'general' })
+      toast.success('Uploaded')
+      reload()
+    } catch (error) {
+      toast.error(error.message || 'Upload failed')
+    }
     setUploading(false)
   }
   const del = async (id) => {
