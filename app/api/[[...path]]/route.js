@@ -98,6 +98,7 @@ function extensionOf(name = '') {
 function validateDirectUploadMetadata({ originalFileName, fileSize, category }) {
   const extension = extensionOf(originalFileName)
   if (!ALLOWED_EXTENSIONS.has(extension)) throw new Error(`.${extension || 'unknown'} files are not supported.`)
+  if (extension === 'pdf' && Number(fileSize) > 9 * 1024 * 1024) throw new Error('PDF files must be 9 MB or smaller.')
   if (!fileSize || Number(fileSize) > MAX_FILE_SIZE_BYTES) throw new Error(`File exceeds the ${MAX_FILE_SIZE_MB} MB upload limit.`)
   if (category === 'animated-videos' && !VIDEO_EXTENSIONS.has(extension)) {
     throw new Error('Animated Videos accepts video files only.')

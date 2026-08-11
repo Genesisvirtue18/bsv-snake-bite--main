@@ -114,6 +114,8 @@ function MediaPicker({ value, onChange, label = 'Image' }) {
 
 const CLOUDINARY_FILE_ACCEPT = '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.rtf,.jpg,.jpeg,.png,.webp,.gif,.svg,.bmp,.tiff,.avif,.mp4,.mov,.avi,.mkv,.webm,.mpeg,.m4v,.mp3,.wav,.aac,.m4a,.ogg,.flac,.zip,.rar,.7z,.tar,.gz,.json,.xml'
 const VIDEO_FILE_ACCEPT = 'video/*,.mp4,.mov,.avi,.mkv,.webm,.mpeg,.m4v'
+const PDF_UPLOAD_LIMIT_MB = 9
+const PDF_UPLOAD_LIMIT_BYTES = PDF_UPLOAD_LIMIT_MB * 1024 * 1024
 
 function formatFileSize(bytes = 0) {
   if (!bytes) return 'Unknown size'
@@ -136,6 +138,7 @@ async function readUploadResponse(response) {
 async function uploadDocumentDirect(file, { token, module, category, replaceId }) {
   if (!file) return null
   if (file.size === 0) throw new Error('The selected file is empty.')
+  if (/\.pdf$/i.test(file.name) && file.size > PDF_UPLOAD_LIMIT_BYTES) throw new Error(`PDF files must be ${PDF_UPLOAD_LIMIT_MB} MB or smaller.`)
   if (file.size > 100 * 1024 * 1024) throw new Error('File exceeds the 100 MB upload limit.')
 
   const uploadDetails = {
@@ -203,6 +206,7 @@ function CloudinaryFilePicker({ value, onChange, module, category, label = 'File
   const send = async (file, replace = false) => {
     if (!file) return
     if (file.size === 0) return toast.error('The selected file is empty.')
+    if (/\.pdf$/i.test(file.name) && file.size > PDF_UPLOAD_LIMIT_BYTES) return toast.error(`PDF files must be ${PDF_UPLOAD_LIMIT_MB} MB or smaller.`)
     if (file.size > 100 * 1024 * 1024) return toast.error('File exceeds the 100 MB upload limit.')
     setUploading(true)
     try {
@@ -256,6 +260,7 @@ function CloudinaryFilePicker({ value, onChange, module, category, label = 'File
       ) : (
         <Input type="file" accept={accept} disabled={uploading} onChange={event => send(event.target.files?.[0])} />
       )}
+      <p className="text-xs text-amber-700">PDF upload limit: {PDF_UPLOAD_LIMIT_MB} MB.</p>
       {uploading && <p className="text-sm text-slate-500">Uploading file…</p>}
     </div>
   )
