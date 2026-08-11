@@ -198,6 +198,49 @@ async function uploadDocumentDirect(file, { token, module, category, replaceId }
   return data
 }
 
+async function splitPdfIntoUploadParts(file) {
+  if (!/\.pdf$/i.test(file.name) || file.size <= PDF_UPLOAD_LIMIT_BYTES) return [file]
+
+  const { PDFDocument } = await import('pdf-lib')
+  const sourceBytes = await file.arrayBuffer()
+  const sourcePdf = await PDFDocument.load(sourceBytes)
+  const pageCount = sourcePdf.getPageCount()
+  const parts = []
+  let currentPdf = await PDFDocument.create()
+  let currentStartPage = 1
+
+  for (let pageIndex = 0; pageIndex < pageCount; pageIndex += 1) {
+    const testPdf = await PDFDocument.create()
+    const existingIndexes = Array.from({ length: pageIndex - currentStartPage + 1 }, (_, index) => currentStartPage - 1 + index)
+    const testIndexes = [...existingIndexes, pageIndex]
+    const testPages = await testPdf.copyPages(sourcePdf, testIndexes)
+    testPages.forEach(page => testPdf.addPage(page))
+    const testBytes = await testPdf.save()
+
+    if (testBytes.length > PDF_UPLOAD_LIMIT_BYTES && pageIndex >= currentStartPage) {
+      const currentBytes = await currentPdf.save()
+      parts.push(new File([currentBytes], `${file.name.replace(/\.pdf$/i, '')}-part-${parts.length + 1}.pdf`, { type: 'application/pdf' }))
+      currentPdf = await PDFDocument.create()
+      currentStartPage = pageIndex + 1
+    }
+
+    const [page] = await currentPdf.copyPages(sourcePdf, [pageIndex])
+    currentPdf.addPage(page)
+
+    const singlePageBytes = await currentPdf.save()
+    if (singlePageBytes.length > PDF_UPLOAD_LIMIT_BYTES) {
+      throw new Error('One PDF page is larger than 9 MB. Please compress the PDF before uploading.')
+    }
+  }
+
+  const finalBytes = await currentPdf.save()
+  if (finalBytes.length) {
+    parts.push(new File([finalBytes], `${file.name.replace(/\.pdf$/i, '')}-part-${parts.length + 1}.pdf`, { type: 'application/pdf' }))
+  }
+
+  return parts
+}
+
 function CloudinaryFilePicker({ value, onChange, module, category, label = 'File', accept = CLOUDINARY_FILE_ACCEPT, videoOnly = false }) {
   const [uploading, setUploading] = useState(false)
   const token = typeof window !== 'undefined' ? localStorage.getItem('bsv_token') : null
@@ -227,7 +270,7 @@ function CloudinaryFilePicker({ value, onChange, module, category, label = 'File
   const sendFiles = async (files, replace = false) => {
     const selected = Array.from(files || []).filter(Boolean)
     if (!selected.length) return
-    if (selected.length === 1) {
+    if (selected.length === 1 && (!/\.pdf$/i.test(selected[0].name) || selected[0].size <= PDF_UPLOAD_LIMIT_BYTES)) {
       await send(selected[0], replace && !isMultipartPdf)
       if (replace && isMultipartPdf) {
         await Promise.all(parts.map(part => fetch(`/api/documents/${part.id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } }).catch(() => null)))
@@ -237,9 +280,13 @@ function CloudinaryFilePicker({ value, onChange, module, category, label = 'File
     setUploading(true)
     try {
       if (!selected.every(file => /\.pdf$/i.test(file.name))) throw new Error('Multiple file upload is only supported for PDF parts.')
+      const uploadFiles = []
+      for (const file of selected) {
+        uploadFiles.push(...await splitPdfIntoUploadParts(file))
+      }
       const uploadedParts = []
-      for (let index = 0; index < selected.length; index += 1) {
-        const uploaded = await uploadDocumentDirect(selected[index], { token, module, category: category || module })
+      for (let index = 0; index < uploadFiles.length; index += 1) {
+        const uploaded = await uploadDocumentDirect(uploadFiles[index], { token, module, category: category || module })
         uploadedParts.push({ ...uploaded, partNumber: index + 1 })
       }
       if (replace && parts.length) {
@@ -255,7 +302,7 @@ function CloudinaryFilePicker({ value, onChange, module, category, label = 'File
         isMultipartPdf: true,
         parts: uploadedParts,
       })
-      toast.success(`${uploadedParts.length} PDF parts uploaded`)
+      toast.success(`${uploadedParts.length} PDF part${uploadedParts.length > 1 ? 's' : ''} uploaded`)
     } catch (error) {
       toast.error(error.message || 'File upload failed')
     } finally {
@@ -306,7 +353,7 @@ function CloudinaryFilePicker({ value, onChange, module, category, label = 'File
       ) : (
         <Input type="file" multiple accept={accept} disabled={uploading} onChange={async event => { await sendFiles(event.target.files); event.target.value = '' }} />
       )}
-      <p className="text-xs text-amber-700">PDF upload limit: {PDF_UPLOAD_LIMIT_MB} MB per PDF. Select multiple PDFs to upload as parts.</p>
+      <p className="text-xs text-amber-700">PDFs above {PDF_UPLOAD_LIMIT_MB} MB are split into upload parts automatically.</p>
       {uploading && <p className="text-sm text-slate-500">Uploading file…</p>}
     </div>
   )
