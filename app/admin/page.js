@@ -202,6 +202,8 @@ function CloudinaryFilePicker({ value, onChange, module, category, label = 'File
   const [uploading, setUploading] = useState(false)
   const token = typeof window !== 'undefined' ? localStorage.getItem('bsv_token') : null
   const previewUrl = value?.id ? getDocumentPath(module, value.id) : value?.url
+  const parts = Array.isArray(value?.parts) ? value.parts : []
+  const isMultipartPdf = parts.length > 0
 
   const send = async (file, replace = false) => {
     if (!file) return
@@ -220,18 +222,57 @@ function CloudinaryFilePicker({ value, onChange, module, category, label = 'File
     }
   }
 
-  const remove = async () => {
-    if (!value?.id || !confirm('Delete this uploaded file? This cannot be undone.')) return
+
+
+  const sendFiles = async (files, replace = false) => {
+    const selected = Array.from(files || []).filter(Boolean)
+    if (!selected.length) return
+    if (selected.length === 1) {
+      await send(selected[0], replace && !isMultipartPdf)
+      if (replace && isMultipartPdf) {
+        await Promise.all(parts.map(part => fetch(`/api/documents/${part.id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } }).catch(() => null)))
+      }
+      return
+    }
     setUploading(true)
     try {
-      const response = await fetch(`/api/documents/${value.id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } })
-      const data = await readUploadResponse(response)
-      if (response.status === 404) {
-        onChange(null)
-        toast.success('Removed the unavailable file reference')
-        return
+      if (!selected.every(file => /\.pdf$/i.test(file.name))) throw new Error('Multiple file upload is only supported for PDF parts.')
+      const uploadedParts = []
+      for (let index = 0; index < selected.length; index += 1) {
+        const uploaded = await uploadDocumentDirect(selected[index], { token, module, category: category || module })
+        uploadedParts.push({ ...uploaded, partNumber: index + 1 })
       }
-      if (!response.ok) throw new Error(data.error || 'Delete failed')
+      if (replace && parts.length) {
+        await Promise.all(parts.map(part => fetch(`/api/documents/${part.id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } }).catch(() => null)))
+      }
+      onChange({
+        id: uploadedParts[0]?.id,
+        title: `${uploadedParts.length} PDF parts`,
+        originalFileName: `${uploadedParts.length} PDF parts`,
+        fileType: 'application/pdf',
+        fileSize: uploadedParts.reduce((total, part) => total + Number(part.fileSize || 0), 0),
+        uploadedAt: new Date().toISOString(),
+        isMultipartPdf: true,
+        parts: uploadedParts,
+      })
+      toast.success(`${uploadedParts.length} PDF parts uploaded`)
+    } catch (error) {
+      toast.error(error.message || 'File upload failed')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  const remove = async () => {
+    const ids = isMultipartPdf ? parts.map(part => part.id).filter(Boolean) : [value?.id].filter(Boolean)
+    if (!ids.length || !confirm('Delete this uploaded file? This cannot be undone.')) return
+    setUploading(true)
+    try {
+      for (const id of ids) {
+        const response = await fetch(`/api/documents/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } })
+        const data = await readUploadResponse(response)
+        if (!response.ok && response.status !== 404) throw new Error(data.error || 'Delete failed')
+      }
       onChange(null)
       toast.success('File deleted')
     } catch (error) {
@@ -246,21 +287,26 @@ function CloudinaryFilePicker({ value, onChange, module, category, label = 'File
       <div>
         <Label>{label}</Label>
       </div>
-      {value?.id ? (
+      {value?.id || isMultipartPdf ? (
         <div className="rounded-lg border bg-white p-3">
           <div className="font-medium text-sm break-all">{value.originalFileName || value.title || 'Uploaded file'}</div>
+          {isMultipartPdf && (
+            <div className="mt-2 space-y-1 text-xs text-slate-500">
+              {parts.map(part => <div key={part.id} className="truncate">{part.partNumber}. {part.originalFileName || part.title}</div>)}
+            </div>
+          )}
           <div className="mt-1 text-xs text-slate-500">{value.fileType || 'Unknown type'} · {formatFileSize(value.fileSize)} · Uploaded {value.uploadedAt ? new Date(value.uploadedAt).toLocaleDateString() : 'recently'}</div>
           <div className="mt-3 flex flex-wrap gap-2">
             <Button type="button" size="sm" variant="outline" onClick={() => window.open(previewUrl, '_blank', 'noopener,noreferrer')}><Eye className="w-4 h-4 mr-1" />Preview</Button>
             <Button type="button" size="sm" variant="outline" disabled={uploading} onClick={() => document.getElementById(`replace-${value.id}`)?.click()}><Upload className="w-4 h-4 mr-1" />Replace File</Button>
             <Button type="button" size="sm" variant="destructive" disabled={uploading} onClick={remove}><Trash2 className="w-4 h-4 mr-1" />Delete File</Button>
-            <Input id={`replace-${value.id}`} className="hidden" type="file" accept={accept} onChange={async event => { await send(event.target.files?.[0], true); event.target.value = '' }} />
+            <Input id={`replace-${value.id}`} className="hidden" type="file" multiple accept={accept} onChange={async event => { await sendFiles(event.target.files, true); event.target.value = '' }} />
           </div>
         </div>
       ) : (
-        <Input type="file" accept={accept} disabled={uploading} onChange={async event => { await send(event.target.files?.[0]); event.target.value = '' }} />
+        <Input type="file" multiple accept={accept} disabled={uploading} onChange={async event => { await sendFiles(event.target.files); event.target.value = '' }} />
       )}
-      <p className="text-xs text-amber-700">PDF upload limit: {PDF_UPLOAD_LIMIT_MB} MB.</p>
+      <p className="text-xs text-amber-700">PDF upload limit: {PDF_UPLOAD_LIMIT_MB} MB per PDF. Select multiple PDFs to upload as parts.</p>
       {uploading && <p className="text-sm text-slate-500">Uploading file…</p>}
     </div>
   )
@@ -2286,6 +2332,7 @@ function MediaLibraryView({ media, token, reload }) {
     }
     setUploading(false)
   }
+
   const del = async (id) => {
     if (!confirm('Delete?')) return
     const item = media.find(m => m.id === id)

@@ -291,7 +291,10 @@ export default function ComicsPage() {
     subtitle: header.description || baseUi.subtitle,
   }
 
-  const getFileUrl = (item) => (item?.file?.id ? getDocumentPath('communication', item.file.id) : '')
+  const getFileUrl = (item) => {
+    if (Array.isArray(item?.file?.parts) && item.file.parts.length) return `/Comic-&-Visual-Stories/read/${item.id}`
+    return item?.file?.id ? getDocumentPath('communication', item.file.id) : ''
+  }
 
   const openFile = (item) => {
     const url = getFileUrl(item)
