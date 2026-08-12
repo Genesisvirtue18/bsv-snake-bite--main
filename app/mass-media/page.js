@@ -230,7 +230,7 @@ export default function MassMediaPage() {
 
           <div>
             <div className="font-display font-extrabold text-xl">
-              Mass Media
+              Media Coverage
             </div>
             <div className="text-xs text-white/70">
               PR, Radio Coverage and Influencers

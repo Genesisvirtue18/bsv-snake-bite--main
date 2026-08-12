@@ -184,7 +184,7 @@ function Header({ lang, setLang, t, settings }) {
           title: 'Print Materials',
           items: [
             { label: 'Posters & Brochures', href: '/brochures', desc: 'Multilingual materials' },
-            { label: 'Comic-&-Visual-Stories', href: '/Comic-&-Visual-Stories', desc: 'Comics' },
+        
           ]
         },
         {
