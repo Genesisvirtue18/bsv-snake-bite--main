@@ -118,7 +118,7 @@ export default function MassMediaPage() {
         cleanUrl.includes('/reel/') ||
         cleanUrl.includes('/tv/')
       ) {
-        return `${cleanUrl}/embed`
+        return `${cleanUrl}/embed/captioned/`
       }
 
       return ''
@@ -154,9 +154,10 @@ export default function MassMediaPage() {
       return
     }
 
-    // Influencers: Drive direct redirect, YouTube/Facebook/Instagram same page modal
+    // Influencer videos are shown in the in-page viewer when their provider
+    // supports embedding.
     if (item.category === 'Influencers') {
-      if (linkType === 'drive') {
+      if (linkType === 'drive' || !getEmbedUrl(activityLink)) {
         window.open(activityLink, '_blank', 'noopener,noreferrer')
         return
       }
