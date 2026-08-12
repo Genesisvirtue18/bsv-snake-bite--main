@@ -546,7 +546,7 @@ export default function MassMediaPage() {
                 ) : (
                   <div className="p-8 text-center">
                     <p className="text-slate-600 mb-5">
-                      This link cannot be embedded directly. Open button se link new tab me khulega.
+                      This Instagram post cannot be displayed here. Select Open Link to view it in a new tab.
                     </p>
 
                     <Button
