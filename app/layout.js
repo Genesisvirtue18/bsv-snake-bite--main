@@ -4,9 +4,11 @@ import Script from 'next/script'
 import { Providers } from './providers'
 import { Toaster } from '@/components/ui/sonner'
 import { MongoClient } from 'mongodb'
+import { headers } from 'next/headers'
 import { DEFAULT_SETTINGS } from '@/lib/defaultSettings'
 
 const inter = Inter({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'], display: 'swap' })
+const SITE_URL = 'https://snakebite-info.bsvgroup.com'
 
 let _client
 async function fetchSettings() {
@@ -23,10 +25,16 @@ async function fetchSettings() {
 
 export async function generateMetadata() {
   const s = await fetchSettings()
+  const pathname = headers().get('x-pathname') || '/'
+  const canonicalPath = pathname === '/' ? '/' : pathname.replace(/\/+$/, '')
+  const canonicalUrl = canonicalPath === '/' && s.seoHome?.canonicalUrl
+    ? s.seoHome.canonicalUrl
+    : canonicalPath
   const icons = {}
   if (s.branding?.favicon) icons.icon = s.branding.favicon
   if (s.branding?.appleTouchIcon) icons.apple = s.branding.appleTouchIcon
   return {
+    metadataBase: new URL(SITE_URL),
     title: s.seoHome?.metaTitle || s.branding?.websiteName || 'BSV Snakebite Awareness',
     description: s.seoHome?.metaDescription,
     keywords: s.seoHome?.metaKeywords,
@@ -44,6 +52,9 @@ export async function generateMetadata() {
       images: s.seoHome?.twitterImage ? [s.seoHome.twitterImage] : [],
     },
     robots: s.seoHome?.robots || 'index, follow',
+    alternates: {
+      canonical: canonicalUrl,
+    },
     other: {
       ...(s.tracking?.googleSearchConsoleVerification ? { 'google-site-verification': s.tracking.googleSearchConsoleVerification } : {}),
       ...(s.tracking?.facebookDomainVerification ? { 'facebook-domain-verification': s.tracking.facebookDomainVerification } : {}),
