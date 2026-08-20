@@ -21,6 +21,28 @@ import QuizSection from '@/components/QuizSection'
 import Link from 'next/link'
 import Image from 'next/image'
 
+const MotionLink = motion(Link)
+const HOMEPAGE_ROUTES = [
+  '/meetings-with-policy-makers',
+  '/brochures',
+  '/impact-stories',
+  '/mankind-agritech-collaboration',
+  '/kol-program',
+  '/mass-media',
+  '/gallery',
+  '/ngo-network',
+  '/onground',
+  '/training',
+]
+
+function HomepageRouteLinks() {
+  return (
+    <nav className="sr-only" aria-label="Snakebite campaign pages">
+      {HOMEPAGE_ROUTES.map(href => <Link key={href} href={href}>{href.slice(1).replaceAll('-', ' ')}</Link>)}
+    </nav>
+  )
+}
+
 const ICONS = { Heart, GraduationCap, MapPin, Users, Megaphone, Building2, Stethoscope }
 const DEFAULT_BRAND = {
   blue: '#201F5E',   // dark-navy — headings, primary text
@@ -395,14 +417,21 @@ function Header({ lang, setLang, t, settings }) {
                     <ul className="space-y-3">
                       {g.items.map((it, ii) => (
                         <li key={ii}>
-                          <button onClick={() => go(it.href)} className="w-full text-left group p-2 rounded-xl hover:bg-cyan-50 transition-all duration-200">
+                          {it.href.startsWith('/') ? <Link href={it.href} onClick={() => { setMegaOpen(null); setOpen(false) }} className="block w-full text-left group p-2 rounded-xl hover:bg-cyan-50 transition-all duration-200">
                             <div className="font-display font-semibold text-sm group-hover:text-[#0EAFC5] transition-colors" style={{ color: BRAND.blue }}>
                               {it.label}
                             </div>
                             <div className="text-xs text-slate-400 group-hover:text-slate-600 transition-colors leading-relaxed">
                               {it.desc}
                             </div>
-                          </button>
+                          </Link> : <button onClick={() => go(it.href)} className="w-full text-left group p-2 rounded-xl hover:bg-cyan-50 transition-all duration-200">
+                            <div className="font-display font-semibold text-sm group-hover:text-[#0EAFC5] transition-colors" style={{ color: BRAND.blue }}>
+                              {it.label}
+                            </div>
+                            <div className="text-xs text-slate-400 group-hover:text-slate-600 transition-colors leading-relaxed">
+                              {it.desc}
+                            </div>
+                          </button>}
                         </li>
                       ))}
                     </ul>
@@ -917,12 +946,6 @@ function AwarenessSection({ content, t }) {
     'Mankind Agritech Collaboration': '/mankind-agritech-collaboration',
   }
 
-  const go = (href) => {
-    if (!href) return
-    if (href.startsWith('#')) document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
-    else if (typeof window !== 'undefined') window.location.href = href
-  }
-
   return (
     <section id="awareness" className="section-pad" style={{ background: '#FFF2F2' }}>
       <div className="max-w-6xl mx-auto px-4">
@@ -946,13 +969,13 @@ function AwarenessSection({ content, t }) {
           <div className="flex-1 w-full min-w-0">
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               {cards.map((card, i) => (
-                <motion.div
+                <MotionLink
                   key={i}
+                  href={AWARENESS_LINKS[card.title] || card.href || '#awareness'}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.4 }}
-                  onClick={() => go(AWARENESS_LINKS[card.title])}
                   className="bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
                 >
                   {/* Full-visible image */}
@@ -975,7 +998,7 @@ function AwarenessSection({ content, t }) {
                       {t.common.explore} <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
-                </motion.div>
+                </MotionLink>
               ))}
             </div>
           </div>
@@ -1206,25 +1229,11 @@ function AccessSection({ content, t }) {
     })
   }
 
-  const openCard = (card, cardIndex) => {
-    const kind = getCardKind(card)
-    if (kind === 'training') {
-      window.location.href = '/training'
-      return
-    }
-
-    if (kind === 'kol') {
-      window.location.href = '/kol-program'
-      return
-    }
-
-    if (kind === 'policy') {
-      window.location.href = '/meetings-with-policy-makers'
-      return
-    }
-
-    openVideo(card, cardIndex)
-  }
+  const getCardRoute = (card) => ({
+    training: '/training',
+    kol: '/kol-program',
+    policy: '/meetings-with-policy-makers',
+  })[getCardKind(card)]
 
   if (!cards.length) return null
 
@@ -1260,18 +1269,20 @@ function AccessSection({ content, t }) {
                   const isWorkshop = kind === 'policy'
                   const videos = isWorkshop ? [] : getYoutubeVideos(card, i)
                   const documents = isWorkshop ? getDocuments(card) : []
+                  const route = getCardRoute(card)
+                  const CardContainer = route ? MotionLink : motion.div
 
                   // Admin cover image first priority
                   const thumbnail = card.image || ''
 
                   return (
-                    <motion.div
+                    <CardContainer
                       key={i}
+                      {...(route ? { href: route } : { onClick: () => openVideo(card, i) })}
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.1, duration: 0.4 }}
-                      onClick={() => openCard(card, i)}
                       className="bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
                     >
                       <div
@@ -1321,20 +1332,26 @@ function AccessSection({ content, t }) {
                           {card.desc}
                         </p>
 
-                        <button
+                        {route ? <span
+                          className="flex items-center gap-1 text-[11px] sm:text-[12px] font-semibold"
+                          style={{ color: ACCENT }}
+                        >
+                          {t.common.explore}
+                          <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                        </span> : <button
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation()
-                            openCard(card, i)
+                            openVideo(card, i)
                           }}
                           className="flex items-center gap-1 text-[11px] sm:text-[12px] font-semibold"
                           style={{ color: ACCENT }}
                         >
                           {t.common.explore}
                           <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                        </button>
+                        </button>}
                       </div>
-                    </motion.div>
+                    </CardContainer>
                   )
                 })}
               </div>
@@ -1547,10 +1564,10 @@ function CommunicationSection({ content, t }) {
   const section = content?.sectionText?.communication || {}
   const fits = ['contain', 'cover', 'contain']
   const ACCENT = '#7C3AED'
-  const go = (href) => {
-    if (!href) return
-    if (href.startsWith('#')) document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
-    else if (typeof window !== 'undefined') window.location.href = href
+  const COMMUNICATION_LINKS = {
+    'Posters & Brochures': '/brochures',
+    'Awareness Videos': '/videos',
+    'Comic & Visual Stories': '/Comic-&-Visual-Stories',
   }
   if (!cards.length) return null
   return (
@@ -1573,13 +1590,13 @@ function CommunicationSection({ content, t }) {
           <div className="flex-1 w-full min-w-0">
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               {cards.map((card, i) => (
-                <motion.div
+                <MotionLink
                   key={i}
+                  href={card.href || COMMUNICATION_LINKS[card.title]}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.4 }}
-                  onClick={() => go(card.href)}
                   className="bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer group"
                 >
                   <div className="relative overflow-hidden" style={{ aspectRatio: '4/3', background: '#0f172a' }}>
@@ -1595,7 +1612,7 @@ function CommunicationSection({ content, t }) {
                       {t.common.explore} <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
-                </motion.div>
+                </MotionLink>
               ))}
             </div>
           </div>
@@ -2301,6 +2318,7 @@ function App() {
 
   if (loading) return (
     <div className="fixed inset-0 z-[99999] flex flex-col items-center justify-center overflow-hidden bg-white">
+      <HomepageRouteLinks />
       {/* soft glow */}
       <div
         className="absolute top-[-140px] left-[-140px] w-[360px] h-[360px] rounded-full pointer-events-none"
