@@ -2161,7 +2161,7 @@ function Footer({ content, t, settings }) {
           <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.06)' }}>
             <p className="text-[11px] text-white/60 leading-relaxed">
               <span className="font-semibold text-white/80 uppercase tracking-wide text-[10px] mr-1">Pharmacovigilance:</span>
-              To Report Suspected Adverse Reaction, Contact Bharat Serums and Vaccines Ltd. at{' '}
+              To Report Suspected Adverse Reaction, <a href="https://genesisvirtue.com/" target="_blank" rel="noopener noreferrer">Contact</a> Bharat Serums and Vaccines Ltd. at{' '}
               <a href="mailto:pv@bsvgroup.com" className="text-white/80 underline hover:text-white">pv@bsvgroup.com</a>
               {' '}or visit the website{' '}
               <a href="https://www.bsvgroup.com/adverse/" target="_blank" rel="noopener noreferrer" className="text-white/80 underline hover:text-white">bsvgroup.com/adverse</a>
