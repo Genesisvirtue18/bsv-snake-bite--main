@@ -2118,7 +2118,7 @@ function Footer({ content, t, settings }) {
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           <div>
             <div className="font-display font-semibold text-xl mb-2">BSV Campaign</div>
-            <div className="text-sm text-white/70 mb-4">{f.tagline || 'Saap Ka Vaar, Aspataal Mein Hi Upchaar'}</div>
+            <div className="text-sm text-white/70 mb-4">{settings?.branding?.footerTagline || settings?.branding?.campaignTagline || f.tagline || 'Saap Ka Vaar, Aspataal Mein Hi Upchaar'}</div>
             {settings?.branding?.footerLogo && (
               <Image
                 src={settings.branding.footerLogo}

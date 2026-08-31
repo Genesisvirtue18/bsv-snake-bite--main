@@ -4484,6 +4484,7 @@ function SettingsView({ api }) {
               <div className="grid md:grid-cols-2 gap-3">
                 <div><Label>Website Name</Label><Input value={s.branding.websiteName} onChange={e => updateBranding('websiteName', e.target.value)} /></div>
                 <div><Label>Campaign Name</Label><Input value={s.branding.campaignName} onChange={e => updateBranding('campaignName', e.target.value)} /></div>
+                <div className="md:col-span-2"><Label>Footer Tagline</Label><Input value={s.branding.footerTagline ?? s.branding.campaignTagline ?? ''} onChange={e => updateBranding('footerTagline', e.target.value)} placeholder="Saap Ka Vaar, Aspataal Mein Hi Upchaar" /></div>
                 <div className="md:col-span-2"><Label>Tagline</Label><Input value={s.branding.tagline} onChange={e => updateBranding('tagline', e.target.value)} /></div>
               </div>
               <MediaPicker label="Admin Header Logo" value={s.branding.headerLogo} onChange={v => updateBranding('headerLogo', v)} />
