@@ -2173,7 +2173,7 @@ function Footer({ content, t, settings }) {
           <div className="flex flex-col md:flex-row items-center justify-between gap-3 text-sm">
 
             <p className="text-white/60">
-              © 2025 Bharat Serums and Vaccines Ltd. All rights reserved.
+              © BSV (A Mankind Group Company). All rights reserved.
             </p>
 
             <div className="flex items-center gap-4 text-white/70">
