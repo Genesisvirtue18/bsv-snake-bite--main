@@ -107,6 +107,10 @@
     "mankindAgritech": {
       "title": "Mankind Agritech Collaboration",
       "description": "Activity images from the Mankind Agritech collaboration."
+    },
+    "sarpathon": {
+      "title": "Sarp",
+      "description": "Explore Sarpathon videos and photo albums."
     }
   },
   "logos": {
@@ -536,6 +540,16 @@
         "image": "",
         "href": "",
         "order": "4"
+      },
+      {
+        "id": "sarpathon",
+        "title": "Sarpathon",
+        "desc": "Explore Sarpathon videos and photo albums.",
+        "label": "Sarpathon",
+        "image": "",
+        "href": "/sarpathon",
+        "trainingVideoItems": [],
+        "trainingImageAlbums": []
       }
     ]
   },
