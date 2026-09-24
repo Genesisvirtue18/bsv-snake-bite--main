@@ -553,7 +553,7 @@
             "title": "test",
             "description": "test",
             "url": "https://youtube.com/shorts/FYdDx4U8R0c?si=oQRqBStZNi4l1l9Q",
-            "coverImage": ""
+            "coverImage": "/api/media/fb2340a5-4b47-4b42-b6e9-4d144615d94d"
           }
         ],
         "trainingImageAlbums": [
@@ -563,7 +563,11 @@
             "description": "",
             "coverImage": "/api/media/b03391e6-d584-42e3-bd18-b09d1d47902c",
             "images": [
-              "/api/media/3d581113-08f9-44e1-b1e3-c798c18cff7c"
+              "/api/media/3d581113-08f9-44e1-b1e3-c798c18cff7c",
+              "/api/media/3bf4c024-01ec-42d7-999c-a06c56eb2842",
+              "/api/media/49661782-686c-4a45-a138-dd3eb77f912a",
+              "/api/media/9dc05220-ab8c-4960-b46d-a2e1cd88c57f",
+              "/api/media/9678816b-f9d7-426d-b19a-355657a5f84b"
             ]
           }
         ]
