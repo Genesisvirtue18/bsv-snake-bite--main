@@ -15,6 +15,7 @@ const PUBLIC_ROUTES = [
   '/privacy-policy',
   '/terms-of-use',
   '/training',
+  '/sarpathon',
   '/videos',
 ]
 

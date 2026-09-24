@@ -59,7 +59,7 @@ async function ensureContent(db) {
   const defaultAwarenessItems = DEFAULT_CONTENT.awareness?.items || []
   const existingAwarenessItems = existing.data.awareness?.items || []
   const missingAwarenessItems = defaultAwarenessItems.filter(defaultItem =>
-    !existingAwarenessItems.some(item => item.title === defaultItem.title)
+    !existingAwarenessItems.some(item => (defaultItem.id && item.id === defaultItem.id) || (defaultItem.href && item.href === defaultItem.href) || item.title === defaultItem.title)
   )
   if (missingAwarenessItems.length) {
     merged.awareness = {

@@ -33,6 +33,7 @@ const HOMEPAGE_ROUTES = [
   '/ngo-network',
   '/onground',
   '/training',
+  '/sarpathon',
 ]
 
 function HomepageRouteLinks() {
@@ -940,6 +941,7 @@ function AwarenessSection({ content, t }) {
   const section = content?.sectionText?.awareness || {}
   const ACCENT = '#de2527'
   const AWARENESS_LINKS = {
+    'Sarpathon': '/sarpathon',
     'Onground Activations': '/onground',
     'Media': '/mass-media',
     'NGO Collaborations': '/ngo-network',

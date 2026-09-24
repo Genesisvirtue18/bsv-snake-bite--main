@@ -693,6 +693,7 @@ export default function AdminPage() {
             <TabsTrigger value="stories"><Heart className="w-4 h-4 mr-1" />Stories</TabsTrigger>
             <TabsTrigger value="ngos"><Building2 className="w-4 h-4 mr-1" />NGOs</TabsTrigger>
             <TabsTrigger value="onGround"><Drama className="w-4 h-4 mr-1" />On-Ground</TabsTrigger>
+            <TabsTrigger value="sarpathon"><Images className="w-4 h-4 mr-1" />Sarpathon</TabsTrigger>
             <TabsTrigger value="massMedia"><Megaphone className="w-4 h-4 mr-1" />Mass Media</TabsTrigger>
             <TabsTrigger value="mankindAgritech"><Handshake className="w-4 h-4 mr-1" />Mankind Agritech</TabsTrigger>
             <TabsTrigger value="gallery"><Images className="w-4 h-4 mr-1" />Gallery</TabsTrigger>
@@ -1119,6 +1120,9 @@ export default function AdminPage() {
                             })
                           }}
                         />
+                        {(item.id === 'sarpathon' || item.href === '/sarpathon' || item.title === 'Sarpathon') && (
+                          <p className="text-sm text-muted-foreground">Manage videos and photo albums in the Sarpathon tab.</p>
+                        )}
                       </div>
                     ))}
                   </CardContent>
@@ -1207,10 +1211,6 @@ export default function AdminPage() {
 
                       const policyAlbums = Array.isArray(item.policyImageAlbums) ? item.policyImageAlbums : []
 
-                      const getPageArray = key => Array.isArray(item?.[key]) ? item[key] : []
-                      const pageVideos = pageConfig ? getPageArray(pageConfig.videoKey) : []
-                      const pageAlbums = pageConfig ? getPageArray(pageConfig.albumKey) : []
-                      const pageDocuments = pageConfig?.documentKey ? getPageArray(pageConfig.documentKey) : []
 
                       const updateItem = patch => {
                         const items = [...(content.access?.items || [])]
@@ -1315,406 +1315,7 @@ export default function AdminPage() {
                           </div>
 
                           {/* Card 1 and Card 2: Inside page settings */}
-                          {pageConfig && (
-                            <div className="border-t pt-4 space-y-5">
-                              <div className="rounded-xl border bg-green-50/60 p-4">
-                                <div className="font-semibold text-bsv-blue mb-1">
-                                  {pageConfig.label} Page Settings
-                                </div>
-                                <p className="text-xs text-slate-500">
-                                  {pageConfig.helper}
-                                </p>
-                              </div>
-
-                              <MediaPicker
-                                label={pageConfig.coverLabel}
-                                value={item.image || ''}
-                                onChange={v => updateItem({ image: v })}
-                              />
-
-                              <div className="rounded-xl border bg-white p-4 space-y-3">
-                                <div className="flex items-center justify-between gap-3">
-                                  <div>
-                                    <Label>{pageConfig.label} Videos</Label>
-                                    <p className="text-xs text-slate-500">
-                                      Add YouTube or Google Drive video links. Add cover image for Drive videos.
-                                    </p>
-                                  </div>
-
-                                  <Button
-                                    type="button"
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={() => {
-                                      updatePageArray(pageConfig.videoKey, current => [
-                                        ...current,
-                                        {
-                                          title: '',
-                                          description: '',
-                                          url: '',
-                                          coverImage: '',
-                                        },
-                                      ])
-                                    }}
-                                  >
-                                    <Plus className="w-4 h-4 mr-1" />
-                                    Add Video
-                                  </Button>
-                                </div>
-
-                                {!pageVideos.length && (
-                                  <div className="rounded-lg border border-dashed border-slate-300 p-4 text-center text-sm text-slate-500">
-                                    No {pageConfig.label.toLowerCase()} videos added yet.
-                                  </div>
-                                )}
-
-                                {pageVideos.map((video, videoIndex) => (
-                                  <div
-                                    key={videoIndex}
-                                    className="rounded-xl border bg-slate-50 p-3 space-y-4"
-                                  >
-                                    <div className="flex items-center justify-between">
-                                      <div className="flex items-center gap-2 font-semibold text-sm text-bsv-blue">
-                                        <Play className="w-4 h-4" />
-                                        {pageConfig.defaultVideoTitle} {videoIndex + 1}
-                                      </div>
-
-                                      <Button
-                                        type="button"
-                                        size="sm"
-                                        variant="destructive"
-                                        onClick={() => {
-                                          updatePageArray(pageConfig.videoKey, current => {
-                                            const next = [...current]
-                                            next.splice(videoIndex, 1)
-                                            return next
-                                          })
-                                        }}
-                                      >
-                                        <Trash2 className="w-4 h-4" />
-                                      </Button>
-                                    </div>
-
-                                    <div className="grid md:grid-cols-2 gap-3">
-                                      <div>
-                                        <Label>Video Title</Label>
-                                        <Input
-                                          value={video.title || ""}
-                                          placeholder="Snakebite Management Training"
-                                          onChange={e => {
-                                            updatePageArray(pageConfig.videoKey, current => {
-                                              const next = [...current]
-                                              next[videoIndex] = {
-                                                ...next[videoIndex],
-                                                title: e.target.value,
-                                              }
-                                              return next
-                                            })
-                                          }}
-                                        />
-                                      </div>
-
-                                      <div>
-                                        <Label>YouTube / Drive Link</Label>
-                                        <Input
-                                          value={video.url || ""}
-                                          placeholder="https://www.youtube.com/watch?v=..."
-                                          onChange={e => {
-                                            updatePageArray(pageConfig.videoKey, current => {
-                                              const next = [...current]
-                                              next[videoIndex] = {
-                                                ...next[videoIndex],
-                                                url: e.target.value,
-                                              }
-                                              return next
-                                            })
-                                          }}
-                                        />
-                                      </div>
-                                    </div>
-
-                                    {/* NEW DESCRIPTION FIELD */}
-
-                                    <div>
-                                      <Label>Video Description</Label>
-                                      <Textarea
-                                        rows={2}
-                                        value={video.description || ""}
-                                        placeholder="Write a short 1-2 line description about this video..."
-                                        onChange={e => {
-                                          updatePageArray(pageConfig.videoKey, current => {
-                                            const next = [...current]
-                                            next[videoIndex] = {
-                                              ...next[videoIndex],
-                                              description: e.target.value,
-                                            }
-                                            return next
-                                          })
-                                        }}
-                                      />
-                                    </div>
-
-                                    <MediaPicker
-                                      label="Video Cover Image"
-                                      value={video.coverImage || ""}
-                                      onChange={v => {
-                                        updatePageArray(pageConfig.videoKey, current => {
-                                          const next = [...current]
-                                          next[videoIndex] = {
-                                            ...next[videoIndex],
-                                            coverImage: v,
-                                          }
-                                          return next
-                                        })
-                                      }}
-                                    />
-                                  </div>
-                                ))}
-                              </div>
-
-                              <div className="rounded-xl border bg-white p-4 space-y-4">
-                                <div className="flex items-center justify-between gap-3">
-                                  <div>
-                                    <Label>{pageConfig.label} Image Albums</Label>
-                                    <p className="text-xs text-slate-500">
-                                      Add album cover and multiple images. If album images are empty, cover image will show inside the popup.
-                                    </p>
-                                  </div>
-
-                                  <Button
-                                    type="button"
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={() => {
-                                      updatePageArray(pageConfig.albumKey, current => [
-                                        ...current,
-                                        {
-                                          id: `${pageConfig.albumKey}-${Date.now()}`,
-                                          title: '',
-                                          description: '',
-                                          coverImage: '',
-                                          images: [],
-                                        },
-                                      ])
-                                    }}
-                                  >
-                                    <Plus className="w-4 h-4 mr-1" />
-                                    Add Album
-                                  </Button>
-                                </div>
-
-                                {!pageAlbums.length && (
-                                  <div className="rounded-lg border border-dashed border-slate-300 p-4 text-center text-sm text-slate-500">
-                                    No {pageConfig.label.toLowerCase()} image albums added yet.
-                                  </div>
-                                )}
-
-                                {pageAlbums.map((album, albumIndex) => {
-                                  const albumImages = Array.isArray(album.images) ? album.images : []
-
-                                  return (
-                                    <div
-                                      key={album.id || albumIndex}
-                                      className="rounded-xl border bg-slate-50 p-4 space-y-4"
-                                    >
-                                      <div className="flex items-center justify-between">
-                                        <div className="font-semibold text-sm text-bsv-blue">
-                                          {pageConfig.defaultAlbumTitle} {albumIndex + 1}
-                                        </div>
-
-                                        <Button
-                                          type="button"
-                                          size="sm"
-                                          variant="destructive"
-                                          onClick={() => {
-                                            updatePageArray(pageConfig.albumKey, current => {
-                                              const next = [...current]
-                                              next.splice(albumIndex, 1)
-                                              return next
-                                            })
-                                          }}
-                                        >
-                                          <Trash2 className="w-4 h-4" />
-                                        </Button>
-                                      </div>
-
-                                      <div className="grid md:grid-cols-2 gap-3">
-                                        <div>
-                                          <Label>Album Title</Label>
-                                          <Input
-                                            value={album.title || ''}
-                                            placeholder="Launch event photos"
-                                            onChange={e => {
-                                              updatePageArray(pageConfig.albumKey, current => {
-                                                const next = [...current]
-                                                next[albumIndex] = {
-                                                  ...next[albumIndex],
-                                                  title: e.target.value,
-                                                }
-                                                return next
-                                              })
-                                            }}
-                                          />
-                                        </div>
-
-                                        <div>
-                                          <Label>Description</Label>
-                                          <Input
-                                            value={album.description || ''}
-                                            placeholder="Event photos / webinar screenshots"
-                                            onChange={e => {
-                                              updatePageArray(pageConfig.albumKey, current => {
-                                                const next = [...current]
-                                                next[albumIndex] = {
-                                                  ...next[albumIndex],
-                                                  description: e.target.value,
-                                                }
-                                                return next
-                                              })
-                                            }}
-                                          />
-                                        </div>
-                                      </div>
-
-                                      <MediaPicker
-                                        label="Album Cover Image"
-                                        value={album.coverImage || ''}
-                                        onChange={v => {
-                                          updatePageArray(pageConfig.albumKey, current => {
-                                            const next = [...current]
-                                            next[albumIndex] = {
-                                              ...next[albumIndex],
-                                              coverImage: v,
-                                            }
-                                            return next
-                                          })
-                                        }}
-                                      />
-
-                                      <MultiMediaPicker
-                                        label="Album Images"
-                                        values={albumImages}
-                                        max={40}
-                                        onChange={values => {
-                                          updatePageArray(pageConfig.albumKey, current => {
-                                            const next = [...current]
-                                            next[albumIndex] = {
-                                              ...next[albumIndex],
-                                              images: values,
-                                            }
-                                            return next
-                                          })
-                                        }}
-                                      />
-                                    </div>
-                                  )
-                                })}
-                              </div>
-
-                              {!isTraining && (
-                                <div className="rounded-xl border bg-white p-4 space-y-3">
-                                <div className="flex items-center justify-between gap-3">
-                                  <div>
-                                    <Label>{pageConfig.label} Documents</Label>
-                                    <p className="text-xs text-slate-500">
-                                      Paste Drive link or upload/select PDF, DOC, or DOCX file.
-                                    </p>
-                                  </div>
-
-                                  <Button
-                                    type="button"
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={() => {
-                                      updatePageArray(pageConfig.documentKey, current => [
-                                        ...current,
-                                        {
-                                          title: '',
-                                          url: '',
-                                        },
-                                      ])
-                                    }}
-                                  >
-                                    <Plus className="w-4 h-4 mr-1" />
-                                    Add Document
-                                  </Button>
-                                </div>
-
-                                {!pageDocuments.length && (
-                                  <div className="rounded-lg border border-dashed border-slate-300 p-4 text-center text-sm text-slate-500">
-                                    No {pageConfig.label.toLowerCase()} documents added yet.
-                                  </div>
-                                )}
-
-                                {pageDocuments.map((doc, docIndex) => (
-                                  <div
-                                    key={docIndex}
-                                    className="rounded-xl border bg-slate-50 p-3 space-y-3"
-                                  >
-                                    <div className="flex items-center justify-between">
-                                      <div className="flex items-center gap-2 font-semibold text-sm text-bsv-blue">
-                                        <FileText className="w-4 h-4" />
-                                        {pageConfig.defaultDocumentTitle} {docIndex + 1}
-                                      </div>
-
-                                      <Button
-                                        type="button"
-                                        size="sm"
-                                        variant="destructive"
-                                        onClick={() => {
-                                          updatePageArray(pageConfig.documentKey, current => {
-                                            const next = [...current]
-                                            next.splice(docIndex, 1)
-                                            return next
-                                          })
-                                        }}
-                                      >
-                                        <Trash2 className="w-4 h-4" />
-                                      </Button>
-                                    </div>
-
-                                    <div className="grid md:grid-cols-2 gap-3">
-                                      <div>
-                                        <Label>Document Title</Label>
-                                        <Input
-                                          value={doc.title || ''}
-                                          placeholder="ASV Administration Guidelines"
-                                          onChange={e => {
-                                            updatePageArray(pageConfig.documentKey, current => {
-                                              const next = [...current]
-                                              next[docIndex] = {
-                                                ...next[docIndex],
-                                                title: e.target.value,
-                                              }
-                                              return next
-                                            })
-                                          }}
-                                        />
-                                      </div>
-
-                                      <CloudinaryFilePicker
-                                        label="Document File"
-                                        module="kol"
-                                        category="kol-program"
-                                        value={doc.file || null}
-                                        onChange={file => {
-                                          updatePageArray(pageConfig.documentKey, current => {
-                                            const next = [...current]
-                                            next[docIndex] = {
-                                              ...next[docIndex],
-                                              file,
-                                            }
-                                            return next
-                                          })
-                                        }}
-                                      />
-                                    </div>
-                                  </div>
-                                ))}
-                                </div>
-                              )}
-                            </div>
-                          )}
+                          {pageConfig && <PageMediaEditor item={item} pageConfig={pageConfig} isTraining={isTraining} updateItem={updateItem} />}
 
                           {/* Card 3: Meeting with Policy-Makers photo albums */}
                           {isWorkshop && (
@@ -2126,6 +1727,10 @@ export default function AdminPage() {
           {/* NUKKAD NATAK - ADMIN */}
           <TabsContent value="onGround">
             <OnGroundAdminView content={content} setContent={setContent} api={api} />
+          </TabsContent>
+
+          <TabsContent value="sarpathon">
+            {content && <SarpathonAdminView content={content} setContent={setContent} saveContent={saveContent} />}
           </TabsContent>
 
           <TabsContent value="massMedia">
@@ -4670,3 +4275,464 @@ function SettingsView({ api }) {
 
 // (icon placeholder removed)
 
+
+function PageMediaEditor({ item, pageConfig, isTraining = true, updateItem, showCover = true }) {
+  const pageVideos = Array.isArray(item[pageConfig.videoKey]) ? item[pageConfig.videoKey] : []
+  const pageAlbums = Array.isArray(item[pageConfig.albumKey]) ? item[pageConfig.albumKey] : []
+  const pageDocuments = Array.isArray(item[pageConfig.documentKey]) ? item[pageConfig.documentKey] : []
+  const updatePageArray = (key, updater) => {
+    const current = Array.isArray(item[key]) ? [...item[key]] : []
+    updateItem({ [key]: typeof updater === 'function' ? updater(current) : updater })
+  }
+  return (<>{pageConfig && (
+      <div className="border-t pt-4 space-y-5">
+        <div className="rounded-xl border bg-green-50/60 p-4">
+          <div className="font-semibold text-bsv-blue mb-1">
+            {pageConfig.label} Page Settings
+          </div>
+          <p className="text-xs text-slate-500">
+            {pageConfig.helper}
+          </p>
+        </div>
+
+        {showCover && <MediaPicker
+          label={pageConfig.coverLabel}
+          value={item.image || ''}
+          onChange={v => updateItem({ image: v })}
+        />}
+
+        <div className="rounded-xl border bg-white p-4 space-y-3">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <Label>{pageConfig.label} Videos</Label>
+              <p className="text-xs text-slate-500">
+                Add YouTube or Google Drive video links. Add cover image for Drive videos.
+              </p>
+            </div>
+
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                updatePageArray(pageConfig.videoKey, current => [
+                  ...current,
+                  {
+                    title: '',
+                    description: '',
+                    url: '',
+                    coverImage: '',
+                  },
+                ])
+              }}
+            >
+              <Plus className="w-4 h-4 mr-1" />
+              Add Video
+            </Button>
+          </div>
+
+          {!pageVideos.length && (
+            <div className="rounded-lg border border-dashed border-slate-300 p-4 text-center text-sm text-slate-500">
+              No {pageConfig.label.toLowerCase()} videos added yet.
+            </div>
+          )}
+
+          {pageVideos.map((video, videoIndex) => (
+            <div
+              key={videoIndex}
+              className="rounded-xl border bg-slate-50 p-3 space-y-4"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 font-semibold text-sm text-bsv-blue">
+                  <Play className="w-4 h-4" />
+                  {pageConfig.defaultVideoTitle} {videoIndex + 1}
+                </div>
+
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="destructive"
+                  onClick={() => {
+                    updatePageArray(pageConfig.videoKey, current => {
+                      const next = [...current]
+                      next.splice(videoIndex, 1)
+                      return next
+                    })
+                  }}
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-3">
+                <div>
+                  <Label>Video Title</Label>
+                  <Input
+                    value={video.title || ""}
+                    placeholder="Snakebite Management Training"
+                    onChange={e => {
+                      updatePageArray(pageConfig.videoKey, current => {
+                        const next = [...current]
+                        next[videoIndex] = {
+                          ...next[videoIndex],
+                          title: e.target.value,
+                        }
+                        return next
+                      })
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <Label>YouTube / Drive Link</Label>
+                  <Input
+                    value={video.url || ""}
+                    placeholder="https://www.youtube.com/watch?v=..."
+                    onChange={e => {
+                      updatePageArray(pageConfig.videoKey, current => {
+                        const next = [...current]
+                        next[videoIndex] = {
+                          ...next[videoIndex],
+                          url: e.target.value,
+                        }
+                        return next
+                      })
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* NEW DESCRIPTION FIELD */}
+
+              <div>
+                <Label>Video Description</Label>
+                <Textarea
+                  rows={2}
+                  value={video.description || ""}
+                  placeholder="Write a short 1-2 line description about this video..."
+                  onChange={e => {
+                    updatePageArray(pageConfig.videoKey, current => {
+                      const next = [...current]
+                      next[videoIndex] = {
+                        ...next[videoIndex],
+                        description: e.target.value,
+                      }
+                      return next
+                    })
+                  }}
+                />
+              </div>
+
+              <MediaPicker
+                label="Video Cover Image"
+                value={video.coverImage || ""}
+                onChange={v => {
+                  updatePageArray(pageConfig.videoKey, current => {
+                    const next = [...current]
+                    next[videoIndex] = {
+                      ...next[videoIndex],
+                      coverImage: v,
+                    }
+                    return next
+                  })
+                }}
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className="rounded-xl border bg-white p-4 space-y-4">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <Label>{pageConfig.label} Image Albums</Label>
+              <p className="text-xs text-slate-500">
+                Add album cover and multiple images. If album images are empty, cover image will show inside the popup.
+              </p>
+            </div>
+
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                updatePageArray(pageConfig.albumKey, current => [
+                  ...current,
+                  {
+                    id: `${pageConfig.albumKey}-${Date.now()}`,
+                    title: '',
+                    description: '',
+                    coverImage: '',
+                    images: [],
+                  },
+                ])
+              }}
+            >
+              <Plus className="w-4 h-4 mr-1" />
+              Add Album
+            </Button>
+          </div>
+
+          {!pageAlbums.length && (
+            <div className="rounded-lg border border-dashed border-slate-300 p-4 text-center text-sm text-slate-500">
+              No {pageConfig.label.toLowerCase()} image albums added yet.
+            </div>
+          )}
+
+          {pageAlbums.map((album, albumIndex) => {
+            const albumImages = Array.isArray(album.images) ? album.images : []
+
+            return (
+              <div
+                key={album.id || albumIndex}
+                className="rounded-xl border bg-slate-50 p-4 space-y-4"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="font-semibold text-sm text-bsv-blue">
+                    {pageConfig.defaultAlbumTitle} {albumIndex + 1}
+                  </div>
+
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => {
+                      updatePageArray(pageConfig.albumKey, current => {
+                        const next = [...current]
+                        next.splice(albumIndex, 1)
+                        return next
+                      })
+                    }}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-3">
+                  <div>
+                    <Label>Album Title</Label>
+                    <Input
+                      value={album.title || ''}
+                      placeholder="Launch event photos"
+                      onChange={e => {
+                        updatePageArray(pageConfig.albumKey, current => {
+                          const next = [...current]
+                          next[albumIndex] = {
+                            ...next[albumIndex],
+                            title: e.target.value,
+                          }
+                          return next
+                        })
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <Label>Description</Label>
+                    <Input
+                      value={album.description || ''}
+                      placeholder="Event photos / webinar screenshots"
+                      onChange={e => {
+                        updatePageArray(pageConfig.albumKey, current => {
+                          const next = [...current]
+                          next[albumIndex] = {
+                            ...next[albumIndex],
+                            description: e.target.value,
+                          }
+                          return next
+                        })
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <MediaPicker
+                  label="Album Cover Image"
+                  value={album.coverImage || ''}
+                  onChange={v => {
+                    updatePageArray(pageConfig.albumKey, current => {
+                      const next = [...current]
+                      next[albumIndex] = {
+                        ...next[albumIndex],
+                        coverImage: v,
+                      }
+                      return next
+                    })
+                  }}
+                />
+
+                <MultiMediaPicker
+                  label="Album Images"
+                  values={albumImages}
+                  max={40}
+                  onChange={values => {
+                    updatePageArray(pageConfig.albumKey, current => {
+                      const next = [...current]
+                      next[albumIndex] = {
+                        ...next[albumIndex],
+                        images: values,
+                      }
+                      return next
+                    })
+                  }}
+                />
+              </div>
+            )
+          })}
+        </div>
+
+        {!isTraining && (
+          <div className="rounded-xl border bg-white p-4 space-y-3">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <Label>{pageConfig.label} Documents</Label>
+              <p className="text-xs text-slate-500">
+                Paste Drive link or upload/select PDF, DOC, or DOCX file.
+              </p>
+            </div>
+
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                updatePageArray(pageConfig.documentKey, current => [
+                  ...current,
+                  {
+                    title: '',
+                    url: '',
+                  },
+                ])
+              }}
+            >
+              <Plus className="w-4 h-4 mr-1" />
+              Add Document
+            </Button>
+          </div>
+
+          {!pageDocuments.length && (
+            <div className="rounded-lg border border-dashed border-slate-300 p-4 text-center text-sm text-slate-500">
+              No {pageConfig.label.toLowerCase()} documents added yet.
+            </div>
+          )}
+
+          {pageDocuments.map((doc, docIndex) => (
+            <div
+              key={docIndex}
+              className="rounded-xl border bg-slate-50 p-3 space-y-3"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 font-semibold text-sm text-bsv-blue">
+                  <FileText className="w-4 h-4" />
+                  {pageConfig.defaultDocumentTitle} {docIndex + 1}
+                </div>
+
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="destructive"
+                  onClick={() => {
+                    updatePageArray(pageConfig.documentKey, current => {
+                      const next = [...current]
+                      next.splice(docIndex, 1)
+                      return next
+                    })
+                  }}
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-3">
+                <div>
+                  <Label>Document Title</Label>
+                  <Input
+                    value={doc.title || ''}
+                    placeholder="ASV Administration Guidelines"
+                    onChange={e => {
+                      updatePageArray(pageConfig.documentKey, current => {
+                        const next = [...current]
+                        next[docIndex] = {
+                          ...next[docIndex],
+                          title: e.target.value,
+                        }
+                        return next
+                      })
+                    }}
+                  />
+                </div>
+
+                <CloudinaryFilePicker
+                  label="Document File"
+                  module="kol"
+                  category="kol-program"
+                  value={doc.file || null}
+                  onChange={file => {
+                    updatePageArray(pageConfig.documentKey, current => {
+                      const next = [...current]
+                      next[docIndex] = {
+                        ...next[docIndex],
+                        file,
+                      }
+                      return next
+                    })
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+          </div>
+        )}
+      </div>
+    )}</>)
+}
+
+function SarpathonAdminView({ content, setContent, saveContent }) {
+  const isSarpathon = item => item.id === 'sarpathon' || item.href === '/sarpathon' || item.title === 'Sarpathon'
+  const defaultItem = DEFAULT_CONTENT.awareness.items.find(isSarpathon)
+  const item = content.awareness?.items?.find(isSarpathon) || defaultItem
+  const header = content.pageHeaders?.sarpathon || DEFAULT_CONTENT.pageHeaders.sarpathon
+  const updateHeader = patch => setContent(current => ({
+    ...current,
+    pageHeaders: { ...(current.pageHeaders || {}), sarpathon: { ...header, ...patch } },
+  }))
+  const updateItem = patch => {
+    setContent(current => {
+      const items = [...(current.awareness?.items || [])]
+      const index = items.findIndex(isSarpathon)
+      if (index === -1) items.push({ ...defaultItem, ...patch })
+      else items[index] = { ...items[index], ...patch }
+      return { ...current, awareness: { ...(current.awareness || {}), items } }
+    })
+  }
+
+  return (
+    <div className="space-y-4">
+      <Card>
+        <CardContent className="p-5 space-y-4">
+          <h3 className="font-display font-bold text-lg text-bsv-blue">Sarpathon Page Main Content</h3>
+          <div>
+            <Label htmlFor="sarpathon-title">Main Headline</Label>
+            <Input id="sarpathon-title" value={header.title ?? DEFAULT_CONTENT.pageHeaders.sarpathon.title} onChange={e => updateHeader({ title: e.target.value })} />
+          </div>
+          <div>
+            <Label htmlFor="sarpathon-description">Description</Label>
+            <Textarea id="sarpathon-description" rows={2} value={header.description ?? DEFAULT_CONTENT.pageHeaders.sarpathon.description} onChange={e => updateHeader({ description: e.target.value })} />
+          </div>
+          <Button className="bg-bsv-red" onClick={saveContent}><Save className="w-4 h-4 mr-1" />Save Main Content</Button>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardContent className="p-5 space-y-4">
+          <h3 className="font-display font-bold text-lg text-bsv-blue">Sarpathon Videos and Photo Albums</h3>
+          <PageMediaEditor
+            item={item}
+            showCover={false}
+            pageConfig={{ label: 'Sarpathon', helper: 'Add videos and photo albums, then save to update the Sarpathon page.', videoKey: 'trainingVideoItems', albumKey: 'trainingImageAlbums', defaultVideoTitle: 'Sarpathon Video', defaultAlbumTitle: 'Sarpathon Album' }}
+            updateItem={updateItem}
+          />
+          <Button className="bg-bsv-red" onClick={saveContent}><Save className="w-4 h-4 mr-1" />Save Sarpathon</Button>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
