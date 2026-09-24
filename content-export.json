@@ -549,7 +549,17 @@
         "image": "",
         "href": "/sarpathon",
         "trainingVideoItems": [],
-        "trainingImageAlbums": []
+        "trainingImageAlbums": [
+          {
+            "id": "trainingImageAlbums-1790236486455",
+            "title": "test",
+            "description": "",
+            "coverImage": "/api/media/b03391e6-d584-42e3-bd18-b09d1d47902c",
+            "images": [
+              "/api/media/3d581113-08f9-44e1-b1e3-c798c18cff7c"
+            ]
+          }
+        ]
       }
     ]
   },
