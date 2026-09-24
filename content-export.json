@@ -544,9 +544,9 @@
       {
         "id": "sarpathon",
         "title": "Sarpathon",
-        "desc": "Explore Sarpathon videos and photo albumss.",
+        "desc": "Explore Sarpathon videos and photo albums.",
         "label": "Sarpathon",
-        "image": "/api/media/fb2340a5-4b47-4b42-b6e9-4d144615d94d",
+        "image": "",
         "href": "/sarpathon",
         "trainingVideoItems": [],
         "trainingImageAlbums": [
