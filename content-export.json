@@ -548,7 +548,14 @@
         "label": "Sarpathon",
         "image": "",
         "href": "/sarpathon",
-        "trainingVideoItems": [],
+        "trainingVideoItems": [
+          {
+            "title": "test",
+            "description": "test",
+            "url": "https://youtube.com/shorts/FYdDx4U8R0c?si=oQRqBStZNi4l1l9Q",
+            "coverImage": ""
+          }
+        ],
         "trainingImageAlbums": [
           {
             "id": "trainingImageAlbums-1790236486455",
