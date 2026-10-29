@@ -267,14 +267,14 @@ function Header({ lang, setLang, t, settings }) {
             {settings?.branding?.bsvLogo && <Image src={settings.branding.bsvLogo} alt="BSV" width={120} height={48} sizes="120px" className="h-8 sm:h-12 w-auto flex-shrink-0" />}
 
             {/* Campaign Logo */}
-            <Image
-              src="/images/saanplogo.png"
+            {settings?.branding?.campaignLogo && <Image
+              src={settings?.branding?.campaignLogo}
               alt="Saap Ka Vaar"
               width={160}
               height={56}
               sizes="(max-width: 640px) 100px, 160px"
               className="h-8 sm:h-12 md:h-14 w-auto flex-shrink min-w-0 ml-0 sm:ml-2"
-            />
+            />}
           </button>
 
           {/* Desktop Navigation — no Home button, logo handles it */}
@@ -585,7 +585,7 @@ function HeroStatsSection({ content, t }) {
 
 function MissionSection({ content }) {
   const missionText = content?.aboutCampaignText || DEFAULT_CONTENT.aboutCampaignText
-  const campaignLogo = content?.aboutCampaignLogo || DEFAULT_CONTENT.aboutCampaignLogo
+  const campaignLogo = content?.aboutCampaignLogo ?? DEFAULT_CONTENT.aboutCampaignLogo
 
   const MissionPillar = ({ icon: Icon, label }) => (
     <div className="flex flex-col items-center justify-center px-3">
@@ -649,14 +649,14 @@ function MissionSection({ content }) {
               </div>
             </div>
 
-            <div className="order-1 md:order-2 flex justify-center items-center">
+            {campaignLogo && <div className="order-1 md:order-2 flex justify-center items-center">
               <img
                 src={campaignLogo}
                 alt="Saap Ka Vaar Aspataal Mein Hi Upchaar"
                 className="w-full max-w-[260px] md:max-w-[380px] h-auto object-contain"
                 draggable={false}
               />
-            </div>
+            </div>}
           </div>
 
         </div>
@@ -2342,8 +2342,8 @@ function App() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, ease: 'easeOut' }}
       >
-        <motion.img
-          src="/images/saanplogo.png"
+        {settings?.branding?.campaignLogo && <motion.img
+          src={settings?.branding?.campaignLogo}
           alt="Saap Ka Vaar, Aspataal Mein Hi Upchaar"
           className="w-[min(88vw,680px)] h-auto object-contain"
           animate={{ scale: [1, 1.025, 1] }}
@@ -2353,7 +2353,7 @@ function App() {
             ease: 'easeInOut',
           }}
           draggable={false}
-        />
+        />}
 
         <div className="mt-7 flex items-center justify-center gap-2">
           {[0, 1, 2].map(i => (

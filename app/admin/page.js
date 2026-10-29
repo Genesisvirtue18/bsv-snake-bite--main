@@ -4093,6 +4093,10 @@ function SettingsView({ api }) {
                 <div className="md:col-span-2"><Label>Tagline</Label><Input value={s.branding.tagline} onChange={e => updateBranding('tagline', e.target.value)} /></div>
               </div>
               <MediaPicker label="Admin Header Logo" value={s.branding.headerLogo} onChange={v => updateBranding('headerLogo', v)} />
+              <div>
+                <MediaPicker label="Campaign Header & Loading Logo" value={s.branding.campaignLogo || ''} onChange={v => updateBranding('campaignLogo', v)} />
+                <p className="mt-1 text-xs text-slate-500">Shown in the public website header and on the homepage loading screen. A wide transparent PNG works best.</p>
+              </div>
               <MediaPicker label="BSV Logo" value={s.branding.bsvLogo || ''} onChange={v => updateBranding('bsvLogo', v)} />
               <MediaPicker label="Mankind Logo" value={s.branding.mankindLogo || ''} onChange={v => updateBranding('mankindLogo', v)} />
               <MediaPicker label="Footer Logo" value={s.branding.footerLogo} onChange={v => updateBranding('footerLogo', v)} />
